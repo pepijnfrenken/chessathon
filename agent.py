@@ -166,6 +166,23 @@ _PST_EG = {
 
 TEMPO = 10  # small bonus for the side to move
 
+# In-search timeout machinery: the search must be interruptible *inside*
+# a single root-move subtree, not just between root moves. Checked every
+# 512 nodes (cheap); raises SearchTimeout, caught at the root.
+_CHECK_EVERY = 512
+_SEARCH_START = 0.0
+_SEARCH_BUDGET = 0.0
+_CHECK_TIMEOUT = False
+
+
+class SearchTimeout(Exception):
+    """Raised when the time budget is exhausted inside the search."""
+
+
+def _time_up() -> bool:
+    return (_CHECK_TIMEOUT
+            and time.monotonic() - _SEARCH_START >= _SEARCH_BUDGET)
+
 # ---------------------------------------------------------------------------
 # Evaluation (from White's point of view)
 # ---------------------------------------------------------------------------
@@ -253,8 +270,13 @@ def order_moves(board: chess.Board, moves, killer=None) -> list:
 # ---------------------------------------------------------------------------
 
 
-def _quiesce(board: chess.Board, alpha: int, beta: int, ply: int) -> int:
+def _quiesce(board: chess.Board, alpha: int, beta: int, ply: int,
+             node_count: list) -> int:
     """Capture-only quiescence with stand-pat, to damp horizon effects."""
+    node_count[0] += 1
+    if node_count[0] % _CHECK_EVERY == 0 and _time_up():
+        raise SearchTimeout
+
     if _is_draw(board):
         return 0
 
@@ -265,8 +287,10 @@ def _quiesce(board: chess.Board, alpha: int, beta: int, ply: int) -> int:
             return -MATE + ply  # checkmate
         for mv in order_moves(board, evasions):
             board.push(mv)
-            score = -_quiesce(board, -beta, -alpha, ply + 1)
-            board.pop()
+            try:
+                score = -_quiesce(board, -beta, -alpha, ply + 1, node_count)
+            finally:
+                board.pop()
             if score >= beta:
                 return score
             if score > alpha:
@@ -285,8 +309,10 @@ def _quiesce(board: chess.Board, alpha: int, beta: int, ply: int) -> int:
     captures = [m for m in board.legal_moves if board.is_capture(m)]
     for mv in order_moves(board, captures):
         board.push(mv)
-        score = -_quiesce(board, -beta, -alpha, ply + 1)
-        board.pop()
+        try:
+            score = -_quiesce(board, -beta, -alpha, ply + 1, node_count)
+        finally:
+            board.pop()
         if score >= beta:
             return score
         if score > alpha:
@@ -298,12 +324,14 @@ def _negamax(board: chess.Board, depth: int, alpha: int, beta: int,
              ply: int, killers: list, node_count) -> int:
     """Minimax with alpha-beta pruning. Returns score from side-to-move POV."""
     node_count[0] += 1
+    if node_count[0] % _CHECK_EVERY == 0 and _time_up():
+        raise SearchTimeout
 
     if _is_draw(board):
         return 0
 
     if depth <= 0:
-        return _quiesce(board, alpha, beta, ply)
+        return _quiesce(board, alpha, beta, ply, node_count)
 
     moves = list(board.legal_moves)
     if not moves:
@@ -318,9 +346,11 @@ def _negamax(board: chess.Board, depth: int, alpha: int, beta: int,
     for mv in ordered:
         was_capture = board.is_capture(mv)
         board.push(mv)
-        score = -_negamax(board, depth - 1, -beta, -alpha, ply + 1,
-                          killers, node_count)
-        board.pop()
+        try:
+            score = -_negamax(board, depth - 1, -beta, -alpha, ply + 1,
+                              killers, node_count)
+        finally:
+            board.pop()
         if score > best:
             best = score
         if best > alpha:
@@ -342,13 +372,16 @@ def _search_root(board: chess.Board, budget_s: float) -> chess.Move:
     """Iterative deepening at the root. Interruptible between root moves.
 
     Always completes MIN_ALWAYS_DEPTH; beyond that, stops once the time
-    budget is exhausted, keeping the best move found so far.
+    budget is exhausted (checked between root moves and inside the
+    recursion), keeping the best move found so far.
     """
+    global _SEARCH_START, _SEARCH_BUDGET, _CHECK_TIMEOUT
     legal = list(board.legal_moves)
     if len(legal) == 1:
         return legal[0]
 
-    start = time.monotonic()
+    _SEARCH_START = time.monotonic()
+    _SEARCH_BUDGET = budget_s
 
     # Start with a sane default ordering so depth 1 is cheap and useful.
     ordered = order_moves(board, legal)
@@ -360,16 +393,22 @@ def _search_root(board: chess.Board, budget_s: float) -> chess.Move:
         move_scores = []
         best_this_iter = None
         best_score = -INF
+        _CHECK_TIMEOUT = depth > MIN_ALWAYS_DEPTH and budget_s > 0.0
 
-        for idx, mv in enumerate(ordered):
-            if depth > MIN_ALWAYS_DEPTH and time.monotonic() - start >= budget_s:
-                # Time up mid-iteration: keep previous iteration's move.
+        for mv in ordered:
+            if time.monotonic() - _SEARCH_START >= budget_s:
                 return best_move
 
             board.push(mv)
-            score = -_negamax(board, depth - 1, -INF, INF, 1, killers,
-                              [0])
-            board.pop()
+            try:
+                score = -_negamax(board, depth - 1, -INF, INF, 1, killers,
+                                  [0])
+            except SearchTimeout:
+                # Budget exhausted inside a subtree: use the previous
+                # iteration's move. Board is restored by the finally-pop.
+                return best_move
+            finally:
+                board.pop()
 
             move_scores.append((score, mv))
             if score > best_score:
@@ -380,10 +419,10 @@ def _search_root(board: chess.Board, budget_s: float) -> chess.Move:
                                           reverse=True)]
         best_move = best_this_iter if best_this_iter is not None else best_move
 
-        elapsed = time.monotonic() - start
-        if elapsed >= budget_s:
+        if time.monotonic() - _SEARCH_START >= budget_s:
             break
 
+    _CHECK_TIMEOUT = False
     return best_move
 
 
