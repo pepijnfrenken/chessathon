@@ -1,16 +1,18 @@
 """Local self-play harness for the Chessathon agent (dev tool, NOT shipped).
 
-Plays `agent.get_move` against itself, or against a simple material-greedy
-bot, under the real clock shape (base_ms + inc_ms per side) with a genuine
-time_left_ms decrement + increment. This is the correctness gate: the agent
-must produce ZERO illegal moves / crashes / timeouts / slow moves across a
-batch of games from varied starting positions.
+Plays any two engines against each other under the real clock shape
+(base_ms + inc_ms per side) with a genuine time_left_ms decrement +
+increment. Available sides: `agent` (current engine), `ref1a` (phase-1a
+reference, archived in tools/ref_1a_agent.py), `material` (greedy bot).
+
+This is the correctness gate: ZERO illegal moves / crashes / timeouts /
+slow moves across a batch of games from varied starting positions.
 
 Usage:
-    python tools/local_game.py                  # 20 games, 2s + 0.1s
-    python tools/local_game.py --games 24 --base-ms 2000 --inc-ms 100
-    python tools/local_game.py --games 1 --base-ms 120000 --inc-ms 500
-        --sides agent:material --log results/long.log
+    python tools/local_game.py                          # agent vs material, 2s+0.1s
+    python tools/local_game.py --sides agent:agent --games 6 --base-ms 5000 --inc-ms 50
+    python tools/local_game.py --sides agent:ref1a --games 24 --base-ms 5000 --inc-ms 50
+    python tools/local_game.py --sides agent:material --games 1 --base-ms 120000 --inc-ms 500
 
 Flags recorded per game: illegal move, crash (exception from get_move),
 timeout (moved longer than the clock allowed), slow move (>50 s). The
@@ -25,8 +27,16 @@ from pathlib import Path
 
 import chess
 
-sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+_HERE = Path(__file__).resolve().parent
+sys.path.insert(0, str(_HERE.parent))
+sys.path.insert(0, str(_HERE))
+
 import agent as our_agent  # noqa: E402
+
+try:
+    import ref_1a_agent  # archived phase-1a reference engine
+except ImportError:  # pragma: no cover
+    ref_1a_agent = None
 
 SLOW_MOVE_MS = 50_000   # anything slower is a flag, regardless of clock
 MAX_PLY = 300           # hard game length cap; long shuffles become draws
@@ -78,6 +88,19 @@ def material_move(board: chess.Board, rng: random.Random) -> str:
     return rng.choice(list(board.legal_moves)).uci()
 
 
+def _move_fn(side: str, rng: random.Random):
+    """Return get_move(fen, remaining_ms) for a named side."""
+    if side == "agent":
+        return our_agent.get_move
+    if side == "ref1a":
+        if ref_1a_agent is None:
+            raise RuntimeError("tools/ref_1a_agent.py not importable")
+        return ref_1a_agent.get_move
+    if side == "material":
+        return lambda fen, remaining_ms: material_move(chess.Board(fen), rng)
+    raise ValueError(f"unknown side {side!r}")
+
+
 # ---------------------------------------------------------------------------
 # Game driver
 # ---------------------------------------------------------------------------
@@ -85,7 +108,7 @@ def material_move(board: chess.Board, rng: random.Random) -> str:
 class GameStats:
     def __init__(self, side_names: dict):
         self.flags = []
-        self.side_names = side_names  # {True: 'agent', False: 'material'}
+        self.side_names = dict(side_names)  # {True: name, False: name}
 
     def flag(self, kind: str, side: str, detail: str = "") -> None:
         self.flags.append((kind, side, detail))
@@ -96,8 +119,10 @@ class GameStats:
 
 def play_game(start_fen: str, base_ms: int, inc_ms: int,
               sides: dict, rng: random.Random) -> dict:
-    """Play one game under the real clock. sides maps chess.Color -> 'agent'|'material'."""
+    """Play one game under the real clock shape.
+    sides maps chess.Color -> side name ('agent'/'ref1a'/'material')."""
     board = chess.Board(start_fen)
+    get_move = {c: _move_fn(sides[c], rng) for c in (chess.WHITE, chess.BLACK)}
     clock = {chess.WHITE: base_ms, chess.BLACK: base_ms}
     stats = GameStats(sides)
     moves_uci = []
@@ -110,22 +135,13 @@ def play_game(start_fen: str, base_ms: int, inc_ms: int,
         remaining = clock[side]
         start = time.monotonic()
 
-        if side_name == "material":
-            try:
-                uci = material_move(board, rng)
-            except Exception as exc:  # bot crash shouldn't crash the harness
-                stats.flag("crash", side_name, f"{exc!r}")
-                loser = side
-                break
-            used_ms = int((time.monotonic() - start) * 1000)
-        else:
-            try:
-                uci = our_agent.get_move(board.fen(), remaining)
-            except Exception as exc:
-                stats.flag("crash", side_name, f"{exc!r}")
-                loser = side
-                break
-            used_ms = int((time.monotonic() - start) * 1000)
+        try:
+            uci = get_move[side](board.fen(), remaining)
+        except Exception as exc:  # an engine crash is a harness-side flag
+            stats.flag("crash", side_name, f"{exc!r}")
+            loser = side
+            break
+        used_ms = int((time.monotonic() - start) * 1000)
 
         # --- flag checks (correctness gate) ---
         if uci == "0000":
@@ -154,27 +170,28 @@ def play_game(start_fen: str, base_ms: int, inc_ms: int,
         clock[side] = remaining - used_ms + inc_ms
         ply += 1
 
-    result = board.result(claim_draw=True)
     if loser is not None:
         result = "0-1" if loser == chess.WHITE else "1-0"
-    if ply >= MAX_PLY:
+    elif board.is_game_over():
+        result = board.result(claim_draw=True)
+    elif ply >= MAX_PLY:
         # Cap reached: adjudicate by material. A lead of a rook or more
         # with mating potential is a win; otherwise a draw.
-        mat_white = sum(_VICTIM[p.piece_type] for p in board.piece_map().values()
+        mat_white = sum(_VICTIM[p.piece_type]
+                        for p in board.piece_map().values()
                         if p.color == chess.WHITE)
-        mat_black = sum(_VICTIM[p.piece_type] for p in board.piece_map().values()
+        mat_black = sum(_VICTIM[p.piece_type]
+                        for p in board.piece_map().values()
                         if p.color == chess.BLACK)
         diff = mat_white - mat_black
-        if diff >= 500:
-            result = "1-0"
-        elif diff <= -500:
-            result = "0-1"
-        else:
-            result = "1/2-1/2"
+        result = "1-0" if diff >= 500 else ("0-1" if diff <= -500
+                                            else "1/2-1/2")
+    else:  # game over but not adjudicated path; keep it simple
+        result = board.result(claim_draw=True)
+
     return {
         "start": start_fen,
         "moves": " ".join(moves_uci),
-        "pgn_result": result,
         "result": result,
         "flags": stats.flags,
         "ply": ply,
@@ -191,19 +208,18 @@ def main() -> int:
     ap.add_argument("--base-ms", type=int, default=2000)
     ap.add_argument("--inc-ms", type=int, default=100)
     ap.add_argument("--sides", default="agent:material",
-                    help="comma-free 'agent:material' or 'agent:agent'")
+                    help="white:black side names (agent/ref1a/material)")
     ap.add_argument("--seed", type=int, default=1)
     ap.add_argument("--log", default=None, help="output log path")
     args = ap.parse_args()
 
-    if args.sides == "agent:material":
-        sides = {chess.WHITE: "agent", chess.BLACK: "material"}
-    elif args.sides == "material:agent":
-        sides = {chess.WHITE: "material", chess.BLACK: "agent"}
-    elif args.sides == "agent:agent":
-        sides = {chess.WHITE: "agent", chess.BLACK: "agent"}
-    else:
-        print("--sides must be 'agent:material', 'material:agent' or 'agent:agent'")
+    try:
+        wname, bname = args.sides.split(":")
+        sides = {chess.WHITE: wname, chess.BLACK: bname}
+        _move_fn(wname, random.Random(0))
+        _move_fn(bname, random.Random(0))
+    except (ValueError, KeyError, RuntimeError, AttributeError) as exc:
+        print(f"bad --sides: {exc}")
         return 2
 
     log_path = args.log or (
@@ -211,7 +227,7 @@ def main() -> int:
     Path(log_path).parent.mkdir(parents=True, exist_ok=True)
 
     rng = random.Random(args.seed)
-    wins = {"agent": 0, "material": 0}
+    tally = {wname: 0, bname: 0}
     draws = 0
     all_flags = []
     total_elapsed = 0.0
@@ -226,9 +242,9 @@ def main() -> int:
         total_elapsed += d
 
         if game["result"] == "1-0":
-            wins[sides[chess.WHITE]] += 1
+            tally[wname] += 1
         elif game["result"] == "0-1":
-            wins[sides[chess.BLACK]] += 1
+            tally[bname] += 1
         else:
             draws += 1
         if not game["flags"]:
@@ -250,7 +266,7 @@ def main() -> int:
 
     summary = (f"\n=== SUMMARY: {args.games} games, {args.base_ms}ms+{args.inc_ms}ms, "
                f"{args.sides}, {total_elapsed:.0f}s wall ===")
-    detail = (f"agent wins {wins['agent']}, material wins {wins['material']}, "
+    detail = (f"{wname} wins {tally[wname]}, {bname} wins {tally[bname]}, "
               f"draws {draws}")
     print(summary)
     print(detail)
