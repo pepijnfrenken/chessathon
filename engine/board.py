@@ -446,8 +446,11 @@ def gen_moves(st, moves, cap_only: bool) -> int:
                             cnt += 1
 
         elif t == KNIGHT or t == KING:
-            if t == KNIGHT and cap_only:
-                continue
+            # NOTE (Phase 4 audit fix): knights were previously SKIPPED
+            # entirely in cap_only (qsearch) mode — silent knight-capture
+            # blindness in every not-in-check quiescence node. The guard
+            # below (quiet moves suppressed by `if not cap_only`) is all
+            # the filtering needed; knight captures must be generated.
             deltas = _KNIGHT_DELTAS if t == KNIGHT else _KING_DELTAS
             for d in range(8):
                 to = sq + deltas[d]
