@@ -183,3 +183,53 @@ Risks / notes for the next phases:
   ship cache=False (compile each process inside the 60 s init).
 - Aspiration windows, stable-PV early stop and ponder are deferred to the
   tuning/ponder phase.
+
+### Phase 2 — parameterized eval + tuning tooling (in progress, 2026-09-07)
+
+Commit f4e13e4 (then b27eb5d/3dd0a66): the 1b eval was reparameterized.
+ORIGINALITY.md read and honored: the parametric structure, term ideas and
+all numbers below are OUR design/log; published *concepts* (tapered eval,
+PSTs, Texel tuning) are standard knowledge per research doc 02.
+
+What changed vs 1b:
+
+- **`engine/eval.py`** — single int32 param vector `EVAL_PARAMS` (813
+  weights) shared with the dev tuner; layout documented by `P_*` indices:
+  material mg/eg (6+6), PST mg/eg (2x384), pawn structure (doubled /
+  isolated / passed-by-rank / blocked), mobility per class (N,B,R,Q;
+  signed pseudo-legal count), king safety (shelter near/far, open file),
+  king tropism (chebyshev distance, color-symmetric — hand value 0), bishop
+  pair, tempo. Taper = standard phase (N/B:1 R:2 Q:4 max24), integer
+  floor-divide by 24.
+- **Gateable term groups** at import time via env (numba bakes globals):
+  `CHESSATHON_EVAL_CONFIG=hand|tuned`, `CHESSATHON_EVAL_GATE=NNNN`
+  (pawn, mobility, king-safety, bp+tempo) — how SPRT side-B reproduces the
+  1b-style flat eval (material+PST only) in a separate process. TUNED_PARAMS
+  block is patched by the tuner; the shipped agent defaults to `tuned`.
+- **`tools/`** — `common.py` (11 hand-written openings + 300-ply material
+  adjudication), `engine_side.py` (one config per subprocess, stdin/stdout
+  protocol), `sprt.py` (trinomial SPRT, elo0=0 / elo1=10, alpha=beta=0.05,
+  accept [+2.94 .. reject -2.94] LLR bounds), `gate_match.py` (fixed-size
+  flag-gated match), `eg_check.py` (endgame conversion spot-check),
+  `gen_positions.py` (self-play training data, tiny fixed budget),
+  `texel_tune.py` (numpy-only IRWLS Texel fitter).
+- **Tuner correctness is verified, not assumed**: `texel_tune.py` re-derives
+  the eval's feature vector in numpy and asserts BIT-PARITY with the jitted
+  `evaluate()` on 50 mixed FENs (exact match, both colors) plus a
+  finite-difference gradient check (max err 1.1e-5). Two parity bugs were
+  found and fixed during this verification (not in the shipped eval — the
+  eval itself selfchecks fine; both were tuner-model bugs): (a) the tempo
+  feature must be the White-POV constant +1 (evaluate() returns the
+  side-to-move value ±(SB+tempo), so White-POV score is SB+tempo for either
+  side to move); (b) the mg/eg term-index split cannot be derived as
+  even=mg/odd=eg — `P_PASSED_*` (784..791) breaks that rule; indices are
+  now explicit from the `P_*` constants.
+- Perft parity re-run with the new eval: ALL PASS (6 positions d1-5 +
+  move-type breakdowns), movegen ~10 Mnps — the eval change did not touch
+  the board.
+- NPS: 647 / 635 / 488 knps (startpos d11 / middlegame d6 / sharp → finds
+  mate in 1) — ~25% below 1b's 865 knps, the measured cost of the richer
+  eval; still well above the ~400 knps floor.
+- SPRT #1 (the make-or-break): full eval (hand:1111) vs material+PST-only
+  (hand:0000) @ 300ms/move, elo1=10, max 300 pairs — verdict pending
+  (`results/sprt_phase2_vs_1b_*.log`).
