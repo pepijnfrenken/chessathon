@@ -233,3 +233,29 @@ What changed vs 1b:
 - SPRT #1 (the make-or-break): full eval (hand:1111) vs material+PST-only
   (hand:0000) @ 300ms/move, elo1=10, max 300 pairs — verdict pending
   (`results/sprt_phase2_vs_1b_*.log`).
+
+- **SPRT #1 first attempt (full eval vs material+PST @ 300ms, seed 7):**
+  run killed by the dev box's async-job killer at pair 73 (144 games:
+  side A 36-28-80, score 0.528, LLR +0.227, nowhere near bounds) — the
+  log is lost with the process (sprt.py previously wrote only at exit);
+  now flushed every 5 pairs. Verdict: PENDING, being re-run to completion.
+  Interim read: weak positive lean (~+19 elo est.), mostly draws at the
+  300-ply adjudication cap — not a clear beat at that TC.
+- **Texel tuning (real weights, committed b1df520):** 60k positions from
+  735 self-play games (our engine @ 40ms, 11 hand-written openings,
+  39/36/24 win/loss/draw split) fitted with tools/texel_tune.py (numpy
+  IRWLS on the logistic loss, bit-parity-verified features). Train loss
+  0.1254 -> 0.0979, val 0.1234 -> 0.0975 (no overfit). Trap found: the
+  first joint fit (all 813 params) degenerated — material and the PST
+  mean are collinear, so IRWLS split value arbitrarily (queen=342cp,
+  pawn=-16). Material mg/eg is now FROZEN at the hand priors
+  (100/320/330/500/900) and only PSTs + term weights are fitted — the
+  standard Texel anchoring. The degenerate first-fit weights had been
+  wired into TUNED_PARAMS by a concurrent agent (commit 516ef8c, from a
+  scratch .npy of the 3k-position pipeline test) — reverted by b1df520
+  to the genuine 60k fit. Fitted highlights (rounded): pawn PST deltas
+  up to ~±60, passed mg [-62,53,45,26] / eg [9,-3,49,41], doubled -11,
+  isolated -11, blocked +10, mob N/B/R/Q mg [-31,0,-21,-1], shelter
+  near +9 / far -32, open 0, kdist mg/eg [-6,6], bishop pair mg/eg
+  [-137,+118], tempo 6. These are unconventional (e.g. negative bishop-
+  pair MG) — the tuned-vs-hand SPRT decides whether it plays better.
