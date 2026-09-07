@@ -44,18 +44,25 @@ never a copied one.
    pruning, LMR, and piece-square-table evaluation *fresh, in our own
    code*, is original work. (These are concepts, like knowing the rules of
    chess. The code we write around them must be ours.)
-3. **Classical search only — ship NO neural model.** This removes the
-   entire "did you train it?" question. A strong hand-written evaluation
-   + search is a full, legal, competitive entry.
+3. **A neural net is OPTIONAL but legal IF we train it ourselves.** The
+   official rule: "any model you ship is one you trained" and "the ban
+   covers only what ships inside the submission." **Training can happen
+   ANYWHERE — locally, on Modal GPUs, on a rented box — only the weights
+   ship.** `.onnx`, `.safetensors` and `.pt` weights are judge-readable
+   data (not native binaries) and are explicitly allowed in the zip.
+   Training data is unrestricted, including positions annotated by an
+   existing engine. The line: we never ship someone else's weights or
+   inference code — we ship OUR weights + OUR Python inference (onnxruntime
+   is preinstalled on the box).
 4. **Opening books and tablebases as data files** if we choose to use
    them (polyglot books, Syzygy TBs). These are shipped *data*, explicitly
    permitted.
 5. **Use Stockfish ONLY as a local sparring partner for strength testing**
    — downloaded OUTSIDE this repo (e.g. `/tmp` or `~/tools`), never
-   committed, never in the zip. The rules ban what *ships in the
-   submission*, and local testing is how every engine developer measures
-   progress. Keep it fully out of the repo so it can never leak into a
-   build.
+   committed, never in the zip. It may also annotate OUR training data
+   (data is unrestricted) — but only ever as a data generator, never as
+   shipped code or shipped weights. Keep it fully out of the repo so it
+   can never leak into a build.
 
 ### ❌ FORBIDDEN
 1. **NO copying, pasting, porting, or "adapting" any existing engine's
@@ -64,9 +71,10 @@ never a copied one.
    is fine; copying implementation files is not. If an agent is tempted to
    "use this open-source engine as a starting point" — THAT IS A VIOLATION.
    Start from an empty file and write our own.
-2. **NO shipping any pretrained model** (no downloaded nets, no Lc0-style
-   weights, no Maia, no torch checkpoint we didn't train). Classical
-   search = no model at all = safest.
+2. **NO shipping any pretrained / downloaded model weights** (no Stockfish/
+   Leela/Maia nets, no downloaded `.onnx`/`.pt` checkpoints we didn't
+   train). We MAY train our own net anywhere and ship OUR weights — but
+   downloading someone else's trained net is a violation even as data.
 3. **NO wrapping or calling any external engine**, at runtime or via
    subprocess, in the submission.
 4. **NO native binaries / compiled extensions** in the zip (also
