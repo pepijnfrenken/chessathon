@@ -35,6 +35,9 @@ alpha-beta engine with a hand-tuned evaluation**, not an NN.
 - [x] Phase 4: time management — 1b (remaining/45 + inc, never flags); pondering pending
 - [x] Phase 5: tuning + testing vs baseline — tuned LOSES to hand (SPRT 0-wins-in-50, gate 0.104, eg 1/4); hand eval ships
 - [x] Submission zip — agent.py + engine/ only, 25,031 B, init 44.9s, hand eval
+- [x] Phase 6: search-strength sprint — aspiration REJECTED on gate (0.438, reverted);
+  parity forensics fixed 3 latent baseline bugs (PVS sign, qsearch stand-pat x2, ep
+  default) + hand mate-drive; LMR gate positive (0.542, keep); zip 26,981 B, init 46.8s
 
 ## Build record
 
