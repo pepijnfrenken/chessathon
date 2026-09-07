@@ -601,3 +601,78 @@ Risks (honest):
 3. eg_check semantics changed (mirror for black games): prior "3/4" and
    "0/4" records referenced the old non-mirrored tool. The correction is
    documented above; the old black-case rows measured bare-king defense.
+
+### Phase 4 (2026-09-07) — STATEFUL AGENT: game-history repetition fix (+ qsearch knight fix)
+
+**Headline:** the agent played stateless — every get_move parsed the FEN
+fresh and the search's repetition detector only saw its OWN 16-ply path,
+so a move repeating a position from 2-20 plies ago in the REAL game
+looked new. Quiet moves scored within noise, the engine picked any, and
+won endgames shuffled into harness threefold draws exactly like ladder
+rounds 54/55 (rook on the 1st rank, 10+ aimless moves, material still
+won). This is THE highest-value bug of the ladder so far: it converted
+wins into draws at every time control.
+
+**Root-cause evidence (reproduced cold):** at 2000 ms/move the shipped
+engine THREE-FOLD DREW KQvK-w (3x at plies 17-20) and KRvK-w (3x at
+33-36); the KQvK-w 300 ms trace showed the winning king orbiting
+e6-d5-e6-f6 and the queen wandering while the position repeated. The
+search could not see the repetition because the prior game positions
+were never fed in.
+
+**Fix 1 — game history (commits caede75):**
+- `agent.py` keeps a rolling `GAME_HIST=32` window of REAL-game zobrist
+  keys (both parities: the incoming position AND the position after our
+  own move, so the window is a gap-free prefix of the game's ply
+  sequence). `search_root` pre-seeds `rep[0..GAME_HIST)` with it —
+  `rep[i] = position GAME_HIST-1-i` plies before the root — and the
+  search path now occupies `rep[GAME_HIST + ply]`. `_draw_score`'s
+  step-2 parity scan (lookback widened to GAME_HIST+16) therefore sees
+  CROSS-MOVE game repetitions; alpha-beta scores those lines as draws
+  (0) and naturally avoids shuffling into them.
+- Root anti-shuffle: every root move's resulting key is counted against
+  the history window. A move creating the THIRD occurrence (the game
+  draws instantly) gets effective score 0. A move creating the SECOND
+  occurrence gets −20 cp — but ONLY when the searched score ≥ 0: a
+  losing side keeps the repetition (repeating into a draw is correct
+  defense, never weakened). Selection + alpha use the effective score.
+- Dev harnesses (`engine_side*`, sprt) gained a `reset` protocol line
+  (clears history + TT between games); the OLD tree side (gate vs HEAD)
+  auto-detects the missing feature and stays stateless — the gate
+  measures the real difference.
+- Empty-history behavior is byte-identical to HEAD: fixed-depth startpos
+  d10 = 1,030,699 nodes, best 4353, score 17 (measured on both trees).
+
+**Gates (stateful-only tree caede75):** perft ALL PASS; eg_check 8/8 WIN
+at 300 ms incl. KPK both colors (baseline: KQvK 0/2, KRPvK-b draw);
+shuffle suite 12/12 WIN @300 ms, 11/12 WIN @2 s with ZERO threefolds
+anywhere (KPK-b @2 s = KPK technique gap — defender held opposition —
+no repetition in the game; the same case converts in traces and at
+300 ms, documented as residual OPTION-A scope); unit check: a winning
+capture that would create the 3rd occurrence is refused (Rbxf1 with the
+post-capture position twice in history → engine plays Rb1a1 instead,
+keeping the +7xx win), while a losing KQvKR keeps its repetition (defense
+case unchanged); determinism identical runs; NPS 433-496 knps (baseline
+band).
+
+**Fix 2 — qsearch knight-capture blindness (commit 496b86a, audit
+finding):** `gen_moves` cap_only skipped ALL knight moves, so silent
+not-in-check quiescence nodes never saw knight captures. Demonstrated:
+after Rxd4 with Nxd4 the only capture, qsearch returned −190 (stand-pat)
+where the exact value is 0 (>150 cp horizon error). Removed the skip
+(quiet moves stay suppressed by the existing guard). Probe: cap_only gen
+1 [c6d4], qsearch exact 0; falsified on the old line (0). Effect on
+trees: startpos d10 1,030,699 → 987,934 nodes (score 17→10, more
+accurate); mg d8 1,633,787/407 → 1,992,370/420; sharp d8 unchanged
+(mate-in-1).
+
+**Final gates on the committed tree (496b86a):** perft ALL PASS;
+eg_check 8/8 WIN @300 ms; determinism identical; NPS 473-496 knps;
+24-game 500ms vs HEAD 05d0101: **15W-3L-6D (0.750), ZERO flags**
+(results/phase4_gate_final_vs_head.log) — well past the ≥0.55 bar: the
+stateful agent converts won endgames that stateless HEAD shuffles into
+draws, and the qsearch knight fix removes a silent horizon blind spot.
+BUILD.md "Risks" updates: the KQvK/KRvK conversion flakiness and the
+KPK technique gap (OPTION A) remain the known remaining weaknesses;
+threefold-shuffle draws are eliminated. agent.zip rebuilt + verified
+(60s init) on this tree.
