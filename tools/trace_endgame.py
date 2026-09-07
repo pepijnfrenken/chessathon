@@ -37,17 +37,45 @@ ttk, ttv = TT.make()
 mask = np.uint64(len(ttk) - 1)
 killers = np.zeros((2, B.MAX_PLY), dtype=np.int32)
 hist = np.zeros((2, 64, 64), dtype=np.int32)
-rep = np.zeros(B.MAX_PLY + 8, dtype=np.uint64)
+rep = np.zeros(S.REP_SIZE, dtype=np.uint64)
 scratch = np.zeros((B.MAX_PLY, B.MAX_MOVES), dtype=np.int32)
 sscratch = np.zeros((B.MAX_PLY, B.MAX_MOVES), dtype=np.int32)
 nodes = np.zeros(1, dtype=np.int64)
+# Phase 4: game-history window (one game per process: consecutive FEN
+# lines are consecutive game positions; no reset needed).
+_game_keys = []
+
+def _ghist():
+    arr = np.zeros(S.GAME_HIST, dtype=np.uint64)
+    cnt = len(_game_keys) - 1
+    if cnt <= 0:
+        return arr, 0
+    if cnt > S.GAME_HIST - 1:
+        start = cnt - (S.GAME_HIST - 1)
+        arr[:cnt - start] = np.fromiter(_game_keys[start:cnt], dtype=np.uint64)
+        return arr, S.GAME_HIST - 1
+    arr[:cnt] = np.fromiter(_game_keys[:cnt], dtype=np.uint64)
+    return arr, cnt
+
+def _key_after(st, mv):
+    captured = st["squares"][0][B.m_to(mv)]
+    fl = B.m_flags(mv)
+    me = st["side"][0]
+    if fl == B.F_EP:
+        captured = st["squares"][0][B.m_to(mv) - 16 if me == B.WHITE else B.m_to(mv) + 16]
+    pc_, pe_, ph_, pk_ = st["castle"][0], st["ep"][0], st["halfmove"][0], st["key"][0]
+    B.make_move_apply(st, mv)
+    key = st["key"][0]
+    B.unmake_move(st, mv, captured, pc_, pe_, ph_, pk_)
+    return key
+
 # warmup
 st = B.parse_fen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")
 far = S._NOW() + 3_600_000_000_000
 S.search(st, 2, -S.INF, S.INF, 1, nodes, far, ttk, ttv, mask,
          killers, hist, rep, scratch, sscratch)
 S.search_root(st, nodes, far, ttk, ttv, mask, killers, hist, rep,
-              scratch, sscratch, 3)
+              scratch, sscratch, 3, np.zeros(S.GAME_HIST, dtype=np.uint64), 0)
 
 def root_top(st, deadline, topn):
     # replicate search_root's per-move score loop at the COMPLETED depth
@@ -81,12 +109,18 @@ for line in sys.stdin:
     if not fen or fen == "quit":
         break
     st = B.parse_fen(fen)
+    if not _game_keys or _game_keys[-1] != st["key"][0]:
+        _game_keys.append(st["key"][0])
+    ghist, gcnt = _ghist()
     ev = evaluate(st)
     deadline = S._NOW() + int(budget * 1_000_000)
     nodes[0] = 0
     mv, score, depth = S.search_root(st, nodes, deadline, ttk, ttv, mask,
-                                     killers, hist, rep, scratch, sscratch, 64)
+                                     killers, hist, rep, scratch, sscratch,
+                                     64, ghist, gcnt)
     uci = "0000" if mv == 0 else B.move_to_uci(mv)
+    if mv != 0:
+        _game_keys.append(_key_after(st, mv))
     top = root_top(st, S._NOW() + 40_000_000_000, 4)
     sys.stdout.write(f"{uci} {ev} {depth} " +
                      " ".join(f"{m}:{s}" for m, s, _ in top) + "\n")

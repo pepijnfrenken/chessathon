@@ -23,7 +23,7 @@ def one(fen: str, depth: int):
     mask = np.uint64(len(ttk) - 1)
     killers = np.zeros((2, B.MAX_PLY), dtype=np.int32)
     hist = np.zeros((2, 64, 64), dtype=np.int32)
-    rep = np.zeros(B.MAX_PLY + 8, dtype=np.uint64)
+    rep = np.zeros(S.REP_SIZE, dtype=np.uint64)
     scratch = np.zeros((B.MAX_PLY, B.MAX_MOVES), dtype=np.int32)
     sscratch = np.zeros((B.MAX_PLY, B.MAX_MOVES), dtype=np.int32)
     nodes = np.zeros(1, dtype=np.int64)
@@ -32,11 +32,12 @@ def one(fen: str, depth: int):
     S.search(st, 2, -S.INF, S.INF, 1, nodes, far, ttk, ttv, mask,
              killers, hist, rep, scratch, sscratch)
     S.search_root(st, nodes, far, ttk, ttv, mask, killers, hist, rep,
-                  scratch, sscratch, 3)
+                  scratch, sscratch, 3, np.zeros(S.GAME_HIST, dtype=np.uint64), 0)
     nodes[0] = 0
     t0 = time.perf_counter()
     mv, score, cd = S.search_root(st, nodes, far, ttk, ttv, mask, killers,
-                                  hist, rep, scratch, sscratch, depth)
+                                  hist, rep, scratch, sscratch, depth,
+                                  np.zeros(S.GAME_HIST, dtype=np.uint64), 0)
     dt = time.perf_counter() - t0
     return nodes[0], dt, mv, score, cd
 

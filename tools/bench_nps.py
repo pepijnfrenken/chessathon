@@ -43,7 +43,7 @@ def main() -> int:
     mask = np.uint64(len(ttk) - 1)
     killers = np.zeros((2, B.MAX_PLY), dtype=np.int32)
     hist = np.zeros((2, 64, 64), dtype=np.int32)
-    rep = np.zeros(B.MAX_PLY + 8, dtype=np.uint64)
+    rep = np.zeros(S.REP_SIZE, dtype=np.uint64)
     scratch = np.zeros((B.MAX_PLY, B.MAX_MOVES), dtype=np.int32)
     sscratch = np.zeros((B.MAX_PLY, B.MAX_MOVES), dtype=np.int32)
     nodes = np.zeros(1, dtype=np.int64)
@@ -52,14 +52,16 @@ def main() -> int:
     # warm the whole chain first so timing rows are JIT-free
     st0 = B.parse_fen(POSITIONS[0][1])
     S.search_root(st0, nodes, S._NOW() + 3_600_000_000_000, ttk, ttv, mask,
-                  killers, hist, rep, scratch, sscratch, 3)
+                  killers, hist, rep, scratch, sscratch, 3,
+                  np.zeros(S.GAME_HIST, dtype=np.uint64), 0)
     for name, fen in POSITIONS:
         st = B.parse_fen(fen)
         nodes[:] = 0
         t0 = time.perf_counter()
         mv, score, depth = S.search_root(st, nodes, S._NOW() + 5_000_000_000,
                                          ttk, ttv, mask, killers, hist, rep,
-                                         scratch, sscratch, 64)
+                                         scratch, sscratch, 64,
+                                         np.zeros(S.GAME_HIST, dtype=np.uint64), 0)
         dt = time.perf_counter() - t0
         print(f"  {name:10s} depth {depth:2d} nodes {nodes[0]:>9d} in "
               f"{dt:.2f}s -> {nodes[0] / dt / 1e3:.0f} knps (best "

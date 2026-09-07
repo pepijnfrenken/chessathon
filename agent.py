@@ -50,10 +50,66 @@ _TT_KEYS, _TT_VALS = TT.make()
 _TT_MASK = np.uint64(len(_TT_KEYS) - 1)
 _KILLERS = np.zeros((2, B.MAX_PLY), dtype=np.int32)
 _HIST = np.zeros((2, 64, 64), dtype=np.int32)
-_REP = np.zeros(B.MAX_PLY + 8, dtype=np.uint64)
+_REP = np.zeros(S.REP_SIZE, dtype=np.uint64)
 _SCRATCH = np.zeros((B.MAX_PLY, B.MAX_MOVES), dtype=np.int32)
 _SSCRATCH = np.zeros((B.MAX_PLY, B.MAX_MOVES), dtype=np.int32)
 _NODES = np.zeros(1, dtype=np.int64)
+
+# Phase 4 — GAME HISTORY (the stateless-agent fix). The competition
+# harness calls get_move(fen, t) once per OWN move, so the engine only
+# saw one position at a time and could never notice that a move would
+# repeat a position from earlier in the game — it shuffled won endgames
+# into threefold draws (ladder r54/r55). _GAME_KEYS keeps the rolling
+# zobrist-key history of the REAL game (BOTH parities: the incoming
+# position and the position after our own move, appended at the end of
+# get_move), oldest first, capped at S.GAME_HIST entries. The current
+# root position is appended at the START of each get_move and excluded
+# from the window passed to the search (it is the search's own root).
+_GAME_KEYS = []
+
+
+def _ghist() -> tuple:
+    """np.int64 window of game keys strictly before the root + count.
+    get_move appends the current root position first, so the search
+    window is everything except the last entry; the cap keeps the
+    newest GAME_HIST positions (the root included)."""
+    arr = np.zeros(S.GAME_HIST, dtype=np.uint64)
+    cnt = len(_GAME_KEYS) - 1
+    if cnt <= 0:
+        return arr, 0
+    if cnt > S.GAME_HIST - 1:
+        start = cnt - (S.GAME_HIST - 1)
+        arr[:cnt - start] = np.fromiter(_GAME_KEYS[start:cnt],
+                                        dtype=np.uint64)
+        return arr, S.GAME_HIST - 1
+    arr[:cnt] = np.fromiter(_GAME_KEYS[:cnt], dtype=np.uint64)
+    return arr, cnt
+
+
+def _state_key_after(st, mv) -> int:
+    """Zobrist key of the position after applying mv (state restored)."""
+    captured = st['squares'][0][B.m_to(mv)]
+    fl = B.m_flags(mv)
+    me = st['side'][0]
+    if fl == B.F_EP:
+        captured = st['squares'][0][B.m_to(mv) - 16 if me == B.WHITE
+                                    else B.m_to(mv) + 16]
+    prev_castle = st['castle'][0]
+    prev_ep = st['ep'][0]
+    prev_half = st['halfmove'][0]
+    prev_key = st['key'][0]
+    B.make_move_apply(st, mv)
+    key = st['key'][0]
+    B.unmake_move(st, mv, captured, prev_castle, prev_ep, prev_half,
+                  prev_key)
+    return key
+
+
+def reset_game() -> None:
+    """Clear the game-history window (dev harness: one engine_side
+    process serves many games; the harness sends `reset` between
+    games). Also called at import for cleanliness."""
+    _GAME_KEYS.clear()
 
 def _warmup() -> float:
     """Compile the jitted chain on a trivial position; returns seconds.
@@ -68,7 +124,8 @@ def _warmup() -> float:
              _TT_MASK, _KILLERS, _HIST, _REP, _SCRATCH, _SSCRATCH)
     # iterative root loop on top
     S.search_root(st, _NODES, far, _TT_KEYS, _TT_VALS, _TT_MASK,
-                  _KILLERS, _HIST, _REP, _SCRATCH, _SSCRATCH, 3)
+                  _KILLERS, _HIST, _REP, _SCRATCH, _SSCRATCH, 3,
+                  np.zeros(S.GAME_HIST, dtype=np.uint64), 0)
     return time.perf_counter() - t0
 
 
@@ -81,18 +138,27 @@ def get_move(fen: str, time_left_ms: int) -> str:
             return "0000"
 
         st = B.parse_fen(fen)
+        # Phase 4 game history: append the current position (unless it
+        # is exactly the previous one — guards harness retries), search
+        # with everything before it as repetition context, then record
+        # the position after our move so the NEXT call sees it.
+        if not _GAME_KEYS or _GAME_KEYS[-1] != st['key'][0]:
+            _GAME_KEYS.append(st['key'][0])
+        ghist, gcnt = _ghist()
         budget_ms = TM.budget_ms(int(time_left_ms), _inc_ms())
         deadline = S._NOW() + int(budget_ms * 1_000_000)
         _NODES[0] = 0
         mv, score, depth = S.search_root(
             st, _NODES, deadline, _TT_KEYS, _TT_VALS, _TT_MASK,
-            _KILLERS, _HIST, _REP, _SCRATCH, _SSCRATCH, _MAX_DEPTH)
+            _KILLERS, _HIST, _REP, _SCRATCH, _SSCRATCH, _MAX_DEPTH,
+            ghist, gcnt)
 
         if mv == 0:
             # no legal move from our side: game-over position
             legal = list(pc_board.legal_moves)
             return "0000" if not legal else legal[0].uci()
 
+        _GAME_KEYS.append(_state_key_after(st, mv))
         uci = B.move_to_uci(mv)
         m = chess.Move.from_uci(uci)
         if m not in pc_board.legal_moves:
@@ -128,6 +194,8 @@ try:
 except Exception as exc:  # pragma: no cover - degraded but functional
     print(f"[chessathon] warmup failed ({exc!r}); first move will JIT",
           file=sys.stderr)
+
+reset_game()   # Phase 4: start with an empty game-history window
 
 
 # ---------------------------------------------------------------------------

@@ -70,6 +70,11 @@ def _ln(x: float) -> float:
 def play_game(start_fen: str, sides: dict, rng: random.Random,
               timeout_s: float = 600.0) -> dict:
     """sides maps chess.Color -> {'proc': Popen, 'name': str}.
+    Sends both sides a `reset` command first (Phase 4: the engine_side
+    processes serve many games back-to-back; their game-history windows
+    and TTs must be cleared so positions from a PREVIOUS game are never
+    treated as repetitions in this one). Legacy engine sides without
+    history support ignore the command.
     Returns result from White's POV plus flags."""
     board = chess.Board(start_fen)
     moves_uci = []
@@ -77,6 +82,13 @@ def play_game(start_fen: str, sides: dict, rng: random.Random,
     flags = []
     loser = None
     t0 = time.monotonic()
+    for proc in (sides[chess.WHITE]["proc"], sides[chess.BLACK]["proc"]):
+        try:
+            if proc.poll() is None:
+                proc.stdin.write("reset\n")
+                proc.stdin.flush()
+        except Exception:
+            pass
 
     def _ask(side_color, fen):
         proc = sides[side_color]["proc"]

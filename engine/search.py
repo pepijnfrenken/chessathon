@@ -10,7 +10,15 @@ Iterative-deepening negamax alpha-beta with:
     beta > 0 only)
   - late move reductions (quiet moves, depth >= 3, cap 2)
   - check extension (+1 ply)
-  - repetition (path zobrist keys) + fifty-move draws
+  - repetition (path zobrist keys) + fifty-move draws. Phase 4: the
+    caller pre-seeds rep[0..GAME_HIST) with the REAL game's position
+    keys (see search_root), so repetitions across moves in the game are
+    seen by the search (the agent was stateless before; ladder r54/r55
+    threefold-shuffled won endgames because every move looked fresh).
+    The root additionally refuses moves that would create a THIRD
+    occurrence of a game position and penalizes second occurrences when
+    a non-repeating alternative exists (anti-shuffle; never weakens
+    defense: a losing side still repeats into the draw).
 
 Time: aborted from INSIDE the recursion via a monotonic clock (ctypes
 CFUNCTYPE callback — numba has no time_ns) checked against a deadline
@@ -54,8 +62,35 @@ NULL_R = 2
 LMR_MIN_DEPTH = 3
 LMR_MAX = 2
 QCAP = 12                     # quiescence depth cap
-REP_LOOKBACK = 16             # plies of search path scanned for repeats
 MAX_ROOT_DEPTH = 64
+
+# Phase 4 — game-history / anti-shuffle constants. The agent used to be
+# STATELESS: get_move parsed the FEN fresh every call, so the search's
+# repetition detector (rep[] path keys) could only see the CURRENT
+# search's path — positions that recurred in the REAL game (2-20 plies
+# ago) looked fresh, quiet moves scored equal, and the engine shuffled a
+# rook/queen in loops until the harness declared a threefold draw
+# (ladder rounds 54/55; reproduced: KQvK/KRvK-w threefold at 2 s/move).
+#
+#   GAME_HIST      rolling window of game position keys kept in rep[]
+#                  BEFORE the search path: rep[i] for i in
+#                  [GAME_HIST-1, ...] = the positions 1, 2, ... plies
+#                  before the root (chronological). The search path then
+#                  occupies rep[GAME_HIST + ply]. _draw_score's step-2
+#                  parity scan therefore sees REAL-game repetitions and
+#                  alpha-beta naturally avoids shuffling into a draw.
+#   REP_LOOKBACK   plies scanned for repeats: the full history window
+#                  plus 16 plies of the live search path.
+#   REPEAT_PENALTY root-level cp penalty on a move that would create a
+#                  SECOND occurrence of a game position (one that would
+#                  create the THIRD — the actual draw — is scored 0).
+#                  Both apply only when the side is not losing, so
+#                  defense is never weakened (a losing side keeps the
+#                  right to repeat into a draw).
+GAME_HIST = 32
+REP_LOOKBACK = GAME_HIST + 16
+REPEAT_PENALTY = 20
+REP_SIZE = MAX_PLY + GAME_HIST + 8
 
 # LMR toggle (Phase 3 A/B infra; default on = the 1b behavior). Used to
 # gate LMR itself.
@@ -88,16 +123,22 @@ def _is_quiet(mv: int) -> bool:
 
 @njit
 def _draw_score(st, rep, ply) -> bool:
-    """Fifty-move and repetition draws. Records rep[ply] = key. Returns
-    True if the position is a draw."""
+    """Fifty-move and repetition draws. Records rep[GAME_HIST + ply] =
+    key and returns True if the position repeats a game position or an
+    earlier position on the search path (Phase 4: rep[0..GAME_HIST) is
+    pre-seeded with the REAL game's position keys — see search_root —
+    so repetitions ACROSS moves in the game are visible to the search
+    instead of looking fresh every get_move). The step-2 scan keeps the
+    side-to-move parity (matching keys carry their own side)."""
     if st['halfmove'][0] >= 100:
         return True
     key = st['key'][0]
-    rep[ply] = key
-    lo = ply - REP_LOOKBACK
+    g = GAME_HIST + ply
+    rep[g] = key
+    lo = g - REP_LOOKBACK
     if lo < 0:
         lo = 0
-    p = ply - 2
+    p = g - 2
     while p >= lo:
         if rep[p] == key:
             return True
@@ -417,12 +458,24 @@ def search(st, depth: int, alpha: int, beta: int, ply: int, nodes,
 
 @njit
 def _root_iter(st, depth: int, alpha, beta, cnt: int, nodes, deadline, ttk,
-               ttv, mask, killers, hist, rep, scratch, sscratch):
+               ttv, mask, killers, hist, rep, scratch, sscratch, ghist,
+               gcnt: int):
     """Search all root moves under window [alpha, beta) with PVS.
     `scratch[0]` holds the already-ordered legal moves (caller orders once
     per depth; the aspiration re-search reuses the same order). Returns
-    (bestmove, score); bestmove == 0 => the iteration is INCOMPLETE
-    (timeout inside a subtree) and must be discarded."""
+    (bestmove, effective_score); bestmove == 0 => the iteration is
+    INCOMPLETE (timeout inside a subtree) and must be discarded.
+
+    Phase 4 anti-shuffle (STATELESS-AGENT fix): every root move's
+    resulting position key is counted against the game-history window
+    (ghist[0..gcnt), positions before the root). A move creating the
+    THIRD occurrence of a game position instantly draws the game — its
+    effective score is forced to 0 regardless of the search result. A
+    move creating the SECOND occurrence gets a small penalty when the
+    side is not already losing (score >= 0), so the search prefers a
+    non-repeating progress move over re-treading a shuffle; a LOSING
+    side keeps the repetition (it is the correct way to hold a draw).
+    Selection and alpha use the effective score only."""
     iter_best = -INF
     iter_move = 0
     me = st['side'][0]
@@ -450,17 +503,30 @@ def _root_iter(st, depth: int, alpha, beta, cnt: int, nodes, deadline, ttk,
                 child = search(st, depth - 1, -beta, -alpha, 1, nodes,
                                deadline, ttk, ttv, mask, killers, hist,
                                rep, scratch, sscratch)
+        # game-repetition count for the resulting position (st already
+        # holds it; ghist holds the positions before the root)
+        gcnt_occ = 0
+        if child != TIMEOUT:
+            pos_key = st['key'][0]
+            for k in range(gcnt):
+                if ghist[k] == pos_key:
+                    gcnt_occ += 1
         unmake_move(st, mv, captured, prev_castle, prev_ep, prev_half,
                     prev_key)
         if child == TIMEOUT:
             iter_move = 0            # iteration incomplete -> discard
             break
         score = -child
-        if score > iter_best:
-            iter_best = score
+        eff = score
+        if gcnt_occ >= 2:
+            eff = 0                  # 3rd occurrence: the game draws now
+        elif gcnt_occ == 1 and score >= 0:
+            eff = score - REPEAT_PENALTY
+        if eff > iter_best:
+            iter_best = eff
             iter_move = mv
-            if score > alpha:
-                alpha = score
+            if eff > alpha:
+                alpha = eff
             if alpha >= beta:
                 break
     return iter_move, iter_best
@@ -468,7 +534,7 @@ def _root_iter(st, depth: int, alpha, beta, cnt: int, nodes, deadline, ttk,
 
 @njit
 def search_root(st, nodes, deadline, ttk, ttv, mask, killers, hist, rep,
-                scratch, sscratch, max_depth: int):
+                scratch, sscratch, max_depth: int, ghist, gcnt: int):
     """Iterative deepening at the root. Returns (bestmove, score,
     completed_depth); bestmove==0 => no legal move / call failed. On
     timeout the last completed iteration's move wins.
@@ -480,14 +546,25 @@ def search_root(st, nodes, deadline, ttk, ttv, mask, killers, hist, rep,
     window misses often and the re-search burns the budget, so fewer
     iterations complete than the full-window search. Reverted by
     evidence; a Stockfish-style widening re-search is a documented
-    follow-up for real-clock TCs."""
+    follow-up for real-clock TCs.
+
+    Phase 4 — game history pre-seed: ghist[0..gcnt) holds the REAL game's
+    position keys in chronological order, ending with the position 1 ply
+    before the root. They are mapped into rep[0..GAME_HIST) so _draw_score's
+    parity scan sees cross-move game repetitions (the stateless-agent
+    fix); the root's own key sits at rep[GAME_HIST]. With gcnt == 0 the
+    search is byte-identical to the Phase-3 behavior."""
     cnt = legal_moves(st, scratch[0], False)
     if cnt == 0:
         return 0, 0, 0
     if cnt == 1:
         return scratch[0][0], 0, 0
 
-    rep[0] = st['key'][0]
+    # pre-seed: newest pre-root position at rep[GAME_HIST-1], older
+    # before it (chronological), rest zero-padded.
+    for i in range(gcnt):
+        rep[GAME_HIST - gcnt + i] = ghist[i]
+    rep[GAME_HIST] = st['key'][0]
     best_move = 0
     best_score = -INF
     completed = 0
@@ -498,7 +575,8 @@ def search_root(st, nodes, deadline, ttk, ttv, mask, killers, hist, rep,
         _order_moves(st, scratch[0], sscratch[0], cnt, 0, killers, hist, 0)
         iter_move, iter_best = _root_iter(st, depth, -INF, INF, cnt, nodes,
                                           deadline, ttk, ttv, mask, killers,
-                                          hist, rep, scratch, sscratch)
+                                          hist, rep, scratch, sscratch,
+                                          ghist, gcnt)
         if iter_move == 0:
             break                        # timed out mid-iteration
         best_move = iter_move

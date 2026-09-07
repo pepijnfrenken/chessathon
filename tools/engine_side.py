@@ -19,6 +19,13 @@ Protocol responses:
     <uci>        a legal move
     0000         game over (no legal move)
     ERROR:<msg>  the side's engine crashed (caller logs and loses game)
+
+Protocol commands (no reply):
+    reset        start of a new game: clears the Phase-4 game-history
+                 window (this process serves MANY games back-to-back;
+                 see sprt.play_game) and the transposition table so
+                 stale positions from the previous game can never be
+                 treated as repetitions.
 """
 
 import os
@@ -48,10 +55,47 @@ _TT_KEYS, _TT_VALS = TT.make()
 _TT_MASK = np.uint64(len(_TT_KEYS) - 1)
 _KILLERS = np.zeros((2, B.MAX_PLY), dtype=np.int32)
 _HIST = np.zeros((2, 64, 64), dtype=np.int32)
-_REP = np.zeros(B.MAX_PLY + 8, dtype=np.uint64)
+_REP = np.zeros(S.REP_SIZE, dtype=np.uint64)
 _SCRATCH = np.zeros((B.MAX_PLY, B.MAX_MOVES), dtype=np.int32)
 _SSCRATCH = np.zeros((B.MAX_PLY, B.MAX_MOVES), dtype=np.int32)
 _NODES = np.zeros(1, dtype=np.int64)
+
+# Phase 4 game-history window (see agent.py): the real game's position
+# keys, both parities, chronological; get_move's root appended first and
+# excluded from the search window. Cleared by `reset` between games.
+_GAME_KEYS = []
+
+
+def _ghist() -> tuple:
+    arr = np.zeros(S.GAME_HIST, dtype=np.uint64)
+    cnt = len(_GAME_KEYS) - 1
+    if cnt <= 0:
+        return arr, 0
+    if cnt > S.GAME_HIST - 1:
+        start = cnt - (S.GAME_HIST - 1)
+        arr[:cnt - start] = np.fromiter(_GAME_KEYS[start:cnt],
+                                        dtype=np.uint64)
+        return arr, S.GAME_HIST - 1
+    arr[:cnt] = np.fromiter(_GAME_KEYS[:cnt], dtype=np.uint64)
+    return arr, cnt
+
+
+def _state_key_after(st, mv) -> int:
+    captured = st['squares'][0][B.m_to(mv)]
+    fl = B.m_flags(mv)
+    me = st['side'][0]
+    if fl == B.F_EP:
+        captured = st['squares'][0][B.m_to(mv) - 16 if me == B.WHITE
+                                    else B.m_to(mv) + 16]
+    prev_castle = st['castle'][0]
+    prev_ep = st['ep'][0]
+    prev_half = st['halfmove'][0]
+    prev_key = st['key'][0]
+    B.make_move_apply(st, mv)
+    key = st['key'][0]
+    B.unmake_move(st, mv, captured, prev_castle, prev_ep, prev_half,
+                  prev_key)
+    return key
 
 
 def _warmup() -> None:
@@ -60,7 +104,8 @@ def _warmup() -> None:
     S.search(st, 2, -S.INF, S.INF, 1, _NODES, far, _TT_KEYS, _TT_VALS,
              _TT_MASK, _KILLERS, _HIST, _REP, _SCRATCH, _SSCRATCH)
     S.search_root(st, _NODES, far, _TT_KEYS, _TT_VALS, _TT_MASK,
-                  _KILLERS, _HIST, _REP, _SCRATCH, _SSCRATCH, 3)
+                  _KILLERS, _HIST, _REP, _SCRATCH, _SSCRATCH, 3,
+                  np.zeros(S.GAME_HIST, dtype=np.uint64), 0)
 
 
 def _move(fen: str) -> str:
@@ -68,14 +113,19 @@ def _move(fen: str) -> str:
     if pc_board.is_game_over():
         return "0000"
     st = B.parse_fen(fen)
+    if not _GAME_KEYS or _GAME_KEYS[-1] != st['key'][0]:
+        _GAME_KEYS.append(st['key'][0])
+    ghist, gcnt = _ghist()
     deadline = S._NOW() + int(_MOVE_BUDGET_MS * 1_000_000)
     _NODES[0] = 0
     mv, score, depth = S.search_root(
         st, _NODES, deadline, _TT_KEYS, _TT_VALS, _TT_MASK,
-        _KILLERS, _HIST, _REP, _SCRATCH, _SSCRATCH, _MAX_DEPTH)
+        _KILLERS, _HIST, _REP, _SCRATCH, _SSCRATCH, _MAX_DEPTH,
+        ghist, gcnt)
     if mv == 0:
         legal = list(pc_board.legal_moves)
         return "0000" if not legal else legal[0].uci()
+    _GAME_KEYS.append(_state_key_after(st, mv))
     uci = B.move_to_uci(mv)
     m = chess.Move.from_uci(uci)
     if m not in pc_board.legal_moves:
@@ -94,6 +144,13 @@ def main() -> int:
         fen = line.strip()
         if not fen or fen == "quit":
             break
+        if fen == "reset":
+            # Phase 4: new game — drop the game-history window and clear
+            # the TT so stale keys from the previous game can never be
+            # mistaken for repetitions.
+            _GAME_KEYS.clear()
+            TT.tt_clear(_TT_KEYS)
+            continue
         try:
             resp = _move(fen)
         except Exception as exc:  # never let the side die silently
