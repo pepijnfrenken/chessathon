@@ -424,3 +424,22 @@ depths per budget than the full-window baseline. REVERTED (commit f621ba1);
 the root stays full-window. Follow-up for real-clock TCs: Stockfish-style
 widening re-search (delta*2) instead of full re-search, possibly with a
 time-left guard; documented, not shipped unvalidated.
+
+**Step-2 (regression) — LMR gate: POSITIVE, KEEP**: LMR is a shipped 1b
+feature; the Phase-3 work added the `CHESSATHON_LMR` toggle purely to
+measure it. `hand:1111` vs `hand:1111:nolmr`, 24 games @ 500ms our
+openings — `results/gate_lmr_vs_nolmr_20260907_155109.log`:
+**8W-6L-10D (0.542)**, ZERO flags. Positive lean (0.5 baseline; the
+~0.55 bar is `close-adjacent`); the shipped LMR (quiet, depth>=3, i>=4,
+r=i//4 cap 2) is measurably helpful and stays as-is. No LMR changes
+were made in Phase 3 beyond the measurement toggle.
+
+Phase-3 net: aspiration REJECTED (negative gate, evidence above); the
+shipped search now carries the parity-forensics correctness fixes (PVS
+sign, qsearch stand-pat x2, ep default) + the hand-tuned mate-drive,
+all gate-validated (exact-core parity, perft ALL PASS, eg_check 3/4
+white conversions restored, LMR-positive). The old baseline's search
+NOTCHES UP in correctness: fixed-depth root values are now the true
+best (mg d5 c1g5 ~396 found from depth 2, vs the buggy 130), KRvK
+evaluates +543 and converts, won endgames no longer shuffle into
+threefold draws.
