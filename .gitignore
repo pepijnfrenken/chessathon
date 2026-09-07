@@ -1,0 +1,4 @@
+# build artifacts / runtime noise
+agent.zip
+__pycache__/
+*.pyc
