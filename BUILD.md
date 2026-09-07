@@ -38,9 +38,10 @@ alpha-beta engine with a hand-tuned evaluation**, not an NN.
 - [x] Phase 6: search-strength sprint — aspiration REJECTED on gate (0.438, reverted);
   parity forensics fixed 3 latent baseline bugs (PVS sign, qsearch stand-pat x2, ep
   default) + hand mate-drive; LMR gate positive (0.542, keep); zip 26,981 B, init 46.8s
-- [x] Phase 3.1: endgame conversion fixer — Manhattan drive + edge/proximity terms,
-  qsearch stalemate probe, root partial-iteration adoption, endgame search budget
-  boost, eg_check mirror fix (see Phase 3.1 entry; corrected the false 3/4 claim)
+- [x] Phase 3.1: endgame conversion fixer — TRIED AND REVERTED (500ms-vs-HEAD gates
+  regressed 0.417/0.396; eg conversions real but cost more than they return at short
+  TCs). Engine + agent.zip back on 05d0101; experiment + diagnosis in the Phase 3.1
+  entry, eg_check mirror fix kept (dev tool).
 
 ## Build record
 
@@ -460,7 +461,26 @@ best (mg d5 c1g5 ~396 found from depth 2, vs the buggy 130), KRvK
 evaluates +543 and converts, won endgames no longer shuffle into
 threefold draws.
 
-### Phase 3.1 (2026-09-07) — endgame conversion fixer (correctness-fix regression)
+### Phase 3.1 (2026-09-07) — endgame conversion fixer (correctness-fix regression) — REVERTED
+
+**FINAL VERDICT: the eg_conversion machinery is REVERTED from the
+ship.** The 500ms-vs-HEAD gates regressed on every configuration tried
+(broad terms 0.417, <=6-piece restricted 0.396, bare-king-only <=4
+trending the same — see the gate logs below), and the mission's hard
+"no overall regression" gate could not be passed. Decision (Pino
+directed, evidence above): **agent.zip and the shipped engine return to
+05d0101**; this entry and the commit record the full experiment so the
+eg work is not lost. The conversion terms themselves are sound at the
+eg_check level and at real-clocks (depth >=16 converts every won net);
+they just cost more than they return at the 300-500ms gates. Anyone
+revisiting should start from the <=4 bare-king restriction and attack
+the residual KRvK-class shuffle FIRST (the nets convert ~60-80% at
+2.6s-boosted 300ms; the missing ~20-40% is a horizon problem the gates
+weigh heavily).
+
+The diagnosis below stands and is the mission's real deliverable; the
+fix code + all evidence logs live in commit 6908a55 (and the logs in
+results/phase31/).
 
 The Phase-3 correctness fixes removed the deaf-horizon qsearch artifact
 whose *accidental* material/check hunting had converted won endgames.
@@ -510,15 +530,14 @@ and fixed, all OUR code (ORIGINALITY.md honored):
    budget (remaining/45+inc) is *already* >=1.5s in endgames, so
    competition spend is untouched — the boost only affects the eg-gate /
    short-TC regime and roughly reproduces the real clock's depth.
-6. **The mate-net machinery is restricted to the bare-king family
-   (<=6 pieces):** the first 500ms-vs-HEAD gate (0.417) showed the
-   drive/prox terms mis-firing in the 6-10-piece endings (QvR-style)
-   the gates' middle games reach — the queen dragged into the enemy
-   rook's orbit eroding the winner's material (the new engine lost a
-   color-asymmetric run of games). The terms/boost/partial now only
-   fire with 6 or fewer pieces on the board — exactly the
-   KQvK/KRvK/KRPvK family the fixer targets — everywhere else the eval
-   and search are byte-identical to HEAD.
+6. **The mate-net machinery is restricted to the BARE-KING family
+   (<=4 pieces = KQvK/KRvK/KRPvK):** BOTH 500ms-vs-HEAD gates (0.417,
+   0.396) regressed; the losses are colour-symmetric and include fast
+   35/38-ply games — the driver is the terms mis-firing in the 5-6-
+   piece endings the gate games converge to (KRvKR/QPvKR-style), not
+   the bare-king nets (a bare king can't beat the extended engine).
+   The terms/boost/partial now fire ONLY at 3-4 pieces — everywhere
+   else the eval and search are byte-identical to HEAD.
 
 Gates (hand:1111 shipped eval, all on this box):
 
@@ -541,13 +560,24 @@ Gates (hand:1111 shipped eval, all on this box):
   bench) — within run-to-run noise of the Phase-3 record (487/572) on
   this loaded box; the stalemate probe is gated to sparse positions.
 - **24-game A/B vs HEAD 05d0101 at 500ms** (cross-tree gate, both
-  sides hand:1111): the FIRST run of the fully-broad variant regressed
-  (0.417 — 5W-9L-10D, color-asymmetric losses; root-caused to the
-  mate-net terms over-firing in 6-10-piece endings and fixed via the
-  <=6-piece restriction above — see `results/gate_v3_vs_head.log`);
-  the FINAL restricted build's re-gate:
-  `results/gate_v5_vs_head.log` (result appended when the match
-  completes).
+  sides hand:1111): REGRESSION on both variants tested —
+  `results/gate_v3_vs_head.log` (broad terms first run): 5W-9L-10D
+  (0.417); `results/gate_v5_vs_head.log` (final restricted build):
+  3W-8L-13D (0.396), ZERO flags on both. Honest verdict: the endgame
+  conversion fix (this phase's goal — the eg_check conversions) does NOT
+  come for free: at 500ms short TC the new engine plays under HEAD.
+  The midgame is provably byte-identical to HEAD (fixed-depth startpos
+  d10 = 1,030,690 nodes, same best move in every variant), so the loss
+  rate concentrates in the <=6-piece endgame phases the gate games
+  converge to: the boosted mate-nets still shuffle-to-draw/lose (the
+  same 3-fold mechanism as the eg flakiness) and material-adjudicated
+  games go to the opponent often enough to outweigh the conversions.
+  Follow-up: convert the residual net-shuffle inside the boosted budget
+  (the missing final-net visibility at depth ~15 in the KRvK-class), or
+  drop the boost+partial and keep only the eval terms at real TCs.
+  The mission's primary gate (eg_check conversion) IS met; the A/B
+  regression is documented, NOT hidden. Perft/parity/determinism all
+  PASS (below).
 
 Risks (honest):
 
