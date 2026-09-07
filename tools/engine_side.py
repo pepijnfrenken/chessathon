@@ -87,7 +87,9 @@ def main() -> int:
     _warmup()
     print(f"[engine_side] config={os.environ.get('CHESSATHON_EVAL_CONFIG', '?')} "
           f"gate={os.environ.get('CHESSATHON_EVAL_GATE', '?')} "
-          f"budget={_MOVE_BUDGET_MS}ms", file=sys.stderr)
+          f"budget={_MOVE_BUDGET_MS}ms "
+          f"asp={os.environ.get('CHESSATHON_ASP', '1')} "
+          f"lmr={os.environ.get('CHESSATHON_LMR', '1')}", file=sys.stderr)
     sys.stderr.flush()
     for line in sys.stdin:
         fen = line.strip()

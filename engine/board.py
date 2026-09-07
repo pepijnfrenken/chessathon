@@ -720,6 +720,12 @@ def parse_fen(fen: str) -> np.ndarray:
         file_c = ord(ep_str[0]) - ord("a")
         rank_c = int(ep_str[1]) - 1
         st["ep"][0] = rank_c * 16 + file_c
+    else:
+        # new_state() zero-fills: ep MUST be -1 when absent, or the parse
+        # hashes ZEP[0] into the root key while in-search makes clear ep
+        # to -1 — the root position would never match a repetition and
+        # won endgames shuffle into threefold draws (Phase 3 find).
+        st["ep"][0] = -1
 
     st["halfmove"][0] = int(parts[4]) if len(parts) > 4 else 0
 

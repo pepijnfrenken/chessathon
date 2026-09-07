@@ -1,7 +1,11 @@
-"""Chessathon engine Phase 1b — search core (numba-jitted).
+"""Chessathon engine Phase 1b/3 — search core (numba-jitted).
 
 Iterative-deepening negamax alpha-beta with:
   - principal variation search (zero-window sibling re-search)
+  - aspiration windows at the root (Phase 3: depth >= 2, window
+    [prev - ASP_WINDOW, prev + ASP_WINDOW]; a fail low/high re-searches
+    the FULL window once — a full-window search cannot fail, so the
+    iteration is exact. Toggle: CHESSATHON_ASP=0 disables)
   - transposition table (engine.tt; TT move ordering + score cutoffs)
   - MVV-LVA capture ordering + 2 killers/ply + quiet history
   - quiescence search (stand-pat + captures; full evasions in check;
@@ -14,15 +18,21 @@ Iterative-deepening negamax alpha-beta with:
 Time: aborted from INSIDE the recursion via a monotonic clock (ctypes
 CFUNCTYPE callback — numba has no time_ns) checked against a deadline
 every 1024 nodes; a TIMEOUT sentinel propagates to the root, which keeps
-the last completed iteration's best move. No aspiration windows in 1b
-(they arrive with the tuning phase); every iteration runs full-window.
+the last completed iteration's best move. Aspiration does not weaken the
+time contract: a re-search that times out discards the whole iteration.
 
 Scores: centipawns from the side to move; MATE at +-30000 with
 mate-distance (checkmate = -MATE + ply); TT stores MATE-ply adjusted.
 Sentinels: TIMEOUT = 1e9 (never stored, never compared as a score).
+
+Search feature toggles (read at import — numba bakes globals at compile;
+each A/B side runs as its own process):
+  CHESSATHON_ASP  = 0 disables root aspiration windows (default: on)
+  CHESSATHON_LMR  = 0 disables late move reduction (default: on)
 """
 
 import ctypes
+import os
 import time
 
 import numpy as np
@@ -49,6 +59,17 @@ LMR_MAX = 2
 QCAP = 12                     # quiescence depth cap
 REP_LOOKBACK = 16             # plies of search path scanned for repeats
 MAX_ROOT_DEPTH = 64
+
+# Phase 3 — root aspiration windows. After iteration 1 the next iteration
+# searches [prev - ASP_WINDOW, prev + ASP_WINDOW]; fail low/high triggers
+# one full-window re-search. Disabled for scores at mate distance (their
+# window would not bound a useful range) and by CHESSATHON_ASP=0.
+ASP_WINDOW = 40               # centipawns
+ASP_ON = os.environ.get("CHESSATHON_ASP", "1") != "0"
+
+# LMR toggle (Phase 3 A/B infra; default on = the 1b behavior). Used to
+# prove aspiration parity on the exact core and to gate LMR itself.
+LMR_ON = os.environ.get("CHESSATHON_LMR", "1") != "0"
 
 _NOW = ctypes.CFUNCTYPE(ctypes.c_longlong)(lambda: time.monotonic_ns())
 
@@ -185,7 +206,15 @@ def qsearch(st, ply: int, alpha: int, beta: int, qdepth: int, nodes,
 
     cnt = legal_moves(st, scratch[ply], check == 0)   # all moves if in check
     if cnt == 0:
-        return -MATE + ply if check else 0
+        # No captures (or no evasions in check). In check this is mate.
+        # Otherwise the value is the stand-pat eval we just computed —
+        # returning 0 here (the 1b behavior) scored EVERY quiet leaf as a
+        # draw, deafening the horizon to the static eval and causing the
+        # won-endgame shuffling (Phase 3: found via aspiration-parity
+        # forensics; KRvK static +524 searched as 0).
+        if check:
+            return -MATE + ply
+        return stand
 
     _order_moves(st, scratch[ply], sscratch[ply], cnt, 0, _KILLER_DUMMY,
                  _HIST_DUMMY, ply)
@@ -219,7 +248,15 @@ def qsearch(st, ply: int, alpha: int, beta: int, qdepth: int, nodes,
                 return score
             if score > alpha:
                 alpha = score
-    return best if best > -INF else alpha
+    # Fail-soft end: the value is max(stand-pat, best capture). `alpha`
+    # already carries max(caller alpha, stand, every raised move score);
+    # the naive `return best` would DROP stand-pat when every capture is
+    # worse than standing pat, returning a FALSE low bound that parents
+    # negate into a false fail-high (Phase 3: found via aspiration-parity
+    # forensics — a depth-1 node claimed +1231 in an even position).
+    if best < alpha:
+        best = alpha
+    return best
 
 
 # ---------------------------------------------------------------------------
@@ -260,8 +297,15 @@ def search(st, depth: int, alpha: int, beta: int, ply: int, nodes,
             return ttscore
 
     # null-move pruning: skip in check, at the root, and in near-piece-less
-    # endgames (zugzwang risk)
-    if not check and depth >= 2 and ply >= 1 and _count_nonpawns(st) >= 2:
+    # endgames (zugzwang risk). The `beta > 0` guard keeps this in the
+    # positive-beta regime where the cutoff is meaningful: with the Phase 3
+    # aspiration windows, child nodes can carry NEGATIVE beta (e.g. a root
+    # child searched with [-beta_root, -alpha_root]), where `stand >= beta`
+    # is trivially true and the null cutoff would return a corrupted value.
+    # (Full-window searches have beta=INF, so this guard never changed that
+    # shipped behavior; null-move was effectively dead code there.)
+    if (not check and depth >= 2 and ply >= 1
+            and beta > 0 and _count_nonpawns(st) >= 2):
         stand = evaluate(st)
         if stand >= beta:
             prev_ep = st['ep'][0]
@@ -314,7 +358,7 @@ def search(st, depth: int, alpha: int, beta: int, ply: int, nodes,
                            deadline, ttk, ttv, mask, killers, hist, rep,
                            scratch, sscratch)
         else:
-            if quiet and depth >= LMR_MIN_DEPTH and i >= 4:
+            if quiet and depth >= LMR_MIN_DEPTH and i >= 4 and LMR_ON:
                 r = i // 4
                 if r > LMR_MAX:
                     r = LMR_MAX
@@ -325,7 +369,7 @@ def search(st, depth: int, alpha: int, beta: int, ply: int, nodes,
                 child = search(st, depth - 1, -alpha - 1, -alpha, ply + 1,
                                nodes, deadline, ttk, ttv, mask, killers,
                                hist, rep, scratch, sscratch)
-            if child != TIMEOUT and child > alpha:
+            if child != TIMEOUT and -child > alpha:
                 child = search(st, depth - 1, -beta, -alpha, ply + 1, nodes,
                                deadline, ttk, ttv, mask, killers, hist, rep,
                                scratch, sscratch)
@@ -365,6 +409,7 @@ def search(st, depth: int, alpha: int, beta: int, ply: int, nodes,
                 alpha = score
 
     # store only real scores (draw 0 is path-dependent -> skip)
+    bound = BOUND_NONE
     if best != TIMEOUT and best != 0:
         if best <= orig_alpha:
             bound = BOUND_UPPER
@@ -381,11 +426,68 @@ def search(st, depth: int, alpha: int, beta: int, ply: int, nodes,
 # ---------------------------------------------------------------------------
 
 @njit
+def _root_iter(st, depth: int, alpha, beta, cnt: int, nodes, deadline, ttk,
+               ttv, mask, killers, hist, rep, scratch, sscratch):
+    """Search all root moves under window [alpha, beta) with PVS.
+    `scratch[0]` holds the already-ordered legal moves (caller orders once
+    per depth; the aspiration re-search reuses the same order). Returns
+    (bestmove, score); bestmove == 0 => the iteration is INCOMPLETE
+    (timeout inside a subtree) and must be discarded."""
+    iter_best = -INF
+    iter_move = 0
+    me = st['side'][0]
+    for i in range(cnt):
+        mv = scratch[0][i]
+        captured = st['squares'][0][m_to(mv)]
+        fl = m_flags(mv)
+        if fl == F_EP:
+            captured = st['squares'][0][m_to(mv) - 16 if me == WHITE
+                                        else m_to(mv) + 16]
+        prev_castle = st['castle'][0]
+        prev_ep = st['ep'][0]
+        prev_half = st['halfmove'][0]
+        prev_key = st['key'][0]
+        make_move_apply(st, mv)
+        if i == 0:
+            child = search(st, depth - 1, -beta, -alpha, 1, nodes,
+                           deadline, ttk, ttv, mask, killers, hist, rep,
+                           scratch, sscratch)
+        else:
+            child = search(st, depth - 1, -alpha - 1, -alpha, 1, nodes,
+                           deadline, ttk, ttv, mask, killers, hist, rep,
+                           scratch, sscratch)
+            if child != TIMEOUT and -child > alpha:
+                child = search(st, depth - 1, -beta, -alpha, 1, nodes,
+                               deadline, ttk, ttv, mask, killers, hist,
+                               rep, scratch, sscratch)
+        unmake_move(st, mv, captured, prev_castle, prev_ep, prev_half,
+                    prev_key)
+        if child == TIMEOUT:
+            iter_move = 0            # iteration incomplete -> discard
+            break
+        score = -child
+        if score > iter_best:
+            iter_best = score
+            iter_move = mv
+            if score > alpha:
+                alpha = score
+            if alpha >= beta:
+                break
+    return iter_move, iter_best
+
+
+@njit
 def search_root(st, nodes, deadline, ttk, ttv, mask, killers, hist, rep,
                 scratch, sscratch, max_depth: int):
     """Iterative deepening at the root. Returns (bestmove, score,
     completed_depth); bestmove==0 => no legal move / call failed. On
-    timeout the last completed iteration's move wins."""
+    timeout the last completed iteration's move wins.
+
+    Aspiration (Phase 3): from depth 2 on, each iteration starts from
+    [prev - ASP_WINDOW, prev + ASP_WINDOW]; a fail low (score <= alpha)
+    or fail high (score >= beta) re-searches the FULL window once, which
+    restores the exact root result — the same move and score the
+    full-window search would have found."""
     cnt = legal_moves(st, scratch[0], False)
     if cnt == 0:
         return 0, 0, 0
@@ -396,58 +498,37 @@ def search_root(st, nodes, deadline, ttk, ttv, mask, killers, hist, rep,
     best_move = 0
     best_score = -INF
     completed = 0
-    me = st['side'][0]
 
     for depth in range(1, max_depth + 1):
         if _NOW() >= deadline:
             break
         _order_moves(st, scratch[0], sscratch[0], cnt, 0, killers, hist, 0)
+
         alpha = -INF
         beta = INF
-        iter_best = -INF
-        iter_move = 0
-        key = st['key'][0]
-        hit, bound, ttscore, ttdepth, ttmove = tt_probe(ttk, ttv, mask,
-                                                        key, 0)
-        for i in range(cnt):
-            mv = scratch[0][i]
-            captured = st['squares'][0][m_to(mv)]
-            fl = m_flags(mv)
-            if fl == F_EP:
-                captured = st['squares'][0][m_to(mv) - 16 if me == WHITE
-                                            else m_to(mv) + 16]
-            prev_castle = st['castle'][0]
-            prev_ep = st['ep'][0]
-            prev_half = st['halfmove'][0]
-            prev_key = st['key'][0]
-            make_move_apply(st, mv)
-            if i == 0:
-                child = search(st, depth - 1, -beta, -alpha, 1, nodes,
-                               deadline, ttk, ttv, mask, killers, hist, rep,
-                               scratch, sscratch)
-            else:
-                child = search(st, depth - 1, -alpha - 1, -alpha, 1, nodes,
-                               deadline, ttk, ttv, mask, killers, hist, rep,
-                               scratch, sscratch)
-                if child != TIMEOUT and child > alpha:
-                    child = search(st, depth - 1, -beta, -alpha, 1, nodes,
-                                   deadline, ttk, ttv, mask, killers, hist,
-                                   rep, scratch, sscratch)
-            unmake_move(st, mv, captured, prev_castle, prev_ep, prev_half,
-                        prev_key)
-            if child == TIMEOUT:
-                iter_move = 0            # iteration incomplete -> discard
-                break
-            score = -child
-            if score > iter_best:
-                iter_best = score
-                iter_move = mv
-                if score > alpha:
-                    alpha = score
-                if alpha >= beta:
-                    break
+        asp = (ASP_ON and depth >= 2
+               and -MATE + 500 < best_score < MATE - 500)
+        if asp:
+            alpha = best_score - ASP_WINDOW
+            beta = best_score + ASP_WINDOW
+            if alpha < -INF:
+                alpha = -INF
+            if beta > INF:
+                beta = INF
+
+        iter_move, iter_best = _root_iter(st, depth, alpha, beta, cnt, nodes,
+                                          deadline, ttk, ttv, mask, killers,
+                                          hist, rep, scratch, sscratch)
         if iter_move == 0:
-            break
+            break                        # timed out mid-iteration
+        if asp and (iter_best <= alpha or iter_best >= beta):
+            # fail low/high -> exact full-window re-search (cannot fail)
+            iter_move, iter_best = _root_iter(st, depth, -INF, INF, cnt,
+                                              nodes, deadline, ttk, ttv,
+                                              mask, killers, hist, rep,
+                                              scratch, sscratch)
+            if iter_move == 0:
+                break
         best_move = iter_move
         best_score = iter_best
         completed = depth

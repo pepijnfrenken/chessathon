@@ -10,6 +10,8 @@ flank and gambit lines. Each is a short move sequence from the start
 position producing a distinct middlegame-ish FEN.
 """
 
+import os
+
 import chess
 
 _OPENING_MOVES = [
@@ -49,6 +51,27 @@ VICTIM = {chess.PAWN: 100, chess.KNIGHT: 320, chess.BISHOP: 330,
           chess.ROOK: 500, chess.QUEEN: 900, chess.KING: 20000}
 
 MAX_PLY = 300
+
+
+def side_env(spec: str, move_ms: int) -> dict:
+    """Subprocess env for one engine_side config. `spec` is
+    `config:gate[:searchflags]` where searchflags is a comma-separated
+    list of search-feature toggles (empty/absent = all on):
+        noasp   -> CHESSATHON_ASP=0   (disable root aspiration windows)
+        nolmr   -> CHESSATHON_LMR=0   (disable late move reduction)
+    Used by sprt.py / gate_match.py so side-A and side-B can differ in
+    the SEARCH (not just the eval) for feature gates."""
+    parts = spec.split(":")
+    cfg, gate = parts[0], parts[1]
+    search = parts[2] if len(parts) > 2 else ""
+    env = dict(os.environ)
+    env["CHESSATHON_EVAL_CONFIG"] = cfg
+    env["CHESSATHON_EVAL_GATE"] = gate
+    env["CHESSATHON_MOVE_BUDGET_MS"] = str(move_ms)
+    toggles = set(t for t in search.split(",") if t)
+    env["CHESSATHON_ASP"] = "0" if "noasp" in toggles else "1"
+    env["CHESSATHON_LMR"] = "0" if "nolmr" in toggles else "1"
+    return env
 
 
 def adjudicate(board: chess.Board, ply: int) -> str:

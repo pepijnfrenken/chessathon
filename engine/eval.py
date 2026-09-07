@@ -93,6 +93,11 @@ N_PARAMS = 813
 PHASE_W = np.array([0, 0, 1, 1, 2, 4, 0], dtype=np.int16)
 MAX_PHASE = 24
 
+# Phase 3 hand-tuned endgame king-activation weight (see evaluate()).
+# 30 was too weak to overcome PST/rook noise at kdist 3-4 (KRvK king
+# stalled at d1/e1 instead of entering the black king's orbit).
+MATE_DRIVE_K = 50               # cp per rank of king closeness
+
 # ---------------------------------------------------------------------------
 # Bitboard masks (sq64 encoding: a1=0 .. h8=63, bit = 1 << sq64)
 # ---------------------------------------------------------------------------
@@ -417,6 +422,7 @@ def evaluate(st) -> int:
     mg = 0
     eg = 0
     phase = 0
+    mat = 0                        # raw material, white - black (cp)
     wp = np.uint64(0)
     bp = np.uint64(0)
     # mobility accumulators per class, signed (white - black)
@@ -446,6 +452,7 @@ def evaluate(st) -> int:
         sign = 1 if color == WHITE else -1
         mg += sign * (p[P_MAT_MG + t - 1] + p[P_PST_MG + (t - 1) * 64 + s])
         eg += sign * (p[P_MAT_EG + t - 1] + p[P_PST_EG + (t - 1) * 64 + s])
+        mat += sign * p[P_MAT_MG + t - 1]
         phase += PHASE_W[t]
         if t == PAWN:
             has_pawn = True
@@ -624,6 +631,19 @@ def evaluate(st) -> int:
     if phase > MAX_PHASE:
         phase = MAX_PHASE
     score = (mg * phase + eg * (MAX_PHASE - phase)) // MAX_PHASE
+
+    # Phase 3 — endgame mate-drive (hand term, NOT a tunable param: keeps
+    # the tuner's 813-param contract intact). Classical king-activation:
+    # in a mostly-endgame position with a material edge of a rook or more,
+    # the WINNING side is rewarded for its king approaching the enemy
+    # king. As a White-POV term, the negation in the return below
+    # automatically makes the loser flee (its eval minimizes the drive).
+    # Restores KQvK/KRvK conversion that the 1b quiet-leaf bug masked by
+    # scoring every quiet leaf 0 (found during Phase-3 aspiration parity
+    # forensics; eg_check KQvK/KRvK strong-side draws without it).
+    if phase <= 16 and (mat >= 300 or mat <= -300):
+        drive = (1 if mat > 0 else -1) * MATE_DRIVE_K * (7 - kdist)
+        score += drive
 
     if not has_pawn and not has_major:
         if mins <= 1:

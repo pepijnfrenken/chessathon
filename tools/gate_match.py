@@ -25,7 +25,7 @@ _HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(_HERE.parent))
 sys.path.insert(0, str(_HERE))
 
-from common import OPENING_FENS  # noqa: E402
+from common import OPENING_FENS, side_env  # noqa: E402
 from sprt import play_game  # noqa: E402
 
 
@@ -39,23 +39,19 @@ def main() -> int:
     ap.add_argument("--log", default=None)
     args = ap.parse_args()
 
-    a_cfg, a_gate = args.side_a.split(":")
-    b_cfg, b_gate = args.side_b.split(":")
     log_path = args.log or (
         f"results/gate_{time.strftime('%Y%m%d_%H%M%S')}.log")
     Path(log_path).parent.mkdir(parents=True, exist_ok=True)
 
-    def spawn(cfg, gate):
-        env = dict(os.environ)
-        env["CHESSATHON_EVAL_CONFIG"] = cfg
-        env["CHESSATHON_EVAL_GATE"] = gate
-        env["CHESSATHON_MOVE_BUDGET_MS"] = str(args.move_ms)
+    def spawn(spec, move_ms):
         return subprocess.Popen(
             [sys.executable, str(_HERE / "engine_side.py")],
             stdin=subprocess.PIPE, stdout=subprocess.PIPE,
-            stderr=subprocess.DEVNULL, text=True, env=env)
+            stderr=subprocess.DEVNULL, text=True,
+            env=side_env(spec, move_ms))
 
-    pa, pb = spawn(a_cfg, a_gate), spawn(b_cfg, b_gate)
+    pa = spawn(args.side_a, args.move_ms)
+    pb = spawn(args.side_b, args.move_ms)
     lines = [f"# gate {args.side_a} vs {args.side_b} games={args.games} "
              f"move-ms={args.move_ms} seed={args.seed}"]
     rng = random.Random(args.seed)
