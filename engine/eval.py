@@ -1,43 +1,176 @@
-"""Chessathon engine Phase 1b — evaluation function.
+"""Chessathon engine Phase 2 — evaluation function (parameterised, tunable).
 
-Phase-1b scope is deliberately small (the tuning phase will rebuild this):
-  material + piece-square tables + bishop pair + tempo, tapered between
-  middlegame and endgame by game phase, plus the standard insufficient-
-  material draw cases.
+Design (see BUILD.md "Phase 2" entry and docs/research/02-eval-and-tuning.md):
 
-The PST numbers are OUR OWN hand-written tables from phase 1a (standard
-shapes: pawns advance, knights/bishops favour the centre, rooks like the
-7th rank, king castles back in the middlegame and centralises in the
-endgame). Black indexes the tables with square ^ 56.
+The evaluation is a LINEAR function of features, E = params . features,
+tapered between middlegame and endgame by game phase (standard
+phase-counting concept, phi = N/B:1 R:2 Q:4, max 24). All weights live in
+the single int32 vector EVAL_PARAMS, shared with the dev-time Texel tuner
+(tools/texel_tune.py), which fits OUR weights on OUR self-play data — the
+values in TUNED_PARAMS are ours (generated block; see BUILD.md). Nothing
+here is copied from any engine: this file is the fresh implementation of
+published *concepts* only.
+
+Terms, in ROI order (research doc 02 §4):
+  1. material + piece-square tables (mg/eg, tapered) — our own 1a/1b tables
+  2. pawn structure: doubled, isolated, passed (rank bonus + blocked
+     reduction) — doubled/isolated ~-10..-12 cp, passed +10..+100
+  3. mobility: pseudo-legal attack count per piece class (N/B ~4 cp/move,
+     R ~2, Q ~1 in mg; ~half in eg)
+  4. king safety: pawn shelter 1-2 ranks in front of the king + open-file
+     penalty; king "tropism" (kings close) is an endgame conversion aid
+  5. bishop pair + tempo (kept from 1b, now parameters)
+
+Param layout (indices below; also imported by the tuner so the feature
+contract cannot drift):
+  [0..5]    material mg, piece 1..6;  [6..11]   material eg
+  [12..395] PST mg, (t-1)*64 + sq64;  [396..779] PST eg (same layout)
+  [780..]   term weights (mg/eg pairs, see P_* constants)
+
+Tapering is the standard mg/eg interpolation; score is floor-divided by
+24 exactly as the tuner's numpy model does (bit-exact parity contract).
+Gate masks (EVAL_GATE, 4 bits) zero whole term groups at import time so
+A/B tests (tools/sprt.py) can toggle pawn=mobility=king-safety=bishoppair
+groups per engine side.
+
+Configuration is read at import (numba bakes global array VALUES at
+compile, so runtime mutation is not visible; each A/B side runs as its
+own process with its own config):
+  CHESSATHON_EVAL_CONFIG = hand|tuned   (default: tuned)
+  CHESSATHON_EVAL_GATE   = "1111"       4 chars, group order: pawn,
+                                         mobility, king-safety, bp+tempo
 """
+
+import os
 
 import numpy as np
 
 from numba import njit
 
 from engine.board import (EMPTY, PAWN, KNIGHT, BISHOP, ROOK, QUEEN, KING,
-                          WHITE, BLACK, sq64)
+                          WHITE, BLACK, sq64, _KNIGHT_DELTAS, _RAYS,
+                          _ROOK_RAYS)
 
-# Material values (centipawns; our own numbers from phase 1a).
-MATERIAL = np.array([0, 100, 320, 330, 500, 900, 0], dtype=np.int16)
+# ---------------------------------------------------------------------------
+# Param layout (SHARED with tools/texel_tune.py — do not renumber)
+# ---------------------------------------------------------------------------
 
-# Game-phase weights (standard phase-counting concept: N/B=1, R=2, Q=4,
-# max 24 from 1a).
+P_MAT_MG = 0          # 6
+P_MAT_EG = 6          # 6
+P_PST_MG = 12         # 6*64 = 384
+P_PST_EG = 396        # 384
+P_DOUBLED_MG = 780
+P_DOUBLED_EG = 781
+P_ISOLATED_MG = 782
+P_ISOLATED_EG = 783
+P_PASSED_MG = 784     # 4: white ranks 4..7 (sq64 rank idx 3..6)
+P_PASSED_EG = 788     # 4
+P_BLOCKED_MG = 792    # passed pawn blocked by an enemy pawn in front
+P_BLOCKED_EG = 793
+P_MOB_N_MG = 794
+P_MOB_N_EG = 795
+P_MOB_B_MG = 796
+P_MOB_B_EG = 797
+P_MOB_R_MG = 798
+P_MOB_R_EG = 799
+P_MOB_Q_MG = 800
+P_MOB_Q_EG = 801
+P_SHELTER_NEAR_MG = 802   # own pawns 1 rank in front of king, 3 files wide
+P_SHELTER_NEAR_EG = 803
+P_SHELTER_FAR_MG = 804    # own pawns 2 ranks in front of king
+P_SHELTER_FAR_EG = 805
+P_OPEN_MG = 806           # king's file has no own pawn
+P_OPEN_EG = 807
+P_KDIST_MG = 808          # chebyshev distance between kings
+P_KDIST_EG = 809
+P_BISHOP_PAIR_MG = 810
+P_BISHOP_PAIR_EG = 811
+P_TEMPO = 812
+N_PARAMS = 813
+
+# Phase weights per piece (N/B=1, R=2, Q=4; standard phase-counting).
 PHASE_W = np.array([0, 0, 1, 1, 2, 4, 0], dtype=np.int16)
 MAX_PHASE = 24
 
-# Bishop-pair bonus (mg / eg).
-BISHOP_PAIR_MG = 30
-BISHOP_PAIR_EG = 15
-
-TEMPO = 10
-
 # ---------------------------------------------------------------------------
-# Piece-square tables, mg/eg, indexed sq64 (a1=0 .. h8=63), white POV.
-# (Ported from our own phase-1a agent; knight/bishop/rook/queen shapes are
-# phase-stable, so EG reuses the MG table for those.)
+# Bitboard masks (sq64 encoding: a1=0 .. h8=63, bit = 1 << sq64)
 # ---------------------------------------------------------------------------
 
+_BB = np.array([np.uint64(1) << i for i in range(64)], dtype=np.uint64)
+
+# FILE_SQ[s]: mask of all squares on s's file.
+FILE_SQ = np.zeros(64, dtype=np.uint64)
+# ADJ_SQ[s]: mask of the two adjacent files (isolation test).
+ADJ_SQ = np.zeros(64, dtype=np.uint64)
+# PASSED_W[s]: squares an ENEMY pawn must not occupy for a WHITE pawn on s
+# to be passed (its file + adjacent files, ranks strictly above s).
+PASSED_W = np.zeros(64, dtype=np.uint64)
+# SHELTER_NEAR[s] / SHELTER_FAR[s]: own-pawn squares 1 / 2 ranks in front
+# of a king on s, files f-1..f+1 (white perspective).
+SHELTER_NEAR = np.zeros(64, dtype=np.uint64)
+SHELTER_FAR = np.zeros(64, dtype=np.uint64)
+
+for _f in range(8):
+    _m = np.uint64(0)
+    for _r in range(8):
+        _m |= _BB[_r * 8 + _f]
+    for _s in range(_f, 64, 8):
+        FILE_SQ[_s] = _m
+for _s in range(64):
+    _f = _s & 7
+    if _f > 0:
+        ADJ_SQ[_s] |= FILE_SQ[_s - 1]
+    if _f < 7:
+        ADJ_SQ[_s] |= FILE_SQ[_s + 1]
+for _s in range(64):
+    _f = _s & 7
+    _r = _s >> 3
+    for _fr in range(_r + 1, 8):
+        for _ff in range(max(0, _f - 1), min(8, _f + 2)):
+            PASSED_W[_s] |= _BB[_fr * 8 + _ff]
+    if _r + 1 < 8:
+        for _ff in range(max(0, _f - 1), min(8, _f + 2)):
+            SHELTER_NEAR[_s] |= _BB[(_r + 1) * 8 + _ff]
+    if _r + 2 < 8:
+        for _ff in range(max(0, _f - 1), min(8, _f + 2)):
+            SHELTER_FAR[_s] |= _BB[(_r + 2) * 8 + _ff]
+
+# popcount table (numba 0.67 has no int.bit_count for uint64).
+_POPCNT = np.array([bin(i).count("1") for i in range(256)], dtype=np.int8)
+
+
+@njit(inline="always")
+def _popcount64(b) -> int:
+    x = b
+    return (_POPCNT[x & 255] + _POPCNT[(x >> 8) & 255]
+            + _POPCNT[(x >> 16) & 255] + _POPCNT[(x >> 24) & 255]
+            + _POPCNT[(x >> 32) & 255] + _POPCNT[(x >> 40) & 255]
+            + _POPCNT[(x >> 48) & 255] + _POPCNT[(x >> 56) & 255])
+
+
+@njit(inline="always")
+def _mirror_rank(b) -> int:
+    """Mirror a uint64 bitboard across the horizontal axis (rank flip)."""
+    x = b
+    return ((x & np.uint64(0x00000000000000FF)) << np.uint64(56)
+            | (x & np.uint64(0x000000000000FF00)) << np.uint64(40)
+            | (x & np.uint64(0x0000000000FF0000)) << np.uint64(24)
+            | (x & np.uint64(0x00000000FF000000)) << np.uint64(8)
+            | (x & np.uint64(0x000000FF00000000)) >> np.uint64(8)
+            | (x & np.uint64(0x0000FF0000000000)) >> np.uint64(24)
+            | (x & np.uint64(0x00FF000000000000)) >> np.uint64(40)
+            | (x & np.uint64(0xFF00000000000000)) >> np.uint64(56))
+
+
+# ---------------------------------------------------------------------------
+# Parameter value sets
+# ---------------------------------------------------------------------------
+
+# SEED material values (our own 1a numbers).
+_MATERIAL = np.array([0, 100, 320, 330, 500, 900, 0], dtype=np.int16)
+
+# Piece-square tables, mg/eg, ours from 1a/1b (knight/bishop/rook/queen
+# EG reuses the MG table — phase-stable shapes).
 _PAWN_MG = np.array([
      0,  0,  0,  0,  0,  0,  0,  0,
     50, 50, 50, 50, 50, 50, 50, 50,
@@ -126,103 +259,370 @@ _KING_EG = np.array([
     -50, -30, -30, -30, -30, -30, -30, -50,
 ], dtype=np.int16)
 
-# PST_MG[t][64], PST_EG[t][64] (t = piece type 1..6)
-PST_MG = np.zeros((7, 64), dtype=np.int16)
-PST_EG = np.zeros((7, 64), dtype=np.int16)
-PST_MG[PAWN] = _PAWN_MG
-PST_EG[PAWN] = _PAWN_EG
-PST_MG[KNIGHT] = _KNIGHT_MG
-PST_EG[KNIGHT] = _KNIGHT_MG
-PST_MG[BISHOP] = _BISHOP_MG
-PST_EG[BISHOP] = _BISHOP_MG
-PST_MG[ROOK] = _ROOK_MG
-PST_EG[ROOK] = _ROOK_MG
-PST_MG[QUEEN] = _QUEEN_MG
-PST_EG[QUEEN] = _QUEEN_MG
-PST_MG[KING] = _KING_MG
-PST_EG[KING] = _KING_EG
 
+def _build_hand() -> np.ndarray:
+    """Hand-tuned starting values (OUR priors; see P_* order)."""
+    p = np.zeros(N_PARAMS, dtype=np.int32)
+    p[P_MAT_MG:P_MAT_MG + 6] = _MATERIAL[1:7]
+    p[P_MAT_EG:P_MAT_EG + 6] = _MATERIAL[1:7]
+    p[P_PST_MG + 0 * 64:P_PST_MG + 1 * 64] = _PAWN_MG
+    p[P_PST_MG + 1 * 64:P_PST_MG + 2 * 64] = _KNIGHT_MG
+    p[P_PST_MG + 2 * 64:P_PST_MG + 3 * 64] = _BISHOP_MG
+    p[P_PST_MG + 3 * 64:P_PST_MG + 4 * 64] = _ROOK_MG
+    p[P_PST_MG + 4 * 64:P_PST_MG + 5 * 64] = _QUEEN_MG
+    p[P_PST_MG + 5 * 64:P_PST_MG + 6 * 64] = _KING_MG
+    p[P_PST_EG + 0 * 64:P_PST_EG + 1 * 64] = _PAWN_EG
+    p[P_PST_EG + 1 * 64:P_PST_EG + 2 * 64] = _KNIGHT_MG
+    p[P_PST_EG + 2 * 64:P_PST_EG + 3 * 64] = _BISHOP_MG
+    p[P_PST_EG + 3 * 64:P_PST_EG + 4 * 64] = _ROOK_MG
+    p[P_PST_EG + 4 * 64:P_PST_EG + 5 * 64] = _QUEEN_MG
+    p[P_PST_EG + 5 * 64:P_PST_EG + 6 * 64] = _KING_EG
+    # pawn structure
+    p[P_DOUBLED_MG], p[P_DOUBLED_EG] = -12, -10
+    p[P_ISOLATED_MG], p[P_ISOLATED_EG] = -12, -8
+    p[P_PASSED_MG:P_PASSED_MG + 4] = [10, 20, 35, 60]     # ranks 4,5,6,7
+    p[P_PASSED_EG:P_PASSED_EG + 4] = [15, 35, 60, 100]
+    p[P_BLOCKED_MG], p[P_BLOCKED_EG] = 10, 30
+    # mobility (cp per pseudo-legal move; mg / eg)
+    p[P_MOB_N_MG], p[P_MOB_N_EG] = 4, 2
+    p[P_MOB_B_MG], p[P_MOB_B_EG] = 4, 2
+    p[P_MOB_R_MG], p[P_MOB_R_EG] = 2, 1
+    p[P_MOB_Q_MG], p[P_MOB_Q_EG] = 1, 1
+    # king safety
+    p[P_SHELTER_NEAR_MG], p[P_SHELTER_NEAR_EG] = 12, 4
+    p[P_SHELTER_FAR_MG], p[P_SHELTER_FAR_EG] = 6, 2
+    p[P_OPEN_MG], p[P_OPEN_EG] = -8, 0
+    # king-distance ("tropism") is a color-SYMMETRIC signal (kings close
+    # shifts both sides' evals): it cannot be anti-negated, so hand value
+    # is 0 and the Texel fit may tune it as a drawishness/intercept term.
+    p[P_KDIST_MG], p[P_KDIST_EG] = 0, 0
+    # bishop pair + tempo (kept from 1b)
+    p[P_BISHOP_PAIR_MG], p[P_BISHOP_PAIR_EG] = 30, 15
+    p[P_TEMPO] = 10
+    return p
+
+
+HAND_PARAMS = _build_hand()
+
+# TUNED_PARAMS: generated block. Filled by tools/texel_tune.py (our values
+# fitted on our self-play data; see BUILD.md "Phase 2 — tuning"). Until the
+# first tuning run this equals the hand priors.
+# >>> TUNED_PARAMS_BLOCK >>>                          # patch marker
+TUNED_PARAMS = _build_hand()
+# <<< TUNED_PARAMS_BLOCK <<<                          # patch marker
+
+# Configure at import: numba bakes global array values at compile time, so
+# the choice must happen before the first jitted call (engine_side.py for
+# A/B tests sets these env vars; the shipped agent just uses defaults).
+_EVAL_CFG = os.environ.get("CHESSATHON_EVAL_CONFIG", "tuned")
+EVAL_PARAMS = TUNED_PARAMS if _EVAL_CFG == "tuned" else HAND_PARAMS
+
+_GATE_STR = os.environ.get("CHESSATHON_EVAL_GATE", "1111")[:4]
+_GATE_STR = _GATE_STR.ljust(4, "1")
+EVAL_GATE = np.array([1 if c == "1" else 0 for c in _GATE_STR],
+                     dtype=np.int8)   # [pawn, mobility, king-safety, bp+tempo]
+
+
+# ---------------------------------------------------------------------------
+# The evaluation (numba-jitted hot path)
+# ---------------------------------------------------------------------------
 
 @njit
 def evaluate(st) -> int:
     """Static evaluation in centipawns, positive = good for White.
 
-    One pass over the board: material + PST (tapered by phase), bishop
-    pair, tempo for the side to move, insufficient-material draws.
+    Interface unchanged from 1b (search.py calls `evaluate(st)`).
+    Two board passes (material/PST/mobility/bitboards; then pawn
+    structure per pawn) — O(pieces), no allocations.
     """
     sqr = st['squares'][0]
+    side = st['side'][0]
+    g = EVAL_GATE
+    p = EVAL_PARAMS
+
     mg = 0
     eg = 0
     phase = 0
-    # insufficient-material bookkeeping: no pawns/rooks/queens + few minors
+    wp = np.uint64(0)
+    bp = np.uint64(0)
+    # mobility accumulators per class, signed (white - black)
+    mN = 0; mB = 0; mR = 0; mQ = 0
+    # pawn-structure accumulators (white - black)
+    dbl = 0; iso = 0; passed = np.zeros(4, dtype=np.int32)
+    blk = 0
+    # king-safety accumulators (white - black)
+    sh_near = 0; sh_far = 0; opn = 0
+    bishops = np.zeros(2, dtype=np.int8)      # per color
+    kdist = 0
+    # insufficient-material bookkeeping
     has_pawn = False
     has_major = False
-    minors = 0            # knights + bishops (total)
-    bishops = np.zeros(2, dtype=np.int8)   # per color, count
+    mins = 0
+
+    # ---- pass 1: material + PST + phase + mobility + bitboards ----
     for sq in range(128):
         if (sq & 0x88) != 0:
             continue
-        p = sqr[sq]
-        if p == EMPTY:
+        pc = sqr[sq]
+        if pc == EMPTY:
             continue
-        t = abs(p)
-        color = 1 if p > 0 else 0
+        t = abs(pc)
+        color = WHITE if pc > 0 else BLACK
         s = sq64(sq) if color == WHITE else sq64(sq) ^ 56
-        if color == WHITE:
-            mg += MATERIAL[t] + PST_MG[t, s]
-            eg += MATERIAL[t] + PST_EG[t, s]
-        else:
-            mg -= MATERIAL[t] + PST_MG[t, s]
-            eg -= MATERIAL[t] + PST_EG[t, s]
+        sign = 1 if color == WHITE else -1
+        mg += sign * (p[P_MAT_MG + t - 1] + p[P_PST_MG + (t - 1) * 64 + s])
+        eg += sign * (p[P_MAT_EG + t - 1] + p[P_PST_EG + (t - 1) * 64 + s])
         phase += PHASE_W[t]
         if t == PAWN:
             has_pawn = True
+            b = _BB[sq64(sq)]          # real coordinates (not mirrored)
+            if color == WHITE:
+                wp |= b
+            else:
+                bp |= b
         elif t == ROOK or t == QUEEN:
             has_major = True
+            if t == ROOK:
+                for di in range(4):
+                    for k in range(8):
+                        to = _ROOK_RAYS[sq, di, k]
+                        if to < 0:
+                            break
+                        q = sqr[to]
+                        if q == EMPTY:
+                            mR += sign
+                        elif (q > 0) != (pc > 0):
+                            mR += sign
+                            break
+                        else:
+                            break
+            else:
+                for di in range(4):
+                    for k in range(8):
+                        to = _RAYS[sq, di, k]
+                        if to < 0:
+                            break
+                        q = sqr[to]
+                        if q == EMPTY:
+                            mQ += sign
+                        elif (q > 0) != (pc > 0):
+                            mQ += sign
+                            break
+                        else:
+                            break
+                for di in range(4):
+                    for k in range(8):
+                        to = _ROOK_RAYS[sq, di, k]
+                        if to < 0:
+                            break
+                        q = sqr[to]
+                        if q == EMPTY:
+                            mQ += sign
+                        elif (q > 0) != (pc > 0):
+                            mQ += sign
+                            break
+                        else:
+                            break
         elif t == KNIGHT:
-            minors += 1
+            for d in range(8):
+                to = sq + _KNIGHT_DELTAS[d]
+                if (to & 0x88) == 0:
+                    q = sqr[to]
+                    if q == EMPTY or (q > 0) != (pc > 0):
+                        mN += sign
         elif t == BISHOP:
-            minors += 1
+            mins += 1
             bishops[color] += 1
+            for di in range(4):
+                for k in range(8):
+                    to = _RAYS[sq, di, k]
+                    if to < 0:
+                        break
+                    q = sqr[to]
+                    if q == EMPTY:
+                        mB += sign
+                    elif (q > 0) != (pc > 0):
+                        mB += sign
+                        break
+                    else:
+                        break
+        elif t == KING:
+            pass
+
+    # ---- pass 2: pawn structure (bitboards from pass 1) ----
+    wpM = _mirror_rank(wp)
+    bpM = _mirror_rank(bp)
+    for sq in range(128):
+        if (sq & 0x88) != 0:
+            continue
+        pc = sqr[sq]
+        if pc == EMPTY:
+            continue
+        t = abs(pc)
+        if t != PAWN:
+            continue
+        s = sq64(sq)                     # real coordinate
+        if pc > 0:                       # white pawn
+            b = _BB[s]
+            # doubled: counted via file popcount after the loop (below)
+            if (wp & ADJ_SQ[s]) == 0:
+                iso += 1
+            rk = s >> 3
+            if (bp & PASSED_W[s]) == 0:
+                if 3 <= rk <= 6:
+                    if (bp & (b << np.uint64(8))) != 0:
+                        blk += 1
+                    else:
+                        passed[rk - 3] += 1
+        else:                            # black pawn (mirrored view)
+            sm = s ^ 56
+            bm = _BB[sm]
+            if (bp & ADJ_SQ[s]) == 0:
+                iso -= 1
+            rk = sm >> 3
+            if (wpM & PASSED_W[sm]) == 0:
+                if 3 <= rk <= 6:
+                    if (wpM & (bm << np.uint64(8))) != 0:
+                        blk -= 1
+                    else:
+                        passed[rk - 3] -= 1
+    for f in range(8):
+        c = _popcount64(wp & FILE_SQ[f * 8])
+        if c > 1:
+            dbl += c - 1
+        c = _popcount64(bp & FILE_SQ[f * 8])
+        if c > 1:
+            dbl -= c - 1
+
+    # ---- king safety + tropism ----
+    wks = sq64(st['kingsq'][0][WHITE])
+    bks = sq64(st['kingsq'][0][BLACK])
+    wf = wks & 7
+    wr = wks >> 3
+    bf = bks & 7
+    br = bks >> 3
+    df = wf - bf
+    if df < 0:
+        df = -df
+    dr = wr - br
+    if dr < 0:
+        dr = -dr
+    kdist = df if df > dr else dr
+    sh_near += _popcount64(wp & SHELTER_NEAR[wks])
+    sh_far += _popcount64(wp & SHELTER_FAR[wks])
+    if (wp & FILE_SQ[wks]) == 0:
+        opn += 1
+    bksm = bks ^ 56
+    sh_near -= _popcount64(bpM & SHELTER_NEAR[bksm])
+    sh_far -= _popcount64(bpM & SHELTER_FAR[bksm])
+    if (bp & FILE_SQ[bks]) == 0:
+        opn -= 1
+
+    # ---- assemble (gate groups first, taper, bishop pair, tempo) ----
+    pawn_mg = (p[P_DOUBLED_MG] * dbl + p[P_ISOLATED_MG] * iso
+               + p[P_BLOCKED_MG] * blk
+               + p[P_PASSED_MG] * passed[0] + p[P_PASSED_MG + 1] * passed[1]
+               + p[P_PASSED_MG + 2] * passed[2]
+               + p[P_PASSED_MG + 3] * passed[3])
+    pawn_eg = (p[P_DOUBLED_EG] * dbl + p[P_ISOLATED_EG] * iso
+               + p[P_BLOCKED_EG] * blk
+               + p[P_PASSED_EG] * passed[0] + p[P_PASSED_EG + 1] * passed[1]
+               + p[P_PASSED_EG + 2] * passed[2] + p[P_PASSED_EG + 3] * passed[3])
+    mob_mg = (p[P_MOB_N_MG] * mN + p[P_MOB_B_MG] * mB + p[P_MOB_R_MG] * mR
+              + p[P_MOB_Q_MG] * mQ)
+    mob_eg = (p[P_MOB_N_EG] * mN + p[P_MOB_B_EG] * mB + p[P_MOB_R_EG] * mR
+              + p[P_MOB_Q_EG] * mQ)
+    ks_mg = (p[P_SHELTER_NEAR_MG] * sh_near + p[P_SHELTER_FAR_MG] * sh_far
+             + p[P_OPEN_MG] * opn + p[P_KDIST_MG] * kdist)
+    ks_eg = (p[P_SHELTER_NEAR_EG] * sh_near + p[P_SHELTER_FAR_EG] * sh_far
+             + p[P_OPEN_EG] * opn + p[P_KDIST_EG] * kdist)
+
+    bpw = bishops[WHITE]
+    bpb = bishops[BLACK]
+    bp_mg = p[P_BISHOP_PAIR_MG] * (1 if bpw >= 2 else 0) \
+        - p[P_BISHOP_PAIR_MG] * (1 if bpb >= 2 else 0)
+    bp_eg = p[P_BISHOP_PAIR_EG] * (1 if bpw >= 2 else 0) \
+        - p[P_BISHOP_PAIR_EG] * (1 if bpb >= 2 else 0)
+
+    mg += g[0] * pawn_mg + g[1] * mob_mg + g[2] * ks_mg + g[3] * bp_mg
+    eg += g[0] * pawn_eg + g[1] * mob_eg + g[2] * ks_eg + g[3] * bp_eg
 
     if phase > MAX_PHASE:
         phase = MAX_PHASE
     score = (mg * phase + eg * (MAX_PHASE - phase)) // MAX_PHASE
 
-    # bishop pair (tapered with the same phase)
-    for color in (WHITE, BLACK):
-        if bishops[color] >= 2:
-            bp = (BISHOP_PAIR_MG * phase
-                  + BISHOP_PAIR_EG * (MAX_PHASE - phase)) // MAX_PHASE
-            score += bp if color == WHITE else -bp
-
-    # insufficient material -> draw. Standard set: no pawns/majors and
-    # (at most one minor total, or one minor each side) => cannot mate.
-    # (K+2 minors vs K except K+2 same-colour B vs K can still mate in
-    # forced lines; leave those as non-draw.)
     if not has_pawn and not has_major:
-        if minors <= 1:
+        if mins <= 1:
             return 0
         if bishops[0] <= 1 and bishops[1] <= 1:
-            return 0   # K+N vs K+N, K+B vs K+N, K+B vs K+B: all draws
+            return 0
 
-    if st['side'][0] == WHITE:
-        return score + TEMPO
-    return -(score + TEMPO)
+    tempo = g[3] * p[P_TEMPO]
+    if side == WHITE:
+        return score + tempo
+    return -(score + tempo)
 
 
-# Short sanity tests (import-time smoke in dev; also used by tools).
+# ---------------------------------------------------------------------------
+# Sanity tests (import-time smoke in dev; also used by tools)
+# ---------------------------------------------------------------------------
+
 def _selfcheck():
-    st = __import__("engine.board", fromlist=["parse_fen"]).parse_fen(
-        "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")
-    assert evaluate(st) == 0, evaluate(st)
-    st2 = __import__("engine.board", fromlist=["parse_fen"]).parse_fen(
-        "k7/8/8/8/8/8/8/K6R w - - 0 1")
-    # K+R vs K is not a draw: eval should be large positive for white
+    bm = __import__("engine.board", fromlist=["parse_fen"])
+    st = bm.parse_fen("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1")
+    assert evaluate(st) == int(EVAL_PARAMS[P_TEMPO]), evaluate(st)
+    st2 = bm.parse_fen("k7/8/8/8/8/8/8/K6R w - - 0 1")
     assert evaluate(st2) > 400, evaluate(st2)
-    st3 = __import__("engine.board", fromlist=["parse_fen"]).parse_fen(
-        "k7/8/8/8/8/8/8/K7 b - - 0 1")
+    st3 = bm.parse_fen("k7/8/8/8/8/8/8/K7 b - - 0 1")
     assert evaluate(st3) == 0, evaluate(st3)
+    # doubled-pawn penalty is visible: white double c-pawns vs clean set
+    st4 = bm.parse_fen("k7/8/8/8/8/2P5/2P5/K7 w - - 0 1")
+    st5 = bm.parse_fen("k7/8/8/8/8/2P5/3P4/K7 w - - 0 1")
+    assert evaluate(st4) < evaluate(st5), (evaluate(st4), evaluate(st5))
+    # passed pawn on 6th > passed pawn on 4th (endgame-relevant)
+    st6 = bm.parse_fen("k7/8/2P5/8/8/8/8/K7 w - - 0 1")
+    st7 = bm.parse_fen("k7/8/8/8/2P5/8/8/K7 w - - 0 1")
+    assert evaluate(st6) > evaluate(st7), (evaluate(st6), evaluate(st7))
+    # a pawn BLOCKED on a side file (enemy pawn ahead) is not passed
+    st8 = bm.parse_fen("k7/1p6/8/2P5/8/8/8/K7 w - - 0 1")
+    assert evaluate(st7) > evaluate(st8), (evaluate(st7), evaluate(st8))
+    # mirror symmetry (catches color-coordinate bugs): flipping piece
+    # colors, mirroring ranks and swapping the side must give
+    # |eval(orig) - eval(flip)| == 2*tempo exactly (each eval carries
+    # its own side's tempo; the side-independent scores negate).
+    def flip_fen(fen: str) -> str:
+        parts = fen.split()
+        rows = parts[0].split("/")[::-1]
+        flipped = []
+        for row in rows:
+            out = ""
+            for ch in row:
+                if ch.isalpha():
+                    out += ch.swapcase()
+                else:
+                    out += ch
+            flipped.append(out)
+        new_side = "w" if parts[1] == "b" else "b"
+        return "/".join(flipped) + " " + new_side + " - - " + " ".join(parts[4:6])
+
+    for _fen in [
+        "8/8/2P5/8/8/8/8/K7 w - - 0 1",        # passed white pawn on 6th
+        "r2q1rk1/ppp2ppp/2np1n2/2b1p3/2B1P3/2NP1N2/PPP2PPP/R1BQ1RK1 w - - 0 1",
+        "k7/2p5/3p4/8/8/4P3/1P6/7K w - - 0 1",  # black pawns + passed-ish
+        "k7/8/8/8/8/8/2p5/K7 b - - 0 1",        # passed BLACK pawn on 6th
+    ]:
+        st_a = bm.parse_fen(_fen)
+        st_b = bm.parse_fen(flip_fen(_fen))
+        ea, eb = evaluate(st_a), evaluate(st_b)
+        # tolerance: 2*tempo + symmetric king-distance term (2*|w_kd|*14)
+        tol = (2 * int(EVAL_PARAMS[P_TEMPO])
+               + 2 * abs(int(EVAL_PARAMS[P_KDIST_MG])) * 14
+               + 2 * abs(int(EVAL_PARAMS[P_KDIST_EG])) * 14)
+        assert abs(ea - eb) <= tol, (ea, eb)
+    # king shelter counts: castled white king with 3 shield pawns vs none
+    st11 = bm.parse_fen("k7/8/8/8/8/8/PPP5/1K6 w - - 0 1")
+    st12 = bm.parse_fen("k7/8/8/8/8/8/8/1K6 w - - 0 1")
+    assert evaluate(st11) > evaluate(st12), (evaluate(st11), evaluate(st12))
     print("eval selfcheck OK")
 
 
