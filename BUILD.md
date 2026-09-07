@@ -166,6 +166,11 @@ Measured (this box, /tmp/chessbench venv):
   middlegame in 5 s budget — **25-45x the research-01 pure-Python
   18-34 knps** (target 25-40x hit). perft 9-15 Mnps.
 - **Budget adherence:** 0.3/0.5/1.0/2.0 s budgets -> 0.30/0.50/1.00/2.00 s.
+- **Harness gate (gate #3): 22-0-0 vs the phase-1a agent** at 5 s + 0.05 s,
+  ZERO illegal/crash/timeout/slow flags (log
+  `results/gate_1b_vs_1a_5s_20260907.log`, seed 7). Requirement was >=65 %.
+- **Zip (gate #4):** `agent.zip` = 18,482 bytes (agent.py + engine/*.py),
+  import + JIT warmup 35.5 s (< 60 s init), first move 3.4 s, legal.
 
 Risks / notes for the next phases:
 

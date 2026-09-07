@@ -32,7 +32,6 @@ import numpy as np  # noqa: E402
 import chess  # noqa: E402
 
 from engine import board as B  # noqa: E402
-from engine import eval as E  # noqa: E402
 from engine import search as S  # noqa: E402
 from engine import tt as TT  # noqa: E402
 from engine import time as TM  # noqa: E402
@@ -55,9 +54,6 @@ _REP = np.zeros(B.MAX_PLY + 8, dtype=np.uint64)
 _SCRATCH = np.zeros((B.MAX_PLY, B.MAX_MOVES), dtype=np.int32)
 _SSCRATCH = np.zeros((B.MAX_PLY, B.MAX_MOVES), dtype=np.int32)
 _NODES = np.zeros(1, dtype=np.int64)
-
-_WARMED = False
-
 
 def _warmup() -> float:
     """Compile the jitted chain on a trivial position; returns seconds.
