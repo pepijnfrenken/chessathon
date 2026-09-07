@@ -37,7 +37,12 @@ from engine import search as S  # noqa: E402
 from engine import tt as TT  # noqa: E402
 from engine import time as TM  # noqa: E402
 
-_INC_MS = 500                 # competition clock increment (120s + 0.5s)
+# Competition clock increment (120s + 0.5s). The harness advertises its own
+# clock shape via CHESSATHON_INC_MS so the budget can be increment-aware.
+def _inc_ms() -> int:
+    """Increment the caller's clock adds per move (competition: 500 ms;
+    harness advertises its own via CHESSATHON_INC_MS)."""
+    return int(os.environ.get("CHESSATHON_INC_MS", "500"))
 _MAX_DEPTH = 64               # ID hard cap (time-limited in practice)
 
 # Shared, long-lived search state (persists across get_move calls: the TT
@@ -73,12 +78,6 @@ def _warmup() -> float:
 
 def get_move(fen: str, time_left_ms: int) -> str:
     """Return a legal UCI move for the given FEN."""
-    global _WARMED
-    if not _WARMED:
-        w = _warmup()
-        _WARMED = True
-        print(f"[chessathon] numba warmup {w:.1f}s (init budget ok)",
-              file=sys.stderr)
     t0 = time.perf_counter()
     try:
         pc_board = chess.Board(fen)
@@ -86,7 +85,7 @@ def get_move(fen: str, time_left_ms: int) -> str:
             return "0000"
 
         st = B.parse_fen(fen)
-        budget_ms = TM.budget_ms(int(time_left_ms), _INC_MS)
+        budget_ms = TM.budget_ms(int(time_left_ms), _inc_ms())
         deadline = S._NOW() + int(budget_ms * 1_000_000)
         _NODES[0] = 0
         mv, score, depth = S.search_root(
@@ -118,6 +117,21 @@ def get_move(fen: str, time_left_ms: int) -> str:
             return list(chess.Board(fen).legal_moves)[0].uci()
         except Exception:
             return "0000"
+
+
+# ---------------------------------------------------------------------------
+# Import-time JIT warmup: the competition gives 60 s init BEFORE any clock
+# runs, so compilation belongs here, never inside a timed get_move (the
+# harness proved a first-move compile flags the clock instantly).
+# ---------------------------------------------------------------------------
+
+try:
+    _WARMUP_S = _warmup()
+    print(f"[chessathon] numba warmup {_WARMUP_S:.1f}s (init budget ok)",
+          file=sys.stderr)
+except Exception as exc:  # pragma: no cover - degraded but functional
+    print(f"[chessathon] warmup failed ({exc!r}); first move will JIT",
+          file=sys.stderr)
 
 
 # ---------------------------------------------------------------------------

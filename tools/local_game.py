@@ -20,6 +20,7 @@ harness exits non-zero if any flag occurs anywhere.
 """
 
 import argparse
+import os
 import random
 import sys
 import time
@@ -213,6 +214,7 @@ def main() -> int:
     ap.add_argument("--log", default=None, help="output log path")
     args = ap.parse_args()
 
+    os.environ["CHESSATHON_INC_MS"] = str(args.inc_ms)
     try:
         wname, bname = args.sides.split(":")
         sides = {chess.WHITE: wname, chess.BLACK: bname}
