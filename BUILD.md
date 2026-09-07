@@ -412,6 +412,15 @@ Gates re-run on the final Step-1 tree: perft parity ALL PASS (6 pos,
 d1-5 + breakdowns); bench nps 487/572 knps (startpos d10 / mg d8); exact-
 core aspiration parity EXACT; shipped-config parity equal-value-only.
 
-**Step-1 strength gate (running)**: `hand:1111:asp` vs `hand:1111:noasp`
-24 games @ 500ms our openings — `results/gate_asp_vs_noasp_20260907_*.log`.
-Need ≥ ~55% to proceed.
+**Step-1 strength gate — ASPIRATION REJECTED (reverted)**: `hand:1111:asp`
+vs `hand:1111:noasp`, 24 games @ 500ms our openings —
+`results/gate_asp_vs_noasp_20260907_151535.log`: **5W-8L-11D (0.438)**,
+ZERO flags — below the 0.5 baseline, far from the ~55% bar. Despite
+byte-exact fixed-depth parity (proven above), the 40cp window misses the
+score often at 500ms and each fail low/high triggers a FULL-window
+re-search that consumes the budget — and a re-search that times out
+discards the whole iteration — so the aspirated engine completes fewer
+depths per budget than the full-window baseline. REVERTED (commit f621ba1);
+the root stays full-window. Follow-up for real-clock TCs: Stockfish-style
+widening re-search (delta*2) instead of full re-search, possibly with a
+time-left guard; documented, not shipped unvalidated.
