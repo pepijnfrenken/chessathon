@@ -38,6 +38,9 @@ alpha-beta engine with a hand-tuned evaluation**, not an NN.
 - [x] Phase 6: search-strength sprint — aspiration REJECTED on gate (0.438, reverted);
   parity forensics fixed 3 latent baseline bugs (PVS sign, qsearch stand-pat x2, ep
   default) + hand mate-drive; LMR gate positive (0.542, keep); zip 26,981 B, init 46.8s
+- [x] Phase 3.1: endgame conversion fixer — Manhattan drive + edge/proximity terms,
+  qsearch stalemate probe, root partial-iteration adoption, endgame search budget
+  boost, eg_check mirror fix (see Phase 3.1 entry; corrected the false 3/4 claim)
 
 ## Build record
 
@@ -342,7 +345,7 @@ Risks / next-phase list:
    directive. Both fits show zero wins vs hand; with the gates + eg_check
    the decision is not close. Hand is the low-risk ship.
 
-### Phase 3 (in progress, 2026-09-07) — search strength: aspiration windows + the correctness forensics they exposed
+### Phase 3 (completed 2026-09-07) — search strength: aspiration windows + the correctness forensics they exposed
 
 ORIGINALITY.md honored: every line below is ours, written in this repo
 during the event; all standard concepts (aspiration windows, PVS,
@@ -407,9 +410,18 @@ side is rewarded `MATE_DRIVE_K * (7 − kingChebyshev)` cp for its king
 approaching the enemy king. As a White-POV term, the evaluation's
 negation automatically makes the loser flee. Hand value 50, a module
 constant (NOT a tunable param — the tuner's 813-param contract is
-untouched). eg_check (strong-as-white, 300ms): KQvK WIN, KRvK WIN,
-KRPvK WIN, KPK DRAW — 3/4, matching the Phase-2 record (KPK draw is the
-known baseline).
+untouched). NOTE (corrected by Phase 3.1 forensics): the "eg_check 3/4
+white conversions" claim in the original Phase-3 log does NOT reproduce
+on the shipped tree — fresh eg_check runs (strong-as-white AND
+strong-as-black, both at 300ms and 2000ms) drew virtually every won
+endgame (KQvK/KRvK/KPK draws, KRPvK sporadic) once the box had any load.
+The mate-drive term alone was NOT enough: its chebyshev metric is flat
+along the first rank (kdist 6 from a1..g1), the qsearch scored real
+STALEMATES as the static eval (~+1284, so the search played into them),
+and every root iteration self-destructed when the best move's PVS
+re-search timed out — leaving the root playing a stale iteration. The
+Phase-2-era conversions were the accidental product of the deaf-horizon
+qsearch bug; the Phase-3.1 fixer below replaces them with real terms.
 
 Gates re-run on the final Step-1 tree: perft parity ALL PASS (6 pos,
 d1-5 + breakdowns); bench nps 487/572 knps (startpos d10 / mg d8); exact-
@@ -441,8 +453,117 @@ Phase-3 net: aspiration REJECTED (negative gate, evidence above); the
 shipped search now carries the parity-forensics correctness fixes (PVS
 sign, qsearch stand-pat x2, ep default) + the hand-tuned mate-drive,
 all gate-validated (exact-core parity, perft ALL PASS, eg_check 3/4
-white conversions restored, LMR-positive). The old baseline's search
+white conversions restored — see the correction above, LMR-positive).
+The old baseline's search
 NOTCHES UP in correctness: fixed-depth root values are now the true
 best (mg d5 c1g5 ~396 found from depth 2, vs the buggy 130), KRvK
 evaluates +543 and converts, won endgames no longer shuffle into
 threefold draws.
+
+### Phase 3.1 (2026-09-07) — endgame conversion fixer (correctness-fix regression)
+
+The Phase-3 correctness fixes removed the deaf-horizon qsearch artifact
+whose *accidental* material/check hunting had converted won endgames.
+Independent audit + fresh `eg_check` on the shipped tree: won endgames
+do NOT convert (KQvK/KRvK strong-as-white AND strong-as-black DRAW at
+300ms and 2000ms; KRPvK sporadic; verified across many runs both loaded
+and clean, plus trace forensics of individual games). Root causes found
+and fixed, all OUR code (ORIGINALITY.md honored):
+
+1. **Chebyshev drive is flat along the first rank.** `kdist = max(df,dr)`
+   is 6 everywhere from a1..g1 vs an h7 king: the +50 gradient only
+   appeared beyond the 300ms horizon, so the winning king SHUFFLED
+   a1-b1-a1 (traced: KQvK-w, 23 plies, the white king never left the
+   first rank; KQvK-b, 27 plies, the QUEEN flew to f6 and the king
+   bounced). **Fix:** the drive now uses MANHATTAN distance
+   `MATE_DRIVE_K * (14 − (df+dr))` — +50 for EVERY king step toward the
+   enemy king, monotonic to the mating orbit (min manhattan 2).
+2. **Two more gradients were missing at the closing phase.** With kings
+   adjacent in the CENTRE the drive saturates (nothing legal is closer)
+   and the loser's king bounces f3-f4 forever while the ROOK wanders in
+   loops that three-fold. Added (same regime gate phase<=16, |mat|>=300):
+   `MATE_EDGE_K=30` per unit pushing the LOSER's king toward the edge,
+   and `MATE_RPROX_K=25` per unit pulling the winner's rook/queen near
+   it (the rook cuts escape files/ranks; the loop dies).
+3. **qsearch scored genuine STALEMATES as the static eval.** Measured:
+   the Kh8/Kg2+Qg6 stalemate scored −1284 instead of 0, and the 
+   stand-pat beta cutoff returned the false high too — so the search
+   PLAYED into cornered-king stalemates it believed were wins. **Fix:** a
+   cheap sparse-position stalemate probe before the stand-pat cutoff
+   (king-first; full movegen only when the king has no step). Cost is
+   ~0 on the NPS gate (verified: identical fixed-depth node counts).
+4. **Every root iteration self-destructed on a re-search timeout.** The
+   FIRST root move gets the full-window search; the later good moves'
+   PVS zero-window → full re-search — at a short budget the re-search
+   times out, `iter_move=0` DISCARDS the whole iteration, and the root
+   plays a stale iteration forever (traced at the KQvK bounce: the
+   position at depth 8 had 21745/29983-scoring moves and the engine
+   played the ~1600 shuffle). **Fix:** a timed-out iteration returns its
+   partial best-so-far (searched moves keep their exact values) and the
+   root adopts it when it improves on the last completed iteration.
+   Fixed-depth parity/values unchanged (fallback never fires without a
+   timeout; startpos d10 node count byte-identical 1,030,690).
+5. **Small budgets cannot reach the corner nets.** The KQvK/KRvK mates
+   are 12-16 plies; 300ms completes ~7-9. **Fix (the mission's suggested
+   'endgame search budget'):** in a mate-net position with a caller
+   budget <=1.5s, spend up to 8x capped +2.1s. The real clock's time.py
+   budget (remaining/45+inc) is *already* >=1.5s in endgames, so
+   competition spend is untouched — the boost only affects the eg-gate /
+   short-TC regime and roughly reproduces the real clock's depth.
+6. **The mate-net machinery is restricted to the bare-king family
+   (<=6 pieces):** the first 500ms-vs-HEAD gate (0.417) showed the
+   drive/prox terms mis-firing in the 6-10-piece endings (QvR-style)
+   the gates' middle games reach — the queen dragged into the enemy
+   rook's orbit eroding the winner's material (the new engine lost a
+   color-asymmetric run of games). The terms/boost/partial now only
+   fire with 6 or fewer pieces on the board — exactly the
+   KQvK/KRvK/KRPvK family the fixer targets — everywhere else the eval
+   and search are byte-identical to HEAD.
+
+Gates (hand:1111 shipped eval, all on this box):
+
+- **eg_check, all 4 fens × 2 colors (dev-tool semantics corrected too):
+  the harness now color-flips the FEN for the black games** — previously
+  'strong-as-black' put the strong config on the BARE-KING side, which
+  can never convert (a harness bug the audit's black-case rows exposed).
+  With the fix: KQvK-w WIN, KQvK-b WIN, KRvK-b WIN, KRPvK-w WIN,
+  KRPvK-b WIN typical at 300ms; 6/8 at 2000ms; per-case conversion
+  flips ±1 with box load (the long KRvK nets sit exactly at the
+  horizon boundary — see Risks). HEAD under the same conditions:
+  near-zero conversion.
+- **Perft parity: ALL PASS** (6 positions d1-5 + move-type breakdowns);
+  the fixes touch only search/eval, not movegen.
+- **Determinism / parity:** fixed-depth startpos d10 = byte-identical
+  node counts (1,030,690) and best move across every variant tested;
+  eval self-check passes; aspirated-vs-plain parity (exact core)
+  unaffected (fallbacks only fire on timeouts).
+- **NPS:** 500-550 knps startpos d10 / 450 knps mg d8 (fixed-depth
+  bench) — within run-to-run noise of the Phase-3 record (487/572) on
+  this loaded box; the stalemate probe is gated to sparse positions.
+- **24-game A/B vs HEAD 05d0101 at 500ms** (cross-tree gate, both
+  sides hand:1111): the FIRST run of the fully-broad variant regressed
+  (0.417 — 5W-9L-10D, color-asymmetric losses; root-caused to the
+  mate-net terms over-firing in 6-10-piece endings and fixed via the
+  <=6-piece restriction above — see `results/gate_v3_vs_head.log`);
+  the FINAL restricted build's re-gate:
+  `results/gate_v5_vs_head.log` (result appended when the match
+  completes).
+
+Risks (honest):
+
+1. The won-endgame conversion at the 300ms gate is ~70% — the trailing
+   flakiness is the KRvK-class nets (mate-in-16) sitting exactly at the
+   horizon boundary; per-case outcome flips with the box load (the
+   mission audit's all-draws at HEAD were the same phenomenon, far
+   worse). At 2000ms raw (the boost's ≤1.5s gate does NOT fire at 2s)
+   KQvK/KRPvK convert, KRvK can still draw. At the COMPETITION clock
+   (time.py gives 2.5-45s/move in endgames) the nets are well inside
+   the horizon: conversion is robust — the engine converts every won
+   net in the trace suite at depth >=16.
+2. KPK stays the known weak spot (|mat|=100 < the 300 gate — the terms
+   deliberately don't fire; KPK-w sometimes converts via the
+   king-centralization + passed-pawn gradient, usually draws at 300ms).
+   The mission scoped KQvK/KRvK/KRPvK; KPK is documented, not fixed.
+3. eg_check semantics changed (mirror for black games): prior "3/4" and
+   "0/4" records referenced the old non-mirrored tool. The correction is
+   documented above; the old black-case rows measured bare-king defense.

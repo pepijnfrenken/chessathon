@@ -3,9 +3,12 @@
 Plays four basic won endgames — KQvK, KRvK, KPK, KRPvK — between two
 engine_side configs (default: the shipped full eval vs a material+PST-only
 defender) and requires the strong side to WIN, ideally before the 300-ply
-harness cap. The 1a/1b flat eval used to shuffle won endgames into the
-adjudication draw ("king walks to h4"); king-safety + endgame terms should
-have fixed that. The strong side alternates colors per case.
+harness cap. The strong side holds the winning material in BOTH colors: as
+white it plays the given FEN; as black it plays the color-flipped FEN, so
+"strong-as-black" is a genuine conversion test (vs a bare king), not a
+bare-king defense. The 1a/1b flat eval used to shuffle won endgames into
+the adjudication draw ("king walks to h4"); king-safety + endgame terms
+should have fixed that.
 
 KPK is the sharpest check: material diff 100 < the 500-adjudication
 threshold, so failing to promote within 300 plies is scored a DRAW.
@@ -38,6 +41,25 @@ CASES = [
 ]
 
 
+def _mirror_fen(fen: str) -> str:
+    """Color-flip a FEN: black pieces become white and vice versa, side to
+    move flips. Used so the strong side holds the winning material when it
+    plays black (the cases list is written from White's perspective)."""
+    parts = fen.split()
+    rows = parts[0].split("/")[::-1]
+    flipped = []
+    for row in rows:
+        out = ""
+        for ch in row:
+            if ch.isalpha():
+                out += ch.swapcase()
+            else:
+                out += ch
+        flipped.append(out)
+    new_side = "b" if parts[1] == "w" else "w"
+    return "/".join(flipped) + " " + new_side + " " + " ".join(parts[2:])
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--strong", default="tuned:1111")
@@ -61,16 +83,20 @@ def main() -> int:
     sp, wp = spawn(s_cfg, s_gate), spawn(w_cfg, w_gate)
     try:
         rng = random.Random(11)
-        # both colors per case: strong side is White, then Black
+        # both colors per case: the strong side is White, then Black.
+        # The black game uses the color-flipped FEN so the strong side
+        # holds the winning material in BOTH colors (otherwise "strong as
+        # black" defends with the bare king and can never convert).
         for name, fen in CASES:
             for strong_white in (True, False):
+                game_fen = fen if strong_white else _mirror_fen(fen)
                 sides = {chess.WHITE: {"proc": (sp if strong_white else wp),
                                        "name": args.strong if strong_white
                                        else args.weak},
                          chess.BLACK: {"proc": (wp if strong_white else sp),
                                        "name": args.weak if strong_white
                                        else args.strong}}
-                g = play_game(fen, sides, rng)
+                g = play_game(game_fen, sides, rng)
                 strong_name = "white" if strong_white else "black"
                 result = g["result"]
                 ok = (result == "1-0") if strong_white else (result == "0-1")

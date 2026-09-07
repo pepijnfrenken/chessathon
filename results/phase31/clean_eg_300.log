@@ -1,0 +1,8 @@
+KQvK   strong-as-white ply= 21 result=1-0 WIN
+KQvK   strong-as-black ply= 31 result=1-0 LOSS
+KRvK   strong-as-white ply= 49 result=1/2-1/2 DRAW
+KRvK   strong-as-black ply= 25 result=1/2-1/2 DRAW
+KPK    strong-as-white ply= 35 result=1-0 WIN
+KPK    strong-as-black ply= 22 result=1/2-1/2 DRAW
+KRPvK  strong-as-white ply= 21 result=1-0 WIN
+KRPvK  strong-as-black ply= 63 result=1/2-1/2 DRAW

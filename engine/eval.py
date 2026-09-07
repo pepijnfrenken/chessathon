@@ -96,7 +96,27 @@ MAX_PHASE = 24
 # Phase 3 hand-tuned endgame king-activation weight (see evaluate()).
 # 30 was too weak to overcome PST/rook noise at kdist 3-4 (KRvK king
 # stalled at d1/e1 instead of entering the black king's orbit).
-MATE_DRIVE_K = 50               # cp per rank of king closeness
+# Distance metric: MANHATTAN (df+dr), not chebyshev — the chebyshev
+# max(df,dr) is FLAT along the first rank (kdist 6 from a1..g1 with the
+# enemy king on h7: the +50 gradient only appears beyond the horizon, so
+# the winning king shuffled a1-b1 instead of marching). Manhattan gives
+# +DRIVE_K for EVERY king step toward the enemy king, monotonic to the
+# mating orbit (min manhattan = 2, diagonal adjacency).
+MATE_DRIVE_K = 50               # cp per unit of king closeness
+
+# Phase 3 follow-up (endgame conversion fixer): the drive term alone
+# saturates at king-distance 2 in the CENTER — the winner's king cannot
+# step closer (adjacency is illegal), the loser's king bounces around the
+# centre, and the ROOK (no gradient) wanders in loops; joint retraces
+# three-fold into draws. Two further classical terms, hand-tuned here:
+#   MATE_EDGE_K  — push the LOSER's king to the edge/corner (the drive
+#                  has no gradient once the kings are adjacent; the edge
+#                  distance keeps decreasing as the net closes).
+#   MATE_RPROX_K — pull the WINNER's ROOK towards the loser's king
+#                  so it cuts escape files/ranks instead of making
+#                  random waiting loops (the draw-enabling wander).
+MATE_EDGE_K = 30                # cp per unit of loser-king edge distance
+MATE_RPROX_K = 25               # cp per unit of winner rook/queen closeness
 
 # ---------------------------------------------------------------------------
 # Bitboard masks (sq64 encoding: a1=0 .. h8=63, bit = 1 << sq64)
@@ -632,18 +652,72 @@ def evaluate(st) -> int:
         phase = MAX_PHASE
     score = (mg * phase + eg * (MAX_PHASE - phase)) // MAX_PHASE
 
-    # Phase 3 — endgame mate-drive (hand term, NOT a tunable param: keeps
-    # the tuner's 813-param contract intact). Classical king-activation:
-    # in a mostly-endgame position with a material edge of a rook or more,
-    # the WINNING side is rewarded for its king approaching the enemy
-    # king. As a White-POV term, the negation in the return below
-    # automatically makes the loser flee (its eval minimizes the drive).
-    # Restores KQvK/KRvK conversion that the 1b quiet-leaf bug masked by
-    # scoring every quiet leaf 0 (found during Phase-3 aspiration parity
-    # forensics; eg_check KQvK/KRvK strong-side draws without it).
+    # Phase 3/3.1 — endgame king-activation + closing terms (hand terms,
+    # NOT tunable params: keeps the tuner's 813-param contract intact).
+    # Classical king-activation: in a mostly-endgame position (phase<=16)
+    # with a material edge of a rook or more (|mat|>=300), the WINNING
+    # side is rewarded for (a) its king approaching the enemy king
+    # (MATE_DRIVE_K), (b) driving the LOSER's king to the edge/corner
+    # (MATE_EDGE_K — the drive saturates at adjacent kings in the centre,
+    # leaving no progress gradient), and (c) keeping its rook/queen near
+    # the loser's king (MATE_RPROX_K — cuts escape files/ranks; stops the
+    # aimless rook loops that three-fold won endgames into draws). As a
+    # White-POV term, the negation in the return below automatically makes
+    # the loser flee the edge and the winner's pieces (its eval minimizes
+    # all three). Restores KQvK/KRvK conversion that the 1b quiet-leaf bug
+    # masked by scoring every quiet leaf 0 (found during Phase-3
+    # aspiration-parity forensics); the edge/prox terms are the Phase-3
+    # follow-up that makes conversion robust at 300ms.
     if phase <= 16 and (mat >= 300 or mat <= -300):
-        drive = (1 if mat > 0 else -1) * MATE_DRIVE_K * (7 - kdist)
-        score += drive
+        sign = 1 if mat > 0 else -1
+        # The mate-net machinery is restricted to the bare-king family
+        # (<=6 pieces): the 500ms-vs-HEAD gate showed the drive terms
+        # mis-firing in 6-10-piece endings (QvR-style) and eroding the
+        # winner's material (the queen dragged into the en-route rook).
+        npc = 0
+        for _sq in range(128):
+            if (_sq & 0x88) != 0:
+                continue
+            if sqr[_sq] != EMPTY:
+                npc += 1
+        if npc <= 6:
+            # loser's king (the side WITHOUT the material edge) is the target
+            lf = bf if mat > 0 else wf
+            lr = br if mat > 0 else wr
+            edge = min(lf, 7 - lf) + min(lr, 7 - lr)  # 0 edge .. 6 centre
+            drive = sign * MATE_DRIVE_K * (14 - (df + dr))
+            edge_t = sign * MATE_EDGE_K * (6 - edge)
+            score += drive + edge_t
+            # winner's ROOK/QUEEN proximity to the loser's king: gives
+            # the net piece a job (cut escape files/ranks) instead of
+            # waiting loops that three-fold into draws.
+            prox = 8
+            if mat > 0:
+                for sq in range(128):
+                    if (sq & 0x88) != 0:
+                        continue
+                    if sqr[sq] > 0 and (abs(sqr[sq]) == ROOK
+                                        or abs(sqr[sq]) == QUEEN):
+                        s = sq64(sq)
+                        df2 = abs((s & 7) - lf)
+                        dr2 = abs((s >> 3) - lr)
+                        d = df2 if df2 > dr2 else dr2
+                        if d < prox:
+                            prox = d
+            else:
+                for sq in range(128):
+                    if (sq & 0x88) != 0:
+                        continue
+                    if sqr[sq] < 0 and (abs(sqr[sq]) == ROOK
+                                        or abs(sqr[sq]) == QUEEN):
+                        s = sq64(sq)
+                        df2 = abs((s & 7) - lf)
+                        dr2 = abs((s >> 3) - lr)
+                        d = df2 if df2 > dr2 else dr2
+                        if d < prox:
+                            prox = d
+            if prox < 6:
+                score += sign * MATE_RPROX_K * (6 - prox)
 
     if not has_pawn and not has_major:
         if mins <= 1:
