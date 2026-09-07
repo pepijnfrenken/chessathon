@@ -36,7 +36,8 @@ groups per engine side.
 Configuration is read at import (numba bakes global array VALUES at
 compile, so runtime mutation is not visible; each A/B side runs as its
 own process with its own config):
-  CHESSATHON_EVAL_CONFIG = hand|tuned   (default: tuned)
+  CHESSATHON_EVAL_CONFIG = hand|tuned   (default: hand — the shipped eval;
+                                         tuned is the rejected fit, kept for A/B)
   CHESSATHON_EVAL_GATE   = "1111"       4 chars, group order: pawn,
                                          mobility, king-safety, bp+tempo
 """
@@ -383,7 +384,11 @@ TUNED_PARAMS = np.array([
 # Configure at import: numba bakes global array values at compile time, so
 # the choice must happen before the first jitted call (engine_side.py for
 # A/B tests sets these env vars; the shipped agent just uses defaults).
-_EVAL_CFG = os.environ.get("CHESSATHON_EVAL_CONFIG", "tuned")
+# SHIPPED DEFAULT = "hand": SPRT #2 (tuned-vs-hand, 2026-09-07) rejected the
+# tuned fit (see BUILD.md "Phase 2 — COMPLETION"), so agent.py (no env var)
+# must run the hand-tuned values. The tuned fit stays embedded + selectable
+# via CHESSATHON_EVAL_CONFIG=tuned for A/B tooling.
+_EVAL_CFG = os.environ.get("CHESSATHON_EVAL_CONFIG", "hand")
 EVAL_PARAMS = TUNED_PARAMS if _EVAL_CFG == "tuned" else HAND_PARAMS
 
 _GATE_STR = os.environ.get("CHESSATHON_EVAL_GATE", "1111")[:4]

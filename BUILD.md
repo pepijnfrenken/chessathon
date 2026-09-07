@@ -33,8 +33,8 @@ alpha-beta engine with a hand-tuned evaluation**, not an NN.
 - [x] Phase 2: search core (negamax/alpha-beta/ID/TT/quiescence) — 1b
 - [x] Phase 3: evaluation — 1b baseline (PST+taper+bishop-pair+tempo); tuning next
 - [x] Phase 4: time management — 1b (remaining/45 + inc, never flags); pondering pending
-- [ ] Phase 5: tuning + testing vs baseline
-- [ ] Submission zip
+- [x] Phase 5: tuning + testing vs baseline — tuned LOSES to hand (SPRT 0-wins-in-50, gate 0.104, eg 1/4); hand eval ships
+- [x] Submission zip — agent.py + engine/ only, 25,031 B, init 44.9s, hand eval
 
 ## Build record
 
@@ -205,7 +205,8 @@ What changed vs 1b:
   `CHESSATHON_EVAL_CONFIG=hand|tuned`, `CHESSATHON_EVAL_GATE=NNNN`
   (pawn, mobility, king-safety, bp+tempo) — how SPRT side-B reproduces the
   1b-style flat eval (material+PST only) in a separate process. TUNED_PARAMS
-  block is patched by the tuner; the shipped agent defaults to `tuned`.
+  block is patched by the tuner. Shipped default = `hand` (SPRT rejected the
+  tuned fit — see "Phase 2 — COMPLETION" below).
 - **`tools/`** — `common.py` (11 hand-written openings + 300-ply material
   adjudication), `engine_side.py` (one config per subprocess, stdin/stdout
   protocol), `sprt.py` (trinomial SPRT, elo0=0 / elo1=10, alpha=beta=0.05,
@@ -259,3 +260,81 @@ What changed vs 1b:
   near +9 / far -32, open 0, kdist mg/eg [-6,6], bishop pair mg/eg
   [-137,+118], tempo 6. These are unconventional (e.g. negative bishop-
   pair MG) — the tuned-vs-hand SPRT decides whether it plays better.
+
+### Phase 2 — COMPLETION (2026-09-07): verdicts, gates, ship decision (HAND eval)
+
+ORIGINALITY.md honored throughout: every weight and value above is OUR fit or
+hand-tune, produced in this repo during this event; python-chess is used only
+as an oracle (perft/legality); the shipped agent runs our own search + eval.
+
+- **Tuned-vs-hand SPRT (final gate) — aborted at pair 25 by a legality flag,
+  decisively losing; tuning experiment closed by team decision.** `tuned:1111`
+  vs `hand:1111` @300ms (seed 11, elo0=0/elo1=10, α=β=0.05): tuned 0-41-9 —
+  score 0.090, est −151 elo, LLR −1.163 (bounds ±2.94), zero wins in 50 games
+  (`results/sprt_phase2_tuned_vs_hand_20260907_121432.log`). Run aborted on an
+  engine-side legality flag `ERROR:illegal b2a1` (see risks). IMPORTANT
+  provenance: that run's engines imported the PRE-anchoring fit (the
+  degenerate 3k-random-game weights wired by 516ef8c) — commit b1df520
+  replaced the block with the anchored 60k fit mid-run, so the running
+  processes still carried the old values. The anchored fit was then measured
+  separately: eg_check 0/4 (worse than hand's 3/4), 16-game self-play fuzz
+  @100ms ZERO legality flags but all-shuffle adjudication draws. Pino's
+  directive (12:5x): the Texel experiment failed — ship the hand eval; no
+  further tuned-vs-hand compute.
+- **Gate — perft parity: ALL PASS** (6 positions d1-5 vs published values,
+  python-chess oracle, move-type breakdowns), movegen ~7-14 Mnps. The eval and
+  the hand-default change did not touch the board.
+- **Gate — nps (hand eval): 674 / 656 / 521 knps** (startpos d11 / middlegame
+  d6 / sharp) in 5s budgets — above the ~400 knps floor with the richer eval.
+- **Gate — endgame conversion (hand:1111 vs hand:0000 @300ms): KQvK WIN,
+  KRvK WIN, KRPvK WIN, KPK DRAW (3/4)**. Tuned fits are worse (degenerate
+  1/4, anchored 0/4). KPK is the standing weak spot; won-endgame shuffling
+  into the 300-ply adjudication cap still happens at short TC.
+- **Gate — fixed match vs 1b-flat (`hand:1111` vs `hand:0000`): 3W-4L-17D
+  (0.479) over 24 games @500ms, ZERO flags** (`results/gate_hand_vs_1b_
+  20260907_125312.log`). The rich eval is ≈ EVEN with material+PST-only at
+  short TC — consistent with SPRT #1's partial 144 games (0.528 score,
+  +0.227 LLR, +19 elo lean, 80/144 draws, killed before verdict): a weak
+  positive lean, not a clear beat. Draw-shuffling at the cap limits
+  discrimination; re-measure at the real clock.
+- **Failed-experiment evidence kept:** degenerate-fit logs
+  `results/sprt_phase2_tuned_vs_hand_20260907_121432.log` (SPRT abort) and
+  `results/gate_tuned_vs_1b_20260907_121614.log` (0W-19L-5D, 0.104) document
+  what a degenerate Texel fit plays like; the anchored fit (121937.npy) is the
+  only genuine 60k fit.
+- **Ship: `agent.zip` (25,031 bytes)** = exactly agent.py + engine/ (7 files).
+  Import+JIT 44.9s (<60s init), first move 3.35s legal, **eval config: hand**
+  — `CHESSATHON_EVAL_CONFIG` default flipped `tuned`→`hand` in
+  engine/eval.py this phase (commit below); TUNED_PARAMS stays embedded and
+  selectable for A/B but is not the shipped default.
+- **Data provenance:** `data/positions_selfplay.npz` = 60,012 positions from
+  735 self-play games (our engine @40ms, 11 hand-written openings, 3 workers,
+  2493s — `data/gen_log.txt`); `positions_val.npz` (110KB) for validation;
+  anchored fit `data/tuned_params_20260907_121937.npy` (material frozen at
+  hand priors, PSTs + term weights fitted, bit-parity-verified).
+
+Risks / next-phase list:
+
+1. **Endgame conversion is the weakest link**: KPK never converts at 300ms
+   and won endgames shuffle into cap-draws (measured: tuned KQvK played a
+   king a1↔b1 shuttle into a fivefold-repetition draw — no progress pressure
+   at short horizon). The 120s+0.5s clock searches far deeper — re-measure
+   endgames at real time controls; candidate fixes: a mate-drive/king-
+   activation eval term, or an endgame search budget.
+2. **Illegal-move anomaly (1 in ~350 harness games)**: `b2a1` flagged by
+   engine_side's python-chess oracle during the degenerate-fit SPRT (pair
+   25). Never reproduced under the anchored fit (16 fuzz games) or any
+   hand-config game (300+ games, all gates, zero flags). Root cause
+   unconfirmed: make/unmake is perft-exact (6 positions × d1-5), but a
+   standalone differential fuzz couldn't compile (numba global-typing quirk
+   when legal_moves is called directly from Python — the engine always
+   compiles it through the search chain). Priority: full-game replay fuzz of
+   the search in-process.
+3. **Rich-vs-flat is weakly positive at 300-500ms** (SPRT #1 inconclusive,
+   +19 elo): the ship decision rests on tuned < hand and the gates, not on
+   rich > flat. The move-quality gap should widen at the 120s clock.
+4. Tuned-vs-hand never reached a formal SPRT bound: the degenerate-fit run
+   aborted at pair 25 (0-41-9); the anchored-fit run reached pair 10
+   (0-10-10, 20 games, zero wins, LLR −0.284) before being cancelled per
+   directive. Both fits show zero wins vs hand; with the gates + eg_check
+   the decision is not close. Hand is the low-risk ship.

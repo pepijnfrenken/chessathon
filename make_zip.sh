@@ -36,6 +36,8 @@ t0 = time.time()
 import chess
 from agent import get_move
 t_import = time.time() - t0
+import engine.eval as _E
+print(f"shipped eval config: {_E._EVAL_CFG}", file=sys.stderr)
 t0 = time.time()
 m = get_move("rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1", 120000)
 t_move = time.time() - t0
