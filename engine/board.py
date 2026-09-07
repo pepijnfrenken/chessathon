@@ -119,6 +119,12 @@ def is_piece_color(p: int, color: int) -> bool:
 
 
 @njit(inline="always")
+def sq64(sq: int) -> int:
+    """0x88 square -> 0..63 index (a1=0 .. h8=63)."""
+    return ((sq >> 4) << 3) + (sq & 7)
+
+
+@njit(inline="always")
 def make_move(frm: int, to: int, flags: int, promo: int) -> int:
     return frm | (to << 7) | (flags << 14) | (promo << 18)
 
