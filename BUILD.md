@@ -466,8 +466,12 @@ threefold draws.
 **FINAL VERDICT: the eg_conversion machinery is REVERTED from the
 ship.** The 500ms-vs-HEAD gates regressed on every configuration tried
 (broad terms 0.417, <=6-piece restricted 0.396, bare-king-only <=4
-trending the same — see the gate logs below), and the mission's hard
-"no overall regression" gate could not be passed. Decision (Pino
+0.417 — see results/gate_v3_vs_head.log, gate_v5_vs_head.log,
+gate_v6_vs_head.log; zero flags on all three): the regression is
+insensitive to the mate-net scope, which pins it to the qsearch
+stalemate probes' tree-wide leaf-value changes (0 vs stand-pat at
+sparse cornered leaves) — the deltas common to every variant — and the
+mission's hard "no overall regression" gate could not be passed. Decision (Pino
 directed, evidence above): **agent.zip and the shipped engine return to
 05d0101**; this entry and the commit record the full experiment so the
 eg work is not lost. The conversion terms themselves are sound at the
