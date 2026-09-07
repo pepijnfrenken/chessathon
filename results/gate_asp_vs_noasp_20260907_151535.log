@@ -1,0 +1,27 @@
+# gate hand:1111:asp vs hand:1111:noasp games=24 move-ms=500 seed=7
+pair  0 game 1: 1/2-1/2 (A draw) ply=95
+pair  0 game 2: 1/2-1/2 (A draw) ply=175
+pair  1 game 1: 1/2-1/2 (A draw) ply=149
+pair  1 game 2: 0-1 (A win) ply=144
+pair  2 game 1: 1/2-1/2 (A draw) ply=115
+pair  2 game 2: 1-0 (A loss) ply=137
+pair  3 game 1: 0-1 (A loss) ply=180
+pair  3 game 2: 1/2-1/2 (A draw) ply=121
+pair  4 game 1: 1/2-1/2 (A draw) ply=197
+pair  4 game 2: 1-0 (A loss) ply=175
+pair  5 game 1: 1-0 (A win) ply=125
+pair  5 game 2: 1/2-1/2 (A draw) ply=50
+pair  6 game 1: 0-1 (A loss) ply=142
+pair  6 game 2: 1/2-1/2 (A draw) ply=55
+pair  7 game 1: 1-0 (A win) ply=69
+pair  7 game 2: 1-0 (A loss) ply=61
+pair  8 game 1: 1/2-1/2 (A draw) ply=118
+pair  8 game 2: 1/2-1/2 (A draw) ply=207
+pair  9 game 1: 0-1 (A loss) ply=90
+pair  9 game 2: 1-0 (A loss) ply=129
+pair 10 game 1: 0-1 (A loss) ply=186
+pair 10 game 2: 1/2-1/2 (A draw) ply=60
+pair 11 game 1: 1-0 (A win) ply=65
+pair 11 game 2: 0-1 (A win) ply=134
+
+=== hand:1111:asp vs hand:1111:noasp: 5W 8L 11D (0.438) over 24 games, ZERO flags ===

@@ -338,3 +338,80 @@ Risks / next-phase list:
    (0-10-10, 20 games, zero wins, LLR −0.284) before being cancelled per
    directive. Both fits show zero wins vs hand; with the gates + eg_check
    the decision is not close. Hand is the low-risk ship.
+
+### Phase 3 (in progress, 2026-09-07) — search strength: aspiration windows + the correctness forensics they exposed
+
+ORIGINALITY.md honored: every line below is ours, written in this repo
+during the event; all standard concepts (aspiration windows, PVS,
+stand-pat quiescence, king activation) implemented fresh.
+
+#### Step 1 — aspiration windows at the root (committed 3817bde)
+
+From iteration 2 on, the root searches `[prev - 40, prev + 40]`; a fail
+low/high triggers ONE full-window re-search (a full-window search cannot
+fail, so the iteration stays exact). Toggle `CHESSATHON_ASP=0` for A/B.
+Root moves refactored into `_root_iter` (the aspiration re-search reuses
+the same move order).
+
+**Parity selfcheck (the mission's paranoia made concrete):** asp-on vs
+asp-off at fixed depths — the check that was supposed to be a formality
+instead found THREE latent baseline bugs and the root cause of the
+engine's endgame weakness. The bar: with LMR off (exact core) the two
+must be byte-identical; the first attempt was not, and each discrepancy
+was traced to a real defect (brute-force minimax + zobrist-key forensics,
+below). After the fixes: **EXACT parity on the exact core** (asp on ≡ off,
+8 positions × depth 1-8), and with LMR on only equal-value alternative
+moves differ (e.g. mg d5: d1e2/c1d2 both 396). Determinism: same-config
+twice = identical output.
+
+**Bug 1 — PVS re-search condition was wrong-sign** (`search.py`): the
+zero-window siblings were re-searched only when `child > alpha`, but
+`child` is the side-swapped (negative-scaled) value; the correct test is
+`-child > alpha`. Effect: re-searches never fired on moves that beat
+alpha — they fired on *losing* ones (score < −alpha). The root maxed
+loose fail-soft staircase bounds (the dive-by-one-cp pattern 86, 88, 90,
+… 130) instead of the true best move: on the Phase-2 "mg" position the
+depth-5 search reported c4d5 (+130) while the true best (c1g5, +286) sat
+undiscovered. This is a *strength* bug in the shipped 1b/Phase-2 engine,
+not just a parity artifact — it explains part of the ladder-loss profile.
+
+**Bug 2 — qsearch dropped stand-pat TWICE** (`search.py`): (a) a
+capture-less quiet leaf returned `0` instead of the static eval — *every
+quiet variation in the engine evaluated to 0 at its horizon*; the eval
+only spoke through forced captures/checks, which is exactly the profile
+the engine showed (material-grab tactics fine, won endgames shuffle, KPK
+never converts at short TC). KRvK static +524 searches as a draw; after
+the fix it evaluates +543 and converts. (b) the fail-soft tail returned
+`max(moves)` instead of `max(stand-pat, moves)` — a false fail-low bound
+that parents negated into a false fail-high (a depth-1 node claimed
++1231 in a materially even position).
+
+**Bug 3 — parse_fen ep default (`board.py`):** `new_state()` zero-fills,
+so a '-' FEN left `ep = 0`; the parse then hashed `ZEP[0]` into the root
+key while the first make clears ep to −1. The root position's key could
+never match an in-search repetition, so won endgames three-folded into
+draws *even with working search repetition* (the KQvK b1-a1 king-shuffle
+was invisible to its own search). Fix: ep defaults to −1 on '-'. This,
+plus the quiet-leaf fix, is the true story behind Phase-2's "endgame
+shuffling into cap-draws".
+
+**Mate-drive hand term (`eval.py`, hand config unchanged):** with the
+quiet-leaf fix, the baseline's accidental KQvK/KRvK conversion (check
+hunting through a deaf horizon) vanished and the fixed engine drew both
+at 300ms. Restored with a small classical king-activation term: in an
+endgame (phase ≤ 16) with a material edge of a rook or more, the winning
+side is rewarded `MATE_DRIVE_K * (7 − kingChebyshev)` cp for its king
+approaching the enemy king. As a White-POV term, the evaluation's
+negation automatically makes the loser flee. Hand value 50, a module
+constant (NOT a tunable param — the tuner's 813-param contract is
+untouched). eg_check (strong-as-white, 300ms): KQvK WIN, KRvK WIN,
+KRPvK WIN, KPK DRAW — 3/4, matching the Phase-2 record (KPK draw is the
+known baseline).
+
+Gates re-run on the final Step-1 tree: perft parity ALL PASS (6 pos,
+d1-5 + breakdowns); bench nps 487/572 knps (startpos d10 / mg d8); exact-
+core aspiration parity EXACT; shipped-config parity equal-value-only.
+
+**Step-1 strength gate (running)**: `hand:1111:asp` vs `hand:1111:noasp`
+24 games @ 500ms our openings — `results/gate_asp_vs_noasp_20260907_*.log`.
+Need ≥ ~55% to proceed.

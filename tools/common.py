@@ -57,8 +57,7 @@ def side_env(spec: str, move_ms: int) -> dict:
     """Subprocess env for one engine_side config. `spec` is
     `config:gate[:searchflags]` where searchflags is a comma-separated
     list of search-feature toggles (empty/absent = all on):
-        noasp   -> CHESSATHON_ASP=0   (disable root aspiration windows)
-        nolmr   -> CHESSATHON_LMR=0   (disable late move reduction)
+        nolmr   -> CHESSATHON_LMR=0  (disable late move reduction)
     Used by sprt.py / gate_match.py so side-A and side-B can differ in
     the SEARCH (not just the eval) for feature gates."""
     parts = spec.split(":")
@@ -69,7 +68,6 @@ def side_env(spec: str, move_ms: int) -> dict:
     env["CHESSATHON_EVAL_GATE"] = gate
     env["CHESSATHON_MOVE_BUDGET_MS"] = str(move_ms)
     toggles = set(t for t in search.split(",") if t)
-    env["CHESSATHON_ASP"] = "0" if "noasp" in toggles else "1"
     env["CHESSATHON_LMR"] = "0" if "nolmr" in toggles else "1"
     return env
 

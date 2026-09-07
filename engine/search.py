@@ -2,15 +2,12 @@
 
 Iterative-deepening negamax alpha-beta with:
   - principal variation search (zero-window sibling re-search)
-  - aspiration windows at the root (Phase 3: depth >= 2, window
-    [prev - ASP_WINDOW, prev + ASP_WINDOW]; a fail low/high re-searches
-    the FULL window once — a full-window search cannot fail, so the
-    iteration is exact. Toggle: CHESSATHON_ASP=0 disables)
   - transposition table (engine.tt; TT move ordering + score cutoffs)
   - MVV-LVA capture ordering + 2 killers/ply + quiet history
   - quiescence search (stand-pat + captures; full evasions in check;
     QCAP depth cap)
-  - null-move pruning (R=2, eval >= beta, endgame zugzwang guard)
+  - null-move pruning (R=2, eval >= beta, endgame zugzwang guard;
+    beta > 0 only)
   - late move reductions (quiet moves, depth >= 3, cap 2)
   - check extension (+1 ply)
   - repetition (path zobrist keys) + fifty-move draws
@@ -18,8 +15,9 @@ Iterative-deepening negamax alpha-beta with:
 Time: aborted from INSIDE the recursion via a monotonic clock (ctypes
 CFUNCTYPE callback — numba has no time_ns) checked against a deadline
 every 1024 nodes; a TIMEOUT sentinel propagates to the root, which keeps
-the last completed iteration's best move. Aspiration does not weaken the
-time contract: a re-search that times out discards the whole iteration.
+the last completed iteration's best move. Every root iteration searches
+the full window (root aspiration was tried in Phase 3 and REVERTED after
+a negative 500ms gate — see search_root doc).
 
 Scores: centipawns from the side to move; MATE at +-30000 with
 mate-distance (checkmate = -MATE + ply); TT stores MATE-ply adjusted.
@@ -27,7 +25,6 @@ Sentinels: TIMEOUT = 1e9 (never stored, never compared as a score).
 
 Search feature toggles (read at import — numba bakes globals at compile;
 each A/B side runs as its own process):
-  CHESSATHON_ASP  = 0 disables root aspiration windows (default: on)
   CHESSATHON_LMR  = 0 disables late move reduction (default: on)
 """
 
@@ -60,15 +57,8 @@ QCAP = 12                     # quiescence depth cap
 REP_LOOKBACK = 16             # plies of search path scanned for repeats
 MAX_ROOT_DEPTH = 64
 
-# Phase 3 — root aspiration windows. After iteration 1 the next iteration
-# searches [prev - ASP_WINDOW, prev + ASP_WINDOW]; fail low/high triggers
-# one full-window re-search. Disabled for scores at mate distance (their
-# window would not bound a useful range) and by CHESSATHON_ASP=0.
-ASP_WINDOW = 40               # centipawns
-ASP_ON = os.environ.get("CHESSATHON_ASP", "1") != "0"
-
 # LMR toggle (Phase 3 A/B infra; default on = the 1b behavior). Used to
-# prove aspiration parity on the exact core and to gate LMR itself.
+# gate LMR itself.
 LMR_ON = os.environ.get("CHESSATHON_LMR", "1") != "0"
 
 _NOW = ctypes.CFUNCTYPE(ctypes.c_longlong)(lambda: time.monotonic_ns())
@@ -483,11 +473,14 @@ def search_root(st, nodes, deadline, ttk, ttv, mask, killers, hist, rep,
     completed_depth); bestmove==0 => no legal move / call failed. On
     timeout the last completed iteration's move wins.
 
-    Aspiration (Phase 3): from depth 2 on, each iteration starts from
-    [prev - ASP_WINDOW, prev + ASP_WINDOW]; a fail low (score <= alpha)
-    or fail high (score >= beta) re-searches the FULL window once, which
-    restores the exact root result — the same move and score the
-    full-window search would have found."""
+    Every iteration searches the FULL window [−INF, INF]. Root aspiration
+    was tried in Phase 3 (window [prev−40, prev+40], full-window re-search
+    on fail low/high): byte-exact at fixed depth (parity proven), but the
+    24-game 500ms gate was NEGATIVE (0.438: 5W-8L-11D) — at short TCs the
+    window misses often and the re-search burns the budget, so fewer
+    iterations complete than the full-window search. Reverted by
+    evidence; a Stockfish-style widening re-search is a documented
+    follow-up for real-clock TCs."""
     cnt = legal_moves(st, scratch[0], False)
     if cnt == 0:
         return 0, 0, 0
@@ -503,32 +496,11 @@ def search_root(st, nodes, deadline, ttk, ttv, mask, killers, hist, rep,
         if _NOW() >= deadline:
             break
         _order_moves(st, scratch[0], sscratch[0], cnt, 0, killers, hist, 0)
-
-        alpha = -INF
-        beta = INF
-        asp = (ASP_ON and depth >= 2
-               and -MATE + 500 < best_score < MATE - 500)
-        if asp:
-            alpha = best_score - ASP_WINDOW
-            beta = best_score + ASP_WINDOW
-            if alpha < -INF:
-                alpha = -INF
-            if beta > INF:
-                beta = INF
-
-        iter_move, iter_best = _root_iter(st, depth, alpha, beta, cnt, nodes,
+        iter_move, iter_best = _root_iter(st, depth, -INF, INF, cnt, nodes,
                                           deadline, ttk, ttv, mask, killers,
                                           hist, rep, scratch, sscratch)
         if iter_move == 0:
             break                        # timed out mid-iteration
-        if asp and (iter_best <= alpha or iter_best >= beta):
-            # fail low/high -> exact full-window re-search (cannot fail)
-            iter_move, iter_best = _root_iter(st, depth, -INF, INF, cnt,
-                                              nodes, deadline, ttk, ttv,
-                                              mask, killers, hist, rep,
-                                              scratch, sscratch)
-            if iter_move == 0:
-                break
         best_move = iter_move
         best_score = iter_best
         completed = depth
