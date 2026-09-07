@@ -1,0 +1,2 @@
+735 games, 60012 positions from 3 workers @ 40ms in 2493s (24 pos/s)
+wrote data/positions_selfplay.npz (60012 positions)

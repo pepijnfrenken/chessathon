@@ -1,0 +1,27 @@
+# gate hand:1111 vs hand:0000 games=24 move-ms=500 seed=7
+pair  0 game 1: 1-0 (A win) ply=75
+pair  0 game 2: 1/2-1/2 (A draw) ply=139
+pair  1 game 1: 1/2-1/2 (A draw) ply=63
+pair  1 game 2: 1-0 (A loss) ply=169
+pair  2 game 1: 0-1 (A loss) ply=100
+pair  2 game 2: 1/2-1/2 (A draw) ply=124
+pair  3 game 1: 1/2-1/2 (A draw) ply=168
+pair  3 game 2: 1/2-1/2 (A draw) ply=143
+pair  4 game 1: 1/2-1/2 (A draw) ply=28
+pair  4 game 2: 1/2-1/2 (A draw) ply=62
+pair  5 game 1: 1/2-1/2 (A draw) ply=142
+pair  5 game 2: 1/2-1/2 (A draw) ply=116
+pair  6 game 1: 1/2-1/2 (A draw) ply=145
+pair  6 game 2: 1/2-1/2 (A draw) ply=127
+pair  7 game 1: 1/2-1/2 (A draw) ply=44
+pair  7 game 2: 0-1 (A win) ply=96
+pair  8 game 1: 1/2-1/2 (A draw) ply=85
+pair  8 game 2: 1-0 (A loss) ply=105
+pair  9 game 1: 1-0 (A win) ply=255
+pair  9 game 2: 1/2-1/2 (A draw) ply=135
+pair 10 game 1: 1/2-1/2 (A draw) ply=206
+pair 10 game 2: 1-0 (A loss) ply=87
+pair 11 game 1: 1/2-1/2 (A draw) ply=44
+pair 11 game 2: 1/2-1/2 (A draw) ply=57
+
+=== hand:1111 vs hand:0000: 3W 4L 17D (0.479) over 24 games, ZERO flags ===

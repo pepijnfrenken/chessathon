@@ -1,0 +1,11 @@
+# sprt tuned:1111 vs hand:1111 move-ms=300 elo0=0.0 elo1=10.0 alpha=0.05 beta=0.05 draw=0.25
+pair   1 score 0-1-1 (0.250) llr -0.028 [reject -2.94 .. accept +2.94]
+pair   2 score 0-3-1 (0.125) llr -0.085 [reject -2.94 .. accept +2.94]
+pair   3 score 0-3-3 (0.250) llr -0.085 [reject -2.94 .. accept +2.94]
+pair   4 score 0-3-5 (0.312) llr -0.085 [reject -2.94 .. accept +2.94]
+pair   5 score 0-5-5 (0.250) llr -0.142 [reject -2.94 .. accept +2.94]
+pair   6 score 0-7-5 (0.208) llr -0.199 [reject -2.94 .. accept +2.94]
+pair   7 score 0-8-6 (0.214) llr -0.227 [reject -2.94 .. accept +2.94]
+pair   8 score 0-9-7 (0.219) llr -0.255 [reject -2.94 .. accept +2.94]
+pair   9 score 0-9-9 (0.250) llr -0.255 [reject -2.94 .. accept +2.94]
+pair  10 score 0-10-10 (0.250) llr -0.284 [reject -2.94 .. accept +2.94]
