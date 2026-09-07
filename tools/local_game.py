@@ -66,10 +66,11 @@ def material_move(board: chess.Board, rng: random.Random) -> str:
     best_score = -1
     for mv in board.legal_moves:
         if board.is_capture(mv):
-            victim = board.piece_at(mv.to_square)
-            score = _VICTIM[victim.piece_type] * 10
             if board.is_en_passant(mv):
-                score = _VICTIM[chess.PAWN] * 10
+                score = _VICTIM[chess.PAWN] * 10  # victim not on to_square
+            else:
+                victim = board.piece_at(mv.to_square)
+                score = _VICTIM[victim.piece_type] * 10
             if best is None or score > best_score:
                 best, best_score = mv, score
     if best is not None:
