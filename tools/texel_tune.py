@@ -75,6 +75,13 @@ MG_IDXS = np.r_[np.arange(0, 6), np.arange(12, 396), _TERM_MG]
 EG_IDXS = np.r_[np.arange(6, 12), np.arange(396, 780), _TERM_EG]
 assert len(MG_IDXS) + len(EG_IDXS) == N_P - 1          # everything but tempo
 assert len(np.intersect1d(MG_IDXS, EG_IDXS)) == 0
+# material (mg+eg) is FROZEN at the hand priors by default: the material
+# constants and the PST mean are collinear (shifting all squares of a
+# piece's table by c and material by -c leaves the eval unchanged), so an
+# unanchored joint fit drifts to degenerate splits (e.g. queen 342cp).
+# Anchoring material identifies the PST mean and keeps exchange values sane
+# (standard Texel practice: tune tables around fixed piece values).
+FREEZE_MAT = np.arange(0, 12)
 
 
 # ---------------------------------------------------------------------------
@@ -441,9 +448,11 @@ def _blocks(n: int, size: int = 2048):
 
 
 def fit_irwls(rows, cols, vals, phases, y, init, iters=8, lam=1e-3,
-              block=2048, seed=7):
+              block=2048, seed=7, freeze=FREEZE_MAT):
     p = np.array(init, dtype=np.float64)
     n = len(y)
+    free = np.setdiff1d(np.arange(N_P), freeze) if freeze is not None \
+        else np.arange(N_P)
     rng = np.random.default_rng(seed)
     val_idx = rng.choice(n, max(1, n // 20), replace=False)
     tr_idx = np.setdiff1d(np.arange(n), val_idx)
@@ -494,10 +503,14 @@ def fit_irwls(rows, cols, vals, phases, y, init, iters=8, lam=1e-3,
             G += Xs.T @ (Xs * w[:, None])
             b += Xs.T @ rw
         G += np.eye(N_P) * lam
+        Gf = G[free][:, free]
+        bf = b[free]
         try:
-            delta = np.linalg.solve(G, b)
+            delta_f = np.linalg.solve(Gf, bf)
         except np.linalg.LinAlgError:
-            delta = np.linalg.lstsq(G, b, rcond=None)[0]
+            delta_f = np.linalg.lstsq(Gf, bf, rcond=None)[0]
+        delta = np.zeros(N_P)
+        delta[free] = delta_f
 
         step = 1.0
         while step > 1e-4:
@@ -611,9 +624,12 @@ def main() -> int:
     if not args.no_patch:
         target = patch_eval_py(pint)
         print(f"patched TUNED_PARAMS into {target}")
+        env = dict(os.environ)
+        env["PYTHONPATH"] = str(_HERE.parent)
         r = subprocess.run([sys.executable,
                             str(_HERE.parent / "engine" / "eval.py")],
-                           capture_output=True, text=True)
+                           capture_output=True, text=True, env=env,
+                           cwd=str(_HERE.parent))
         print(r.stdout.strip() or r.stderr.strip())
         if r.returncode != 0:
             return 1

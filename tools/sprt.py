@@ -222,6 +222,10 @@ def main() -> int:
                     f"[reject {b_bound:+.2f} .. accept {a_bound:+.2f}]")
             print(line)
             lines.append(line)
+            # periodic flush so a killed run still leaves audit trail
+            if pairs % 5 == 0:
+                with open(log_path, "w") as fh:
+                    fh.write("\n".join(lines) + "\n")
             if llr >= a_bound:
                 verdict = f"ACCEPT (side A >= elo1={args.elo1})"
                 break
@@ -230,10 +234,11 @@ def main() -> int:
                 break
 
         total = wins + losses + draws
-        summary = (f"\n=== VERDICT: {verdict} after {pairs} pairs ({total} games) ==="
-                   f"\nside A {args.side_a}: {wins}W {losses}L {draws}D "
-                   f"({score_a:.3f}, est {est_a_elo:+.0f} elo) | "
-                   f"llr {llr:+.3f} vs bounds [{b_bound:+.2f}, {a_bound:+.2f}]")
+        summary = (
+            f"\n=== VERDICT: {verdict} after {pairs} pairs ({total} games) ==="
+            f"\nside A {args.side_a}: {wins}W {losses}L {draws}D "
+            f"({score_a:.3f}, est {est_a_elo:+.0f} elo) | "
+            f"llr {llr:+.3f} vs bounds [{b_bound:+.2f}, {a_bound:+.2f}]")
         print(summary)
         lines.append(summary)
         with open(log_path, "w") as fh:
