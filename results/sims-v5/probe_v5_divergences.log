@@ -1,0 +1,39 @@
+[chessathon] numba warmup 46.9s (init budget ok)
+num probe positions: 5
+
+=== r70-ply16-real-b4a2 | real move: b4a2 ===
+fen: r4rk1/1p2pp1p/pq1p1bp1/2pP4/1n5P/P2PP1P1/1P3PBN/1R1Q1RK1 b - - 0 16
+[chessathon] slow move: 2712ms (budget 1022ms), depth 7
+  budget~1s -> b4a2 == REAL (wall 2.7s)
+  budget~5s -> b4a2 == REAL (wall 5.0s)
+  budget~25s -> b4a2 == REAL (wall 25.0s)
+
+=== r70-ply28-real-c5c4 | real move: c5c4 ===
+fen: r5k1/1pr1pp1p/p2p1bp1/2pP4/3P3P/P3P1P1/2R2PBN/1R4K1 b - - 0 22
+  budget~1s -> a8b8 (wall 1.0s)
+  budget~5s -> c5c4 == REAL (wall 5.0s)
+  budget~25s -> f6g7 (wall 25.0s)
+
+=== r70-ply44-real-h6h5 | real move: h6h5 ===
+fen: r7/2r1pp1p/p2p3k/1p1P1N1P/2pP3b/P3P3/2R2PBK/2R5 b - - 6 30
+  budget~1s -> h6h5 == REAL (wall 1.0s)
+  budget~5s -> h6h5 == REAL (wall 5.0s)
+  budget~25s -> h6h5 == REAL (wall 25.0s)
+
+=== r70-ply58-real-f8f5 | real move: f8f5 ===
+fen: 5r2/2r1p2p/p2pN2k/1p1P2p1/2pPB3/P3P3/2R5/6RK b - - 5 37
+  budget~1s -> f8f5 == REAL (wall 0.0s)
+  budget~5s -> f8f5 == REAL (wall 0.0s)
+  budget~25s -> f8f5 == REAL (wall 0.0s)
+Traceback (most recent call last):
+  File "/home/pino/projects/chessathon/tmp/probe_v5_divergences.py", line 63, in <module>
+    main()
+    ~~~~^^
+  File "/home/pino/projects/chessathon/tmp/probe_v5_divergences.py", line 48, in main
+    fen, mv = fen_before_ply(pgn, color, ply)
+              ~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^
+  File "/home/pino/projects/chessathon/tmp/probe_v5_divergences.py", line 37, in fen_before_ply
+    assert ply_index % 2 == (1 if our_color == "white" else 0), "parity"
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: parity
+PROBE_EXIT 1

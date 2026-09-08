@@ -1,0 +1,19 @@
+
+=== A-before-Na2(ply16) ===
+fen: r4rk1/1p2pp1p/pq1p1bp1/2pP4/1n5P/P2PP1P1/1P3PBN/1R1Q1RK1 b - - 0 16
+  depth 6: move=2097 score=-21 (side-to-move cp) nodes=115264 0.2s
+  depth 8: move=2097 score=-27 (side-to-move cp) nodes=673961 1.4s
+  depth 10: move=2097 score=-81 (side-to-move cp) nodes=4165116 7.2s
+
+=== B-after-skirmish(ply24) ===
+fen: r4rk1/1p2pp1p/p2p1bp1/2pP4/7P/P2PP1P1/2R2PBN/5RK1 b - - 0 20
+  depth 6: move=12400 score=-92 (side-to-move cp) nodes=68921 0.1s
+  depth 8: move=14709 score=-92 (side-to-move cp) nodes=540642 0.9s
+  depth 10: move=14704 score=-104 (side-to-move cp) nodes=3635166 6.3s
+
+=== C-before-Kxh5(ply44) ===
+fen: r7/2r1pp1p/p2p3k/1p1P1N1P/2pP3b/P3P3/2R2PBK/2R5 b - - 6 30
+  depth 6: move=74711 score=-164 (side-to-move cp) nodes=19291 0.0s
+  depth 8: move=74711 score=-394 (side-to-move cp) nodes=88584 0.2s
+  depth 10: move=74711 score=-416 (side-to-move cp) nodes=829243 1.7s
+EVALPROBE_EXIT 0

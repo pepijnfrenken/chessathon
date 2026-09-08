@@ -1,0 +1,14 @@
+[chessathon] numba warmup 44.6s (init budget ok)
+using 42 exact clocks from tmp/r71.clk
+replaying 84 plies; we play white
+  ply 16: game Rg1 vs agent f1e2 DIFF
+  ply 18: game f1e2 vs agent c3d5 DIFF
+  ply 20: game c3d5 vs agent d5b6 DIFF
+  ply 22: game f6 vs agent d1d5 DIFF
+  divergence: opponent move Rxc3 no longer legal after our deviation (ply 23)
+
+11 of our moves played in 33s (incl. ~40s JIT warmup)
+moves matching the real game: 7/11
+illegal: False | flag: False
+last agent move: d1d5 (game played f6)
+R71_REPLAY_EXIT 0
