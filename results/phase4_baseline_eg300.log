@@ -1,0 +1,9 @@
+KQvK   strong-as-white ply= 25 result=1/2-1/2 DRAW
+KQvK   strong-as-black ply= 32 result=1/2-1/2 DRAW
+KRvK   strong-as-white ply= 55 result=1-0 WIN
+KRvK   strong-as-black ply= 35 result=0-1 WIN
+KPK    strong-as-white ply= 53 result=1-0 WIN
+KPK    strong-as-black ply= 35 result=0-1 WIN
+KRPvK  strong-as-white ply= 39 result=1-0 WIN
+KRPvK  strong-as-black ply= 44 result=1/2-1/2 DRAW
+eg_check exit 0

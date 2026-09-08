@@ -1,0 +1,13 @@
+# tuned:1111 vs hand:0000  300ms  7k/8/8/8/8/8/8/KQ6 w - - 0 1
+# ply side   move   eval dep kdist   mat  ph half  kings
+Traceback (most recent call last):
+  File "/home/pino/projects/chessathon/tools/trace_endgame.py", line 185, in <module>
+    sys.exit(main())
+             ~~~~^^
+  File "/home/pino/projects/chessathon/tools/trace_endgame.py", line 150, in main
+    mat, phase, kdist = _metrics(board)
+                        ~~~~~~~~^^^^^^^
+  File "/home/pino/projects/chessathon/tools/trace_endgame.py", line 114, in _metrics
+    mat += sign * _MAT_MG[pc.piece_type]
+                  ~~~~~~~^^^^^^^^^^^^^^^
+KeyError: 6

@@ -1,0 +1,19 @@
+KQvK       strong-as-white ply= 25 DRAW streak= 0 2x@[13, 14, 15, 16] 3x@[17, 18, 19, 20] <== THREEFOLD
+KQvK       strong-as-black ply= 15 WIN  streak= 0 no2x
+KRvK       strong-as-white ply= 41 DRAW streak= 0 2x@[29, 30, 31, 32] 3x@[33, 34, 35, 36] <== THREEFOLD
+KRvK       strong-as-black ply= 23 WIN  streak= 0 no2x
+Traceback (most recent call last):
+  File "/home/pino/projects/chessathon/tools/shuffle_check.py", line 195, in <module>
+    sys.exit(main())
+             ~~~~^^
+  File "/home/pino/projects/chessathon/tools/shuffle_check.py", line 163, in main
+    n2, n3, streak = _keys_and_streaks(g["moves"], strong_white)
+                     ~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/pino/projects/chessathon/tools/shuffle_check.py", line 94, in _keys_and_streaks
+    board.push(mv)
+    ~~~~~~~~~~^^^^
+  File "/tmp/chessbench/lib/python3.14/site-packages/chess/__init__.py", line 2369, in push
+    assert piece_type is not None, f"push() expects move to be pseudo-legal, but got {move} in {self.board_fen()}"
+           ^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: push() expects move to be pseudo-legal, but got e5d4 in rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNKR1BNR
+exit 1
