@@ -14,6 +14,9 @@ This block is managed by `aiwg regenerate`. Operator content above/below is pres
   classical search only.
 - **`BUILD.md`** — the design log / originality record. Update it as you
   build. This is what lets Pino explain the agent to a judge.
+- **`PROCESS.md`** — the master project log: decisions, ladder results,
+  setbacks, ideas backlog, open problems. Append to it at every milestone.
+  Deep agentic record (briefs + raw traces): `docs/agentic-process/`.
 
 ## Project
 

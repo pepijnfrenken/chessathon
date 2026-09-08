@@ -24,6 +24,8 @@ alpha-beta engine with a hand-tuned evaluation**, not an NN.
 
 ## Design log
 
+Master project log (decisions, ladder results, setbacks, ideas, problems —
+the one place for everything): `PROCESS.md`
 Agentic process record (who built what, why — builder/auditor briefs, raw
 session traces, decision narratives): `docs/agentic-process/AGENTIC-PROCESS.md`
 
