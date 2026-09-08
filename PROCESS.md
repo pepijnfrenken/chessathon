@@ -175,6 +175,20 @@ Every major decision, with the evidence that made it. (Full narratives:
 - **P6 — round-61 stderr fingerprinting impossible** (identical warmup
   lines) — see §5 #8.
 
+- **P7 — EP-capture zobrist bug (FOUND by audit 2-A, 2026-09-08; engine
+  code UNCHANGED — ladder keeps playing the 49c4c0e zip):**
+  `make_move_apply` double-removes the captured pawn from the key on
+  en-passant (removed at its real square, then a PHANTOM `ZPIECE[to]` XOR
+  because `captured != EMPTY`). Keys diverge from parse_fen truth after
+  any EP capture → the stateful anti-threefold's game-history pre-seed can
+  MISS real-game repetitions after an EP capture, and post-EP TT keys are
+  skewed. Determinism unaffected. Fix candidate (one line):
+  `if captured != EMPTY and fl != F_EP:` in make_move_apply. Validation
+  in flight (sound2 resume agent: parity probe + determinism + perft in
+  snapshot). DECISION NEEDED before freeze: fix+reupload vs hold —
+  trigger is rare (EP + repetition overlap is small) but the fix is
+  one line and parity-provable.
+
 ## 7. Provenance map — where everything lives
 
 - **Git log** = the chronological spine; commit style `N (label): what +
