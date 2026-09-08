@@ -16,10 +16,13 @@ keep the TL;DR fresh, append to the right section, never delete history.
 hand-tapered eval, stateful anti-threefold (game-history repetition).
 `agent.zip` 30 KB — `agent.py` + `engine/` only. HEAD `49c4c0e` + process commits.
 
-**Ladder (build r61–63, first games of the stateful build, 2026-09-08):**
-r62 **WIN** vs Forking squad (checkmate — first real conversion) · r61 draw vs
-CrimsonBot (material +0 even; threefold created by *their* king shuffle) ·
-r63 draw vs Ultimate32 (we were −2 — repetition **held a lost game**).
+**Ladder (build r61–68, stateful build, 2026-09-08):** v3 line D W D L W W W L
+→ 4W-2D-2L. r62 **WIN** vs Forking squad (checkmate — first real conversion) ·
+r61 draw vs CrimsonBot (material +0 even; threefold created by *their* king
+shuffle) · r63 draw vs Ultimate32 (we were −2 — repetition **held a lost
+game**) · r65 WIN Magnus · r66 WIN Benko · r67 WIN Chess (17-move mate) ·
+**r68 LOSS vs Rook and Roll** (even at ply 49, −3 by 57, −10 by 65: second
+material-leak loss — Q-ending transition).
 **All three verified correct behaviour of the shipped build** (exact-clock
 replay + eval probe, see §6 P1): r61 = dead-equal hold (raw 0.00, every
 alternative ≤ −21), r62 = converts, r63 = defensive draw allowed by design.
@@ -56,7 +59,9 @@ hand evaluation** — highest-EV legal path vs self-training an NN on 1 core.
 | Sep 8 08:30 | Upload → ladder r61–63 | see §0; record in `results/matches/` |
 | Sep 8 | r64 vs Snake — **LOSS** (first v3 loss) | won position +1.5 leaked at ply 76 (fork), Q-endgame perpetual failed; full post-mortem in `5a88dd4` |
 | Sep 8 | r65 vs Magnus — **WIN** (mate) | Qc7# king-hunt finish; `f4a8d58` |
-| Sep 8 | r66 vs Benko — **WIN** (mate) | survived sac attack, converted R-endgame vs their perpetual; `ee4777b` |
+| Sep 8 | r66 vs Benko — **WIN** (mate) |
+| Sep 8 | r67 vs Chess — **WIN** (17-move mate) | quickest win yet, no flag; `ca7dc96` |
+| Sep 8 | r68 vs Rook and Roll — **LOSS** (checkmate, 39 moves) | even at ply 49, −3 by 57, −10 by 65 — material leak in Q-ending transition; `bf9d364` (results) | survived sac attack, converted R-endgame vs their perpetual; `ee4777b` |
 
 **Ladder results (logged):** r48 loss SkyLab · r49 loss AlphaGambit (1b
 first game) · r50 loss The Veritys · **r51–60: no records saved** ·
