@@ -54,6 +54,7 @@ hand evaluation** — highest-EV legal path vs self-training an NN on 1 core.
 | Sep 7 16–19 | Phase 3.1 — endgame conversion fixer | **Reverted**: 0.417/0.396; pinned to qsearch stalemate probes |
 | Sep 7 19–21 | Phase 4 — stateful anti-threefold + qsearch knight fix | **Shipped**: gate 0.750, eg_check 8/8, zero threefolds |
 | Sep 8 08:30 | Upload → ladder r61–63 | see §0; record in `results/matches/` |
+| Sep 8 | r64 vs Snake — **LOSS** (first v3 loss) | won position +1.5 leaked at ply 76 (fork), Q-endgame perpetual failed; full post-mortem in `5a88dd4` |
 
 **Ladder results (logged):** r48 loss SkyLab · r49 loss AlphaGambit (1b
 first game) · r50 loss The Veritys · **r51–60: no records saved** ·
@@ -161,9 +162,11 @@ Every major decision, with the evidence that made it. (Full narratives:
 - **P4 — ladder standing (Sep 8): rank 336/387.** Build-era attribution:
   v1 = 1a pure-Python (rated 47/351 at launch — small field), v2 =
   1b→Phase-3 stateless builds (r48–60: losses + shuffle-draws cratered
-  the Elo), v3 = Phase-4 stateful (r61+: W/D, recovering). ~45–50 rated
-  rounds remain before the freeze. Track Elo + per-round results here;
-  round logs r64+ go to `results/matches/` as they come in.
+  the Elo), v3 = Phase-4 stateful (r61+: W, D, D, L — recovering).
+  ~45–50 rated rounds remain before the freeze. Track Elo + per-round
+  results here; round logs r64+ go to `results/matches/` as they come in.
+  v3 result line: r61 D · r62 W · r63 D · r64 L (first loss — won-position
+  conversion failure, see timeline).
 - **P5 — freeze strategy:** uploads close 11 Sep 11:00. Every change after
   r61-63 carries regression risk vs the 0.750-gated stateful build. Decide
   per idea (§5) on evidence, not on time-to-freeze anxiety.
