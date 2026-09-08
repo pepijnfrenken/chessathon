@@ -56,6 +56,7 @@ hand evaluation** — highest-EV legal path vs self-training an NN on 1 core.
 | Sep 8 08:30 | Upload → ladder r61–63 | see §0; record in `results/matches/` |
 | Sep 8 | r64 vs Snake — **LOSS** (first v3 loss) | won position +1.5 leaked at ply 76 (fork), Q-endgame perpetual failed; full post-mortem in `5a88dd4` |
 | Sep 8 | r65 vs Magnus — **WIN** (mate) | Qc7# king-hunt finish; `f4a8d58` |
+| Sep 8 | r66 vs Benko — **WIN** (mate) | survived sac attack, converted R-endgame vs their perpetual; `ee4777b` |
 
 **Ladder results (logged):** r48 loss SkyLab · r49 loss AlphaGambit (1b
 first game) · r50 loss The Veritys · **r51–60: no records saved** ·
@@ -166,8 +167,8 @@ Every major decision, with the evidence that made it. (Full narratives:
   the Elo), v3 = Phase-4 stateful (r61+: W, D, D, L — recovering).
   ~45–50 rated rounds remain before the freeze. Track Elo + per-round
   results here; round logs r64+ go to `results/matches/` as they come in.
-  v3 result line: r61 D · r62 W · r63 D · r64 L · r65 W (2W-2D-1L —
-  conversion attack wins both Ws; the L was a won-position leak, see timeline).
+  v3 result line: r61 D · r62 W · r63 D · r64 L · r65 W · r66 W
+  (3W-2D-1L — all three Ws are conversions; the L was a won-position leak).
 - **P5 — freeze strategy:** uploads close 11 Sep 11:00. Every change after
   r61-63 carries regression risk vs the 0.750-gated stateful build. Decide
   per idea (§5) on evidence, not on time-to-freeze anxiety.
