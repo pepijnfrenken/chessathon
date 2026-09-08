@@ -1,0 +1,7 @@
+# P4 fixed-depth nps/parity: feature OFF (new tree) vs HEAD snapshot 879b6b7, startpos d10, fresh caches
+--- NEW tree (OFF) ---
+run 0: nodes=987934 569 knps depth=10 best=4353 score=10
+run 1: nodes=987934 580 knps depth=10 best=4353 score=10
+--- HEAD snapshot ---
+run 0: nodes=987934 556 knps depth=10 best=4353 score=10
+run 1: nodes=987934 554 knps depth=10 best=4353 score=10

@@ -698,3 +698,38 @@ Independently replicated (audit-3): sides-swapped A/B pair, seed 7, 24
 games each way — fix 0.583 as A, 0.417 over 48 combined, zero flags in
 all 48; inside the null band. agent.zip rebuilt + md5-verified fixed
 (init 46.7s).
+### P4 — dynamic null-move reduction (2026-09-08) — GATED NEGATIVE, ships OFF
+
+**What:** a deeper null-move reduction at high depth, as a search-toggle
+probe (brainA report §P4). New import-time toggles in engine/search.py:
+`CHESSATHON_NULLR` (base R, default 2 = shipped), `CHESSATHON_NULL_DEEP`
+(default 0/off), `CHESSATHON_NULL_DEEP_MIN` (default 6),
+`CHESSATHON_NULL_R_DEEP` (default 3): when on, nodes at depth >= 6 use R=3.
+All null-move guards untouched (not in check, depth>=2, ply>=1, beta>0,
+`_count_nonpawns>=2` zugzwang). Harness: `side_env` gains the `nulldeep`
+searchflag; engine_side prints the toggle state (A/B-process observability).
+
+**Why:** the engine is node-starved at the competition clock (~1.5-1.8M
+nodes/move, depth 9-10 middlegame); a deeper null cut at deep nodes is the
+cheapest depth lever, and the Phase-3 LMR gate proved 500 ms gates
+discriminate search-structure changes.
+
+**Evidence:** perft ALL PASS off+on (6 pos d1-5, `results/perft_p4_*.log`);
+determinism identical (2 fresh processes, `results/det_p4_nulldeep.log`:
+544,268 nodes / best 14709 / −92 both); feature OFF = HEAD byte-identical
+node-for-node (startpos d10 = 987,934 both, `results/bench_p4_nulldeep.log`
+— note: the older documented 1,030,699 count predates the Phase-4 qsearch
+knight fix; current HEAD baseline is 987,934); eg_check 8/8 WIN with the
+feature ON (`results/eg_p4_nulldeep.log` — the nets are below the nonpawn
+guard, so null-deep is inert there by construction; one KPK-w draw on the
+first run was baseline load flakiness, re-runs 8/8).
+
+**Gate (tree A/B, 24 games @500 ms, hand:1111 both sides):** nulldeep as A
+vs HEAD as B — **8W-11L-5D = 0.438, ZERO flags**
+(`results/gate_p4_nulldeep_vs_head.log` + `.stdout`). 0.438 < the 0.45
+revert line → **REVERTED as default: feature ships OFF** (defaults are
+byte-identical to V5). The toggle stays in-tree as preserved experiment/AB
+infra. Interpretation: at gate depths (7-9) an R=3 null skips too much
+refutation horizon relative to the total depth; the depth-starvation fix
+it targeted is better addressed by the root-stability and SEE probes
+(brainA P1/P2).

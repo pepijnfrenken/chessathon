@@ -1,0 +1,3 @@
+# determinism: NULL_DEEP=1, 2 fresh processes, r70-B FEN d8
+proc: nodes=544268 best=14709 score=-92 depth=8
+proc: nodes=544268 best=14709 score=-92 depth=8
