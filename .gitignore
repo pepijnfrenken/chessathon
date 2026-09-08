@@ -2,3 +2,7 @@
 agent.zip
 __pycache__/
 *.pyc
+# agent tooling state (not repo content)
+.aiwg/
+.claude/
+AIWG.md
