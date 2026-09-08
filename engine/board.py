@@ -252,7 +252,9 @@ def make_move_apply(st, move: int):
     sqr[to] = placed
     sqr[frm] = EMPTY
     key ^= ZPIECE[frm, pc + 5] ^ ZPIECE[to, placed + 5]
-    if captured != EMPTY:
+    if captured != EMPTY and fl != F_EP:
+        # EP: the captured pawn was already removed from the key at its
+        # real square above (line 239) — `to` holds no captured piece.
         key ^= ZPIECE[to, captured + 5]
 
     # castling: shift the rook
@@ -293,7 +295,13 @@ def make_move_apply(st, move: int):
         elif to == 112:
             castle &= ~8
     if castle != st['castle'][0]:
-        key ^= ZCASTLE[st['castle'][0]] ^ ZCASTLE[castle]
+        # P8: ZCASTLE[0] is random and never hashed by parse_fen (`if c:`) —
+        # a transition TO 0 (last right dies) must not introduce it. Before
+        # this fix every rights-vanish move left a spurious ZCASTLE[0] in the
+        # key, breaking parse_fen parity for all post-vanish positions.
+        key ^= ZCASTLE[st['castle'][0]]
+        if castle:
+            key ^= ZCASTLE[castle]
     st['castle'][0] = castle
 
     # ep square from a double push, only when an enemy pawn could capture.
