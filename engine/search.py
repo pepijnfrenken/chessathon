@@ -5,7 +5,8 @@ Iterative-deepening negamax alpha-beta with:
   - transposition table (engine.tt; TT move ordering + score cutoffs)
   - MVV-LVA capture ordering + 2 killers/ply + quiet history
   - quiescence search (stand-pat + captures; full evasions in check;
-    QCAP depth cap)
+    QCAP depth cap; optional SEE capture ordering and SEE<0 capture
+    pruning, both default off — the P1 A/B probe)
   - null-move pruning (R=2, eval >= beta, endgame zugzwang guard;
     beta > 0 only; optional CHESSATHON_NULL_DEEP deepens R to 3 at
     depth >= 6 — the P4 A/B probe)
@@ -40,6 +41,11 @@ each A/B side runs as its own process):
                          depth >= CHESSATHON_NULL_DEEP_MIN (default 6)
                          to CHESSATHON_NULL_R_DEEP (default 3) — the
                          P4 A/B probe (see BUILD.md "P4")
+  CHESSATHON_SEE       = 1 orders qsearch captures by static exchange
+                         evaluation (default: off)
+  CHESSATHON_SEEPRUNE  = 1 prunes SEE<0 plain captures in qsearch at
+                         not-in-check nodes (default: off) — the P1
+                         A/B probe (see BUILD.md "P1")
 """
 
 import ctypes
@@ -56,7 +62,7 @@ from engine.board import (EMPTY, PAWN, KNIGHT, BISHOP, ROOK, QUEEN, KING,
                           MAX_MOVES, MAX_PLY, ZEP as _ZEP, ZSIDE as _ZSIDE,
                           m_from, m_to, m_flags, m_promo,
                           make_move_apply, unmake_move, legal_moves,
-                          in_check, sq64)
+                          in_check, sq64, _KNIGHT_DELTAS, _KING_DELTAS)
 from engine.eval import evaluate
 from engine.tt import (BOUND_NONE, BOUND_LOWER, BOUND_UPPER, BOUND_EXACT,
                        tt_probe, tt_store)
@@ -88,6 +94,20 @@ NULL_R = int(os.environ.get("CHESSATHON_NULLR", "2"))
 NULL_DEEP_ON = os.environ.get("CHESSATHON_NULL_DEEP", "0") != "0"
 NULL_DEEP_MIN = int(os.environ.get("CHESSATHON_NULL_DEEP_MIN", "6"))
 NULL_R_DEEP = int(os.environ.get("CHESSATHON_NULL_R_DEEP", "3"))
+# SEE-in-qsearch toggles (P1 A/B infra — brainA probe P1, BUILD.md
+# "P1 — SEE capture ordering + pruning in qsearch"). Read at import:
+# numba bakes these globals at compile time, so each A/B side runs as
+# its own process. Defaults OFF = the shipped V5 qsearch behavior.
+#   SEE_ON        CHESSATHON_SEE != 0: order qsearch captures by static
+#                 exchange evaluation (desc), MVV-LVA as tiebreak;
+#                 promotion captures stay in the top band (SEE models
+#                 the capture chain, not promotion value).
+#   SEEPRUNE_ON   CHESSATHON_SEEPRUNE != 0: at not-in-check qsearch
+#                 nodes, skip plain captures (F_CAPTURE only) whose SEE
+#                 is negative — the material-leak family (r64/r68/r74)
+#                 is lost queen/rook transactions SEE sees in full.
+SEE_ON = os.environ.get("CHESSATHON_SEE", "0") != "0"
+SEEPRUNE_ON = os.environ.get("CHESSATHON_SEEPRUNE", "0") != "0"
 LMR_MIN_DEPTH = 3
 LMR_MAX = 2
 QCAP = 12                     # quiescence depth cap
@@ -131,6 +151,182 @@ _NOW = ctypes.CFUNCTYPE(ctypes.c_longlong)(lambda: time.monotonic_ns())
 _KILLER_DUMMY = np.zeros((2, MAX_PLY), dtype=np.int32)
 _HIST_DUMMY = np.zeros((2, 64, 64), dtype=np.int32)
 _VICTIM = np.array([0, 100, 320, 330, 500, 900, 20000], dtype=np.int32)
+
+# SEE (static exchange evaluation) machinery — our own implementation of
+# the standard published algorithm (see chessprogramming.org "Static
+# Exchange Evaluation": least-valuable-attacker swap over the capture
+# chain on one square; pins ignored by design; king recaptures only into
+# undefended squares). Used by qsearch under CHESSATHON_SEE / _SEEPRUNE
+# (brainA P1: the r64/r68/r74 loss family is lost queen/rook transactions
+# that a full recapture chain sees but MVV-LVA ordering + a depth cap do
+# not).
+_BB64 = np.array([np.uint64(1) << i for i in range(64)], dtype=np.uint64)
+_DIAG_DIRS = np.array([-17, -15, 15, 17], dtype=np.int8)   # 0x88 diagonal steps
+_ORTHO_DIRS = np.array([-16, -1, 1, 16], dtype=np.int8)    # 0x88 orthogonal steps
+
+
+@njit
+def _occupancy(st) -> np.uint64:
+    """Bitboard (sq64 indexing) of every occupied square."""
+    sqr = st['squares'][0]
+    occ = np.uint64(0)
+    for sq in range(128):
+        if (sq & 0x88) == 0 and sqr[sq] != EMPTY:
+            occ |= _BB64[sq64(sq)]
+    return occ
+
+
+@njit
+def _see_lva(st, occ, sq, by_color) -> int:
+    """Square (0x88) of the least-valuable attacker of colour `by_color`
+    on `sq` under occupancy `occ`, or -1. `occ` may have squares removed
+    (captured pieces) — the ray scans pass through them, which is what
+    reveals x-ray (behind) attackers. Pins are ignored (standard SEE)."""
+    sqr = st['squares'][0]
+    # pawns (white pawn at attack squares sq-15/sq-17, i.e. it attacks
+    # from below; black from above) — occ respected: a consumed pawn is
+    # no attacker
+    if by_color == WHITE:
+        for d in (-15, -17):
+            p = sq + d
+            if (p & 0x88) == 0 and (occ & _BB64[sq64(p)]) != 0 \
+                    and sqr[p] == PAWN:
+                return p
+    else:
+        for d in (15, 17):
+            p = sq + d
+            if (p & 0x88) == 0 and (occ & _BB64[sq64(p)]) != 0 \
+                    and sqr[p] == -PAWN:
+                return p
+    # knights (non-sliding; no x-ray)
+    for i in range(8):
+        p = sq + _KNIGHT_DELTAS[i]
+        if (p & 0x88) == 0 and (occ & _BB64[sq64(p)]) != 0:
+            pc = sqr[p]
+            if (pc > 0) == (by_color == WHITE) \
+                    and abs(pc) == KNIGHT:
+                return p
+    # sliding: bishops/queens diagonals, rooks/queens orthogonals
+    for di in range(4):
+        d = _DIAG_DIRS[di]
+        p = sq + d
+        while (p & 0x88) == 0:
+            if (occ & _BB64[sq64(p)]) != 0:
+                pc = sqr[p]
+                if (pc > 0) == (by_color == WHITE) \
+                        and (abs(pc) == BISHOP or abs(pc) == QUEEN):
+                    return p
+                break
+            p += d
+    for di in range(4):
+        d = _ORTHO_DIRS[di]
+        p = sq + d
+        while (p & 0x88) == 0:
+            if (occ & _BB64[sq64(p)]) != 0:
+                pc = sqr[p]
+                if (pc > 0) == (by_color == WHITE) \
+                        and (abs(pc) == ROOK or abs(pc) == QUEEN):
+                    return p
+                break
+            p += d
+    # king (non-sliding)
+    for i in range(8):
+        p = sq + _KING_DELTAS[i]
+        if (p & 0x88) == 0 and (occ & _BB64[sq64(p)]) != 0:
+            pc = sqr[p]
+            if (pc > 0) == (by_color == WHITE) \
+                    and abs(pc) == KING:
+                return p
+    return -1
+
+
+@njit
+def see(st, from_sq, to_sq) -> int:
+    """Static exchange evaluation of the capture from_sq x to_sq, from
+    the perspective of the capturing side: >= 0 = at least an even trade,
+    < 0 = the capture chain loses material. Least-valuable-attacker swap
+    over the chain on to_sq; the piece each capturer wins is the piece
+    that captured last (victim first, then each attacker in turn), so the
+    chain value alternates +victim -attacker1 +attacker2 ... (x-ray
+    revealed by removing consumed pieces from `occ`; pins ignored; a king
+    recaptures only into an undefended square — after which the chain
+    ends, a king is never recaptured). Standard simplifications,
+    commented: an en-passant victim is a pawn (attack geometry evaluated
+    on the EP landing square); promotion value is NOT part of the chain
+    (a capturing pawn counts as a pawn)."""
+    sqr = st['squares'][0]
+    me = WHITE if sqr[from_sq] > 0 else BLACK
+    cap = sqr[to_sq]
+    if cap != EMPTY:
+        value = _VICTIM[abs(cap)]
+    else:
+        # EP capture: target square is empty, the victim pawn stands
+        # behind it. Value is a pawn; geometry approximation is the
+        # standard SEE simplification (comment per contract).
+        value = _VICTIM[PAWN]
+    occ = _occupancy(st)
+    occ ^= _BB64[sq64(from_sq)]          # the initiator has left its square
+    if abs(sqr[from_sq]) == KING:
+        # Root king capture: legal in our flow (qsearch moves are legal),
+        # and a king is never recaptured — the exchange ends at the
+        # victim. (Called on an illegal Kx-defended the answer is still
+        # the victim value; SEE is a heuristic here by contract.)
+        return value
+    to_win = _VICTIM[abs(sqr[from_sq])]  # what the opponent can win next
+    turn = 1 - me                        # opponent replies first
+    while True:
+        att = _see_lva(st, occ, to_sq, turn)
+        if att == -1:
+            break
+        p = abs(sqr[att])
+        if p == KING:
+            # the king may only recapture a square its opponent no longer
+            # attacks (with the king gone from occ)
+            occ ^= _BB64[sq64(att)]
+            if _see_lva(st, occ, to_sq, 1 - turn) != -1:
+                break                    # illegal king recapture: skipped
+            if turn == me:
+                value += to_win
+            else:
+                value -= to_win
+            break                        # a king is never recaptured
+        occ ^= _BB64[sq64(att)]
+        if turn == me:
+            value += to_win
+        else:
+            value -= to_win
+        to_win = _VICTIM[p]             # the next capturer wins this piece
+        turn = 1 - turn
+    return value
+
+
+@njit
+def _order_qsearch(st, moves, scores, cnt: int) -> None:
+    """SEE capture ordering for qsearch: score desc, MVV-LVA as
+    tiebreak; promotion captures stay in the top band (their value is the
+    promoted piece, which SEE's capture-chain model does not express)."""
+    sqr = st['squares'][0]
+    for i in range(cnt):
+        mv = moves[i]
+        fl = m_flags(mv)
+        if fl == F_PROMOCAP:
+            scores[i] = 800000 + _VICTIM[m_promo(mv) + 2]
+        else:
+            sv = see(st, m_from(mv), m_to(mv))
+            victim = PAWN if fl == F_EP else abs(sqr[m_to(mv)])
+            attacker = abs(sqr[m_from(mv)])
+            scores[i] = sv * 4096 + (_VICTIM[victim] * 32
+                                     - _VICTIM[attacker])
+    for i in range(1, cnt):
+        mv = moves[i]
+        sc = scores[i]
+        j = i - 1
+        while j >= 0 and scores[j] < sc:
+            moves[j + 1] = moves[j]
+            scores[j + 1] = scores[j]
+            j -= 1
+        moves[j + 1] = mv
+        scores[j + 1] = sc
 
 
 # ---------------------------------------------------------------------------
@@ -276,15 +472,25 @@ def qsearch(st, ply: int, alpha: int, beta: int, qdepth: int, nodes,
             return -MATE + ply
         return stand
 
-    _order_moves(st, scratch[ply], sscratch[ply], cnt, 0, _KILLER_DUMMY,
-                 _HIST_DUMMY, ply)
+    if SEE_ON:
+        _order_qsearch(st, scratch[ply], sscratch[ply], cnt)
+    else:
+        _order_moves(st, scratch[ply], sscratch[ply], cnt, 0, _KILLER_DUMMY,
+                     _HIST_DUMMY, ply)
 
     best = -INF
     me = st['side'][0]
     for i in range(cnt):
         mv = scratch[ply][i]
-        captured = st['squares'][0][m_to(mv)]
         fl = m_flags(mv)
+        # P1 SEE pruning: at not-in-check nodes skip plain captures whose
+        # exchange chain loses material. Never in check (evasions are all
+        # searched); promotions/EP are never pruned (their value is not
+        # fully expressible in the single-square chain).
+        if SEEP_RUNE_ON and fl == F_CAPTURE and not check \
+                and see(st, m_from(mv), m_to(mv)) < 0:
+            continue
+        captured = st['squares'][0][m_to(mv)]
         if fl == F_EP:
             captured = st['squares'][0][m_to(mv) - 16 if me == WHITE
                                         else m_to(mv) + 16]

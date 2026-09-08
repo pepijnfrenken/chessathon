@@ -139,7 +139,9 @@ def main() -> int:
           f"gate={os.environ.get('CHESSATHON_EVAL_GATE', '?')} "
           f"budget={_MOVE_BUDGET_MS}ms "
           f"lmr={os.environ.get('CHESSATHON_LMR', '1')} "
-          f"nulldeep={os.environ.get('CHESSATHON_NULL_DEEP', '0')}", file=sys.stderr)
+          f"nulldeep={os.environ.get('CHESSATHON_NULL_DEEP', '0')} "
+          f"see={os.environ.get('CHESSATHON_SEE', '0')} "
+          f"seeprune={os.environ.get('CHESSATHON_SEEPRUNE', '0')}", file=sys.stderr)
     sys.stderr.flush()
     for line in sys.stdin:
         fen = line.strip()

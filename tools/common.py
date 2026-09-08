@@ -60,6 +60,10 @@ def side_env(spec: str, move_ms: int) -> dict:
         nolmr    -> CHESSATHON_LMR=0          (disable late move reduction)
         nulldeep -> CHESSATHON_NULL_DEEP=1    (deepen null reduction at
                    depth >= 6 to R=3 — the P4 A/B probe)
+        see      -> CHESSATHON_SEE=1          (SEE capture ordering in
+                   qsearch — the P1 A/B probe)
+        seeprune -> CHESSATHON_SEEPRUNE=1     (prune SEE<0 qsearch
+                   captures — the P1 pruning half)
     Used by sprt.py / gate_match.py so side-A and side-B can differ in
     the SEARCH (not just the eval) for feature gates."""
     parts = spec.split(":")
@@ -72,6 +76,8 @@ def side_env(spec: str, move_ms: int) -> dict:
     toggles = set(t for t in search.split(",") if t)
     env["CHESSATHON_LMR"] = "0" if "nolmr" in toggles else "1"
     env["CHESSATHON_NULL_DEEP"] = "1" if "nulldeep" in toggles else "0"
+    env["CHESSATHON_SEE"] = "1" if "see" in toggles else "0"
+    env["CHESSATHON_SEEPRUNE"] = "1" if "seeprune" in toggles else "0"
     return env
 
 
