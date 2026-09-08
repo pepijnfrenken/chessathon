@@ -217,6 +217,18 @@ Every major decision, with the evidence that made it. (Full narratives:
   matchup measures the known-dud tuned eval (0.104 on Sep 7 pre-fix);
   both sides carried the fixes. Real A/B is this entry.
 
+- **Independent replication (audit-3 agent, sides-swapped A/B pair,
+  2026-09-08):** same matchup, seed 7, 24 games per direction @500ms, fresh
+  JIT caches: fixed-as-A **11W-7L-6D = 0.583**; baseline-as-A 16W-4L-4D =
+  0.750 → fix perspective over 48 combined games **0.417, inside the
+  project's null band** (0.396–0.417 seen on known-null v3/v5/v6 gates).
+  ZERO flags in all 48. Logs: `results/gate_b4fix_asA_vs_shipped.log`,
+  `results/gate_b4fix_vs_shipped_asB.log`. Also verified: on-disk
+  agent.zip carries the fixed board.py (md5 == tree; import+JIT warmup
+  46.7s < 60s); ladder PGN scan r49–r68: rights-vanish occurred in 7/10
+  games, EP in 1/10 — the fixed key classes hit most real games, so the
+  fix protects the repetition defense in practice, not just in theory.
+
 ## 7. Provenance map — where everything lives
 
 - **Git log** = the chronological spine; commit style `N (label): what +

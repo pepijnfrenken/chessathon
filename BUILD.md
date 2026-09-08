@@ -694,3 +694,7 @@ pre-fix 73c7d44~1 = 0.479 null (9W-10L-5D, zero flags) → strength-neutral;
 ship decision on correctness grounds (closes the last hole in the stateful
 repetition defense). First V5 ladder game = r70. (r69 WIN vs Stockfish was
 still V4/49c4c0e.)
+Independently replicated (audit-3): sides-swapped A/B pair, seed 7, 24
+games each way — fix 0.583 as A, 0.417 over 48 combined, zero flags in
+all 48; inside the null band. agent.zip rebuilt + md5-verified fixed
+(init 46.7s).

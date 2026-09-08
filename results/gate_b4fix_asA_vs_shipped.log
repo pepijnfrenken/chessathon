@@ -1,0 +1,27 @@
+# gate hand:1111:/home/pino/projects/chessathon/tools/engine_side.py vs hand:1111:/tmp/base_b4/tools/engine_side.py games=24 move-ms=500 seed=7
+pair  0 game 1: 1-0 (A win) ply=177
+pair  0 game 2: 0-1 (A win) ply=144
+pair  1 game 1: 0-1 (A loss) ply=134
+pair  1 game 2: 0-1 (A win) ply=140
+pair  2 game 1: 1-0 (A win) ply=143
+pair  2 game 2: 0-1 (A win) ply=148
+pair  3 game 1: 1-0 (A win) ply=127
+pair  3 game 2: 0-1 (A win) ply=190
+pair  4 game 1: 0-1 (A loss) ply=206
+pair  4 game 2: 1/2-1/2 (A draw) ply=300
+pair  5 game 1: 1/2-1/2 (A draw) ply=239
+pair  5 game 2: 0-1 (A win) ply=134
+pair  6 game 1: 1/2-1/2 (A draw) ply=176
+pair  6 game 2: 1/2-1/2 (A draw) ply=181
+pair  7 game 1: 1/2-1/2 (A draw) ply=165
+pair  7 game 2: 1-0 (A loss) ply=211
+pair  8 game 1: 0-1 (A loss) ply=136
+pair  8 game 2: 1/2-1/2 (A draw) ply=210
+pair  9 game 1: 1-0 (A win) ply=143
+pair  9 game 2: 1-0 (A loss) ply=105
+pair 10 game 1: 0-1 (A loss) ply=128
+pair 10 game 2: 0-1 (A win) ply=174
+pair 11 game 1: 0-1 (A loss) ply=66
+pair 11 game 2: 0-1 (A win) ply=74
+
+=== hand:1111:/home/pino/projects/chessathon/tools/engine_side.py vs hand:1111:/tmp/base_b4/tools/engine_side.py: 11W 7L 6D (0.583) over 24 games, ZERO flags ===
