@@ -16,13 +16,24 @@ keep the TL;DR fresh, append to the right section, never delete history.
 hand-tapered eval, stateful anti-threefold (game-history repetition).
 `agent.zip` 30 KB — `agent.py` + `engine/` only. HEAD `49c4c0e` + process commits.
 
-**Ladder (build r61–68, stateful build, 2026-09-08):** v3 line D W D L W W W L
+**Ladder (build r61–69, stateful V4 build — the 08:46 upload, HEAD
+`49c4c0e`, NO P7/P8: those fixes are still unshipped in the working tree at
+`73c7d44`):** v3 line D W D L W W W L
 → 4W-2D-2L. r62 **WIN** vs Forking squad (checkmate — first real conversion) ·
 r61 draw vs CrimsonBot (material +0 even; threefold created by *their* king
 shuffle) · r63 draw vs Ultimate32 (we were −2 — repetition **held a lost
 game**) · r65 WIN Magnus · r66 WIN Benko · r67 WIN Chess (17-move mate) ·
 **r68 LOSS vs Rook and Roll** (even at ply 49, −3 by 57, −10 by 65: second
 material-leak loss — Q-ending transition).
+**r69 WIN vs Stockfish (checkmate, 57 moves, 2026-09-08, `results/matches/
+round-69-vs-stockfish.pgn`)** — played by the **V4 upload (49c4c0e)**:
+textbook conversion: +3 by move 24 (Nxf6/
+Bxf6/Bxh8 raid vs their uncastled-h8 rook after their O-O-O), then model
+endgame: rooks simplified, Rxd6+ sac, cxb4, king march Ka4-Kb5-Ka6, b-pawn
+run b5-b6-b7-b8=Q, Qxg4, mate Qc2#. No flags; clock healthy throughout
+(~2s/move). Exactly the stateful anti-threefold's promise: won game
+converted to mate, no shuffle-draw. v3 line now D W D L W W W L **W** →
+5W-2D-2L. P7/P8 were NOT in this build (post-upload fixes).
 **All three verified correct behaviour of the shipped build** (exact-clock
 replay + eval probe, see §6 P1): r61 = dead-equal hold (raw 0.00, every
 alternative ≤ −21), r62 = converts, r63 = defensive draw allowed by design.
@@ -195,6 +206,16 @@ Every major decision, with the evidence that made it. (Full narratives:
   probe_ep_key.py's full 38-move control sweep; audit 2-A missed it
   (its sanity moves never hit the ->0 transition). Fix: XOR ZCASTLE[old]
   only, add ZCASTLE[new] only when nonzero.
+
+- **GATE P7+P8 vs pre-fix tree** (`results/gate_p7p8_vs_prefix.log`,
+  2026-09-08): gate_match_tree.py hand:1111 (fixed) vs hand:1111
+  (73c7d44~1 snapshot), 24 games @500ms: **9W-10L-5D = 0.479, ZERO
+  flags** — clean null. Key fixes are strength-neutral (expected: they
+  fix soundness, not search). n=24 CI wide (~0.29-0.67); no signal
+  either way → ship on correctness grounds. NOTE: the earlier
+  tuned:1111-vs-hand:0000 run (0.062) was the WRONG harness — that
+  matchup measures the known-dud tuned eval (0.104 on Sep 7 pre-fix);
+  both sides carried the fixes. Real A/B is this entry.
 
 ## 7. Provenance map — where everything lives
 
