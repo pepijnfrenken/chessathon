@@ -175,19 +175,21 @@ Every major decision, with the evidence that made it. (Full narratives:
 - **P6 — round-61 stderr fingerprinting impossible** (identical warmup
   lines) — see §5 #8.
 
-- **P7 — EP-capture zobrist bug (FOUND by audit 2-A, 2026-09-08; engine
-  code UNCHANGED — ladder keeps playing the 49c4c0e zip):**
-  `make_move_apply` double-removes the captured pawn from the key on
-  en-passant (removed at its real square, then a PHANTOM `ZPIECE[to]` XOR
-  because `captured != EMPTY`). Keys diverge from parse_fen truth after
-  any EP capture → the stateful anti-threefold's game-history pre-seed can
-  MISS real-game repetitions after an EP capture, and post-EP TT keys are
-  skewed. Determinism unaffected. Fix candidate (one line):
-  `if captured != EMPTY and fl != F_EP:` in make_move_apply. Validation
-  in flight (sound2 resume agent: parity probe + determinism + perft in
-  snapshot). DECISION NEEDED before freeze: fix+reupload vs hold —
-  trigger is rare (EP + repetition overlap is small) but the fix is
-  one line and parity-provable.
+- **P7 — EP-capture zobrist bug — FIXED** (`73c7d44`, builder round B4,
+  2026-09-08): found by audit 2-A F1; probe_ep_key.py caught it plus the
+  sibling P8 (below). One-line guard `captured != EMPTY and fl != F_EP`.
+  Validation: EP parity battery ALL PASS, control sweep 38/38, replay
+  parity 211 plies, determinism PASS. Gate result appended when done.
+
+- **P8 — rights-vanish spurious ZCASTLE[0] — FOUND + FIXED** (`73c7d44`,
+  builder round B4, 2026-09-08): when the last castling right died
+  (castle -> 0) make XORed `ZCASTLE[old]^ZCASTLE[0]`, but ZCASTLE[0] is
+  random and parse_fen never hashes it (`if c:`) — every rights-vanish
+  move left a spurious entry in the key, breaking parse_fen parity for
+  all post-vanish positions (repetition pre-seed / TT). Discovered by
+  probe_ep_key.py's full 38-move control sweep; audit 2-A missed it
+  (its sanity moves never hit the ->0 transition). Fix: XOR ZCASTLE[old]
+  only, add ZCASTLE[new] only when nonzero.
 
 ## 7. Provenance map — where everything lives
 

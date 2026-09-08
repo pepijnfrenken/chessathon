@@ -681,3 +681,11 @@ BUILD.md "Risks" updates: the KQvK/KRvK conversion flakiness and the
 KPK technique gap (OPTION A) remain the known remaining weaknesses;
 threefold-shuffle draws are eliminated. agent.zip rebuilt + verified
 (60s init) on this tree.
+
+
+## B4 — 2026-09-08: zobrist key fixes (P7 EP phantom removal, P8 rights-vanish ZCASTLE[0])
+Found via audit 2-A (F1, EP) + probe_ep_key.py control sweep (P8). Both broke
+parse_fen key parity after specific move classes (EP captures; last-castling-
+right death) — impacting repetition/TT keying, not search itself. Fixes are
+two guards in make_move_apply; validated: EP parity battery, 38-move control
+sweep, 211-ply replay parity, depth-6 determinism. Commit 73c7d44.
