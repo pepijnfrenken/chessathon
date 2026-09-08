@@ -16,9 +16,8 @@ keep the TL;DR fresh, append to the right section, never delete history.
 hand-tapered eval, stateful anti-threefold (game-history repetition).
 `agent.zip` 30 KB — `agent.py` + `engine/` only. HEAD `49c4c0e` + process commits.
 
-**Ladder (build r61–69, stateful V4 build — the 08:46 upload, HEAD
-`49c4c0e`, NO P7/P8: those fixes are still unshipped in the working tree at
-`73c7d44`):** v3 line D W D L W W W L
+**Ladder (r61–69 = V4, the 08:46 upload `49c4c0e`, no P7/P8; r70+ = V5,
+`73c7d44` + P7/P8, uploaded Sep 8 ~16:00 — D12):** v3 line D W D L W W W L
 → 4W-2D-2L. r62 **WIN** vs Forking squad (checkmate — first real conversion) ·
 r61 draw vs CrimsonBot (material +0 even; threefold created by *their* king
 shuffle) · r63 draw vs Ultimate32 (we were −2 — repetition **held a lost
@@ -98,6 +97,7 @@ Every major decision, with the evidence that made it. (Full narratives:
 | D9 | **Stateful agent + qsearch knight fix shipped** | `caede75`, `496b86a` | gate **0.750** (first decisive pass); eg_check 8/8; shuffle suite zero threefolds; empty-history byte-identical (provably inert) |
 | D10 | Round 61–63: **no code change — verified correct behaviour** | Sep 8 | exact-clock replay: r61 13/13 move reproduction; probe: raw 0.00, penalty applied, all alternatives ≤ −21 → correct equal-position hold. r62 win converts; r63 −2 defensive hold by design |
 | D11 | Freeze policy: no engine change without a gate (0.750 stateful build is the reference) | Sep 8 | uploads freeze 11 Sep 11:00; every idea in §5 must gate before ship |
+| D12 | **P7/P8 key-correctness fixes shipped as V5** (`73c7d44`, uploaded Sep 8 ~16:00 UTC) | Sep 8 | EP-capture + rights-vanish zobrist fixes: probes pass on fixed tree AND fail on unfixed (sensitivity proven); tree A/B gate 0.479 null, zero flags → strength-neutral; ship on correctness (closes last hole in the repetition defense). r69 WIN vs Stockfish was V4 (49c4c0e); r70+ = first V5 ladder games |
 
 ## 4. Setbacks & what they taught
 

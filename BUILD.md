@@ -689,3 +689,8 @@ parse_fen key parity after specific move classes (EP captures; last-castling-
 right death) — impacting repetition/TT keying, not search itself. Fixes are
 two guards in make_move_apply; validated: EP parity battery, 38-move control
 sweep, 211-ply replay parity, depth-6 determinism. Commit 73c7d44.
+**SHIPPED as V5** (uploaded Sep 8 ~16:00 UTC): tree A/B gate hand:1111 vs
+pre-fix 73c7d44~1 = 0.479 null (9W-10L-5D, zero flags) → strength-neutral;
+ship decision on correctness grounds (closes the last hole in the stateful
+repetition defense). First V5 ladder game = r70. (r69 WIN vs Stockfish was
+still V4/49c4c0e.)
