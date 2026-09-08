@@ -1,0 +1,11 @@
+[Event "V5 vs Stockfish19 bout (local)"]
+[Site "?"]
+[Date "????.??.??"]
+[Round "?"]
+[White "EnPassantLabs-V5"]
+[Black "Stockfish19-e2200"]
+[Result "*"]
+[SetUp "1"]
+[FEN "1rbqk1nr/pp2ppbp/2np2p1/2p5/P3P3/2NP2P1/1PP1NPBP/R1BQK2R b KQk - 0 7"]
+
+7... Nf6 8. O-O Bd7 9. Be3 Qc8 10. Qd2 h5 11. d4 cxd4 12. Nxd4 h4 13. gxh4 Ne5 14. Qe1 Nc4 15. Nf3 Nxe3 16. Qxe3 Bh3 17. Bxh3 Qxh3 18. Rfd1 Rc8 19. Rd3 a6 20. Qd4 Nh5 21. e5 dxe5 22. Nxe5 Qf5 23. Rad1 Kf8 24. Qd8+ Rxd8 25. Rxd8# { [%clk n/a] 1-0 flags=[] } *

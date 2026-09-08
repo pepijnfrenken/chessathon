@@ -1,0 +1,11 @@
+[Event "V5 vs Stockfish19 bout (local)"]
+[Site "?"]
+[Date "????.??.??"]
+[Round "?"]
+[White "Stockfish19-e2200"]
+[Black "EnPassantLabs-V5"]
+[Result "*"]
+[SetUp "1"]
+[FEN "rnbq1rk1/pp3ppp/4pn2/2p5/1bBP4/2N1P2P/PP3PP1/R1BQK1NR w KQ - 0 8"]
+
+8. Nf3 cxd4 9. Qb3 dxc3 10. Qxb4 cxb2 11. Bxb2 Nc6 12. Qa4 Bd7 13. Rc1 Ne5 14. Qb3 Qa5+ 15. Bc3 Nxf3+ 16. gxf3 Qf5 17. f4 Bc6 18. Rg1 Kh8 19. Ba6 Bd5 20. Qb2 bxa6 21. Rg5 Rfb8 22. Qa1 Rb6 23. Bd4 Rd6 24. Rxf5 exf5 25. Qb1 Be4 26. Qb2 Bf3 27. Rc7 Kg8 28. Qc3 Ne8 29. Rc8 Rxc8 30. Qxc8 Re6 31. Qc5 Be4 32. Qxa7 Bd5 33. Qc5 Bxa2 34. Qxf5 Bc4 35. f3 Bb5 36. e4 Rd6 37. Be5 Bd7 38. Qg5 f6 39. Qg1 fxe5 40. Qc5 exf4 41. Qe5 Rf6 42. Qb8 Rd6 43. Qb7 Bxh3 44. Qe7 Bd7 45. e5 Re6 46. Qxd7 Rxe5+ 47. Kf1 Re3 48. Kf2 Nf6 49. Qc8+ Kf7 50. Qc4+ Re6 51. Kg1 Nh5 52. Qc2 Rg6+ 53. Kf2 Kf6 54. Qc5 Rh6 55. Qd5 Ke7 56. Qf5 Kd6 57. Qe4 Kc5 58. Qd3 Kb6 59. Qa3 Kc7 60. Qe7+ Kc6 61. Qa7 Kd5 62. Qb8 Kc4 63. Qe5 Kb3 64. Qc7 Kb4 65. Ke2 a5 66. Kf2 a4 67. Qb8+ Kc3 68. Qc7+ Kd4 69. Qa5 a3 70. Qb5 Nf6 71. Qb4+ Ke5 72. Qe1+ Kd5 73. Qb4 a2 74. Qb3+ Ke5 75. Qb8+ Ke6 76. Qa8 Rh2+ 77. Kg1 Rb2 78. Qa6+ Kf5 79. Qa3 Rb1+ 80. Kh2 a1=Q 81. Qd3+ Kg5 82. Qd1 Rxd1 83. Kg2 Qb2+ 84. Kh3 Rh1# { [%clk n/a] 0-1 flags=[] } *

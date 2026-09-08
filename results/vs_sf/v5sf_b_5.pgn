@@ -1,0 +1,11 @@
+[Event "V5 vs Stockfish19 bout (local)"]
+[Site "?"]
+[Date "????.??.??"]
+[Round "?"]
+[White "Stockfish19-e2200"]
+[Black "EnPassantLabs-V5"]
+[Result "*"]
+[SetUp "1"]
+[FEN "r1bq1rk1/pppp1ppp/2n2n2/1B2p3/4P3/2P2N1P/PPP2PP1/R1BQ1RK1 b - - 0 7"]
+
+7... Nxe4 8. Qe2 Nd6 9. Bxc6 dxc6 10. Qxe5 Bf5 11. c4 Bxc2 12. b3 Bd3 13. Re1 Re8 14. Qd4 Ne4 15. Qxd8 Rexd8 16. Re3 Nc5 17. Re7 Rd7 18. Rxd7 Nxd7 19. Nd4 Re8 20. Bf4 Re4 21. Be3 Re7 22. Rd1 Be4 23. f3 Bg6 24. Bf2 Nf6 25. b4 Nd7 26. Bg3 Nf8 27. Rf1 Bd3 28. Rc1 Rd7 29. Bf2 Ng6 30. Nb3 Nf4 31. Rd1 Rd6 32. Re1 Re6 33. c5 Bc4 34. Rd1 Kf8 35. Rd8+ Re8 36. Rd1 Bxb3 37. axb3 Ke7 38. Bg3 Ne2+ 39. Kh2 Nxg3 40. Kxg3 Rd8 41. Rxd8 Kxd8 42. Kg4 Ke7 43. Kf5 Kd7 44. f4 Ke7 45. g3 Kd7 46. Ke4 Ke6 47. h4 Kf6 48. g4 Ke6 49. f5+ Kf6 50. Kf4 Ke7 51. Kf3 Kd7 52. Kf4 Kd8 53. Kg3 f6 54. Kf3 Kd7 55. Ke4 Ke7 56. Kf4 Kf7 57. Kf3 Ke8 58. Kf4 Ke7 59. Ke4 Kd7 60. Kf3 Kd8 61. Ke3 h6 62. Ke4 Kd7 63. Kd3 Ke7 64. Kd2 a6 65. Ke3 Kd7 66. Kd3 Kc8 67. Kd4 Kd8 68. Kc4 Ke7 69. h5 Kd7 70. Kd4 b6 71. Kc4 b5+ 72. Kd3 Ke7 73. Ke2 Kf7 74. Kd3 Ke8 75. Ke2 Ke7 76. Ke1 Kd7 77. Kf1 Kc8 78. Kf2 a5 79. Ke3 a4 80. Kd4 axb3 81. Kc3 b2 82. Kxb2 Kd7 83. Kb1 Ke7 84. Kc1 Kf7 85. Kc2 Ke8 86. Kc3 Kd7 87. Kd2 Kc8 88. Ke2 Kb8 89. Kd2 Ka7 90. Kc2 Ka6 91. Kd2 Kb7 92. Ke1 Ka6 93. Kf1 Ka7 94. Ke2 Ka6 95. Kf2 Ka7 96. Kf1 Ka6 97. Kg1 Ka7 98. Kh2 Kb7 99. Kg2 Kc8 100. Kf3 Kd7 101. Kf2 Ke7 102. Kg2 Ke8 103. Kf1 Kd7 104. Kf2 Kc8 105. Kg2 Kb7 106. Kh1 Ka6 107. Kh2 Ka7 108. Kg2 Ka6 109. Kf2 Kb7 110. Kf3 Ka6 111. Kf4 Ka7 112. Ke3 Ka6 113. Kf2 Ka7 114. Ke2 Ka6 115. Kf1 Ka7 116. Kf2 Ka6 117. Ke3 Ka7 118. Kf3 Kb7 119. Ke3 Kc8 120. Kf2 Kd7 { [%clk n/a] * flags=[] } *

@@ -54,12 +54,11 @@ def _search_eval(st, depth):
     """Search `st` (our board state) at fixed depth; return (move, score)."""
     A._NODES[0] = 0
     far = S._NOW() + 3600_000_000_000  # 1h deadline: depth-limited, not time
-    ghist = A._ghist()  # empty-ish: called outside get_move flow
-    # NOTE: _ghist() reads _GAME_KEYS; here we never append, so window is 0.
+    ghist, gcnt = A._ghist()  # empty window outside get_move flow
     mv, score, _depth = S.search_root(
         st, A._NODES, far, A._TT_KEYS, A._TT_VALS, A._TT_MASK,
         A._KILLERS, A._HIST, A._REP, A._SCRATCH, A._SSCRATCH, depth,
-        ghist, gcnt=0)
+        ghist, gcnt)
     return mv, score
 
 
