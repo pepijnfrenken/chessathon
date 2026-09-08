@@ -24,6 +24,9 @@ alpha-beta engine with a hand-tuned evaluation**, not an NN.
 
 ## Design log
 
+Agentic process record (who built what, why — builder/auditor briefs, raw
+session traces, decision narratives): `docs/agentic-process/AGENTIC-PROCESS.md`
+
 (To be filled as we build — every component, why, what we measured.)
 
 ## Current status
