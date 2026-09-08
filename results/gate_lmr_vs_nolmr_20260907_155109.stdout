@@ -1,0 +1,27 @@
+pair  0 game 1: 0-1 (A loss) ply=118
+pair  0 game 2: 0-1 (A win) ply=56
+pair  1 game 1: 1/2-1/2 (A draw) ply=111
+pair  1 game 2: 0-1 (A win) ply=184
+pair  2 game 1: 0-1 (A loss) ply=180
+pair  2 game 2: 1-0 (A loss) ply=131
+pair  3 game 1: 1/2-1/2 (A draw) ply=175
+pair  3 game 2: 1-0 (A loss) ply=133
+pair  4 game 1: 0-1 (A loss) ply=222
+pair  4 game 2: 1/2-1/2 (A draw) ply=204
+pair  5 game 1: 1/2-1/2 (A draw) ply=49
+pair  5 game 2: 1/2-1/2 (A draw) ply=206
+pair  6 game 1: 1/2-1/2 (A draw) ply=59
+pair  6 game 2: 0-1 (A win) ply=106
+pair  7 game 1: 1/2-1/2 (A draw) ply=101
+pair  7 game 2: 0-1 (A win) ply=156
+pair  8 game 1: 1-0 (A win) ply=151
+pair  8 game 2: 0-1 (A win) ply=132
+pair  9 game 1: 1/2-1/2 (A draw) ply=102
+pair  9 game 2: 0-1 (A win) ply=90
+pair 10 game 1: 1-0 (A win) ply=71
+pair 10 game 2: 1-0 (A loss) ply=177
+pair 11 game 1: 1/2-1/2 (A draw) ply=64
+pair 11 game 2: 1/2-1/2 (A draw) ply=144
+
+=== hand:1111 vs hand:1111:nolmr: 8W 6L 10D (0.542) over 24 games, ZERO flags ===
+log: results/gate_lmr_vs_nolmr_20260907_155109.log
