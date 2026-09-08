@@ -33,6 +33,17 @@ run b5-b6-b7-b8=Q, Qxg4, mate Qc2#. No flags; clock healthy throughout
 (~2s/move). Exactly the stateful anti-threefold's promise: won game
 converted to mate, no shuffle-draw. v3 line now D W D L W W W L **W** →
 5W-2D-2L. P7/P8 were NOT in this build (post-upload fixes).
+**r70 LOSS vs KingsGuard (mated m31, 2026-09-08, `results/matches/
+round-70-vs-kingsguard.pgn`)** — first V5 game (`73c7d44`+P7/P8): 0-1.
+V5 clean: **zero repetition events** (nothing for the key fix to engage),
+no flags/fingerprints/illegals, our clock never below 1:05. Loss anatomy:
+a3/Na2/Ra1/Qxb2 skirmish (m15–23) left us a clean piece down from m23
+(+2 W); king walk Kg7-Kh6-Kxh5 (m19–22 for us) = positional collapse;
+Bh4-g5 dropped to f4-push, Rf5 hung to Bxf5 — sealed from a lost position.
+Opponent clock profile: 7–20s/move opening burn (deep pondering), then ran
+the rest of the game on ~3.5s+0.5 increment — tactical midgame outclass,
+NOT time-forced (we had 1:05 when mated). Ladder now 5W-2D-3L through r70.
+
 **All three verified correct behaviour of the shipped build** (exact-clock
 replay + eval probe, see §6 P1): r61 = dead-equal hold (raw 0.00, every
 alternative ≤ −21), r62 = converts, r63 = defensive draw allowed by design.
