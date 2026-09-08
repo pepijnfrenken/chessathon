@@ -7,7 +7,8 @@ Iterative-deepening negamax alpha-beta with:
   - quiescence search (stand-pat + captures; full evasions in check;
     QCAP depth cap)
   - null-move pruning (R=2, eval >= beta, endgame zugzwang guard;
-    beta > 0 only)
+    beta > 0 only; optional CHESSATHON_NULL_DEEP deepens R to 3 at
+    depth >= 6 — the P4 A/B probe)
   - late move reductions (quiet moves, depth >= 3, cap 2)
   - check extension (+1 ply)
   - repetition (path zobrist keys) + fifty-move draws. Phase 4: the
@@ -33,7 +34,12 @@ Sentinels: TIMEOUT = 1e9 (never stored, never compared as a score).
 
 Search feature toggles (read at import — numba bakes globals at compile;
 each A/B side runs as its own process):
-  CHESSATHON_LMR  = 0 disables late move reduction (default: on)
+  CHESSATHON_LMR       = 0 disables late move reduction (default: on)
+  CHESSATHON_NULLR     = base null-move reduction R, 2|3|4 (default 2)
+  CHESSATHON_NULL_DEEP = 1 deepens the null reduction at
+                         depth >= CHESSATHON_NULL_DEEP_MIN (default 6)
+                         to CHESSATHON_NULL_R_DEEP (default 3) — the
+                         P4 A/B probe (see BUILD.md "P4")
 """
 
 import ctypes
@@ -58,7 +64,30 @@ from engine.tt import (BOUND_NONE, BOUND_LOWER, BOUND_UPPER, BOUND_EXACT,
 MATE = 30000
 INF = 32000
 TIMEOUT = 1_000_000_000       # sentinel outside all real scores
-NULL_R = 2
+# Null-move reduction toggles (P4 A/B infra — brainA probe P4, BUILD.md
+# "P4 — dynamic null-move reduction"). Read at import: numba bakes these
+# globals at compile time, so each A/B side runs as its own process.
+#   NULL_R            base reduction (CHESSATHON_NULLR, default 2 = the
+#                     shipped V5 behavior; accepts 2|3|4).
+#   NULL_DEEP_ON      CHESSATHON_NULL_DEEP != 0: at node depth >=
+#                     NULL_DEEP_MIN use NULL_R_DEEP instead of NULL_R.
+#                     Rationale (brainA P4): this engine is node-starved
+#                     at the competition clock (~1.5-1.8M nodes/move,
+#                     depth 9-10 middlegame) and the null cutoff at deep
+#                     nodes is where a larger reduction buys real depth —
+#                     depth is the cheapest correct gain for a thin-eval
+#                     1-core engine; the LMR gate proved 500ms gates
+#                     discriminate search-structure changes.
+#   NULL_DEEP_MIN     depth threshold for the deep reduction (default 6).
+#   NULL_R_DEEP       CHESSATHON_NULL_R_DEEP: the deep reduction
+#                     (default 3).
+# The existing null-move guards (not in check, depth >= 2, ply >= 1,
+# beta > 0, _count_nonpawns(st) >= 2 zugzwang guard) are untouched and
+# apply to both reductions.
+NULL_R = int(os.environ.get("CHESSATHON_NULLR", "2"))
+NULL_DEEP_ON = os.environ.get("CHESSATHON_NULL_DEEP", "0") != "0"
+NULL_DEEP_MIN = int(os.environ.get("CHESSATHON_NULL_DEEP_MIN", "6"))
+NULL_R_DEEP = int(os.environ.get("CHESSATHON_NULL_R_DEEP", "3"))
 LMR_MIN_DEPTH = 3
 LMR_MAX = 2
 QCAP = 12                     # quiescence depth cap
@@ -349,7 +378,10 @@ def search(st, depth: int, alpha: int, beta: int, ply: int, nodes,
             st['halfmove'][0] = prev_half + 1
             st['side'][0] = 1 - st['side'][0]
             st['key'][0] = nkey ^ _ZSIDE
-            child = search(st, depth - 1 - NULL_R, -beta, -beta + 1,
+            null_r = NULL_R
+            if NULL_DEEP_ON and depth >= NULL_DEEP_MIN:
+                null_r = NULL_R_DEEP
+            child = search(st, depth - 1 - null_r, -beta, -beta + 1,
                            ply + 1, nodes, deadline, ttk, ttv, mask,
                            killers, hist, rep, scratch, sscratch)
             st['ep'][0] = prev_ep
