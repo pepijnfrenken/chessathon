@@ -24,9 +24,10 @@ r63 draw vs Ultimate32 (we were −2 — repetition **held a lost game**).
 replay + eval probe, see §6 P1): r61 = dead-equal hold (raw 0.00, every
 alternative ≤ −21), r62 = converts, r63 = defensive draw allowed by design.
 
-**Open items:** ladder rounds 51–60 match records missing · check current
-rating on the leaderboard · uploads freeze 11 Sep 11:00 (freeze strategy:
-§5/#5, §6 P5).
+**Open items:** ladder rounds 51–60 match records missing · uploads freeze
+11 Sep 11:00 (freeze strategy: §5/#5, §6 P5) · **rank 336/387 (Sep 8) —
+the crater is stateless-era damage (r48–60); stateful build r61+ = W/D,
+climbing** (recovery tracker: §6 P4).
 
 **Deadlines:** qualifier rated rounds 4–11 Sep (hourly 08:00–22:00 UTC) ·
 50 London seats in finishing order · final Swiss 12 Sep, Encode Club.
@@ -157,8 +158,12 @@ Every major decision, with the evidence that made it. (Full narratives:
   13/13 proves the path is sound).
 - **P3 — ladder record r51–60 missing** — pull from the dashboard if
   still available; if not, note the gap in the write-up (honest process).
-- **P4 — current ladder rating/rank unknown** (last known: 47/351 was 1a).
-  Check the leaderboard after r64–66 and log it here.
+- **P4 — ladder standing (Sep 8): rank 336/387.** Build-era attribution:
+  v1 = 1a pure-Python (rated 47/351 at launch — small field), v2 =
+  1b→Phase-3 stateless builds (r48–60: losses + shuffle-draws cratered
+  the Elo), v3 = Phase-4 stateful (r61+: W/D, recovering). ~45–50 rated
+  rounds remain before the freeze. Track Elo + per-round results here;
+  round logs r64+ go to `results/matches/` as they come in.
 - **P5 — freeze strategy:** uploads close 11 Sep 11:00. Every change after
   r61-63 carries regression risk vs the 0.750-gated stateful build. Decide
   per idea (§5) on evidence, not on time-to-freeze anxiety.
