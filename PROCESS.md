@@ -202,14 +202,22 @@ Every major decision, with the evidence that made it. (Full narratives:
   13/13 proves the path is sound).
 - **P3 — ladder record r51–60 missing** — pull from the dashboard if
   still available; if not, note the gap in the write-up (honest process).
-- **P4 — ladder standing (Sep 8): rank 336/387.** Build-era attribution:
-  v1 = 1a pure-Python (rated 47/351 at launch — small field), v2 =
-  1b→Phase-3 stateless builds (r48–60: losses + shuffle-draws cratered
-  the Elo), v3 = Phase-4 stateful (r61+: W, D, D, L — recovering).
-  ~45–50 rated rounds remain before the freeze. Track Elo + per-round
+- **P4 — ladder standing (Sep 8, through r74): rank 336/387.** Attribution:
+  v1 = 1a pure-Python (rated 47/351 at launch), v2 = stateless 1b→Phase-3
+  (r48-60 crater), v3 = stateful Phase-4 (r61+). V5 (r70+)
+  record: W-L-W-W-L (r70 L KingsGuard, r71 W Magnus, r72 W Stocked Fish,
+  r73 W SkyLab, r74 L Rohan). Full line through r74: 8W-2D-4L (v3/V5 era
+  r61-74: W D D L W W W L W W W L). r72 W (Black, mate m107, +15 by ply 96 —
+  conversion of a swingy midgame), r73 W (Black, mate m75, +10 by ply 60 —
+  REVENGE over SkyLab, the r48 stateless-era nemesis; level→won midgame),
+  r74 L (White, mated m127 vs Rohan — third won-position leak: +4 by ply 48,
+  +3 at ply 72, level by 84, −6 by 96, −9 by 108; same family as r64/r68
+  (leak in long-game transition under thinning clock; ended 24.4s left,
+  127 plies). Ladder-race note: leak losses (r64/68/74) are now the ONLY
+  loss class left — 3 of 4 V5-era losses; conversions vs weak bots are
+  consistent (r72/r73 both converts).
+  ~45-50 rated rounds remain before the freeze. Track Elo + per-round
   results here; round logs r64+ go to `results/matches/` as they come in.
-  v3 result line: r61 D · r62 W · r63 D · r64 L · r65 W · r66 W
-  (3W-2D-1L — all three Ws are conversions; the L was a won-position leak).
 - **P5 — freeze strategy:** uploads close 11 Sep 11:00. Every change after
   r61-63 carries regression risk vs the 0.750-gated stateful build. Decide
   per idea (§5) on evidence, not on time-to-freeze anxiety.
