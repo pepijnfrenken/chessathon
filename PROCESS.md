@@ -134,18 +134,15 @@ Every major decision, with the evidence that made it. (Full narratives:
 
 ## 6. Open problems / questions
 
-- **P1 — r61 classification (blocking nothing, but unresolved):** did the
+- **P1 — r61 classification (replay running, 2026-09-08):** did the
   shipped stateful agent cooperate with a draw in an even game (too-soft
   2nd-occurrence penalty?) or was it correctly holding a slightly worse
-  position? Answer: replay with the **exact clock-left values from the
-  round-61 match log** (116.2/113.6/…/88.7s before each of our moves) —
-  deterministic engine ⇒ any deviation from the real game is then a real
-  behavioral difference, not clock noise. Needs: `tools/replay_pgn.py`
-  fix (P2) + a `--clock-from-log` mode.
-- **P2 — replay tool bug:** crashes with `san()` assertion when the agent
-  deviates (real move illegal on the diverged branch). Fix: compare + log
-  the deviation BEFORE pushing the agent's move; stop cleanly on
-  divergence.
+  position? Exact-clock replay tooling is done (`tools/replay_pgn.py
+  --clkfile`, `tools/make_clkfile.py`) — deterministic engine ⇒ any
+  deviation from the real game is a real behavioural difference.
+- **P2 — replay tool bug: FIXED** (`6d5418e`): san() assertion on diverged
+  branch → reports uci instead; first-attempt ply-10 deviation traced to
+  simulated-clock drift, fixed with exact per-move clocks.
 - **P3 — ladder record r51–60 missing** — pull from the dashboard if
   still available; if not, note the gap in the write-up (honest process).
 - **P4 — current ladder rating/rank unknown** (last known: 47/351 was 1a).
