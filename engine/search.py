@@ -487,7 +487,7 @@ def qsearch(st, ply: int, alpha: int, beta: int, qdepth: int, nodes,
         # exchange chain loses material. Never in check (evasions are all
         # searched); promotions/EP are never pruned (their value is not
         # fully expressible in the single-square chain).
-        if SEEP_RUNE_ON and fl == F_CAPTURE and not check \
+        if SEEPRUNE_ON and fl == F_CAPTURE and not check \
                 and see(st, m_from(mv), m_to(mv)) < 0:
             continue
         captured = st['squares'][0][m_to(mv)]

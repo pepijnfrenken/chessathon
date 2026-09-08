@@ -1,0 +1,18 @@
+# P1 determinism + bench parity (SEE live)
+-- determinism: SEE+SEEPRUNE on, 2 fresh processes, r70-B d8 --
+proc: nodes=439811 best=14709 score=-92 depth=8
+proc: nodes=439811 best=14709 score=-92 depth=8
+
+-- fixed-depth parity, startpos d10 (fresh caches) --
+NEW tree (SEE off): 987934 987934 best=4353
+HEAD 68182e3:        987934 987934 best=4353
+
+-- eg_check --strong hand:1111 --weak hand:0000 with SEE+SEEPRUNE=1 --
+KQvK w WIN ply17
+KQvK b WIN ply15
+KRvK w WIN ply31
+KRvK b WIN ply21
+KPK w WIN ply49
+KPK b WIN ply49
+KRPvK w WIN ply33
+KRPvK b WIN ply15
