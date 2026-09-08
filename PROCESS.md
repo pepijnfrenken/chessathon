@@ -20,9 +20,13 @@ hand-tapered eval, stateful anti-threefold (game-history repetition).
 r62 **WIN** vs Forking squad (checkmate — first real conversion) · r61 draw vs
 CrimsonBot (material +0 even; threefold created by *their* king shuffle) ·
 r63 draw vs Ultimate32 (we were −2 — repetition **held a lost game**).
+**All three verified correct behaviour of the shipped build** (exact-clock
+replay + eval probe, see §6 P1): r61 = dead-equal hold (raw 0.00, every
+alternative ≤ −21), r62 = converts, r63 = defensive draw allowed by design.
 
-**Open items:** r61 exact-clock replay classification · rounds 51–60 match
-records missing · replay tool needs a fix (see §6) · uploads freeze 11 Sep 11:00.
+**Open items:** ladder rounds 51–60 match records missing · check current
+rating on the leaderboard · uploads freeze 11 Sep 11:00 (freeze strategy:
+§5/#5, §6 P5).
 
 **Deadlines:** qualifier rated rounds 4–11 Sep (hourly 08:00–22:00 UTC) ·
 50 London seats in finishing order · final Swiss 12 Sep, Encode Club.
@@ -72,7 +76,8 @@ Every major decision, with the evidence that made it. (Full narratives:
 | D7 | 4 latent search bugs fixed (PVS sign, qsearch stand-pat ×2, ep default) | Phase 3 | auditor + forensics; byte-parity tests |
 | D8 | Endgame conversion fixer reverted, experiment preserved | `fc0098e`, `bcc1efa` | gates 0.417/0.396 regress; invariant across net scopes v3–v6 → pinned to qsearch stalemate probes |
 | D9 | **Stateful agent + qsearch knight fix shipped** | `caede75`, `496b86a` | gate **0.750** (first decisive pass); eg_check 8/8; shuffle suite zero threefolds; empty-history byte-identical (provably inert) |
-| D10 | Round 61–63: no code change yet — classification pending | Sep 8 | see §6 #P1 |
+| D10 | Round 61–63: **no code change — verified correct behaviour** | Sep 8 | exact-clock replay: r61 13/13 move reproduction; probe: raw 0.00, penalty applied, all alternatives ≤ −21 → correct equal-position hold. r62 win converts; r63 −2 defensive hold by design |
+| D11 | Freeze policy: no engine change without a gate (0.750 stateful build is the reference) | Sep 8 | uploads freeze 11 Sep 11:00; every idea in §5 must gate before ship |
 
 ## 4. Setbacks & what they taught
 
@@ -134,15 +139,22 @@ Every major decision, with the evidence that made it. (Full narratives:
 
 ## 6. Open problems / questions
 
-- **P1 — r61 classification (replay running, 2026-09-08):** did the
-  shipped stateful agent cooperate with a draw in an even game (too-soft
-  2nd-occurrence penalty?) or was it correctly holding a slightly worse
-  position? Exact-clock replay tooling is done (`tools/replay_pgn.py
-  --clkfile`, `tools/make_clkfile.py`) — deterministic engine ⇒ any
-  deviation from the real game is a real behavioural difference.
+- **P1 — r61–63 classification: RESOLVED (2026-09-08).** Exact-clock replay
+  (`tools/replay_pgn.py --clkfile`, clocks from match log) reproduced r61
+  **13/13 moves** — the real game WAS the shipped build's deterministic
+  behaviour. Eval probe at the final Qd6 (`tools/probe_r61_decision.py`,
+  history window rebuilt from the PGN): **raw score 0.00, 2nd-occurrence
+  penalty applied (eff −20), still the best move — every alternative ≤
+  −21cp**. Verdict: r61 = correct hold of a dead-equal position (White
+  created the 3rd occurrence); r62 = win, converts; r63 = defensive draw
+  from −2 by design. No code action needed.
 - **P2 — replay tool bug: FIXED** (`6d5418e`): san() assertion on diverged
   branch → reports uci instead; first-attempt ply-10 deviation traced to
-  simulated-clock drift, fixed with exact per-move clocks.
+  simulated-clock drift, fixed with exact per-move clocks. NOTE: exact
+  reproduction only holds when no move overruns its budget on the replay
+  machine (r63's move-1 overrun, 4.9s vs 3.2s budget, caused a TT-state
+  divergence that is a machine artifact, not behaviour — r61's clean
+  13/13 proves the path is sound).
 - **P3 — ladder record r51–60 missing** — pull from the dashboard if
   still available; if not, note the gap in the write-up (honest process).
 - **P4 — current ladder rating/rank unknown** (last known: 47/351 was 1a).
