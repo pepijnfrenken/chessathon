@@ -16,13 +16,20 @@ At B (after the Na2/Qxb2 skirmish resolved, black a clean knight down) V5's
 eval says only **-92..-104 cp** (depth 6-10). A knight deficit should read
 ≈-250..-350. Before the skirmish (A) it played Na2 at every budget with
 eval -21..-81 — i.e. V5 *believed* the line was near-equal and the
-post-line position only ~-1 pawn. The eval is over-crediting compensation
-(doubled rooks on c-file / c5-c4 pawn / Bf6 pressure / bishop pair?) by
-~200cp in this structure. This is why r70's loss looked "deliberate":
-V5 did not know it was losing. CONCRETE next-build target: audit the
-mobility/activity/pawn-structure terms vs material in semi-closed
-piece-down positions (hand-eval legacy; the tuned-eval dud candidate was
-burnt earlier — this skew may be in the SAME family of terms).
+post-line position only ~-1 pawn.
+**MEASURED ROOT CAUSE (brainA probe, Sep 8 — corrects the guess below):**
+term decomposition of position B shows material +220 (white up N-for-pawn)
+vs black advanced-pawn PST **+260** (c5/d6/f6/g6 phalanx) at phase 11
+(EG taper) → static eval −26 for black: the advanced-pawn PST credit at
+low phase nearly CANCELS the material edge. Search then sees −92..−104
+(partial tactical correction), never −220..−320. Mobility is INNOCENT
+(−4/−2). Sanity contrast position C: same +220 edge but white PST −35/−100
+→ engine correctly knows it is lost (Quirk 3 holds). The skew is a
+*compensation-calibration* defect (passive-vs-advanced placement × low
+phase), fix candidate: compensation-aware clamp on advanced-rank pawn PST
+when ≥1 minor down and phase ≤16, behind a fixed-point regression harness
+(brainA P8). r74 (L vs Rohan, +4→−9) = the same leak family under long-
+game clock pressure (third leak loss: r64/r68/r74).
 
 ## Quirk 2 — SHARP-POSITION DEPTH INSTABILITY (move flips with budget)
 - r70 ply 28: Rb8 @1s, c4(=real) @5s, Bf6g7 @25s — non-monotonic.
