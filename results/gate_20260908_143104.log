@@ -1,0 +1,27 @@
+# gate tuned:1111 vs hand:0000 games=24 move-ms=500 seed=7
+pair  0 game 1: 0-1 (A loss) ply=92
+pair  0 game 2: 1-0 (A loss) ply=69
+pair  1 game 1: 0-1 (A loss) ply=80
+pair  1 game 2: 1-0 (A loss) ply=77
+pair  2 game 1: 0-1 (A loss) ply=112
+pair  2 game 2: 1-0 (A loss) ply=69
+pair  3 game 1: 1-0 (A win) ply=237
+pair  3 game 2: 1-0 (A loss) ply=141
+pair  4 game 1: 0-1 (A loss) ply=124
+pair  4 game 2: 1-0 (A loss) ply=99
+pair  5 game 1: 0-1 (A loss) ply=102
+pair  5 game 2: 1-0 (A loss) ply=133
+pair  6 game 1: 0-1 (A loss) ply=210
+pair  6 game 2: 1-0 (A loss) ply=165
+pair  7 game 1: 0-1 (A loss) ply=70
+pair  7 game 2: 1/2-1/2 (A draw) ply=300
+pair  8 game 1: 0-1 (A loss) ply=80
+pair  8 game 2: 1-0 (A loss) ply=103
+pair  9 game 1: 0-1 (A loss) ply=134
+pair  9 game 2: 1-0 (A loss) ply=79
+pair 10 game 1: 0-1 (A loss) ply=84
+pair 10 game 2: 1-0 (A loss) ply=107
+pair 11 game 1: 0-1 (A loss) ply=148
+pair 11 game 2: 1-0 (A loss) ply=147
+
+=== tuned:1111 vs hand:0000: 1W 22L 1D (0.062) over 24 games, ZERO flags ===
