@@ -43,6 +43,11 @@ Bh4-g5 dropped to f4-push, Rf5 hung to Bxf5 — sealed from a lost position.
 Opponent clock profile: 7–20s/move opening burn (deep pondering), then ran
 the rest of the game on ~3.5s+0.5 increment — tactical midgame outclass,
 NOT time-forced (we had 1:05 when mated). Ladder now 5W-2D-3L through r70.
+**r71 WIN vs Magnus (1-0, mate m42, 2026-09-08, `results/matches/
+round-71-vs-magnus.pgn`)** — White (us). V5's first win (2-0 vs Magnus
+overall). Queens traded off after Nc3+/bxc3/Qxf6 skirmish, then clean
+conversion: Bxf8, Rxa7 Kxa7, Rxf6, king march Kb5-Ka6, Rb7+/Rxb6, Bc6#
+mate net. No flags/illegals. Ladder 6W-2D-3L through r71.
 
 **All three verified correct behaviour of the shipped build** (exact-clock
 replay + eval probe, see §6 P1): r61 = dead-equal hold (raw 0.00, every
