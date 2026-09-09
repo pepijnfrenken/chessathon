@@ -1,0 +1,12 @@
+[Event "AI Chessathon Rated"]
+[Site "aichessathon.com"]
+[Date "2026.09.08"]
+[Round "73"]
+[White "SkyLab"]
+[Black "En Passant Labs"]
+[Result "*"]
+[FEN "rnbqk2r/pp2nppp/4p3/2ppP3/3P4/P1P5/2P2PPP/1RBQKBNR b Kkq - 2 7"]
+[SetUp "1"]
+[Termination "checkmate"]
+
+7... cxd4 8. cxd4 Nf5 9. g4 Nh4 10. Bb5+ Bd7 11. Bc6 Nxc6 12. Nf3 Nxf3+ *

@@ -1,0 +1,12 @@
+[Event "AI Chessathon Rated"]
+[Site "aichessathon.com"]
+[Date "2026.09.08"]
+[Round "68"]
+[White "Rook and Roll"]
+[Black "En Passant Labs"]
+[Result "*"]
+[FEN "rn1qkb1r/pp2pppp/2p2nb1/8/3P1B2/5NN1/PPP2PPP/R2QKB1R b KQkq - 6 7"]
+[SetUp "1"]
+[Termination "checkmate"]
+
+7... Nd5 8. Bd2 Qb6 9. Be2 Nb4 10. Bxb4 Qxb4+ 11. Kf1 Qxb2 12. Rb1 Qxa2 13. Rxb7 Bxc2 14. Qd2 Qa1+ 15. Ne1 Bg6 16. Qb4 Nd7 17. Rxd7 Kxd7 18. Qb7+ Kd6 19. Qxa8 Kc7 20. d5 cxd5 21. Bb5 Kd6 22. Ne2 e6 23. f3 Qa5 24. Qc6+ Ke5 25. f4+ Kf6 26. Nc3 Be4 27. Qxd5 exd5 *

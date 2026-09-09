@@ -11,6 +11,13 @@ depth — and classifies what happened to V5's mistakes.
 SF lives outside the repo (`~/.local/bin/stockfish`); it is a *referee*,
 never shipped code (see ORIGINALITY.md §allowed-5).
 
+For `--candidate HEAD` the aggregate verdict is WEAK/FAIL **by
+construction**: the candidate cannot beat itself, so pre-divergence V5
+leaks come out `retained` and `leaks_avoided>=1` cannot pass. The
+self-test pass signal is instead: (a) fidelity ≥ 90%, or (b) every
+divergence traced to the LIMITS-#3 machine-artifact class, plus
+`replaced-worse == 0` throughout.
+
 ## Usage
 
 Run from repo root, sequential only (SF reviews use Threads=6; replays are

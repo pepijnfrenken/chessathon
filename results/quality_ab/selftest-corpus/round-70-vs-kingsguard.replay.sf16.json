@@ -1,0 +1,502 @@
+[
+ {
+  "ply": 1,
+  "side": "white",
+  "san": "Nh2",
+  "uci": "f3h2",
+  "cp_loss": 7,
+  "eval_before": -15,
+  "verdict": "best",
+  "sacrifice": false
+ },
+ {
+  "ply": 2,
+  "side": "black",
+  "san": "Qb6",
+  "uci": "d8b6",
+  "cp_loss": 51,
+  "eval_before": 22,
+  "verdict": "good",
+  "sacrifice": false
+ },
+ {
+  "ply": 3,
+  "side": "white",
+  "san": "O-O",
+  "uci": "e1g1",
+  "cp_loss": 8,
+  "eval_before": 29,
+  "verdict": "best",
+  "sacrifice": false
+ },
+ {
+  "ply": 4,
+  "side": "black",
+  "san": "Nd4",
+  "uci": "c6d4",
+  "cp_loss": 31,
+  "eval_before": -21,
+  "verdict": "excellent",
+  "sacrifice": false
+ },
+ {
+  "ply": 5,
+  "side": "white",
+  "san": "Bg5",
+  "uci": "c1g5",
+  "cp_loss": 12,
+  "eval_before": 52,
+  "verdict": "excellent",
+  "sacrifice": false
+ },
+ {
+  "ply": 6,
+  "side": "black",
+  "san": "Be6",
+  "uci": "c8e6",
+  "cp_loss": 8,
+  "eval_before": -40,
+  "verdict": "best",
+  "sacrifice": false
+ },
+ {
+  "ply": 7,
+  "side": "white",
+  "san": "e3",
+  "uci": "e2e3",
+  "cp_loss": 8,
+  "eval_before": 48,
+  "verdict": "best",
+  "sacrifice": false
+ },
+ {
+  "ply": 8,
+  "side": "black",
+  "san": "Nc6",
+  "uci": "d4c6",
+  "cp_loss": 0,
+  "eval_before": -40,
+  "verdict": "best",
+  "sacrifice": false
+ },
+ {
+  "ply": 9,
+  "side": "white",
+  "san": "Nd5",
+  "uci": "c3d5",
+  "cp_loss": 0,
+  "eval_before": 38,
+  "verdict": "best",
+  "sacrifice": false
+ },
+ {
+  "ply": 10,
+  "side": "black",
+  "san": "Bxd5",
+  "uci": "e6d5",
+  "cp_loss": 27,
+  "eval_before": -44,
+  "verdict": "excellent",
+  "sacrifice": false
+ },
+ {
+  "ply": 11,
+  "side": "white",
+  "san": "cxd5",
+  "uci": "c4d5",
+  "cp_loss": 0,
+  "eval_before": 71,
+  "verdict": "best",
+  "sacrifice": false
+ },
+ {
+  "ply": 12,
+  "side": "black",
+  "san": "Nb4",
+  "uci": "c6b4",
+  "cp_loss": 389,
+  "eval_before": -79,
+  "verdict": "blunder",
+  "sacrifice": false
+ },
+ {
+  "ply": 13,
+  "side": "white",
+  "san": "Bxf6",
+  "uci": "g5f6",
+  "cp_loss": 0,
+  "eval_before": 468,
+  "verdict": "best",
+  "sacrifice": false
+ },
+ {
+  "ply": 14,
+  "side": "black",
+  "san": "Bxf6",
+  "uci": "g7f6",
+  "cp_loss": 0,
+  "eval_before": -475,
+  "verdict": "best",
+  "sacrifice": false
+ },
+ {
+  "ply": 15,
+  "side": "white",
+  "san": "a3",
+  "uci": "a2a3",
+  "cp_loss": 0,
+  "eval_before": 469,
+  "verdict": "best",
+  "sacrifice": false
+ },
+ {
+  "ply": 16,
+  "side": "black",
+  "san": "Na2",
+  "uci": "b4a2",
+  "cp_loss": 36,
+  "eval_before": -476,
+  "verdict": "excellent",
+  "sacrifice": false
+ },
+ {
+  "ply": 17,
+  "side": "white",
+  "san": "Qc2",
+  "uci": "d1c2",
+  "cp_loss": 1,
+  "eval_before": 512,
+  "verdict": "best",
+  "sacrifice": false
+ },
+ {
+  "ply": 18,
+  "side": "black",
+  "san": "Qb5",
+  "uci": "b6b5",
+  "cp_loss": 39,
+  "eval_before": -511,
+  "verdict": "excellent",
+  "sacrifice": false
+ },
+ {
+  "ply": 19,
+  "side": "white",
+  "san": "Ra1",
+  "uci": "b1a1",
+  "cp_loss": 7,
+  "eval_before": 550,
+  "verdict": "best",
+  "sacrifice": false
+ },
+ {
+  "ply": 20,
+  "side": "black",
+  "san": "Qxb2",
+  "uci": "b5b2",
+  "cp_loss": 0,
+  "eval_before": -543,
+  "verdict": "best",
+  "sacrifice": false
+ },
+ {
+  "ply": 21,
+  "side": "white",
+  "san": "Rxa2",
+  "uci": "a1a2",
+  "cp_loss": 62,
+  "eval_before": 541,
+  "verdict": "good",
+  "sacrifice": false
+ },
+ {
+  "ply": 22,
+  "side": "black",
+  "san": "Qxc2",
+  "uci": "b2c2",
+  "cp_loss": 11,
+  "eval_before": -479,
+  "verdict": "excellent",
+  "sacrifice": false
+ },
+ {
+  "ply": 23,
+  "side": "white",
+  "san": "Rxc2",
+  "uci": "a2c2",
+  "cp_loss": 18,
+  "eval_before": 490,
+  "verdict": "excellent",
+  "sacrifice": false
+ },
+ {
+  "ply": 24,
+  "side": "black",
+  "san": "Rfc8",
+  "uci": "f8c8",
+  "cp_loss": 61,
+  "eval_before": -472,
+  "verdict": "good",
+  "sacrifice": false
+ },
+ {
+  "ply": 25,
+  "side": "white",
+  "san": "Rb1",
+  "uci": "f1b1",
+  "cp_loss": 18,
+  "eval_before": 533,
+  "verdict": "excellent",
+  "sacrifice": false
+ },
+ {
+  "ply": 26,
+  "side": "black",
+  "san": "Ra7",
+  "uci": "a8a7",
+  "cp_loss": 119,
+  "eval_before": -515,
+  "verdict": "inaccuracy",
+  "sacrifice": false
+ },
+ {
+  "ply": 27,
+  "side": "white",
+  "san": "d4",
+  "uci": "d3d4",
+  "cp_loss": 114,
+  "eval_before": 634,
+  "verdict": "inaccuracy",
+  "sacrifice": false
+ },
+ {
+  "ply": 28,
+  "side": "black",
+  "san": "c4",
+  "uci": "c5c4",
+  "cp_loss": 123,
+  "eval_before": -520,
+  "verdict": "inaccuracy",
+  "sacrifice": false
+ },
+ {
+  "ply": 29,
+  "side": "white",
+  "san": "Rbc1",
+  "uci": "b1c1",
+  "cp_loss": 126,
+  "eval_before": 643,
+  "verdict": "inaccuracy",
+  "sacrifice": false
+ },
+ {
+  "ply": 30,
+  "side": "black",
+  "san": "b5",
+  "uci": "b7b5",
+  "cp_loss": 3,
+  "eval_before": -517,
+  "verdict": "best",
+  "sacrifice": false
+ },
+ {
+  "ply": 31,
+  "side": "white",
+  "san": "Nf1",
+  "uci": "h2f1",
+  "cp_loss": 15,
+  "eval_before": 520,
+  "verdict": "excellent",
+  "sacrifice": false
+ },
+ {
+  "ply": 32,
+  "side": "black",
+  "san": "Bg7",
+  "uci": "f6g7",
+  "cp_loss": 0,
+  "eval_before": -505,
+  "verdict": "best",
+  "sacrifice": false
+ },
+ {
+  "ply": 33,
+  "side": "white",
+  "san": "g4",
+  "uci": "g3g4",
+  "cp_loss": 0,
+  "eval_before": 503,
+  "verdict": "best",
+  "sacrifice": false
+ },
+ {
+  "ply": 34,
+  "side": "black",
+  "san": "Rb7",
+  "uci": "a7b7",
+  "cp_loss": 3,
+  "eval_before": -508,
+  "verdict": "best",
+  "sacrifice": false
+ },
+ {
+  "ply": 35,
+  "side": "white",
+  "san": "h5",
+  "uci": "h4h5",
+  "cp_loss": 12,
+  "eval_before": 511,
+  "verdict": "excellent",
+  "sacrifice": false
+ },
+ {
+  "ply": 36,
+  "side": "black",
+  "san": "gxh5",
+  "uci": "g6h5",
+  "cp_loss": 23,
+  "eval_before": -499,
+  "verdict": "excellent",
+  "sacrifice": false
+ },
+ {
+  "ply": 37,
+  "side": "white",
+  "san": "gxh5",
+  "uci": "g4h5",
+  "cp_loss": 9,
+  "eval_before": 522,
+  "verdict": "best",
+  "sacrifice": false
+ },
+ {
+  "ply": 38,
+  "side": "black",
+  "san": "Rcc7",
+  "uci": "c8c7",
+  "cp_loss": 20,
+  "eval_before": -513,
+  "verdict": "excellent",
+  "sacrifice": false
+ },
+ {
+  "ply": 39,
+  "side": "white",
+  "san": "Kh2",
+  "uci": "g1h2",
+  "cp_loss": 25,
+  "eval_before": 533,
+  "verdict": "excellent",
+  "sacrifice": false
+ },
+ {
+  "ply": 40,
+  "side": "black",
+  "san": "Rc8",
+  "uci": "c7c8",
+  "cp_loss": 18,
+  "eval_before": -508,
+  "verdict": "excellent",
+  "sacrifice": false
+ },
+ {
+  "ply": 41,
+  "side": "white",
+  "san": "Ng3",
+  "uci": "f1g3",
+  "cp_loss": 0,
+  "eval_before": 526,
+  "verdict": "best",
+  "sacrifice": false
+ },
+ {
+  "ply": 42,
+  "side": "black",
+  "san": "Bh6",
+  "uci": "g7h6",
+  "cp_loss": 175,
+  "eval_before": -536,
+  "verdict": "mistake",
+  "sacrifice": false
+ },
+ {
+  "ply": 43,
+  "side": "white",
+  "san": "Nf5",
+  "uci": "g3f5",
+  "cp_loss": 0,
+  "eval_before": 711,
+  "verdict": "best",
+  "sacrifice": false
+ },
+ {
+  "ply": 44,
+  "side": "black",
+  "san": "Bf8",
+  "uci": "h6f8",
+  "cp_loss": 0,
+  "eval_before": -785,
+  "verdict": "best",
+  "sacrifice": false
+ },
+ {
+  "ply": 45,
+  "side": "white",
+  "san": "Be4",
+  "uci": "g2e4",
+  "cp_loss": 0,
+  "eval_before": 763,
+  "verdict": "best",
+  "sacrifice": false
+ },
+ {
+  "ply": 46,
+  "side": "black",
+  "san": "Kh8",
+  "uci": "g8h8",
+  "cp_loss": 32,
+  "eval_before": -774,
+  "verdict": "excellent",
+  "sacrifice": false
+ },
+ {
+  "ply": 47,
+  "side": "white",
+  "san": "Rg1",
+  "uci": "c1g1",
+  "cp_loss": 0,
+  "eval_before": 806,
+  "verdict": "best",
+  "sacrifice": false
+ },
+ {
+  "ply": 48,
+  "side": "black",
+  "san": "c3",
+  "uci": "c4c3",
+  "cp_loss": 770,
+  "eval_before": -825,
+  "verdict": "blunder",
+  "sacrifice": false
+ },
+ {
+  "ply": 49,
+  "side": "white",
+  "san": "f4",
+  "uci": "f2f4",
+  "cp_loss": 0,
+  "eval_before": 1595,
+  "verdict": "best",
+  "sacrifice": false
+ },
+ {
+  "ply": 50,
+  "side": "black",
+  "san": "e5",
+  "uci": "e7e5",
+  "cp_loss": 400,
+  "eval_before": -29000,
+  "verdict": "blunder",
+  "sacrifice": false
+ }
+]

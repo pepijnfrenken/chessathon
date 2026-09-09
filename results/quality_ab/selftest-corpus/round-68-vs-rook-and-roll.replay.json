@@ -1,0 +1,199 @@
+{
+ "pgn": "/home/pino/projects/chessathon/results/matches/round-68-vs-rook-and-roll.pgn",
+ "side": "black",
+ "rows": [
+  {
+   "k": 1,
+   "ply": 1,
+   "game_san": "Nd5",
+   "cand_uci": "f6d5",
+   "matched": true,
+   "tl_ms": 120000,
+   "took_ms": 4920
+  },
+  {
+   "k": 2,
+   "ply": 3,
+   "game_san": "Qb6",
+   "cand_uci": "d8b6",
+   "matched": true,
+   "tl_ms": 116258,
+   "took_ms": 3085
+  },
+  {
+   "k": 3,
+   "ply": 5,
+   "game_san": "Nb4",
+   "cand_uci": "d5b4",
+   "matched": true,
+   "tl_ms": 113672,
+   "took_ms": 3027
+  },
+  {
+   "k": 4,
+   "ply": 7,
+   "game_san": "Qxb4+",
+   "cand_uci": "b6b4",
+   "matched": true,
+   "tl_ms": 111143,
+   "took_ms": 2972
+  },
+  {
+   "k": 5,
+   "ply": 9,
+   "game_san": "Qxb2",
+   "cand_uci": "b4b2",
+   "matched": true,
+   "tl_ms": 108670,
+   "took_ms": 2915
+  },
+  {
+   "k": 6,
+   "ply": 11,
+   "game_san": "Qxa2",
+   "cand_uci": "b2a2",
+   "matched": true,
+   "tl_ms": 106255,
+   "took_ms": 2863
+  },
+  {
+   "k": 7,
+   "ply": 13,
+   "game_san": "Bxc2",
+   "cand_uci": "g6c2",
+   "matched": true,
+   "tl_ms": 103892,
+   "took_ms": 2809
+  },
+  {
+   "k": 8,
+   "ply": 15,
+   "game_san": "Qa1+",
+   "cand_uci": "a2a1",
+   "matched": true,
+   "tl_ms": 101582,
+   "took_ms": 2757
+  },
+  {
+   "k": 9,
+   "ply": 17,
+   "game_san": "Bg6",
+   "cand_uci": "c2g6",
+   "matched": true,
+   "tl_ms": 99323,
+   "took_ms": 2709
+  },
+  {
+   "k": 10,
+   "ply": 19,
+   "game_san": "Nd7",
+   "cand_uci": "b8d7",
+   "matched": true,
+   "tl_ms": 97113,
+   "took_ms": 2658
+  },
+  {
+   "k": 11,
+   "ply": 21,
+   "game_san": "Kxd7",
+   "cand_uci": "e8d7",
+   "matched": true,
+   "tl_ms": 94952,
+   "took_ms": 2611
+  },
+  {
+   "k": 12,
+   "ply": 23,
+   "game_san": "Kd6",
+   "cand_uci": "d7d6",
+   "matched": true,
+   "tl_ms": 92839,
+   "took_ms": 2563
+  },
+  {
+   "k": 13,
+   "ply": 25,
+   "game_san": "Kc7",
+   "cand_uci": "d6c7",
+   "matched": true,
+   "tl_ms": 90775,
+   "took_ms": 2517
+  },
+  {
+   "k": 14,
+   "ply": 27,
+   "game_san": "cxd5",
+   "cand_uci": "c6d5",
+   "matched": true,
+   "tl_ms": 88756,
+   "took_ms": 2473
+  },
+  {
+   "k": 15,
+   "ply": 29,
+   "game_san": "Kd6",
+   "cand_uci": "c7d6",
+   "matched": true,
+   "tl_ms": 86782,
+   "took_ms": 2429
+  },
+  {
+   "k": 16,
+   "ply": 31,
+   "game_san": "Be4",
+   "cand_uci": "e7e6",
+   "matched": false,
+   "tl_ms": 84851,
+   "took_ms": 2387
+  },
+  {
+   "k": 17,
+   "ply": 33,
+   "game_san": "e4g6",
+   "cand_uci": "a1a5",
+   "matched": false,
+   "tl_ms": 82964,
+   "took_ms": 2345
+  },
+  {
+   "k": 18,
+   "ply": 35,
+   "game_san": "Ke5",
+   "cand_uci": "d6e5",
+   "matched": true,
+   "tl_ms": 81120,
+   "took_ms": 2304
+  },
+  {
+   "k": 19,
+   "ply": 37,
+   "game_san": "Ke4",
+   "cand_uci": "e5f6",
+   "matched": false,
+   "tl_ms": 81618,
+   "took_ms": 2316
+  },
+  {
+   "k": 20,
+   "ply": 39,
+   "game_san": "e4f4",
+   "cand_uci": "g6e4",
+   "matched": false,
+   "tl_ms": 81109,
+   "took_ms": 2303
+  },
+  {
+   "k": 21,
+   "ply": 41,
+   "game_san": "g6f5",
+   "cand_uci": "e6d5",
+   "matched": false,
+   "tl_ms": 79304,
+   "took_ms": 2263
+  }
+ ],
+ "stop_reason": "opponent PGN move illegal after deviation (ply 42)",
+ "matched": 16,
+ "our_moves": 21,
+ "have_exact_clocks": true
+}

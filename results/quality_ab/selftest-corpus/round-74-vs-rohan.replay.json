@@ -1,0 +1,100 @@
+{
+ "pgn": "/home/pino/projects/chessathon/results/matches/round-74-vs-rohan.pgn",
+ "side": "white",
+ "rows": [
+  {
+   "k": 1,
+   "ply": 2,
+   "game_san": "Nf3",
+   "cand_uci": "e1f1",
+   "matched": false,
+   "tl_ms": 120000,
+   "took_ms": 4741
+  },
+  {
+   "k": 2,
+   "ply": 4,
+   "game_san": "exd4",
+   "cand_uci": "e3d4",
+   "matched": true,
+   "tl_ms": 116276,
+   "took_ms": 3085
+  },
+  {
+   "k": 3,
+   "ply": 6,
+   "game_san": "Qd3",
+   "cand_uci": "d1d3",
+   "matched": true,
+   "tl_ms": 113690,
+   "took_ms": 3026
+  },
+  {
+   "k": 4,
+   "ply": 8,
+   "game_san": "Bxb5",
+   "cand_uci": "c3b5",
+   "matched": false,
+   "tl_ms": 111161,
+   "took_ms": 2971
+  },
+  {
+   "k": 5,
+   "ply": 10,
+   "game_san": "Nc4",
+   "cand_uci": "b5c7",
+   "matched": false,
+   "tl_ms": 108689,
+   "took_ms": 2915
+  },
+  {
+   "k": 6,
+   "ply": 12,
+   "game_san": "Bd2",
+   "cand_uci": "c7a8",
+   "matched": false,
+   "tl_ms": 106271,
+   "took_ms": 2861
+  },
+  {
+   "k": 7,
+   "ply": 14,
+   "game_san": "Bb3",
+   "cand_uci": "a8b6",
+   "matched": false,
+   "tl_ms": 103908,
+   "took_ms": 2809
+  },
+  {
+   "k": 8,
+   "ply": 16,
+   "game_san": "d2c3",
+   "cand_uci": "b6c8",
+   "matched": false,
+   "tl_ms": 101598,
+   "took_ms": 2757
+  },
+  {
+   "k": 9,
+   "ply": 18,
+   "game_san": "Qe2",
+   "cand_uci": "d3c3",
+   "matched": false,
+   "tl_ms": 99340,
+   "took_ms": 2707
+  },
+  {
+   "k": 10,
+   "ply": 20,
+   "game_san": "b3c2",
+   "cand_uci": "c8e7",
+   "matched": false,
+   "tl_ms": 97130,
+   "took_ms": 2658
+  }
+ ],
+ "stop_reason": "opponent PGN move illegal after deviation (ply 21)",
+ "matched": 2,
+ "our_moves": 10,
+ "have_exact_clocks": true
+}

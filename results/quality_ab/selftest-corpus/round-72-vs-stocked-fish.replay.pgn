@@ -1,0 +1,12 @@
+[Event "AI Chessathon Rated"]
+[Site "aichessathon.com"]
+[Date "2026.09.08"]
+[Round "72"]
+[White "Stocked Fish"]
+[Black "En Passant Labs"]
+[Result "*"]
+[FEN "rnbqk2r/ppp1bppp/4pn2/3pN3/2P5/6P1/PP1PPPBP/RNBQK2R b KQkq - 4 5"]
+[SetUp "1"]
+[Termination "checkmate"]
+
+5... Bd6 6. Qa4+ Ke7 7. d4 Nbd7 8. Bg5 Nxe5 9. dxe5 Bxe5 10. Nc3 Bxc3+ *
