@@ -1,0 +1,26 @@
+mate-round-64-vs-snake-p201-Kg3	V5   -898 g2g3   d11	CAND   -898 g2g3   d11	delta     +0
+mate-round-68-vs-rook-and-roll-p35-Ke5	V5      0 d6e5   d0	CAND      0 d6e5   d0	delta     +0
+mate-round-68-vs-rook-and-roll-p65-Kh6	V5  -1438 g7h6   d8	CAND  -1438 g7h6   d8	delta     +0
+mate-round-71-vs-magnus-p72-Ka6	V5   1272 b5a6   d9	CAND   1265 b5a6   d9	delta     -7
+mate-round-72-vs-stocked-fish-p69-Kxf5	V5   1301 e5f5   d12	CAND   1299 e5f5   d11	delta     -2
+mate-round-72-vs-stocked-fish-p73-Ne4	V5   1311 f6e4   d12	CAND   1311 f6e4   d12	delta     +0
+mate-round-72-vs-stocked-fish-p75-Nc3	V5   1325 e4d6   d11	CAND   1325 e4d6   d11	delta     +0
+mate-round-72-vs-stocked-fish-p77-Nxb5	V5   1339 c3b5   d13	CAND   1344 c3b5   d12	delta     +5
+mate-round-72-vs-stocked-fish-p79-g5	V5   1863 g7g5   d13	CAND   1342 b5c3   d12	delta   -521
+mate-round-73-vs-skylab-p51-Bb3	V5   1399 c2c1   d8	CAND   1347 c2c1   d7	delta    -52
+mate-round-73-vs-skylab-p61-Qxe5	V5   1613 e4e5   d9	CAND   1613 e4e5   d9	delta     +0
+mate-round-76-vs-mcai-p148-Rh1	V5  -1195 g1h1   d9	CAND  -1195 g1h1   d9	delta     +0
+mate-round-77-vs-frisky-p59-g5	V5   1192 g6g5   d7	CAND   1167 g6g5   d7	delta    -25
+mate-round-77-vs-frisky-p61-h5	V5  29991 d3f4   d7	CAND  29991 d3f4   d7	delta     +0
+mate-round-78-vs-stockfish-p75-Rd7	V5   1639 e7d7   d12	CAND   1639 e7d7   d12	delta     +0
+mate-round-80-vs-gmmmmm-p45-Rxg2	V5   1924 g5g2   d8	CAND   1924 g5g2   d8	delta     +0
+mate-round-81-vs-magnus-carlson-p82-Ke5	V5   1853 a6a7   d11	CAND  29987 f4f5   d12	delta +28134
+mate-round-83-vs-404-not-found-p125-Rc8	V5  -1030 d5d4   d9	CAND  -1034 e8c8   d10	delta     -4
+mate-round-83-vs-404-not-found-p127-Re8	V5   -654 b8a8   d9	CAND   -692 b8a8   d10	delta    -38
+mate-round-83-vs-404-not-found-p137-Ka4	V5 -29990 b5a4   d8	CAND -29990 b5a4   d8	delta     +0
+
+common=20 moves_changed=3 new_ge300_regressions=1
+CHANGED: ('mate-round-72-vs-stocked-fish-p79-g5', 'g7g5', 'b5c3', -521)
+CHANGED: ('mate-round-81-vs-magnus-carlson-p82-Ke5', 'a6a7', 'f4f5', 28134)
+CHANGED: ('mate-round-83-vs-404-not-found-p125-Rc8', 'd5d4', 'e8c8', -4)
+REG: ('mate-round-72-vs-stocked-fish-p79-g5', 1863, 1342, 'g7g5', 'b5c3')
