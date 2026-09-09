@@ -1,0 +1,57 @@
+CLAMP round-64-vs-snake              ply= 69 vloss=  537 nodes=0 score=-32000 depth=0 best=a1a1
+CLAMP round-64-vs-snake              ply= 83 vloss=  322 nodes=1371136 score=220 depth=8 best=c2c3
+CLAMP round-64-vs-snake              ply=129 vloss=  305 nodes=1164288 score=130 depth=8 best=g6g5
+CLAMP round-64-vs-snake              ply=181 vloss=  329 nodes=1272832 score=-70 depth=9 best=h4h5
+CLAMP round-64-vs-snake              ply=187 vloss=  427 nodes=1736704 score=-970 depth=11 best=h3h2
+CLAMP round-64-vs-snake              ply=189 vloss= 8101 nodes=1454080 score=-668 depth=12 best=h6h7
+CLAMP round-64-vs-snake              ply=193 vloss=  694 nodes=0 score=0 depth=0 best=h1h2
+CLAMP round-64-vs-snake              ply=195 vloss= 6648 nodes=1747968 score=-702 depth=10 best=h2g3
+CLAMP round-64-vs-snake              ply=197 vloss=  665 nodes=1687552 score=-778 depth=11 best=g1f2
+CLAMP round-64-vs-snake              ply=201 vloss=  400 nodes=2220032 score=-898 depth=11 best=g2g3
+CLAMP round-64-vs-snake              ply=207 vloss=22814 nodes=2014208 score=-1161 depth=12 best=e6e7
+CLAMP round-68-vs-rook-and-roll      ply= 13 vloss=  314 nodes=1244160 score=217 depth=9 best=g6c2
+CLAMP round-68-vs-rook-and-roll      ply= 15 vloss=  491 nodes=1253376 score=239 depth=8 best=a2a1
+CLAMP round-68-vs-rook-and-roll      ply= 29 vloss= 1804 nodes=1262592 score=104 depth=7 best=c7d6
+CLAMP round-68-vs-rook-and-roll      ply= 33 vloss=27978 nodes=1195008 score=-45 depth=8 best=e4g6
+CLAMP round-68-vs-rook-and-roll      ply= 35 vloss=  400 nodes=0 score=0 depth=0 best=d6e5
+CLAMP round-68-vs-rook-and-roll      ply= 43 vloss=  357 nodes=1116160 score=-511 depth=8 best=f4e5
+CLAMP round-68-vs-rook-and-roll      ply= 65 vloss=  300 nodes=1683456 score=-1438 depth=8 best=g7h6
+CLAMP round-70-vs-kingsguard         ply= 12 vloss=  399 nodes=1330176 score=47 depth=8 best=c6b4
+CLAMP round-70-vs-kingsguard         ply= 48 vloss=  958 nodes=1454080 score=-570 depth=9 best=h4g5
+CLAMP round-70-vs-kingsguard         ply= 50 vloss=28129 nodes=1441792 score=-661 depth=8 best=f7f6
+CLAMP round-71-vs-magnus             ply= 18 vloss=  619 nodes=1213440 score=125 depth=7 best=g1h1
+CLAMP round-71-vs-magnus             ply= 72 vloss=27264 nodes=1461248 score=1279 depth=10 best=a2a4
+CLAMP round-72-vs-stocked-fish       ply= 69 vloss=26871 nodes=1589248 score=1301 depth=12 best=e5f5
+CLAMP round-72-vs-stocked-fish       ply= 73 vloss=  500 nodes=1984512 score=1311 depth=12 best=f6e4
+CLAMP round-72-vs-stocked-fish       ply= 75 vloss=27240 nodes=2067456 score=1312 depth=12 best=e4c3
+CLAMP round-72-vs-stocked-fish       ply= 77 vloss=18836 nodes=2170880 score=1339 depth=13 best=c3b5
+CLAMP round-72-vs-stocked-fish       ply= 79 vloss=27041 nodes=2089984 score=1863 depth=13 best=g7g5
+CLAMP round-73-vs-skylab             ply= 51 vloss=27382 nodes=1169408 score=1399 depth=8 best=c2c1
+CLAMP round-73-vs-skylab             ply= 53 vloss=  614 nodes=1280000 score=1337 depth=9 best=c2d3
+CLAMP round-73-vs-skylab             ply= 57 vloss=  488 nodes=1332224 score=1443 depth=9 best=e6d5
+CLAMP round-74-vs-rohan              ply= 54 vloss=  632 nodes=1150976 score=513 depth=8 best=b4d2
+CLAMP round-74-vs-rohan              ply= 62 vloss=  637 nodes=1184768 score=495 depth=7 best=e2e5
+CLAMP round-74-vs-rohan              ply= 70 vloss=  495 nodes=1156096 score=-166 depth=9 best=c5a5
+CLAMP round-74-vs-rohan              ply= 98 vloss= 5256 nodes=1614848 score=-1024 depth=9 best=b4a3
+CLAMP round-74-vs-rohan              ply=112 vloss=22279 nodes=2191360 score=-1350 depth=13 best=b6a6
+CLAMP round-75-vs-prophylaxis        ply= 46 vloss=  337 nodes=1229824 score=276 depth=9 best=g7h6
+CLAMP round-75-vs-prophylaxis        ply= 86 vloss=  851 nodes=1716224 score=1109 depth=12 best=d5c6
+CLAMP round-76-vs-mcai               ply= 32 vloss=  474 nodes=1294336 score=38 depth=8 best=e1e4
+CLAMP round-76-vs-mcai               ply= 50 vloss=  316 nodes=1192960 score=-332 depth=8 best=h2h4
+CLAMP round-76-vs-mcai               ply=144 vloss=26877 nodes=1400832 score=-1155 depth=10 best=e4f4
+CLAMP round-77-vs-frisky             ply= 10 vloss=  410 nodes=1233920 score=-32 depth=7 best=d1d2
+CLAMP round-77-vs-frisky             ply= 20 vloss=  329 nodes=1252352 score=-194 depth=7 best=e1e2
+CLAMP round-77-vs-frisky             ply= 52 vloss=  784 nodes=1175552 score=-237 depth=8 best=g1g2
+CLAMP round-77-vs-frisky             ply= 56 vloss= 1254 nodes=1221632 score=-478 depth=7 best=f4f5
+CLAMP round-77-vs-frisky             ply= 60 vloss=27345 nodes=1259520 score=-1307 depth=8 best=d4e6
+CLAMP round-78-vs-stockfish          ply= 24 vloss=  614 nodes=1275904 score=-336 depth=8 best=c2e2
+CLAMP round-78-vs-stockfish          ply= 68 vloss=  870 nodes=1543168 score=-1452 depth=13 best=b4b5
+CLAMP round-78-vs-stockfish          ply= 72 vloss=  500 nodes=1870848 score=-1514 depth=11 best=e4f5
+CLAMP round-80-vs-gmmmmm             ply= 36 vloss=  513 nodes=1257472 score=-201 depth=9 best=g2h3
+CLAMP round-80-vs-gmmmmm             ply= 40 vloss=  551 nodes=1334272 score=-841 depth=8 best=e2f1
+CLAMP round-80-vs-gmmmmm             ply= 46 vloss= 1100 nodes=1431552 score=-2069 depth=8 best=e1e2
+CLAMP round-82-vs-team7347           ply= 48 vloss=  695 nodes=1294336 score=182 depth=7 best=h1h4
+CLAMP round-82-vs-team7347           ply= 62 vloss=  677 nodes=1163264 score=0 depth=7 best=b6c5
+CLAMP round-83-vs-404-not-found      ply= 32 vloss=  323 nodes=1174528 score=-61 depth=7 best=a4a5
+CLAMP round-83-vs-404-not-found      ply=116 vloss=  788 nodes=1603584 score=495 depth=11 best=f3e2
+CLAMP round-83-vs-404-not-found      ply=130 vloss=  400 nodes=1536000 score=2162 depth=10 best=f7f8

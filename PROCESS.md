@@ -396,3 +396,46 @@ king-opposition proxies) — Phase 3.1 precedent says endgame terms can
 regress at gate TC; gate at BOTH 300ms and 2s + full quality_ab corpus.
 Either route: perft/eg_check/shuffle suites + 60s init check mandatory,
 quality_ab PASS required before rebuild of agent.zip.
+
+## 11. 2026-09-09 — P8 COMPCLAMP probe: fully gated, stays OFF; quality_ab stats patch shipped
+
+Implemented the P8 compensation-aware clamp behind CHESSATHON_COMPCLAMP
+(default OFF; commit 2a115cd, design pre-registered in BUILD.md "P8"
+BEFORE gating). Rule: at phase ≤ 16 with raw |mat| ≥ 200, White-POV
+score clamps to within 120cp of material (min for the deficit side, max
+for the rich side). Integer-only, no tuner params, mate-drive untouched.
+Tooling: quality_ab stats patch per audit F1/F2/F5 (a2d7003) —
+winsorized+median cp_loss, faced/total denominators, trimmed-mean
+verdict check; det_check.py fresh-process determinism probe; leak_probe.py
+list-format leak-suite runner.
+
+**Gates (BUILD.md "P8" has full numbers):**
+- OFF = byte-identical V5: static parity 5/5 + node-identity 1,686,741
+  @d8 both trees. perft ALL PASS. Clamp-effective: every deficit-mover
+  armed FEN stops reading equal (r68 p65: −1100 where V5 read +1100).
+- L1: 24@500ms vs HEAD seed 7 zero flags — **8W-12L-4D = 0.417, below
+  the 0.45 line → NEGATIVE, decision made at L1.** eg_check 7/8 (KPK-b
+  draw = pre-existing gap: V5 control drew it too, same box/session);
+  shuffle 7/10 vs control 9/10, no threefolds either side.
+- L2 leak probes @2.6s: non-regressive (0 new ≥300cp degradations, 2/54
+  moves changed on non-armed FENs, +25/−8cp); searched scores on armed
+  FENs shift ~0 — the clamp fixes STATIC leaf texts; V5's 2.6s search
+  already saw the material truth at leak plies. (Operator later flagged
+  the FEN corpus for wrong-side rows; re-verified by FEN-turn — 0
+  mismatches on disk, verdict unchanged excluding the flagged games.)
+- L3: SF19-e2200 @1200ms **5W-5L-0D/10** (driver wedged at game 11,
+  operator killed it, 10 count) vs V5 reference 1W-4L+1aborted — not
+  worse, small n.
+- L4: not run (no new heavy runs; window consumed). Patched instrument
+  self-tested on r70 HEAD: fidelity 25/30, trimmed 111.1 vs 120.5.
+
+**Verdict: ship state unchanged — every toggle OFF, V5 remains the
+best-supported build.** Fourth consecutive probe in the 0.41-0.46 gate
+band (asp 0.438 / SEE 0.438 / SEEPRUNE 0.458 / COMPCLAMP 0.417): the
+500ms n=24 gate cannot discriminate eval-surface changes. Standing
+lesson recorded in BUILD.md: a deficit signal that changes MOVE
+SELECTION (root-layer, e.g. contempt-style) is the shape that could
+actually move games — it would need the real-clock SF bout as primary
+instrument, not this gate. quality_ab now carries audit-proof stats as
+the standing A/B instrument (F1/F2/F5 fixed; F3/F4 narrative already
+corrected in §10).

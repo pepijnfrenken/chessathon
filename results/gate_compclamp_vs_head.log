@@ -1,0 +1,27 @@
+# gate hand:1111:compclamp vs hand:1111 games=24 move-ms=500 seed=7
+pair  0 game 1: 1-0 (A win) ply=127
+pair  0 game 2: 1/2-1/2 (A draw) ply=153
+pair  1 game 1: 0-1 (A loss) ply=220
+pair  1 game 2: 1-0 (A loss) ply=237
+pair  2 game 1: 0-1 (A loss) ply=156
+pair  2 game 2: 1/2-1/2 (A draw) ply=191
+pair  3 game 1: 0-1 (A loss) ply=96
+pair  3 game 2: 1-0 (A loss) ply=117
+pair  4 game 1: 1/2-1/2 (A draw) ply=300
+pair  4 game 2: 1-0 (A loss) ply=111
+pair  5 game 1: 0-1 (A loss) ply=234
+pair  5 game 2: 0-1 (A win) ply=210
+pair  6 game 1: 0-1 (A loss) ply=190
+pair  6 game 2: 1-0 (A loss) ply=141
+pair  7 game 1: 1-0 (A win) ply=193
+pair  7 game 2: 0-1 (A win) ply=168
+pair  8 game 1: 1-0 (A win) ply=193
+pair  8 game 2: 0-1 (A win) ply=172
+pair  9 game 1: 1-0 (A win) ply=123
+pair  9 game 2: 1/2-1/2 (A draw) ply=153
+pair 10 game 1: 0-1 (A loss) ply=166
+pair 10 game 2: 0-1 (A win) ply=128
+pair 11 game 1: 0-1 (A loss) ply=190
+pair 11 game 2: 1-0 (A loss) ply=179
+
+=== hand:1111:compclamp vs hand:1111: 8W 12L 4D (0.417) over 24 games, ZERO flags ===

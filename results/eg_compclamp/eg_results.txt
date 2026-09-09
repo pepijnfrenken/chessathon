@@ -1,0 +1,10 @@
+# eg_check with CHESSATHON_COMPCLAMP=1 strong side (hand:1111) vs hand:0000
+# @300ms:  KQvK W17/B43 WIN-WIN | KRvK W61/B19 WIN-WIN | KPK W39 WIN / B28 DRAW | KRPvK W31/B15 WIN-WIN  (7/8)
+# @2000ms: KQvK W17/B53 WIN-WIN | KRvK W59/B19 WIN-WIN | KPK W37 WIN / B26 DRAW | KRPvK W29/B21 WIN-WIN  (7/8)
+# @2000ms rerun: KPK W14 DRAW / B63 WIN (7/8, KPK-b recovered)
+# @300ms rerun:  KPK W10 DRAW / B41 WIN (7/8)
+# V5 CONTROL (no clamp) same box/session:
+# @300ms: KPK W31 WIN / B36 DRAW (7/8)  @2000ms: KPK W28 DRAW / B48 DRAW (6/8)
+# KPK-b flakiness PRE-EXISTS the clamp (also in clean_eg_300/r2 DRAWs) — the documented
+# PROCESS backlog #1 KPK technique gap; NOT a clamp regression.
+# Shuffle suite @2000ms: clamp ON 7/10 WIN no threefolds; V5 control 9/10 WIN (1 DRAW @ KPK-w).

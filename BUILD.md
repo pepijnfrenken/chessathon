@@ -776,3 +776,123 @@ proven). 0.438 identical to the P4 null-move and Phase-3 aspiration gate
 scores (same 10.5/24 points) — n=24 discrimination is weak; the verdict
 rules are applied as written. SEE stays in-tree as preserved experiment +
 A/B infra (see() unit-tested and reusable for any future qsearch probe).
+
+## P8 — compensation-aware eval clamp (COMPCLAMP) — design, pre-gate (2026-09-09)
+
+Quirk-1 (the loss-family mechanism measured across r64/r68/r70/r74/r76):
+in positions where we are materially behind but hold positional
+compensation, the static eval reports near-equality or even an advantage,
+so the search grinds down instead of playing the most tenacious line.
+Live measurement at recon (static eval, mover POV, our own eval):
+
+| probe | mover material | static eval | over-credit |
+|---|---|---|---|
+| r64 p42 (exf4) | −170 | +242 | +412 |
+| r64 p83 (Rxc3) | −90 | +152 | +242 |
+| r68 p65 (Kh6) | **−1020** | **+1100** | **+2120** |
+
+The r68 shape is the killer: down a full rook, eval says +11. The
+advanced-pawn PST / passer credits cancel real material.
+
+**Leak-suite profile (results/leak_suite/fens.json, 54 FENs, 13-game
+corpus):** 17 FENs have the mover ≥200cp down in raw material — and all
+17 sit at phase ≤ 16. The band below therefore covers exactly the
+deficit population and nothing else (movers at ≤ −200cp material with
+phase > 16 do not occur in the corpus).
+
+**The clamp rule (from the P8 writeup band):**
+
+> In `evaluate()`, after assembly, when `phase <= 16` AND the mover's
+> raw material (`mat`, white-minus-black, before tapering) is at least
+> COMPCLAMP_MAT (200cp) behind, the White-POV score is clamped
+> symmetric so compensation credit cannot hide the deficit:
+> `if mat <= -COMPCLAMP_MAT: score = min(score, mat + COMPCLAMP_SLACK)`
+> `if mat >= +COMPCLAMP_MAT: score = max(score, mat - COMPCLAMP_SLACK)`
+> (SLACK = 120cp — the P8 harness band width `|static − material| ≤ 120`
+> in the audited regime). The mover-POV negation at return propagates it.
+
+Integer-only, no new params (keeps the 813-param tuner contract — the
+clamp is a post-assembly correction like the Phase-3 mate-drive term).
+Thresholds: phase ≤ 16 (endgame-safety first — past that the mate-drive
+regime owns conversion and an eval clamp must not fight it), |mat| ≥ 200
+(a minor or more), slack 120 (the audited fixed-point band).
+
+**Toggle:** `CHESSATHON_COMPCLAMP=1` enables; default OFF = byte-identical
+V5 (verified node-for-node). Read at import like NULL_DEEP/SEE — numba
+bakes it. env var plumbing added to tools/common.py side_env as search
+flag `compclamp` for gate_match.
+
+**Endgame-safety invariant:** eg_check must stay 8/8 with the clamp ON
+(KQvK/KRvK/KPK/KRPvK both colors). The clamp only fires at |mat| ≥ 200
+with phase ≤ 16 — the strong side in a won basic endgame is ≥200 UP, so
+its own eval gets *raised* (max side), never lowered; the defending side
+is clamped toward the material truth, which the mate-drive term already
+dominates. KPK (mat=100 < 200) is untouched by construction.
+
+**Gate plan (audit §2 standard):** L1 24-game @500ms gate vs HEAD +
+perft/shuffle/determinism/60s-init; L2 leak-suite 54-FEN probes @2.6s
+vs HEAD (non-regressive + clamp-effective on the deficit FENs); L3
+SF19-e2200 real-clock bout vs the V5 reference; L4 quality_ab replay
+with the F1/F2/F3/F5 stats patch. Ship ON only if all clear.
+
+**GATE RESULTS (2026-09-09) — DECISION: STAYS OFF (default), V5 ships.**
+
+- **OFF-identity (precondition):** static eval parity 5/5 probe FENs vs
+  HEAD (values 242/152/−1100/599/132); node-for-node search identity
+  1,686,741 nodes @d8 r70-mid FEN, fresh processes, both trees
+  (tools/det_check.py). Unset CHESSATHON_COMPCLAMP = byte-identical V5.
+- **Clamp-effective (static, the mechanism):** all 13-17 deficit-mover
+  armed FENs now read at/below mat+120 (+10 tempo): r68 p65 down 1020
+  reads −1100 (was +1100), r80 p46 down 1110 reads −2069. 29-31/54
+  suite FENs arm; zero false arms above phase 16.
+- **L1 — 24 games @500ms vs HEAD, seed 7, zero flags: 8W-12L-4D =
+  0.417** — below the 0.45 revert line (results/gate_compclamp_vs_head.log).
+  Fourth consecutive eval/search probe in the 0.41-0.46 band (asp 0.438,
+  SEE 0.438, SEEPRUNE 0.458): n=24 keeps failing to separate this class;
+  rule applied as written → L1 NEGATIVE.
+  perft ALL PASS; determinism identical (2× fresh procs); eg_check 7/8
+  with clamp ON (@300ms and @2000ms; the one miss, KPK-b, matches the
+  V5 CONTROL run on the same box/session — @300ms V5 also drew it, and
+  V5 @2000ms drew BOTH KPK colors; the KPK-b gap is pre-existing
+  PROCESS backlog #1, not a clamp regression). Shuffle @2000ms: 7/10
+  clamp ON vs 9/10 V5 control, zero threefolds both — the 2-draw delta
+  sits inside the KPK/KQvK flake band documented in Phase-4 risks.
+- **L2 — leak-suite probes @2.6s, V5 vs CLAMP (54 FENs):**
+  non-regressive (0 new ≥300cp move degradations on V5-sane positions;
+  2/54 chosen moves changed, both non-armed FENs, deltas +25/−8cp) and
+  clamp-effective on the static eval. Searched scores at 2.6s on armed
+  FENs shift median 0cp (max −14): V5's SEARCH already finds the
+  material truth at these depths — the clamp corrects the STATIC leaf
+  evals, which is where the grind-down gets its "we're fine" signal.
+  Caveat per operator: the on-disk 78-row corpus was later flagged for
+  wrong-side rows (r77/r78/r80/r83); re-verified by FEN-turn: 0 side
+  mismatches in this file, and excluding all four flagged games leaves
+  the verdict unchanged (0 new degradations, 13 unflagged deficit FENs
+  clamp-effective). A corrected corpus was landing after this run.
+- **L3 — SF19-e2200 real-clock bout, 1200ms/move: 5W-5L-0D over 10
+  clean games** (driver wedged at game 11, killed; operator directed
+  using the 10). V5 reference same config/session class: 1W-4L-0D + 1
+  aborted. 50% vs ~25% — not worse, on 10 games wide error bars.
+  5 losses at this Elo gap are the expected shape for either build.
+- **L4 — NOT RUN for the clamp** (operator stopped new heavy runs;
+  the wedge consumed the window). The patched tool (winsorized+median
+  stats, faced/total denominators, trimmed-mean check) is committed and
+  self-tested on r70 HEAD: fidelity 25/30, trimmed 111.1 vs 120.5,
+  faced 1/5 — instrument working, verdict label advisory.
+
+**Ship rule from the gate plan: ship ON iff L1 ∧ L2 ∧ L3 ∧ L4.** L1 is
+0.417 < 0.45 → the AND fails at the first gate. L2 pass, L3 not-worse,
+L4 absent — none can rescue a below-revert-line L1. **COMPCLAMP stays
+OFF (default unset = V5, byte-identical, proven); the toggle remains
+in-tree as a documented, deterministic, well-characterized experiment.**
+
+What the evidence says for the future: the clamp does exactly what it
+claims at the eval level (deficit positions stop reading as equal), it
+is endgame-safe, and it does not hurt at real clocks. What it does NOT
+do is win the 500ms gate — like every other eval-surface probe this
+event. The Quirk-1 fix that would actually move games needs the deficit
+signal to reach MOVE SELECTION (e.g. via a contempt/deficit term that
+biases the root decision, not just leaf texts), which is a search-layer
+change — and the 500ms gate's inability to discriminate this class
+means such a change would need the real-clock bout as its primary
+instrument, not the gate.
