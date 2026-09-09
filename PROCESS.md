@@ -358,10 +358,21 @@ classification + mean cp_loss delta.
   mean_not_worse FAIL of the instrument** — cand mean 845.0 vs V5 768.1
   (n=70 vs 378). The r70 replay is the mechanism on tape: deepest run of
   the corpus (25/30 fidelity, played to end), then at the thinning clock
-  it walked into a mating attack — f6?? 27870cp, fxg5 28113/28213cp,
-  Bf5 28878cp. R=3 at deep nodes skips exactly the refutation horizon
-  the leak family lives in. The 500ms negative is confirmed and
-  amplified; stays OFF.
+  it walked into a mating attack — f6?? 27870cp, fxg5 28213cp. R=3 at
+  deep nodes skips exactly the refutation horizon the leak family lives
+  in. The 500ms negative is confirmed; stays OFF.
+  - **AUDIT CORRECTION (q5-audit2c, 2026-09-09, /tmp/chess-q5-audit2-report.md):
+    the quality_ab leg of this negative is RETRACTED as evidence.**
+    (F1) aggregate means are dominated by the referee's ±30000 mate-clamp
+    (r70 = 97.6% of cand total; trimmed <1000cp the difference flips to
+    n.s., Welch t=0.53); (F3) "fxg5 28113" (ply 51) and "Bf5 28878"
+    (ply 59) are WHITE/opponent moves — the candidate's actual clamp
+    blunders are f6 (27870, ply 50) + fxg5 (28213, ply 52); (F4) the
+    R=3-horizon mechanism is not established — V5 walked into the same
+    mating attack in the REAL game (f6?? is in the V5 baseline) and the
+    rerun produced different blunder moves of the same class (h6??/g4??),
+    i.e. real-clock-timing dice, not a deterministic signature. Stays
+    OFF on the 500ms gate alone (0.438).
 
 **Verdict: ship state stands — every toggle OFF, V5 is the best known
 build on this corpus.** SEE ordering not re-run (no leak mechanism +
