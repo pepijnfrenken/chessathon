@@ -40,6 +40,14 @@ own process with its own config):
                                          tuned is the rejected fit, kept for A/B)
   CHESSATHON_EVAL_GATE   = "1111"       4 chars, group order: pawn,
                                          mobility, king-safety, bp+tempo
+  CHESSATHON_COMPCLAMP   = 1 applies the compensation-aware clamp (P8,
+                                         BUILD.md "P8"): at phase <= 16
+                                         with raw material |mat| >= 200,
+                                         the White-POV score is clamped
+                                         to within 120cp of raw material
+                                         so positional compensation
+                                         cannot mask a material deficit
+                                         (default: off — shipped V5 eval)
 """
 
 import os
@@ -92,6 +100,18 @@ N_PARAMS = 813
 # Phase weights per piece (N/B=1, R=2, Q=4; standard phase-counting).
 PHASE_W = np.array([0, 0, 1, 1, 2, 4, 0], dtype=np.int16)
 MAX_PHASE = 24
+
+# P8 compensation-aware clamp (CHESSATHON_COMPCLAMP; BUILD.md "P8").
+# Read at import: numba bakes these into the jitted evaluate().
+#   COMPCLAMP_ON   env CHESSATHON_COMPCLAMP != 0
+#   COMPCLAMP_MAT  raw-material deficit that arms the clamp (200: a
+#                  minor or more; matches the audited P8 regime).
+#   COMPCLAMP_SLACK how far the tapered score may sit from raw material
+#                  once armed (120: the P8 fixed-point band width
+#                  |static_eval - material| <= 120 at phase <= 16).
+COMPCLAMP_ON = os.environ.get("CHESSATHON_COMPCLAMP", "0") != "0"
+COMPCLAMP_MAT = int(os.environ.get("CHESSATHON_COMPCLAMP_MAT", "200"))
+COMPCLAMP_SLACK = int(os.environ.get("CHESSATHON_COMPCLAMP_SLACK", "120"))
 
 # Phase 3 hand-tuned endgame king-activation weight (see evaluate()).
 # 30 was too weak to overcome PST/rook noise at kdist 3-4 (KRvK king
@@ -644,6 +664,27 @@ def evaluate(st) -> int:
     if phase <= 16 and (mat >= 300 or mat <= -300):
         drive = (1 if mat > 0 else -1) * MATE_DRIVE_K * (7 - kdist)
         score += drive
+
+    # P8 — compensation-aware clamp (CHESSATHON_COMPCLAMP; BUILD.md "P8").
+    # Quirk-1 fix: the loss family shows positions where advanced-pawn
+    # PST/passer credit cancels a real material deficit (r68 p65: down a
+    # rook, static says +11). When either side's RAW material (pre-taper
+    # `mat`, White-POV) is >= COMPCLAMP_MAT, the White-POV score is
+    # clamped so it cannot sit more than COMPCLAMP_SLACK above the
+    # deficit side's material: compensation credit stays bounded, the
+    # search sees the deficit. Integer-only; no tuner params.
+    # Endgame safety: arming requires |mat| >= 200 (a minor or more), so
+    # KPK (100cp) never fires; the strong side's score can only be
+    # RAISED (max branch) in a won endgame, never lowered.
+    if COMPCLAMP_ON and phase <= 16:
+        if mat <= -COMPCLAMP_MAT:
+            floor_ = mat + COMPCLAMP_SLACK
+            if score > floor_:
+                score = floor_
+        elif mat >= COMPCLAMP_MAT:
+            ceil_ = mat - COMPCLAMP_SLACK
+            if score < ceil_:
+                score = ceil_
 
     if not has_pawn and not has_major:
         if mins <= 1:
