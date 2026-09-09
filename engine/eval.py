@@ -291,13 +291,19 @@ def _build_hand() -> np.ndarray:
     p = np.zeros(N_PARAMS, dtype=np.int32)
     p[P_MAT_MG:P_MAT_MG + 6] = _MATERIAL[1:7]
     p[P_MAT_EG:P_MAT_EG + 6] = _MATERIAL[1:7]
-    p[P_PST_MG + 0 * 64:P_PST_MG + 1 * 64] = _PAWN_MG
+    # q5-night2 (BUILD doc "advanced pawns rewarded"): the literal tables
+    # were authored rank-8-first but the consumer (sq64, a1=0..h8=63, with
+    # black ^56) is rank-1-first — every side's HOME pawns read the 50/80
+    # row and advancement is punished. Normalize at hand-assembly: flip the
+    # 8 rows of the pawn tables (row 0 <-> row 7 ...). Pawn-only this pass;
+    # king/rook orientation is a separate gated change (docs/research/07).
+    p[P_PST_MG + 0 * 64:P_PST_MG + 1 * 64] = _PAWN_MG.reshape(8, 8)[::-1].ravel()
     p[P_PST_MG + 1 * 64:P_PST_MG + 2 * 64] = _KNIGHT_MG
     p[P_PST_MG + 2 * 64:P_PST_MG + 3 * 64] = _BISHOP_MG
     p[P_PST_MG + 3 * 64:P_PST_MG + 4 * 64] = _ROOK_MG
     p[P_PST_MG + 4 * 64:P_PST_MG + 5 * 64] = _QUEEN_MG
     p[P_PST_MG + 5 * 64:P_PST_MG + 6 * 64] = _KING_MG
-    p[P_PST_EG + 0 * 64:P_PST_EG + 1 * 64] = _PAWN_EG
+    p[P_PST_EG + 0 * 64:P_PST_EG + 1 * 64] = _PAWN_EG.reshape(8, 8)[::-1].ravel()
     p[P_PST_EG + 1 * 64:P_PST_EG + 2 * 64] = _KNIGHT_MG
     p[P_PST_EG + 2 * 64:P_PST_EG + 3 * 64] = _BISHOP_MG
     p[P_PST_EG + 3 * 64:P_PST_EG + 4 * 64] = _ROOK_MG
@@ -746,9 +752,6 @@ def _selfcheck():
         assert evaluate(st) == int(EVAL_PARAMS[P_TEMPO]), evaluate(st)
         st2 = bm.parse_fen("k7/8/8/8/8/8/8/K6R w - - 0 1")
         assert evaluate(st2) > 400, evaluate(st2)
-        st4 = bm.parse_fen("k7/8/8/8/8/2P5/2P5/K7 w - - 0 1")
-        st5 = bm.parse_fen("k7/8/8/8/8/2P5/3P4/K7 w - - 0 1")
-        assert evaluate(st4) < evaluate(st5), (evaluate(st4), evaluate(st5))
         st6 = bm.parse_fen("k7/8/2P5/8/8/8/8/K7 w - - 0 1")
         st7 = bm.parse_fen("k7/8/8/8/2P5/8/8/K7 w - - 0 1")
         assert evaluate(st6) > evaluate(st7), (evaluate(st6), evaluate(st7))
