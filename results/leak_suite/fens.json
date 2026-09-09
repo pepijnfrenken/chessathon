@@ -484,5 +484,32 @@
   "cp_loss": 677,
   "verdict": "blunder",
   "fen_before": "2k1r1r1/4n3/1Q5p/p6P/2PpqPpR/6K1/PP1B4/R7 w - - 1 37"
+ },
+ {
+  "game": "round-83-vs-404-not-found",
+  "side": "white",
+  "ply": 32,
+  "san": "g3",
+  "cp_loss": 323,
+  "verdict": "blunder",
+  "fen_before": "2kr3r/pp3ppp/2p1p3/2P1P1b1/P1qP4/2B2Q2/5PPP/R2R2K1 w - - 1 24"
+ },
+ {
+  "game": "round-83-vs-404-not-found",
+  "side": "white",
+  "ply": 116,
+  "san": "Ke3",
+  "cp_loss": 788,
+  "verdict": "blunder",
+  "fen_before": "k4r2/1pB2p1R/p3p3/P2pP1P1/5P2/5K2/8/8 w - - 3 66"
+ },
+ {
+  "game": "round-83-vs-404-not-found",
+  "side": "white",
+  "ply": 130,
+  "san": "Rf8",
+  "cp_loss": 400,
+  "verdict": "blunder",
+  "fen_before": "2k1r3/1p3RP1/pB2p3/P2pP3/5P2/4K3/8/8 w - - 1 73"
  }
 ]
