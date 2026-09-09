@@ -412,5 +412,59 @@
   "cp_loss": 27345,
   "verdict": "blunder",
   "fen_before": "5rk1/p2Q1p1p/1p1R4/5Pp1/P2N4/1P1n3K/5q2/8 w - - 0 37"
+ },
+ {
+  "game": "round-78-vs-stockfish",
+  "side": "white",
+  "ply": 24,
+  "san": "Qf2",
+  "cp_loss": 614,
+  "verdict": "blunder",
+  "fen_before": "r4r1k/1pp2ppp/1p3n2/4p3/PP2PP1P/2PPB2q/2Q5/R4RK1 w - - 1 18"
+ },
+ {
+  "game": "round-78-vs-stockfish",
+  "side": "white",
+  "ply": 68,
+  "san": "b5",
+  "cp_loss": 870,
+  "verdict": "blunder",
+  "fen_before": "6k1/1pp1r1pp/1p3p2/4P3/1P1PK3/8/8/8 w - - 0 40"
+ },
+ {
+  "game": "round-78-vs-stockfish",
+  "side": "white",
+  "ply": 72,
+  "san": "Kd4",
+  "cp_loss": 500,
+  "verdict": "blunder",
+  "fen_before": "8/1pp1rkpp/1p6/1P2P3/4K3/8/8/8 w - - 1 42"
+ },
+ {
+  "game": "round-80-vs-gmmmmm",
+  "side": "white",
+  "ply": 36,
+  "san": "gxh3",
+  "cp_loss": 513,
+  "verdict": "blunder",
+  "fen_before": "r3r1k1/ppp2pbp/3p2p1/1P1P4/N1P1Pp1q/P4B1b/4QPP1/2R1R2K w - - 0 25"
+ },
+ {
+  "game": "round-80-vs-gmmmmm",
+  "side": "white",
+  "ply": 40,
+  "san": "Bg2",
+  "cp_loss": 551,
+  "verdict": "blunder",
+  "fen_before": "r5k1/ppp2pbp/3p2p1/1P1Pr3/N1P1Pp2/P4B1q/4QP2/2R1R1K1 w - - 2 27"
+ },
+ {
+  "game": "round-80-vs-gmmmmm",
+  "side": "white",
+  "ply": 46,
+  "san": "Rc2",
+  "cp_loss": 1100,
+  "verdict": "blunder",
+  "fen_before": "r5k1/ppp2pbp/3p2p1/1P1P4/N1P1Pp2/P4q2/5Pr1/2R1RK2 w - - 0 30"
  }
 ]
