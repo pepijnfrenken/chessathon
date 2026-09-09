@@ -596,8 +596,13 @@ def search(st, depth: int, alpha: int, beta: int, ply: int, nodes,
             st['side'][0] = 1 - st['side'][0]
             if child == TIMEOUT:
                 return TIMEOUT
-            if child >= beta:
-                return child
+            # q5-fix1 (H1): `child` is the OPPONENT's null-search score;
+            # our value is its negation. The old code compared and returned
+            # the un-negated value — accepting invalid cutoffs (opponent
+            # +232 read as our +232) and rejecting valid ones.
+            null_score = -child
+            if null_score >= beta:
+                return null_score
 
     cnt = legal_moves(st, scratch[ply], False)
     if cnt == 0:
