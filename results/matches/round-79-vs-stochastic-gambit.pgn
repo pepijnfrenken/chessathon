@@ -1,0 +1,12 @@
+[Event "AI Chessathon Rated"]
+[Site "aichessathon.com"]
+[Date "2026.09.09"]
+[Round "79"]
+[White "En Passant Labs"]
+[Black "Stochastic Gambit"]
+[Result "1-0"]
+[FEN "r1bqk2r/pp2npbp/2npp1p1/2p5/4P3/2NPB1P1/PPPQNPBP/R3K2R b KQkq - 3 8"]
+[SetUp "1"]
+[Termination "checkmate"]
+
+8... O-O { [%clk 0:01:57.894] } 9. Bg5 { [%clk 0:01:56.285] } 9... e5 { [%clk 0:01:55.315] } 10. Nd5 { [%clk 0:01:53.698] } 10... Be6 { [%clk 0:01:53.764] } 11. O-O { [%clk 0:01:51.17] } 11... Qd7 { [%clk 0:01:51.764] } 12. Nf6+ { [%clk 0:01:48.697] } 12... Bxf6 { [%clk 0:01:50.34] } 13. Bxf6 { [%clk 0:01:46.28] } 13... Rfe8 { [%clk 0:01:48.442] } 14. Qh6 { [%clk 0:01:46.709] } 14... Nf5 { [%clk 0:01:48.131] } 15. exf5 { [%clk 0:01:47.207] } 15... gxf5 { [%clk 0:01:48.605] } 16. Qg7# { [%clk 0:01:47.705] } 1-01d:[\
