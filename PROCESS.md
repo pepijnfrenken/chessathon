@@ -308,3 +308,35 @@ Every major decision, with the evidence that made it. (Full narratives:
    never let them write the tree.
 10. Save every ladder round file immediately (`results/matches/`) —
     git history is the only durable record.
+
+## 9. 2026-09-09 — quality_ab instrument validated (tooling mission)
+
+Validated `tools/quality_ab.py` (89971a6) per its self-test contract.
+Two tool bugs found and fixed (minimal diffs, CLI stable):
+(1) `--game name.pgn:side` kept the `.pgn` suffix → looked for
+`round-X.pgn.pgn` and missed the cached `results/leak_reviews/*.sf16.json`
+reviews (would have re-run all 7 SF reviews); (2) replay worker assigned a
+plain dict over `Game.headers` → python-chess `Game.__str__` needs its
+`Headers` object (crash on PGN write). Commits 051a2cf, 5472968.
+
+Self-test ran twice (single r74, then the full 7-game corpus —
+`results/quality_ab/selftest-r74{,-retry}/`, `selftest-corpus/`).
+Fidelity per game: **0/2, 16/21, 16/25, 2/10, 7/11, 3/6, 3/6** — below
+the 90% bar, but every divergence traces to one **machine-artifact
+class, not a tool bug**: move choice flips with which iterative-deepening
+iteration completes inside the time budget. Proven on r74 move 1: the
+venue's own log says "Slowest 4.2 s" (over its 3.17 s budget) and played
+Nf3; the byte-identical `agent.zip` build replayed here answers Bd2 in
+4.5–5.1 s (JIT-cold first call; deterministic across quiet-box retries;
+zip == tree except default-OFF P4/P1 toggles). Every replay stop is the
+designed post-divergence halt ("opponent PGN move illegal after
+deviation"); clock extraction (r64 full 224/%clk), SetUp/FEN start boards,
+review caching and leak k-alignment all verified correct end-to-end.
+
+**Self-A/B signature confirmed:** pre-divergence V5 leaks classify
+retained 5 / avoided 0 / replaced-worse 0, cand mean cp_loss 77.7 vs V5
+768.1 — the candidate cannot beat itself, so WEAK verdict is the expected
+HEAD result (documented in `tools/QUALITY_AB.md`). Instrument ready for
+candidate A/B; treat first-our-move divergences after budget overruns as
+machine artifacts, judge candidates on leak classification + cp_loss
+deltas, not fidelity.
