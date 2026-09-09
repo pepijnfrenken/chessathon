@@ -6,3 +6,6 @@ __pycache__/
 .aiwg/
 .claude/
 AIWG.md
+
+# dev scratch (probes, clkfiles, ad-hoc logs)
+tmp/
