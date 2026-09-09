@@ -1,0 +1,280 @@
+{
+ "pgn": "/home/pino/projects/chessathon/results/matches/round-70-vs-kingsguard.pgn",
+ "side": "black",
+ "rows": [
+  {
+   "k": 1,
+   "ply": 2,
+   "game_san": "Qb6",
+   "cand_uci": "d8b6",
+   "matched": true,
+   "tl_ms": 120000,
+   "took_ms": 4919
+  },
+  {
+   "k": 2,
+   "ply": 4,
+   "game_san": "Nd4",
+   "cand_uci": "c6d4",
+   "matched": true,
+   "tl_ms": 116246,
+   "took_ms": 3086
+  },
+  {
+   "k": 3,
+   "ply": 6,
+   "game_san": "Be6",
+   "cand_uci": "c8e6",
+   "matched": true,
+   "tl_ms": 113661,
+   "took_ms": 3026
+  },
+  {
+   "k": 4,
+   "ply": 8,
+   "game_san": "Nc6",
+   "cand_uci": "d4c6",
+   "matched": true,
+   "tl_ms": 111131,
+   "took_ms": 2969
+  },
+  {
+   "k": 5,
+   "ply": 10,
+   "game_san": "Bxd5",
+   "cand_uci": "e6d5",
+   "matched": true,
+   "tl_ms": 108660,
+   "took_ms": 2916
+  },
+  {
+   "k": 6,
+   "ply": 12,
+   "game_san": "Nb4",
+   "cand_uci": "c6b4",
+   "matched": true,
+   "tl_ms": 106243,
+   "took_ms": 2861
+  },
+  {
+   "k": 7,
+   "ply": 14,
+   "game_san": "Bxf6",
+   "cand_uci": "g7f6",
+   "matched": true,
+   "tl_ms": 103881,
+   "took_ms": 2809
+  },
+  {
+   "k": 8,
+   "ply": 16,
+   "game_san": "Na2",
+   "cand_uci": "b4a2",
+   "matched": true,
+   "tl_ms": 101570,
+   "took_ms": 2758
+  },
+  {
+   "k": 9,
+   "ply": 18,
+   "game_san": "Qb5",
+   "cand_uci": "b6b5",
+   "matched": true,
+   "tl_ms": 99310,
+   "took_ms": 2707
+  },
+  {
+   "k": 10,
+   "ply": 20,
+   "game_san": "Qxb2",
+   "cand_uci": "b5b2",
+   "matched": true,
+   "tl_ms": 97101,
+   "took_ms": 2657
+  },
+  {
+   "k": 11,
+   "ply": 22,
+   "game_san": "Qxc2",
+   "cand_uci": "b2c2",
+   "matched": true,
+   "tl_ms": 94942,
+   "took_ms": 2609
+  },
+  {
+   "k": 12,
+   "ply": 24,
+   "game_san": "Rfc8",
+   "cand_uci": "a8c8",
+   "matched": false,
+   "tl_ms": 92831,
+   "took_ms": 2564
+  },
+  {
+   "k": 13,
+   "ply": 26,
+   "game_san": "Rc7",
+   "cand_uci": "c8c7",
+   "matched": true,
+   "tl_ms": 90767,
+   "took_ms": 2517
+  },
+  {
+   "k": 14,
+   "ply": 28,
+   "game_san": "c4",
+   "cand_uci": "c5c4",
+   "matched": true,
+   "tl_ms": 88748,
+   "took_ms": 2473
+  },
+  {
+   "k": 15,
+   "ply": 30,
+   "game_san": "b5",
+   "cand_uci": "b7b5",
+   "matched": true,
+   "tl_ms": 86773,
+   "took_ms": 2429
+  },
+  {
+   "k": 16,
+   "ply": 32,
+   "game_san": "Bg7",
+   "cand_uci": "f6g7",
+   "matched": true,
+   "tl_ms": 84842,
+   "took_ms": 2385
+  },
+  {
+   "k": 17,
+   "ply": 34,
+   "game_san": "Bf6",
+   "cand_uci": "g7f6",
+   "matched": true,
+   "tl_ms": 82955,
+   "took_ms": 2343
+  },
+  {
+   "k": 18,
+   "ply": 36,
+   "game_san": "gxh5",
+   "cand_uci": "g6h5",
+   "matched": true,
+   "tl_ms": 81109,
+   "took_ms": 2303
+  },
+  {
+   "k": 19,
+   "ply": 38,
+   "game_san": "Kg7",
+   "cand_uci": "g8g7",
+   "matched": true,
+   "tl_ms": 79305,
+   "took_ms": 2263
+  },
+  {
+   "k": 20,
+   "ply": 40,
+   "game_san": "Kh6",
+   "cand_uci": "g7h6",
+   "matched": true,
+   "tl_ms": 77539,
+   "took_ms": 2224
+  },
+  {
+   "k": 21,
+   "ply": 42,
+   "game_san": "Bh4",
+   "cand_uci": "f6h4",
+   "matched": true,
+   "tl_ms": 75815,
+   "took_ms": 2185
+  },
+  {
+   "k": 22,
+   "ply": 44,
+   "game_san": "Kxh5",
+   "cand_uci": "h6h5",
+   "matched": true,
+   "tl_ms": 74129,
+   "took_ms": 2148
+  },
+  {
+   "k": 23,
+   "ply": 46,
+   "game_san": "a8c8",
+   "cand_uci": "c7b7",
+   "matched": false,
+   "tl_ms": 72480,
+   "took_ms": 2111
+  },
+  {
+   "k": 24,
+   "ply": 48,
+   "game_san": "Bg5",
+   "cand_uci": "h4g5",
+   "matched": true,
+   "tl_ms": 70868,
+   "took_ms": 2076
+  },
+  {
+   "k": 25,
+   "ply": 50,
+   "game_san": "f6",
+   "cand_uci": "f7f6",
+   "matched": true,
+   "tl_ms": 69292,
+   "took_ms": 2040
+  },
+  {
+   "k": 26,
+   "ply": 52,
+   "game_san": "fxg5",
+   "cand_uci": "f6g5",
+   "matched": true,
+   "tl_ms": 67751,
+   "took_ms": 2008
+  },
+  {
+   "k": 27,
+   "ply": 54,
+   "game_san": "Kh6",
+   "cand_uci": "h5h6",
+   "matched": true,
+   "tl_ms": 66243,
+   "took_ms": 1973
+  },
+  {
+   "k": 28,
+   "ply": 56,
+   "game_san": "c8f8",
+   "cand_uci": "f8f6",
+   "matched": false,
+   "tl_ms": 65801,
+   "took_ms": 1964
+  },
+  {
+   "k": 29,
+   "ply": 58,
+   "game_san": "f8f5",
+   "cand_uci": "f6e6",
+   "matched": false,
+   "tl_ms": 66290,
+   "took_ms": 69
+  },
+  {
+   "k": 30,
+   "ply": 60,
+   "game_san": "c3",
+   "cand_uci": "e6e3",
+   "matched": false,
+   "tl_ms": 66785,
+   "took_ms": 1986
+  }
+ ],
+ "stop_reason": "played to end",
+ "matched": 25,
+ "our_moves": 30,
+ "have_exact_clocks": true
+}

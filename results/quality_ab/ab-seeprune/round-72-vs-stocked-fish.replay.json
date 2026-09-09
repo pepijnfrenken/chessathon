@@ -1,0 +1,91 @@
+{
+ "pgn": "/home/pino/projects/chessathon/results/matches/round-72-vs-stocked-fish.pgn",
+ "side": "black",
+ "rows": [
+  {
+   "k": 1,
+   "ply": 1,
+   "game_san": "Bd6",
+   "cand_uci": "d8d6",
+   "matched": false,
+   "tl_ms": 120000,
+   "took_ms": 4422
+  },
+  {
+   "k": 2,
+   "ply": 3,
+   "game_san": "Nbd7",
+   "cand_uci": "e8f8",
+   "matched": false,
+   "tl_ms": 116241,
+   "took_ms": 3084
+  },
+  {
+   "k": 3,
+   "ply": 5,
+   "game_san": "e8g8",
+   "cand_uci": "b8d7",
+   "matched": false,
+   "tl_ms": 113656,
+   "took_ms": 3030
+  },
+  {
+   "k": 4,
+   "ply": 7,
+   "game_san": "Nxe5",
+   "cand_uci": "d7e5",
+   "matched": true,
+   "tl_ms": 111128,
+   "took_ms": 2969
+  },
+  {
+   "k": 5,
+   "ply": 9,
+   "game_san": "Qxe5",
+   "cand_uci": "d6e5",
+   "matched": true,
+   "tl_ms": 108658,
+   "took_ms": 2915
+  },
+  {
+   "k": 6,
+   "ply": 11,
+   "game_san": "d8d6",
+   "cand_uci": "e5g5",
+   "matched": false,
+   "tl_ms": 106241,
+   "took_ms": 2860
+  },
+  {
+   "k": 7,
+   "ply": 13,
+   "game_san": "Bd7",
+   "cand_uci": "g5e5",
+   "matched": false,
+   "tl_ms": 103878,
+   "took_ms": 2809
+  },
+  {
+   "k": 8,
+   "ply": 15,
+   "game_san": "d6b6",
+   "cand_uci": "e5b2",
+   "matched": false,
+   "tl_ms": 101569,
+   "took_ms": 2758
+  },
+  {
+   "k": 9,
+   "ply": 17,
+   "game_san": "d7b5",
+   "cand_uci": "e7b4",
+   "matched": false,
+   "tl_ms": 99309,
+   "took_ms": 2707
+  }
+ ],
+ "stop_reason": "opponent PGN move illegal after deviation (ply 18)",
+ "matched": 2,
+ "our_moves": 9,
+ "have_exact_clocks": true
+}

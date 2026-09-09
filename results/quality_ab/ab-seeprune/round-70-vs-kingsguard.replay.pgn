@@ -1,0 +1,12 @@
+[Event "AI Chessathon Rated"]
+[Site "aichessathon.com"]
+[Date "2026.09.08"]
+[Round "70"]
+[White "KingsGuard"]
+[Black "En Passant Labs"]
+[Result "*"]
+[FEN "r1bq1rk1/1p2ppbp/p1np1np1/2p5/2P4P/2NP1NP1/PP2PPB1/1RBQK2R w K - 0 9"]
+[SetUp "1"]
+[Termination "checkmate"]
+
+9. Nh2 Bd7 10. O-O Qb6 11. Bg5 Be6 12. e3 Rfd8 13. Nd5 Bxd5 14. cxd5 Nb4 15. Bxf6 Bxf6 16. a3 Na2 17. Qc2 Qb5 18. Ra1 Qxb2 19. Rxa2 Qxc2 20. Rxc2 Rd7 21. Rb1 Be5 22. d4 cxd4 23. Rbc1 dxe3 24. Nf1 exf2+ *

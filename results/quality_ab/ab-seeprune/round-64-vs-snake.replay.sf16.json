@@ -1,0 +1,42 @@
+[
+ {
+  "ply": 1,
+  "side": "white",
+  "san": "Nf3",
+  "uci": "g1f3",
+  "cp_loss": 16,
+  "eval_before": -1,
+  "verdict": "excellent",
+  "sacrifice": false
+ },
+ {
+  "ply": 2,
+  "side": "black",
+  "san": "Bxc3+",
+  "uci": "b4c3",
+  "cp_loss": 54,
+  "eval_before": 17,
+  "verdict": "good",
+  "sacrifice": false
+ },
+ {
+  "ply": 3,
+  "side": "white",
+  "san": "Bd2",
+  "uci": "c1d2",
+  "cp_loss": 705,
+  "eval_before": 37,
+  "verdict": "blunder",
+  "sacrifice": false
+ },
+ {
+  "ply": 4,
+  "side": "black",
+  "san": "Bxd2+",
+  "uci": "c3d2",
+  "cp_loss": 13,
+  "eval_before": 668,
+  "verdict": "excellent",
+  "sacrifice": false
+ }
+]

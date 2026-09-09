@@ -1,0 +1,92 @@
+[
+ {
+  "ply": 1,
+  "side": "black",
+  "san": "Qb6",
+  "uci": "d8b6",
+  "cp_loss": 0,
+  "eval_before": -30,
+  "verdict": "best",
+  "sacrifice": false
+ },
+ {
+  "ply": 2,
+  "side": "white",
+  "san": "Bd2",
+  "uci": "f4d2",
+  "cp_loss": 54,
+  "eval_before": 26,
+  "verdict": "good",
+  "sacrifice": false
+ },
+ {
+  "ply": 3,
+  "side": "black",
+  "san": "Qxb2",
+  "uci": "b6b2",
+  "cp_loss": 14,
+  "eval_before": 28,
+  "verdict": "excellent",
+  "sacrifice": false
+ },
+ {
+  "ply": 4,
+  "side": "white",
+  "san": "Be2",
+  "uci": "f1e2",
+  "cp_loss": 310,
+  "eval_before": -14,
+  "verdict": "blunder",
+  "sacrifice": false
+ },
+ {
+  "ply": 5,
+  "side": "black",
+  "san": "Bxc2",
+  "uci": "g6c2",
+  "cp_loss": 13,
+  "eval_before": 324,
+  "verdict": "excellent",
+  "sacrifice": false
+ },
+ {
+  "ply": 6,
+  "side": "white",
+  "san": "Bb4",
+  "uci": "d2b4",
+  "cp_loss": 751,
+  "eval_before": -311,
+  "verdict": "blunder",
+  "sacrifice": false
+ },
+ {
+  "ply": 7,
+  "side": "black",
+  "san": "Bxd1",
+  "uci": "c2d1",
+  "cp_loss": 18,
+  "eval_before": 1062,
+  "verdict": "excellent",
+  "sacrifice": false
+ },
+ {
+  "ply": 8,
+  "side": "white",
+  "san": "Kf1",
+  "uci": "e1f1",
+  "cp_loss": 280,
+  "eval_before": -1044,
+  "verdict": "mistake",
+  "sacrifice": false
+ },
+ {
+  "ply": 9,
+  "side": "black",
+  "san": "Bxe2+",
+  "uci": "d1e2",
+  "cp_loss": 13,
+  "eval_before": 1324,
+  "verdict": "excellent",
+  "sacrifice": false
+ }
+]

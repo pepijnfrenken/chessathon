@@ -1,0 +1,37 @@
+{
+ "pgn": "/home/pino/projects/chessathon/results/matches/round-73-vs-skylab.pgn",
+ "side": "black",
+ "rows": [
+  {
+   "k": 1,
+   "ply": 1,
+   "game_san": "cxd4",
+   "cand_uci": "c5d4",
+   "matched": true,
+   "tl_ms": 120000,
+   "took_ms": 4612
+  },
+  {
+   "k": 2,
+   "ply": 3,
+   "game_san": "Nf5",
+   "cand_uci": "b8c6",
+   "matched": false,
+   "tl_ms": 116366,
+   "took_ms": 3087
+  },
+  {
+   "k": 3,
+   "ply": 5,
+   "game_san": "f5h4",
+   "cand_uci": "d8a5",
+   "matched": false,
+   "tl_ms": 113779,
+   "took_ms": 3029
+  }
+ ],
+ "stop_reason": "opponent PGN move illegal after deviation (ply 6)",
+ "matched": 1,
+ "our_moves": 3,
+ "have_exact_clocks": true
+}

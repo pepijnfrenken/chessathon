@@ -1,0 +1,12 @@
+[Event "AI Chessathon Rated"]
+[Site "aichessathon.com"]
+[Date "2026.09.08"]
+[Round "74"]
+[White "En Passant Labs"]
+[Black "Rohan"]
+[Result "1-0"]
+[FEN "rnbq1rk1/ppp2ppp/4pn2/8/1bBP4/2N1P2P/PP3PP1/R1BQK1NR b KQ - 0 7"]
+[SetUp "1"]
+[Termination "checkmate"]
+
+7... c5 8. Kf1 cxd4 9. exd4 Qc7 10. Qb3 b5 11. Nxb5 a6 12. Nxc7 Bb7 13. Nxa8 Rc8 14. Nb6 Bc3 15. Nxc8 Be4 16. Qxb8 Bd5 17. Ne7# 1-0

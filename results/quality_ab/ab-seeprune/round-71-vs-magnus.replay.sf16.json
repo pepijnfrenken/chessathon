@@ -1,0 +1,142 @@
+[
+ {
+  "ply": 1,
+  "side": "black",
+  "san": "e5",
+  "uci": "e7e5",
+  "cp_loss": 21,
+  "eval_before": -28,
+  "verdict": "excellent",
+  "sacrifice": false
+ },
+ {
+  "ply": 2,
+  "side": "white",
+  "san": "Nf5",
+  "uci": "d4f5",
+  "cp_loss": 116,
+  "eval_before": 49,
+  "verdict": "inaccuracy",
+  "sacrifice": false
+ },
+ {
+  "ply": 3,
+  "side": "black",
+  "san": "Bxf5",
+  "uci": "c8f5",
+  "cp_loss": 55,
+  "eval_before": 67,
+  "verdict": "good",
+  "sacrifice": false
+ },
+ {
+  "ply": 4,
+  "side": "white",
+  "san": "exf5",
+  "uci": "e4f5",
+  "cp_loss": 9,
+  "eval_before": -12,
+  "verdict": "best",
+  "sacrifice": false
+ },
+ {
+  "ply": 5,
+  "side": "black",
+  "san": "Qa5",
+  "uci": "d8a5",
+  "cp_loss": 177,
+  "eval_before": 21,
+  "verdict": "mistake",
+  "sacrifice": false
+ },
+ {
+  "ply": 6,
+  "side": "white",
+  "san": "Qf3",
+  "uci": "d1f3",
+  "cp_loss": 151,
+  "eval_before": 156,
+  "verdict": "inaccuracy",
+  "sacrifice": false
+ },
+ {
+  "ply": 7,
+  "side": "black",
+  "san": "d5",
+  "uci": "d6d5",
+  "cp_loss": 159,
+  "eval_before": -5,
+  "verdict": "inaccuracy",
+  "sacrifice": false
+ },
+ {
+  "ply": 8,
+  "side": "white",
+  "san": "O-O-O",
+  "uci": "e1c1",
+  "cp_loss": 29,
+  "eval_before": 164,
+  "verdict": "excellent",
+  "sacrifice": false
+ },
+ {
+  "ply": 9,
+  "side": "black",
+  "san": "e4",
+  "uci": "e5e4",
+  "cp_loss": 14,
+  "eval_before": -135,
+  "verdict": "excellent",
+  "sacrifice": false
+ },
+ {
+  "ply": 10,
+  "side": "white",
+  "san": "Qg3",
+  "uci": "f3g3",
+  "cp_loss": 275,
+  "eval_before": 149,
+  "verdict": "mistake",
+  "sacrifice": false
+ },
+ {
+  "ply": 11,
+  "side": "black",
+  "san": "Nc6",
+  "uci": "b8c6",
+  "cp_loss": 4,
+  "eval_before": 126,
+  "verdict": "best",
+  "sacrifice": false
+ },
+ {
+  "ply": 12,
+  "side": "white",
+  "san": "Be2",
+  "uci": "f1e2",
+  "cp_loss": 161,
+  "eval_before": -122,
+  "verdict": "mistake",
+  "sacrifice": false
+ },
+ {
+  "ply": 13,
+  "side": "black",
+  "san": "Nh5",
+  "uci": "f6h5",
+  "cp_loss": 1022,
+  "eval_before": 283,
+  "verdict": "blunder",
+  "sacrifice": false
+ },
+ {
+  "ply": 14,
+  "side": "white",
+  "san": "Bxh5",
+  "uci": "e2h5",
+  "cp_loss": 0,
+  "eval_before": 739,
+  "verdict": "best",
+  "sacrifice": false
+ }
+]

@@ -1,0 +1,52 @@
+[
+ {
+  "ply": 1,
+  "side": "black",
+  "san": "cxd4",
+  "uci": "c5d4",
+  "cp_loss": 82,
+  "eval_before": -13,
+  "verdict": "good",
+  "sacrifice": false
+ },
+ {
+  "ply": 2,
+  "side": "white",
+  "san": "cxd4",
+  "uci": "c3d4",
+  "cp_loss": 6,
+  "eval_before": 95,
+  "verdict": "best",
+  "sacrifice": false
+ },
+ {
+  "ply": 3,
+  "side": "black",
+  "san": "Nbc6",
+  "uci": "b8c6",
+  "cp_loss": 28,
+  "eval_before": -89,
+  "verdict": "excellent",
+  "sacrifice": false
+ },
+ {
+  "ply": 4,
+  "side": "white",
+  "san": "g4",
+  "uci": "g2g4",
+  "cp_loss": 83,
+  "eval_before": 117,
+  "verdict": "good",
+  "sacrifice": false
+ },
+ {
+  "ply": 5,
+  "side": "black",
+  "san": "Qa5+",
+  "uci": "d8a5",
+  "cp_loss": 2,
+  "eval_before": -34,
+  "verdict": "best",
+  "sacrifice": false
+ }
+]

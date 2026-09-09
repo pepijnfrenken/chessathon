@@ -1,0 +1,55 @@
+{
+ "pgn": "/home/pino/projects/chessathon/results/matches/round-68-vs-rook-and-roll.pgn",
+ "side": "black",
+ "rows": [
+  {
+   "k": 1,
+   "ply": 1,
+   "game_san": "Nd5",
+   "cand_uci": "d8b6",
+   "matched": false,
+   "tl_ms": 120000,
+   "took_ms": 4814
+  },
+  {
+   "k": 2,
+   "ply": 3,
+   "game_san": "d8b6",
+   "cand_uci": "b6b2",
+   "matched": false,
+   "tl_ms": 116258,
+   "took_ms": 3086
+  },
+  {
+   "k": 3,
+   "ply": 5,
+   "game_san": "d5b4",
+   "cand_uci": "g6c2",
+   "matched": false,
+   "tl_ms": 113672,
+   "took_ms": 3027
+  },
+  {
+   "k": 4,
+   "ply": 7,
+   "game_san": "b6b4",
+   "cand_uci": "c2d1",
+   "matched": false,
+   "tl_ms": 111143,
+   "took_ms": 2970
+  },
+  {
+   "k": 5,
+   "ply": 9,
+   "game_san": "Bxb2",
+   "cand_uci": "d1e2",
+   "matched": false,
+   "tl_ms": 108670,
+   "took_ms": 2916
+  }
+ ],
+ "stop_reason": "opponent PGN move illegal after deviation (ply 10)",
+ "matched": 0,
+ "our_moves": 5,
+ "have_exact_clocks": true
+}

@@ -1,0 +1,295 @@
+{
+ "totals": {
+  "v5": {
+   "bm": 51,
+   "mean": 768.1,
+   "n": 378
+  },
+  "cand": {
+   "bm": 7,
+   "mean": 845.0,
+   "n": 70
+  }
+ },
+ "leaks": {
+  "retained": 2,
+  "avoided": 0,
+  "replaced_worse": 0
+ },
+ "checks": {
+  "leaks_avoided>=1": false,
+  "no_replaced_worse": true,
+  "no_more_blunders": true,
+  "mean_not_worse": false
+ },
+ "verdict": "WEAK (mixed evidence)",
+ "per_game": {
+  "round-64-vs-snake": {
+   "side": "black",
+   "v5": {
+    "n": 112,
+    "counts": {
+     "good": 5,
+     "best": 75,
+     "mistake": 4,
+     "inaccuracy": 13,
+     "excellent": 7,
+     "blunder": 8
+    },
+    "mean_cp_loss": 323.9,
+    "max_cp_loss": 22314
+   },
+   "cand": {
+    "n": 2,
+    "counts": {
+     "good": 1,
+     "excellent": 1
+    },
+    "mean_cp_loss": 33.5,
+    "max_cp_loss": 51
+   },
+   "leaks": {
+    "retained": [],
+    "avoided": [],
+    "replaced_worse": [],
+    "unreached": 110
+   },
+   "fidelity": 0,
+   "our_moves": 2,
+   "replay_stop": "opponent PGN move illegal after deviation (ply 5)",
+   "have_exact_clocks": true
+  },
+  "round-68-vs-rook-and-roll": {
+   "side": "black",
+   "v5": {
+    "n": 39,
+    "counts": {
+     "best": 23,
+     "good": 2,
+     "blunder": 6,
+     "excellent": 4,
+     "mistake": 3,
+     "inaccuracy": 1
+    },
+    "mean_cp_loss": 832.2,
+    "max_cp_loss": 27978
+   },
+   "cand": {
+    "n": 5,
+    "counts": {
+     "best": 1,
+     "excellent": 4
+    },
+    "mean_cp_loss": 11.6,
+    "max_cp_loss": 18
+   },
+   "leaks": {
+    "retained": [],
+    "avoided": [],
+    "replaced_worse": [],
+    "unreached": 34
+   },
+   "fidelity": 0,
+   "our_moves": 5,
+   "replay_stop": "opponent PGN move illegal after deviation (ply 10)",
+   "have_exact_clocks": true
+  },
+  "round-70-vs-kingsguard": {
+   "side": "black",
+   "v5": {
+    "n": 30,
+    "counts": {
+     "good": 3,
+     "excellent": 6,
+     "best": 14,
+     "blunder": 3,
+     "inaccuracy": 2,
+     "mistake": 2
+    },
+    "mean_cp_loss": 1015.4,
+    "max_cp_loss": 28129
+   },
+   "cand": {
+    "n": 30,
+    "counts": {
+     "good": 6,
+     "excellent": 7,
+     "best": 11,
+     "blunder": 3,
+     "mistake": 3
+    },
+    "mean_cp_loss": 1924.8,
+    "max_cp_loss": 28213
+   },
+   "leaks": {
+    "retained": [
+     [
+      "Nb4",
+      "Nb4",
+      399,
+      394
+     ]
+    ],
+    "avoided": [],
+    "replaced_worse": [],
+    "unreached": 4
+   },
+   "fidelity": 25,
+   "our_moves": 30,
+   "replay_stop": "played to end",
+   "have_exact_clocks": true
+  },
+  "round-74-vs-rohan": {
+   "side": "white",
+   "v5": {
+    "n": 63,
+    "counts": {
+     "best": 32,
+     "excellent": 13,
+     "mistake": 6,
+     "good": 3,
+     "inaccuracy": 4,
+     "blunder": 5
+    },
+    "mean_cp_loss": 499.0,
+    "max_cp_loss": 22279
+   },
+   "cand": {
+    "n": 10,
+    "counts": {
+     "inaccuracy": 1,
+     "best": 8,
+     "good": 1
+    },
+    "mean_cp_loss": 18.9,
+    "max_cp_loss": 125
+   },
+   "leaks": {
+    "retained": [],
+    "avoided": [],
+    "replaced_worse": [],
+    "unreached": 54
+   },
+   "fidelity": 1,
+   "our_moves": 10,
+   "replay_stop": "game over: 1-0",
+   "have_exact_clocks": true
+  },
+  "round-71-vs-magnus": {
+   "side": "white",
+   "v5": {
+    "n": 42,
+    "counts": {
+     "inaccuracy": 3,
+     "best": 26,
+     "mistake": 3,
+     "good": 2,
+     "blunder": 2,
+     "excellent": 6
+    },
+    "mean_cp_loss": 693.9,
+    "max_cp_loss": 27264
+   },
+   "cand": {
+    "n": 11,
+    "counts": {
+     "inaccuracy": 3,
+     "best": 5,
+     "mistake": 1,
+     "good": 2
+    },
+    "mean_cp_loss": 68.2,
+    "max_cp_loss": 243
+   },
+   "leaks": {
+    "retained": [
+     [
+      "Qg3",
+      "Qg3",
+      243,
+      243
+     ]
+    ],
+    "avoided": [],
+    "replaced_worse": [],
+    "unreached": 32
+   },
+   "fidelity": 7,
+   "our_moves": 11,
+   "replay_stop": "opponent PGN move illegal after deviation (ply 23)",
+   "have_exact_clocks": true
+  },
+  "round-72-vs-stocked-fish": {
+   "side": "black",
+   "v5": {
+    "n": 54,
+    "counts": {
+     "excellent": 3,
+     "best": 40,
+     "inaccuracy": 3,
+     "good": 3,
+     "blunder": 5
+    },
+    "mean_cp_loss": 1872.4,
+    "max_cp_loss": 27240
+   },
+   "cand": {
+    "n": 6,
+    "counts": {
+     "excellent": 1,
+     "inaccuracy": 1,
+     "best": 3,
+     "good": 1
+    },
+    "mean_cp_loss": 29.7,
+    "max_cp_loss": 92
+   },
+   "leaks": {
+    "retained": [],
+    "avoided": [],
+    "replaced_worse": [],
+    "unreached": 48
+   },
+   "fidelity": 3,
+   "our_moves": 6,
+   "replay_stop": "opponent PGN move illegal after deviation (ply 12)",
+   "have_exact_clocks": true
+  },
+  "round-73-vs-skylab": {
+   "side": "black",
+   "v5": {
+    "n": 38,
+    "counts": {
+     "good": 6,
+     "excellent": 4,
+     "best": 22,
+     "inaccuracy": 2,
+     "blunder": 3,
+     "mistake": 1
+    },
+    "mean_cp_loss": 775.5,
+    "max_cp_loss": 27382
+   },
+   "cand": {
+    "n": 6,
+    "counts": {
+     "good": 2,
+     "best": 3,
+     "excellent": 1
+    },
+    "mean_cp_loss": 27.0,
+    "max_cp_loss": 79
+   },
+   "leaks": {
+    "retained": [],
+    "avoided": [],
+    "replaced_worse": [],
+    "unreached": 32
+   },
+   "fidelity": 3,
+   "our_moves": 6,
+   "replay_stop": "opponent PGN move illegal after deviation (ply 12)",
+   "have_exact_clocks": true
+  }
+ }
+}

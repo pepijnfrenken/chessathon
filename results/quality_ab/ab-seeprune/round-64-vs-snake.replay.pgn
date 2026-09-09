@@ -1,0 +1,12 @@
+[Event "AI Chessathon Rated"]
+[Site "aichessathon.com"]
+[Date "2026.09.08"]
+[Round "64"]
+[White "En Passant Labs"]
+[Black "Snake"]
+[Result "*"]
+[FEN "rnbq1rk1/pp3ppp/4pn2/2p5/1bBP4/2N1P2P/PP3PP1/R1BQK1NR w KQ - 0 8"]
+[SetUp "1"]
+[Termination "checkmate"]
+
+8. Nf3 Bxc3+ 9. Bd2 Bxd2+ *

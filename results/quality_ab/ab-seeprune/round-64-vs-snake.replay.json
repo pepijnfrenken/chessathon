@@ -1,0 +1,28 @@
+{
+ "pgn": "/home/pino/projects/chessathon/results/matches/round-64-vs-snake.pgn",
+ "side": "black",
+ "rows": [
+  {
+   "k": 1,
+   "ply": 2,
+   "game_san": "a5",
+   "cand_uci": "b4c3",
+   "matched": false,
+   "tl_ms": 120000,
+   "took_ms": 4606
+  },
+  {
+   "k": 2,
+   "ply": 4,
+   "game_san": "cxd4",
+   "cand_uci": "c3d2",
+   "matched": false,
+   "tl_ms": 113978,
+   "took_ms": 3034
+  }
+ ],
+ "stop_reason": "opponent PGN move illegal after deviation (ply 5)",
+ "matched": 0,
+ "our_moves": 2,
+ "have_exact_clocks": true
+}

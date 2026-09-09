@@ -1,0 +1,109 @@
+{
+ "pgn": "/home/pino/projects/chessathon/results/matches/round-71-vs-magnus.pgn",
+ "side": "white",
+ "rows": [
+  {
+   "k": 1,
+   "ply": 2,
+   "game_san": "Nf5",
+   "cand_uci": "d4f5",
+   "matched": true,
+   "tl_ms": 120000,
+   "took_ms": 4692
+  },
+  {
+   "k": 2,
+   "ply": 4,
+   "game_san": "exf5",
+   "cand_uci": "e4f5",
+   "matched": true,
+   "tl_ms": 116369,
+   "took_ms": 3085
+  },
+  {
+   "k": 3,
+   "ply": 6,
+   "game_san": "Qf3",
+   "cand_uci": "d1f3",
+   "matched": true,
+   "tl_ms": 113782,
+   "took_ms": 3029
+  },
+  {
+   "k": 4,
+   "ply": 8,
+   "game_san": "O-O-O",
+   "cand_uci": "e1c1",
+   "matched": true,
+   "tl_ms": 111251,
+   "took_ms": 2974
+  },
+  {
+   "k": 5,
+   "ply": 10,
+   "game_san": "Qg3",
+   "cand_uci": "f3g3",
+   "matched": true,
+   "tl_ms": 108776,
+   "took_ms": 2917
+  },
+  {
+   "k": 6,
+   "ply": 12,
+   "game_san": "Kb1",
+   "cand_uci": "c1b1",
+   "matched": true,
+   "tl_ms": 106356,
+   "took_ms": 2864
+  },
+  {
+   "k": 7,
+   "ply": 14,
+   "game_san": "Qg5",
+   "cand_uci": "g3g5",
+   "matched": true,
+   "tl_ms": 103991,
+   "took_ms": 2810
+  },
+  {
+   "k": 8,
+   "ply": 16,
+   "game_san": "Rg1",
+   "cand_uci": "f1e2",
+   "matched": false,
+   "tl_ms": 101678,
+   "took_ms": 2761
+  },
+  {
+   "k": 9,
+   "ply": 18,
+   "game_san": "f1e2",
+   "cand_uci": "c3d5",
+   "matched": false,
+   "tl_ms": 99417,
+   "took_ms": 2710
+  },
+  {
+   "k": 10,
+   "ply": 20,
+   "game_san": "c3d5",
+   "cand_uci": "d5b6",
+   "matched": false,
+   "tl_ms": 97206,
+   "took_ms": 2662
+  },
+  {
+   "k": 11,
+   "ply": 22,
+   "game_san": "f6",
+   "cand_uci": "d1d5",
+   "matched": false,
+   "tl_ms": 95044,
+   "took_ms": 2612
+  }
+ ],
+ "stop_reason": "opponent PGN move illegal after deviation (ply 23)",
+ "matched": 7,
+ "our_moves": 11,
+ "have_exact_clocks": true
+}

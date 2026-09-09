@@ -1,0 +1,12 @@
+[Event "AI Chessathon Rated"]
+[Site "aichessathon.com"]
+[Date "2026.09.08"]
+[Round "71"]
+[White "En Passant Labs"]
+[Black "Magnus"]
+[Result "*"]
+[FEN "rnbqkb1r/1p2pppp/p2p1n2/8/3NP3/2N1B3/PPP2PPP/R2QKB1R b KQkq - 1 6"]
+[SetUp "1"]
+[Termination "checkmate"]
+
+6... e5 7. Nf5 Bxf5 8. exf5 Qa5 9. Qf3 d5 10. O-O-O e4 11. Qg3 Nc6 12. Kb1 Nh5 13. Qg5 Nf6 14. Be2 Qc7 15. Nxd5 Qd6 16. Nb6 Nd5 17. Rxd5 *
