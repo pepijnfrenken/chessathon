@@ -525,6 +525,7 @@ def evaluate(st) -> int:
                         else:
                             break
         elif t == KNIGHT:
+            mins += 1
             for d in range(8):
                 to = sq + _KNIGHT_DELTAS[d]
                 if (to & 0x88) == 0:
@@ -685,12 +686,11 @@ def evaluate(st) -> int:
             ceil_ = mat - COMPCLAMP_SLACK
             if score < ceil_:
                 score = ceil_
-
-    if not has_pawn and not has_major:
-        if mins <= 1:
-            return 0
-        if bishops[0] <= 1 and bishops[1] <= 1:
-            return 0
+    # q5-night1 (codex1 §7): `mins` now counts BOTH minors, so this zeroes
+    # only true bare-minor endings (K vs K+single-minor). The old counter
+    # (bishops only) zeroed KBN-v-K — a FORCED WIN — and KNNN-v-K.
+    if not has_pawn and not has_major and mins <= 1:
+        return 0
 
     tempo = g[3] * p[P_TEMPO]
     if side == WHITE:

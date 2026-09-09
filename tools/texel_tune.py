@@ -191,6 +191,7 @@ def feature_vector(st) -> tuple[np.ndarray, int, bool]:
                         else:
                             break
         elif t == B.KNIGHT:
+            mins += 1
             for d in range(8):
                 to = sq + int(B._KNIGHT_DELTAS[d])
                 if (to & 0x88) == 0:
@@ -295,8 +296,7 @@ def feature_vector(st) -> tuple[np.ndarray, int, bool]:
     # the side to move; engine == model(white) iff f[P_TEMPO] == +1.
     f[E.P_TEMPO] = 1
 
-    forced_zero = (not has_pawn and not has_major
-                   and (mins <= 1 or (bishops[0] <= 1 and bishops[1] <= 1)))
+    forced_zero = (not has_pawn and not has_major and mins <= 1)
     return f, phase, forced_zero
 
 
