@@ -206,11 +206,18 @@ def our_rows(rows: list, side: str) -> list:
 
 def stats(rows: list) -> dict:
     losses = [r["cp_loss"] for r in rows]
+    # F1 (audit2): raw mean is dominated by SF mate-clamp entries
+    # (>=20000 cp) — report winsorized (capped at 1000) and median
+    # alongside; verdicts use the trimmed means (see checks below).
+    trimmed = [min(x, 1000) for x in losses]
+    med = sorted(losses)[len(losses) // 2] if losses else 0
     counts = {}
     for r in rows:
         counts[r["verdict"]] = counts.get(r["verdict"], 0) + 1
     return {"n": len(rows), "counts": counts,
             "mean_cp_loss": round(sum(losses) / len(losses), 1) if losses else 0.0,
+            "mean_trimmed": round(sum(trimmed) / len(trimmed), 1) if trimmed else 0.0,
+            "median_cp_loss": med,
             "max_cp_loss": max(losses) if losses else 0}
 
 
@@ -297,31 +304,47 @@ def main():
                           "fidelity": rep["matched"], "our_moves": rep["our_moves"],
                           "replay_stop": rep["stop_reason"],
                           "have_exact_clocks": rep["have_exact_clocks"]}
-        print(f"[{name}] V5 {s_v5['counts']} mean {s_v5['mean_cp_loss']} | "
-              f"cand {s_cand['counts']} mean {s_cand['mean_cp_loss']} | "
+        print(f"[{name}] V5 {s_v5['counts']} mean {s_v5['mean_cp_loss']} "
+              f"trimmed {s_v5['mean_trimmed']} | "
+              f"cand {s_cand['counts']} mean {s_cand['mean_cp_loss']} "
+              f"trimmed {s_cand['mean_trimmed']} | "
               f"fidelity {rep['matched']}/{rep['our_moves']}", flush=True)
 
-    # aggregate + verdict
-    tot = {"v5": {"bm": 0, "mean": 0.0, "n": 0},
-           "cand": {"bm": 0, "mean": 0.0, "n": 0}}
+    # F2 (audit2): aggregate checks run on TRIMMED means (F1: raw means
+    # are clamp-dominated); print faced/total leak denominators.
+    # F5: paired shared-prefix delta per game (moves before first
+    # divergence, identical positions) is the only like-for-like signal.
+    tot = {"v5": {"bm": 0, "mean": 0.0, "n": 0, "tmean": 0.0},
+           "cand": {"bm": 0, "mean": 0.0, "n": 0, "tmean": 0.0}}
     leaks_tot = {"retained": 0, "avoided": 0, "replaced_worse": 0}
+    faced_tot = {"faced": 0, "total": 0}
     for name, pg in per_game.items():
         for key, src in (("v5", pg["v5"]), ("cand", pg["cand"])):
             tot[key]["bm"] += src["counts"].get("blunder", 0) \
                 + src["counts"].get("mistake", 0)
             tot[key]["mean"] += src["mean_cp_loss"] * src["n"]
+            tot[key]["tmean"] += src["mean_trimmed"] * src["n"]
             tot[key]["n"] += src["n"]
         for cls in leaks_tot:
             leaks_tot[cls] += len(pg["leaks"][cls])
+        lk = pg["leaks"]
+        faced = len(lk["retained"]) + len(lk["avoided"]) \
+            + len(lk["replaced_worse"])
+        pg["faced"] = faced
+        faced_tot["faced"] += faced
+        faced_tot["total"] += len(pg["leaks"].get("all", [])) \
+            + len(lk["retained"]) + len(lk["avoided"]) \
+            + len(lk["replaced_worse"]) + lk["unreached"]
     for key in tot:
         if tot[key]["n"]:
             tot[key]["mean"] = round(tot[key]["mean"] / tot[key]["n"], 1)
+            tot[key]["tmean"] = round(tot[key]["tmean"] / tot[key]["n"], 1)
 
     checks = {
         "leaks_avoided>=1": leaks_tot["avoided"] >= 1,
         "no_replaced_worse": leaks_tot["replaced_worse"] == 0,
         "no_more_blunders": tot["cand"]["bm"] <= tot["v5"]["bm"],
-        "mean_not_worse": tot["cand"]["mean"] <= tot["v5"]["mean"] + 10.0,
+        "mean_not_worse": tot["cand"]["tmean"] <= tot["v5"]["tmean"] + 10.0,
     }
     verdict = "PASS (locally better)" if all(checks.values()) else \
               ("WEAK (mixed evidence)" if sum(checks.values()) >= 2
@@ -333,11 +356,15 @@ def main():
         "",
         "## Aggregate",
         f"- V5:        blunders+mistakes {tot['v5']['bm']} | mean cp_loss "
-        f"{tot['v5']['mean']} (n={tot['v5']['n']})",
+        f"{tot['v5']['mean']} | trimmed {tot['v5']['tmean']} "
+        f"(n={tot['v5']['n']})",
         f"- candidate: blunders+mistakes {tot['cand']['bm']} | mean cp_loss "
-        f"{tot['cand']['mean']} (n={tot['cand']['n']})",
+        f"{tot['cand']['mean']} | trimmed {tot['cand']['tmean']} "
+        f"(n={tot['cand']['n']})",
         f"- leaks: retained {leaks_tot['retained']} | avoided "
-        f"{leaks_tot['avoided']} | replaced-worse {leaks_tot['replaced_worse']}",
+        f"{leaks_tot['avoided']} | replaced-worse {leaks_tot['replaced_worse']} "
+        f"| faced {faced_tot['faced']}/{faced_tot['total']} "
+        "(faced = reached pre-divergence; small faced/total = lottery)",
         "",
         "## Checks",
     ] + [f"- {k}: {'OK' if v else 'FAIL'}" for k, v in checks.items()] + [
@@ -349,10 +376,12 @@ def main():
             f"- replay fidelity {pg['fidelity']}/{pg['our_moves']} "
             f"({pg['replay_stop']}; exact clocks {pg['have_exact_clocks']})",
             f"- V5  {pg['v5']['counts']} mean {pg['v5']['mean_cp_loss']} "
-            f"max {pg['v5']['max_cp_loss']}",
+            f"trimmed {pg['v5']['mean_trimmed']} median "
+            f"{pg['v5']['median_cp_loss']} max {pg['v5']['max_cp_loss']}",
             f"- cand {pg['cand']['counts']} mean {pg['cand']['mean_cp_loss']} "
-            f"max {pg['cand']['max_cp_loss']}",
-            f"- leaks: {json.dumps(pg['leaks'])}",
+            f"trimmed {pg['cand']['mean_trimmed']} median "
+            f"{pg['cand']['median_cp_loss']} max {pg['cand']['max_cp_loss']}",
+            f"- leaks: {json.dumps(pg['leaks'])} faced {pg['faced']}",
         ]
     rep = "\n".join(rep_lines) + "\n"
     (out / "REPORT.md").write_text(rep)
