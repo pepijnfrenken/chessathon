@@ -466,5 +466,23 @@
   "cp_loss": 1100,
   "verdict": "blunder",
   "fen_before": "r5k1/ppp2pbp/3p2p1/1P1P4/N1P1Pp2/P4q2/5Pr1/2R1RK2 w - - 0 30"
+ },
+ {
+  "game": "round-82-vs-team7347",
+  "side": "white",
+  "ply": 48,
+  "san": "Rh4",
+  "cp_loss": 695,
+  "verdict": "blunder",
+  "fen_before": "4r1r1/3k1p2/1pn1q2p/p1p2N1P/2PbPPp1/Q2P2K1/PP6/R1B4R w - - 0 30"
+ },
+ {
+  "game": "round-82-vs-team7347",
+  "side": "white",
+  "ply": 62,
+  "san": "Qc5+",
+  "cp_loss": 677,
+  "verdict": "blunder",
+  "fen_before": "2k1r1r1/4n3/1Q5p/p6P/2PpqPpR/6K1/PP1B4/R7 w - - 1 37"
  }
 ]
