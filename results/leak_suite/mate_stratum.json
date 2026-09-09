@@ -1,0 +1,202 @@
+[
+ {
+  "game": "round-64-vs-snake",
+  "side": "white",
+  "ply": 201,
+  "san": "Kg3",
+  "cp_loss": 400,
+  "verdict": "blunder",
+  "eval_before": -28500,
+  "fen_before": "8/8/1k6/4P3/4qP2/8/5KP1/8 w - - 2 108"
+ },
+ {
+  "game": "round-68-vs-rook-and-roll",
+  "side": "black",
+  "ply": 35,
+  "san": "Ke5",
+  "cp_loss": 400,
+  "verdict": "blunder",
+  "eval_before": -28900,
+  "fen_before": "5b1r/p3pppp/2Qk2b1/1B1p4/8/5P2/4N1PP/q3NK1R b - - 2 24"
+ },
+ {
+  "game": "round-68-vs-rook-and-roll",
+  "side": "black",
+  "ply": 65,
+  "san": "Kh6",
+  "cp_loss": 300,
+  "verdict": "mistake",
+  "eval_before": -29300,
+  "fen_before": "5b1r/p3p1kp/5p2/5Q2/2B5/3N4/6PP/5K1R b - - 3 39"
+ },
+ {
+  "game": "round-71-vs-magnus",
+  "side": "white",
+  "ply": 72,
+  "san": "Ka6",
+  "cp_loss": 27264,
+  "verdict": "blunder",
+  "eval_before": 28600,
+  "fen_before": "1k6/5R2/1p1r4/pK3B2/8/2P4P/P1P4P/8 w - - 3 42"
+ },
+ {
+  "game": "round-72-vs-stocked-fish",
+  "side": "black",
+  "ply": 69,
+  "san": "Kxf5",
+  "cp_loss": 26871,
+  "verdict": "blunder",
+  "eval_before": 27700,
+  "fen_before": "8/p1p3pp/5n2/1P2kP2/7K/8/8/8 b - - 2 39"
+ },
+ {
+  "game": "round-72-vs-stocked-fish",
+  "side": "black",
+  "ply": 73,
+  "san": "Ne4",
+  "cp_loss": 500,
+  "verdict": "blunder",
+  "eval_before": 28200,
+  "fen_before": "8/p1p3pp/5n2/1P6/5k2/8/6K1/8 b - - 3 41"
+ },
+ {
+  "game": "round-72-vs-stocked-fish",
+  "side": "black",
+  "ply": 75,
+  "san": "Nc3",
+  "cp_loss": 27240,
+  "verdict": "blunder",
+  "eval_before": 28300,
+  "fen_before": "8/p1p3pp/8/1P6/4nk2/8/7K/8 b - - 5 42"
+ },
+ {
+  "game": "round-72-vs-stocked-fish",
+  "side": "black",
+  "ply": 77,
+  "san": "Nxb5",
+  "cp_loss": 18836,
+  "verdict": "blunder",
+  "eval_before": 28000,
+  "fen_before": "8/p1p3pp/8/1P6/5k2/2n5/6K1/8 b - - 7 43"
+ },
+ {
+  "game": "round-72-vs-stocked-fish",
+  "side": "black",
+  "ply": 79,
+  "san": "g5",
+  "cp_loss": 27041,
+  "verdict": "blunder",
+  "eval_before": 28300,
+  "fen_before": "8/p1p3pp/8/1n6/5k2/8/5K2/8 b - - 1 44"
+ },
+ {
+  "game": "round-73-vs-skylab",
+  "side": "black",
+  "ply": 51,
+  "san": "Bb3",
+  "cp_loss": 27382,
+  "verdict": "blunder",
+  "eval_before": 28900,
+  "fen_before": "2r3k1/pQ3ppp/4p3/4P1P1/3p4/P7/b1q2P1P/4K1R1 b - - 1 32"
+ },
+ {
+  "game": "round-73-vs-skylab",
+  "side": "black",
+  "ply": 61,
+  "san": "Qxe5",
+  "cp_loss": 200,
+  "verdict": "mistake",
+  "eval_before": 29500,
+  "fen_before": "2r3k1/p4ppp/8/3pP1P1/3pq3/P4P2/6KP/5R2 b - - 0 37"
+ },
+ {
+  "game": "round-76-vs-mcai",
+  "side": "white",
+  "ply": 148,
+  "san": "Rh1",
+  "cp_loss": 200,
+  "verdict": "mistake",
+  "eval_before": -28800,
+  "fen_before": "8/8/5k2/8/1p2K3/2q2p2/3p1P2/6R1 w - - 6 82"
+ },
+ {
+  "game": "round-77-vs-frisky",
+  "side": "black",
+  "ply": 59,
+  "san": "g5",
+  "cp_loss": 26945,
+  "verdict": "blunder",
+  "eval_before": 29100,
+  "fen_before": "5rk1/p2Q1p1p/1p1R2p1/5P2/P2N4/1P1n3K/5q2/8 b - - 1 36"
+ },
+ {
+  "game": "round-77-vs-frisky",
+  "side": "black",
+  "ply": 61,
+  "san": "h5",
+  "cp_loss": 200,
+  "verdict": "mistake",
+  "eval_before": 29500,
+  "fen_before": "5rk1/pQ3p1p/1p1R4/5Pp1/P2N4/1P1n3K/5q2/8 b - - 1 37"
+ },
+ {
+  "game": "round-78-vs-stockfish",
+  "side": "black",
+  "ply": 75,
+  "san": "Rd7",
+  "cp_loss": 300,
+  "verdict": "mistake",
+  "eval_before": 29100,
+  "fen_before": "8/1pp1r1pp/1p2k3/1P2P3/4K3/8/8/8 b - - 4 43"
+ },
+ {
+  "game": "round-80-vs-gmmmmm",
+  "side": "black",
+  "ply": 45,
+  "san": "Rxg2",
+  "cp_loss": 500,
+  "verdict": "blunder",
+  "eval_before": 29200,
+  "fen_before": "r5k1/ppp2pbp/3p2p1/1P1P2r1/N1P1Pp2/P4q2/5PB1/2R1RK2 b - - 1 29"
+ },
+ {
+  "game": "round-81-vs-magnus-carlson",
+  "side": "white",
+  "ply": 82,
+  "san": "Ke5",
+  "cp_loss": 200,
+  "verdict": "mistake",
+  "eval_before": 29100,
+  "fen_before": "8/8/P6k/8/5K2/7P/1P3P1P/8 w - - 1 48"
+ },
+ {
+  "game": "round-83-vs-404-not-found",
+  "side": "black",
+  "ply": 125,
+  "san": "Rc8",
+  "cp_loss": 200,
+  "verdict": "mistake",
+  "eval_before": -29000,
+  "fen_before": "1k2r3/1p3R2/p3p1P1/P1BpP3/5P2/4K3/8/8 b - - 0 70"
+ },
+ {
+  "game": "round-83-vs-404-not-found",
+  "side": "black",
+  "ply": 127,
+  "san": "Re8",
+  "cp_loss": 200,
+  "verdict": "mistake",
+  "eval_before": -29100,
+  "fen_before": "1kr5/1p3R2/pB2p1P1/P2pP3/5P2/4K3/8/8 b - - 2 71"
+ },
+ {
+  "game": "round-83-vs-404-not-found",
+  "side": "black",
+  "ply": 137,
+  "san": "Ka4",
+  "cp_loss": 200,
+  "verdict": "mistake",
+  "eval_before": -29400,
+  "fen_before": "1R4Q1/1p6/pB2p3/Pk1pP3/5P2/4K3/8/8 b - - 2 76"
+ }
+]
