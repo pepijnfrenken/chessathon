@@ -340,3 +340,48 @@ HEAD result (documented in `tools/QUALITY_AB.md`). Instrument ready for
 candidate A/B; treat first-our-move divergences after budget overruns as
 machine artifacts, judge candidates on leak classification + cp_loss
 deltas, not fidelity.
+
+## 10. 2026-09-09 — quality_ab's first candidate A/Bs: both probes stay OFF; KPK scoped next
+
+With the instrument validated (§9), ran the two in-tree, gate-negative
+probes through the real-clock corpus (`--env` only, zero code changes,
+evidence `results/quality_ab/ab-seeprune/`, `ab-nulldeep/`, commit
+84815a4). Decision rule = the tool's verdict checks; tie-break = leak
+classification + mean cp_loss delta.
+
+- **SEEPRUNE** (P1 pruning; 0.458 @500ms): **NULL at real clocks** —
+  retained 1 (r71 Qg3, 243→275cp), avoided 0, replaced-worse 0, cand
+  mean 55.7. Matches the gate; stays OFF; the leak family is confirmed
+  NOT a qsearch capture-blindness class (consistent with the 3-FEN leak
+  suite in BUILD.md P1).
+- **NULL_DEEP** (P4; 0.438 @500ms): **NEGATIVE at real clocks, first
+  mean_not_worse FAIL of the instrument** — cand mean 845.0 vs V5 768.1
+  (n=70 vs 378). The r70 replay is the mechanism on tape: deepest run of
+  the corpus (25/30 fidelity, played to end), then at the thinning clock
+  it walked into a mating attack — f6?? 27870cp, fxg5 28113/28213cp,
+  Bf5 28878cp. R=3 at deep nodes skips exactly the refutation horizon
+  the leak family lives in. The 500ms negative is confirmed and
+  amplified; stays OFF.
+
+**Verdict: ship state stands — every toggle OFF, V5 is the best known
+build on this corpus.** SEE ordering not re-run (no leak mechanism +
+strictly negative gate); aspiration re-test at real TC stays backlog
+#3. quality_ab is now the standing ship gate for any pre-freeze change:
+PASS = leaks avoided ≥1 AND replaced-worse 0 AND b+m not up AND mean
+within +10cp.
+
+**Next mission scoped (backlog #1, KPK technique gap, "OPTION A"):** the
+residual endgame hole is KPK-b @2s (shuffle-suite 11/12; defender held
+opposition) and |mat|=100 < the 300 gate means conversion terms
+deliberately don't fire there. Two routes, decide on evidence:
+(a) **Syzygy tablebase as shipped data** — explicitly permitted
+(ORIGINALITY.md allowed-4, chess.syzygy in the base image): ship a
+selective ≤5-men WDL subset under the 50MB zip cap, probe in get_move
+when men ≤ 5 (win → DTZ-min move, loss → hardest defense, else search).
+Exact, kills the whole late-endgame class incl. KRvK flakiness (§5 #4);
+risks: init-time TB load vs 60s budget, 2GB RAM mmap, zip budget.
+(b) **KPK technique terms in the hand eval** (passed-pawn push +
+king-opposition proxies) — Phase 3.1 precedent says endgame terms can
+regress at gate TC; gate at BOTH 300ms and 2s + full quality_ab corpus.
+Either route: perft/eg_check/shuffle suites + 60s init check mandatory,
+quality_ab PASS required before rebuild of agent.zip.
