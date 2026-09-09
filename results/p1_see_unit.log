@@ -1,0 +1,5 @@
+# P1 SEE unit battery (driver: one subprocess per case) — 14/14 ALL PASS
+oracle = independent pseudo-legal single-square minimax
+cases: pawn-clean+100 pawn-defended+0 queen-vs-rook-800 lva-800 deep-chain-800 xray-220 bishop-10
+       pawn-takes-queen+900 pinned-rook+100 king-undefended+100 king-chain-220 rook-chain-400
+       queen-knight-800 knight-equal-0

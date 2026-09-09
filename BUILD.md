@@ -733,3 +733,46 @@ infra. Interpretation: at gate depths (7-9) an R=3 null skips too much
 refutation horizon relative to the total depth; the depth-starvation fix
 it targeted is better addressed by the root-stability and SEE probes
 (brainA P1/P2).
+### P1 — SEE in qsearch (2026-09-08/09) — GATED NEGATIVE + NULL, ships OFF
+
+**What:** static exchange evaluation in qsearch as two independently-gated
+toggles (brainA report §P1; the r64/r68/r74 loss family is lost queen/rook
+transactions in heavy-piece transitions). New jitted `see()` in
+engine/search.py (own least-valuable-attacker swap; x-ray via occupancy
+removal; pins ignored — standard; king recaptures only into undefended
+squares; EP victim = pawn / promotion value excluded — documented
+approximations). `CHESSATHON_SEE=1` orders qsearch captures by SEE desc
+(MVV-LVA tiebreak; promotions top-banded); `CHESSATHON_SEEPRUNE=1` skips
+SEE<0 plain captures at not-in-check nodes (EP/promos never pruned).
+Harness: side_env gains 'see'/'seeprune' flags.
+
+**Validation:** see() unit battery 14/14 vs an INDEPENDENT pseudo-legal
+single-square minimax oracle (incl. x-ray, LVA chains, pin-ignoring —
+`tools/see_unit.py` + driver, `results/p1_see_unit.log`; caught a real
+occ-respect bug in the knight/pawn/king attacker scans — a consumed piece
+still counted as an attacker); perft ALL PASS off+on; determinism
+identical (fresh processes, 439,811 nodes r70-B d8); feature-OFF == HEAD
+node-for-node (987,934 d10); eg_check 8/8 with both toggles on; qsearch
+typo caught by determinism (SEEP_RUNE_ON) — the battery compiles see()
+standalone only; the search compiles qsearch, and the A/B determinism run
+surfaced it.
+
+**Gates (24 games @500ms, hand:1111, seed 7, zero flags each):**
+- F (ordering: hand:1111:see vs HEAD): **9W-12L-3D = 0.438** — below the
+  0.45 revert line → ordering ships OFF.
+- G (pruning: hand:1111:see,seeprune vs hand:1111:see): **8W-10L-6D =
+  0.458** — null band (0.45-0.55), report honestly, no spin.
+
+**Leak-suite:** r64/r68/r74 transition FENs (leak plies from the PGN
+material trajectories) probed at 2.6s/move (the real-clock budget) on
+both trees: SEE+SEEPRUNE scores within ±15cp of HEAD at every probe —
+the loss family is NOT a qsearch-horizon blind spot at these plies (r68's
+search OVERSHOT black as +12; the leaks are eval/plan-class, i.e. the
+Quirk-1 compensation skew family, not capture-chain blindness).
+
+**Ship decision (rule J):** neither toggle reached >=0.55 → both default
+OFF; the shipped agent is byte-identical to V5 (feature-OFF node parity
+proven). 0.438 identical to the P4 null-move and Phase-3 aspiration gate
+scores (same 10.5/24 points) — n=24 discrimination is weak; the verdict
+rules are applied as written. SEE stays in-tree as preserved experiment +
+A/B infra (see() unit-tested and reusable for any future qsearch probe).
