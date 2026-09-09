@@ -159,7 +159,7 @@ for i, mv in enumerate(moves):
 
 # write replay PGN (recorded candidate game, original headers preserved)
 g2 = chess.pgn.Game()
-g2.headers = dict(game.headers)
+g2.headers.update(game.headers)
 g2.headers["Result"] = "*" if not rboard.is_game_over() else rboard.result()
 node = g2
 b2 = start_board(game)
@@ -243,7 +243,8 @@ def main():
     env["NUMBA_CACHE_DIR"] = f"/tmp/qa-numba-{Path(a.out).name}"
 
     worker = _worker_script()
-    games = [(g.partition(":")[0], g.partition(":")[2] or "white")
+    games = [(g.partition(":")[0].removesuffix(".pgn"),
+              g.partition(":")[2] or "white")
              for g in a.game]
     per_game = {}
     for name, side in games:

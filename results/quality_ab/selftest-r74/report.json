@@ -1,0 +1,64 @@
+{
+ "totals": {
+  "v5": {
+   "bm": 11,
+   "mean": 499.0,
+   "n": 63
+  },
+  "cand": {
+   "bm": 0,
+   "mean": 18.6,
+   "n": 10
+  }
+ },
+ "leaks": {
+  "retained": 0,
+  "avoided": 0,
+  "replaced_worse": 0
+ },
+ "checks": {
+  "leaks_avoided>=1": false,
+  "no_replaced_worse": true,
+  "no_more_blunders": true,
+  "mean_not_worse": true
+ },
+ "verdict": "WEAK (mixed evidence)",
+ "per_game": {
+  "round-74-vs-rohan": {
+   "side": "white",
+   "v5": {
+    "n": 63,
+    "counts": {
+     "best": 32,
+     "excellent": 13,
+     "mistake": 6,
+     "good": 3,
+     "inaccuracy": 4,
+     "blunder": 5
+    },
+    "mean_cp_loss": 499.0,
+    "max_cp_loss": 22279
+   },
+   "cand": {
+    "n": 10,
+    "counts": {
+     "inaccuracy": 1,
+     "best": 6,
+     "excellent": 3
+    },
+    "mean_cp_loss": 18.6,
+    "max_cp_loss": 122
+   },
+   "leaks": {
+    "retained": [],
+    "avoided": [],
+    "replaced_worse": [],
+    "unreached": 54
+   },
+   "fidelity": 2,
+   "our_moves": 10,
+   "replay_stop": "opponent PGN move illegal after deviation (ply 21)",
+   "have_exact_clocks": true
+  }
+ }
+}
