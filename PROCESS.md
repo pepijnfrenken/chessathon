@@ -439,3 +439,75 @@ actually move games — it would need the real-clock SF bout as primary
 instrument, not this gate. quality_ab now carries audit-proof stats as
 the standing A/B instrument (F1/F2/F5 fixed; F3/F4 narrative already
 corrected in §10).
+
+## 12. 2026-09-09/10 — night build session: 3 correctness fixes, all gated PASS; v6 uploaded; r90 loss
+
+Post-codex1 fix round (brief: /tmp/brief-chess-q5-fix1.md + night extension).
+Uploads close 11 Sep 10:00 UTC; ladder resumes 07:00 UTC.
+
+**v6 (null-sign fix) uploaded ~20:45 UTC by Pino** on L1 0.708 + clean L2 +
+corrected-algebra argument (commit aebee58).
+
+**q5-fix1 gates (aebee58):**
+- L1: 24@500ms vs V5 (3aaaf99) — **16W-6L-2D = 0.708**, zero flags. First
+  above-null-band L1 since Phase 4 (null band was 0.41-0.46).
+- L2: corrected 78-FEN corpus @2.6s — mean score delta -5.0cp, 18/78 moves
+  changed, one >=300cp row (r76 p122: mate-range, eval_before -959 — score
+  noise on a lost position, not a leak). mate_stratum (20 rows, labeled):
+  3 changed; candidate FINDS MATE at r81 p82 (29987 vs V5's 1853) — the
+  corrected null sign converts deep mate lines the old sign rejected.
+
+**q5-night1 (3c06692) — insufficient-material zeroing:** `mins` counted only
+bishops → KBN-v-K (FORCED WIN) evaluated 0; KNNN also 0. Knights now counted;
+rule simplified to total-minors<=1 (KB/KN/KvK still 0). KBN +875, KBB +902,
+KNNN +864; mate-drive now arms on these. Tuner forced_zero mirrored.
+eg_check 8/8 @300ms (KPK-b converts); **L1 vs v6 12W-6L-6D = 0.625 PASS**,
+zero flags. KBN conversion at 300ms/2000ms still horizon-limited (pre-existing
+Phase-3.1-class limit — eval correct, search can't see the 15+ ply mate net).
+Known pre-existing: tuner check_parity 7/50 fails on the OLD tree too
+(score_white doesn't model mate-drive; training-side only).
+
+**q5-night2 (f5ce5de) — pawn PST rows flipped at hand-assembly** (docs/
+research/07 spec item 1): tables authored rank-8-first, consumer rank-1-first;
+both sides' home pawns read the 50/80 row; advancement cost ~45mg/69eg. THE
+phantom mechanism. **r83 pre-leak statics collapse +78..+318 -> -21..+92**
+(referee -43..-174); r70-B -26 -> -185 (referee ~-500). Startpos unchanged
+(symmetry). Selfcheck: dropped st4<st5 (shape-contingent: blocked-bonus vs
+doubled-penalty nets +4cp under the intended orientation — intended semantics);
+kept advance-reward invariants. perft ALL PASS; **L1 vs night1 24W-0L-0D
+= 1.000**, zero flags (the flip is decisive at gate TC: removes a ~1-pawn-level
+error every position); L2: our-side leak scores drop mean -95.9cp toward
+referee truth, moves changed on the exact leak rows in the intended direction,
+one nominal >=300 row (r68 p41: V5's 0 was the wrong read, candidate -771
+closer to -1276 truth); eg 8/8; shuffle 10/12 (KRvK-close-w threefold =
+documented horizon-flake band; V5 control 10/12); det identical 493,820 nodes.
+
+**q5-night3 (9a85717) — root ordering uses previous best_move:** root re-
+ordered with ttmove=0 every iteration; prior best lost its priority slot and
+PVS re-searched it full-window. Pass best_move into the ttmove slot (0-safe
+iteration 1). Node-level: r83-p21 d8 493,820 -> 230,245 (-53%), same best
+move. **L1 vs night2 12W-7L-5D = 0.604 PASS**, zero flags. det identical x2.
+
+**r90 WATCH (v6's first ladder game): LOSS 0-1 vs Chessbuster 9000 (Black,
+mated).** SF19 review: 35 best/7 exc/3 good/9 inaccur/3 mist/**2 blunder**.
+Only ONE real error (Nf8 ply 63, 508cp); Ke1 (26534) is the forced-mate clamp
+— game already lost; tail all best. NOT the leak family: a single tactical
+miss vs an 1800+ opponent, then correct desperation.
+
+**Record bout (real-clock-mode 120s+0.5):** infra took 3 attempts (budget
+line not honored → `global` missing in the patched side → per-tree numba
+caches); driver+deep-warmup engine_side preserved at /tmp/q5l3/. ONE completed
+game before the queue reprioritized: **pair3_g1: v5-as-White 0-1 vs candidate
+in 154 plies — candidate WON as Black**, zero flags
+(results/bout_q5fix1/). Partial record; the night queue superseded it.
+
+**Staged (NOT uploaded): /tmp/night-candidates/**
+`chess-v7-night1-egfix.zip` (3c06692), `chess-v7-night2-pstflip.zip`
+(a1feaf5), `chess-v7-night3-rootorder.zip` (2615f8a — lead candidate; all
+files md5==commit, init 48.5s, first move legal, 34.5KB).
+
+Night verdicts: item1 FIXED+PASS (0.625), item2 FIXED+PASS (1.000 —
+strongest gate result of the event, mechanistically explained), item3
+FIXED+PASS (0.604 + -53% nodes). Ship recommendation for the morning:
+night3 (2615f8a) is the gated build; L3 real-clock SF bout + quality_ab
+still to run before the 11 Sep 10:00 freeze.

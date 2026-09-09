@@ -896,3 +896,41 @@ biases the root decision, not just leaf texts), which is a search-layer
 change — and the 500ms gate's inability to discriminate this class
 means such a change would need the real-clock bout as its primary
 instrument, not the gate.
+
+## q5-fix1 + night session (2026-09-09/10) — three gated correctness fixes
+
+Codex1 fresh-eyes audit (/tmp/chess-q5-codex1-report.md, H1-H4) plus its
+runtime experiment identified a wrong-sign null-move cutoff, the PST
+orientation inversion, missing prior-best root ordering, and an
+insufficient-material zeroing defect. Each fixed in isolation, each gated
+(full numbers in PROCESS.md §12; git is the proof trail):
+
+1. **q5-fix1 (aebee58)** — null child negated before beta compare/return
+   (search.py). L1 0.708 vs V5; mate_stratum probe shows the corrected
+   sign FINDS a forced mate (r81 p82) the old sign threw away. Uploaded
+   as v6 ~20:45 UTC Sep 9.
+2. **q5-night1 (3c06692)** — `mins` counts knights too; insufficient-
+   material zero = total minors <= 1 (KBN-v-K was scored 0; now +875 and
+   mate-drive arms). L1 0.625 vs v6. eg_check 8/8.
+3. **q5-night2 (f5ce5de)** — pawn PST rows flipped once at _build_hand to
+   the documented rank-1-first orientation. The eval's phantom
+   compensation credit (r83: +318 static at material 0) collapses to
+   -21..+92 toward referee truth; startpos unchanged by symmetry; L1
+   1.000 vs night1 — the inverted tables were a ~1-pawn-class error in
+   EVERY position, color-symmetric, invisible to mirror-parity tests.
+   Decomposition + method: docs/research/07-pst-phantom-decomposition.md;
+   instrument tools/eval_decompose.py (parity-exact incl. mate-drive).
+4. **q5-night3 (9a85717)** — root ID re-orders with the previous
+   iteration's best in the ttmove slot (was 0 every iteration): r83-p21
+   d8 -53% nodes, same best move. L1 0.604 vs night2.
+
+Design lesson (repeat of the Phase-3 lesson at higher value): parity
+tests and mirror tests cannot catch color-symmetric table-orientation
+errors — only term-level decomposition against an external referee can.
+The engine's remaining known limits are unchanged: KBN/KRvK conversion
+at short TC is horizon-limited; KNN/KNNN false-wins are accepted (rare,
+cheaper than discarding real wins).
+
+Staged candidates (NOT uploaded): /tmp/night-candidates/
+chess-v7-night{1-egfix,2-pstflip,3-rootorder}.zip — all gated PASS,
+md5-verified against their commits, init 48.5s < 60s. Lead: night3.
