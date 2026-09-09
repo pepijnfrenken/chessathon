@@ -1,0 +1,115 @@
+round-64-vs-snake-p129-Qh7+	V5    121 g6g5   d8	CAND    -19 g6h7   d8	delta   -140
+round-64-vs-snake-p181-h5	V5    -32 h4h5   d9	CAND   -119 h4h5   d8	delta    -87
+round-64-vs-snake-p183-Qxa2	V5    -61 g8a2   d9	CAND   -137 g8a2   d9	delta    -76
+round-64-vs-snake-p187-Kh2	V5   -956 h3h2   d11	CAND   -841 g2g4   d12	delta   +115
+round-64-vs-snake-p189-h7	V5   -668 h6h7   d12	CAND   -635 h6h7   d10	delta    +33
+round-64-vs-snake-p193-Kh2	V5      0 h1h2   d0	CAND      0 h1h2   d0	delta     +0
+round-64-vs-snake-p195-Kg1	V5   -702 h2g3   d10	CAND   -696 g2g4   d11	delta     +6
+round-64-vs-snake-p197-Kf1	V5   -778 g1f2   d11	CAND   -815 g1f1   d12	delta    -37
+round-64-vs-snake-p207-Kh2	V5  -1161 e6e7   d12	CAND  -1102 e6e7   d12	delta    +59
+round-64-vs-snake-p23-Kf1	V5     64 e1f1   d7	CAND     15 g5e4   d6	delta    -49
+round-64-vs-snake-p51-h4	V5    113 a3b2   d8	CAND     15 a3b2   d9	delta    -98
+round-64-vs-snake-p63-Rh3	V5    235 f4h5   d9	CAND    110 a1c1   d7	delta   -125
+round-64-vs-snake-p69-exf4	V5    185 g3f1   d9	CAND     64 g3e2   d9	delta   -121
+round-64-vs-snake-p83-Rxc3	V5    220 c2c3   d8	CAND     57 c2c3   d8	delta   -163
+round-64-vs-snake-p9-Qc2	V5     20 d1c2   d7	CAND     -5 d1c2   d7	delta    -25
+round-68-vs-rook-and-roll-p13-Bxc2	V5    186 g6c2   d9	CAND     50 a2c2   d8	delta   -136
+round-68-vs-rook-and-roll-p15-Qa1+	V5    239 a2a1   d8	CAND     98 a2a1   d8	delta   -141
+round-68-vs-rook-and-roll-p29-Kd6	V5    104 c7d6   d7	CAND    -13 c7d6   d7	delta   -117
+round-68-vs-rook-and-roll-p33-Bg6	V5    -45 e4g6   d8	CAND   -187 a1f6   d8	delta   -142
+round-68-vs-rook-and-roll-p39-Kxf4	V5   -479 e4f4   d8	CAND   -743 a1c3   d8	delta   -264
+round-68-vs-rook-and-roll-p41-Bf5	V5      0 e7e5   d7	CAND   -771 g6f5   d7	delta   -771
+round-68-vs-rook-and-roll-p43-Ke5	V5   -557 f4e5   d9	CAND   -656 f4e5   d9	delta    -99
+round-70-vs-kingsguard-p12-Nb4	V5     53 c6b4   d8	CAND    -18 f6d5   d9	delta    -71
+round-70-vs-kingsguard-p42-Bh4	V5   -119 f6h4   d8	CAND   -249 a8g8   d8	delta   -130
+round-70-vs-kingsguard-p46-Rac8	V5   -173 a8b8   d8	CAND   -239 c7b7   d8	delta    -66
+round-70-vs-kingsguard-p48-Bg5	V5   -570 h4g5   d9	CAND   -670 h4g5   d9	delta   -100
+round-70-vs-kingsguard-p50-f6	V5   -661 f7f6   d8	CAND   -734 f7f6   d8	delta    -73
+round-71-vs-magnus-p10-Qg3	V5    142 f3g3   d8	CAND     53 f3g3   d8	delta    -89
+round-71-vs-magnus-p18-Be2	V5    125 g1h1   d7	CAND     72 c3d5   d7	delta    -53
+round-71-vs-magnus-p38-fxe3	V5    503 f8c5   d8	CAND    435 d7g4   d8	delta    -68
+round-71-vs-magnus-p68-gxh3	V5   1265 g2h3   d10	CAND   1045 g2h3   d10	delta   -220
+round-73-vs-skylab-p53-Qd3+	V5   1337 c2d3   d9	CAND   1226 c2d3   d9	delta   -111
+round-73-vs-skylab-p57-exd5	V5   1443 e6d5   d9	CAND   1320 e6d5   d9	delta   -123
+round-74-vs-rohan-p112-Kb5	V5  -1350 b6a6   d13	CAND  -1314 b6a6   d12	delta    +36
+round-74-vs-rohan-p12-Bd2	V5    136 c1d2   d7	CAND    129 e1g1   d7	delta     -7
+round-74-vs-rohan-p24-Ne5	V5    150 f3e5   d7	CAND    123 c3a5   d7	delta    -27
+round-74-vs-rohan-p34-Bb1	V5    132 c2b1   d7	CAND    135 c2b1   d7	delta     +3
+round-74-vs-rohan-p36-Qc2	V5    339 d2c2   d8	CAND    328 d2c2   d8	delta    -11
+round-74-vs-rohan-p38-Qxc4	V5    220 c2c4   d9	CAND    232 c2c4   d9	delta    +12
+round-74-vs-rohan-p54-Qd2	V5    513 b4d2   d8	CAND    498 b4f4   d8	delta    -15
+round-74-vs-rohan-p62-g3	V5    402 g2g3   d8	CAND    450 e2e5   d8	delta    +48
+round-74-vs-rohan-p66-Qa5	V5   -168 a6a5   d8	CAND   -147 b1g6   d10	delta    +21
+round-74-vs-rohan-p70-Qa5	V5   -166 c5a5   d9	CAND   -130 b1g6   d10	delta    +36
+round-74-vs-rohan-p98-Kb5	V5  -1016 b4b5   d9	CAND   -970 f5d3   d9	delta    +46
+round-75-vs-prophylaxis-p46-Bxh6	V5    276 g7h6   d9	CAND     80 g7h6   d9	delta   -196
+round-75-vs-prophylaxis-p86-Bc6	V5   1109 d5c6   d12	CAND    912 d5b7   d12	delta   -197
+round-76-vs-mcai-p122-Rxh8	V5   -547 a8h8   d11	CAND   -481 a8h8   d11	delta    +66
+round-76-vs-mcai-p134-Rh6+	V5   -674 h7h6   d8	CAND   -920 g4g5   d9	delta   -246
+round-76-vs-mcai-p144-Rh1+	V5  -1189 e4f4   d10	CAND  -1246 g1h1   d9	delta    -57
+round-76-vs-mcai-p32-Nxh6+	V5     87 f5h6   d8	CAND    -71 b2c3   d9	delta   -158
+round-76-vs-mcai-p34-Nxc3	V5    -51 b2c3   d11	CAND   -220 b2c3   d10	delta   -169
+round-76-vs-mcai-p46-Rb6	V5   -133 b3b6   d8	CAND   -232 e4d2   d8	delta    -99
+round-76-vs-mcai-p48-Nd2	V5   -243 e4d2   d8	CAND   -381 e4d2   d8	delta   -138
+round-76-vs-mcai-p50-Rb3	V5   -332 h2h4   d8	CAND   -421 h2h4   d8	delta    -89
+round-76-vs-mcai-p76-Rd6	V5   -410 f1e1   d10	CAND   -538 f1e1   d10	delta   -128
+round-76-vs-mcai-p96-Kc4	V5   -745 d3c4   d10	CAND   -821 d3c4   d10	delta    -76
+round-77-vs-frisky-p17-Qb6	V5    110 d8b6   d7	CAND     52 a7a6   d7	delta    -58
+round-77-vs-frisky-p35-Nxe5	V5    363 d7e5   d8	CAND    255 d6e5   d8	delta   -108
+round-77-vs-frisky-p41-Nb2	V5    322 c4b2   d8	CAND    220 c4b2   d8	delta   -102
+round-80-vs-gmmmmm-p11-Na6	V5    -40 c5a6   d9	CAND   -143 c5a6   d9	delta   -103
+round-80-vs-gmmmmm-p21-Qf6	V5     79 d8f6   d8	CAND    -78 d8f6   d8	delta   -157
+round-80-vs-gmmmmm-p7-Bd7	V5      1 g4f3   d9	CAND    -90 g4f3   d10	delta    -91
+round-81-vs-magnus-carlson-p38-Bxf6	V5    708 c3f6   d8	CAND    536 c3f6   d8	delta   -172
+round-82-vs-team7347-p32-Kf2	V5     14 e1g1   d6	CAND    -29 e1g1   d6	delta    -43
+round-82-vs-team7347-p40-e4	V5     79 e3e4   d7	CAND     66 e3e4   d7	delta    -13
+round-82-vs-team7347-p48-Rh4	V5    189 a3b3   d8	CAND    108 a3b3   d8	delta    -81
+round-82-vs-team7347-p62-Qc5+	V5    164 b6c5   d7	CAND      0 b6c5   d7	delta   -164
+round-83-vs-404-not-found-p109-Ka7	V5   -375 a8a7   d10	CAND   -475 a8a7   d10	delta   -100
+round-83-vs-404-not-found-p115-Ka8	V5   -466 a7a8   d12	CAND   -606 a7a8   d12	delta   -140
+round-83-vs-404-not-found-p117-Ka7	V5   -541 a8a7   d13	CAND   -625 a8a7   d12	delta    -84
+round-83-vs-404-not-found-p121-Re8	V5   -671 f8e8   d11	CAND   -771 f8g8   d11	delta   -100
+round-83-vs-404-not-found-p21-Qd8	V5     92 e8g8   d7	CAND    -50 e8g8   d8	delta   -142
+round-83-vs-404-not-found-p29-O-O-O	V5     83 e8c8   d8	CAND    -55 e8c8   d8	delta   -138
+round-83-vs-404-not-found-p31-Bg5	V5    102 f6g5   d8	CAND    -59 f6g5   d9	delta   -161
+round-83-vs-404-not-found-p35-Qa6	V5    113 a7a6   d8	CAND    -39 a7a6   d8	delta   -152
+round-83-vs-404-not-found-p39-Rhd8	V5    144 c8c7   d8	CAND    -42 a6c4   d9	delta   -186
+round-83-vs-404-not-found-p41-Kc7	V5    193 c8b8   d8	CAND    -55 d7c7   d8	delta   -248
+round-83-vs-404-not-found-p75-Bxe5	V5     38 g7e5   d9	CAND    -71 f8h8   d9	delta   -109
+
+common=78 moves_changed=34 new_ge300_regressions=1
+CHANGED: ('round-64-vs-snake-p129-Qh7+', 'g6g5', 'g6h7', -140)
+CHANGED: ('round-64-vs-snake-p187-Kh2', 'h3h2', 'g2g4', 115)
+CHANGED: ('round-64-vs-snake-p195-Kg1', 'h2g3', 'g2g4', 6)
+CHANGED: ('round-64-vs-snake-p197-Kf1', 'g1f2', 'g1f1', -37)
+CHANGED: ('round-64-vs-snake-p23-Kf1', 'e1f1', 'g5e4', -49)
+CHANGED: ('round-64-vs-snake-p63-Rh3', 'f4h5', 'a1c1', -125)
+CHANGED: ('round-64-vs-snake-p69-exf4', 'g3f1', 'g3e2', -121)
+CHANGED: ('round-68-vs-rook-and-roll-p13-Bxc2', 'g6c2', 'a2c2', -136)
+CHANGED: ('round-68-vs-rook-and-roll-p33-Bg6', 'e4g6', 'a1f6', -142)
+CHANGED: ('round-68-vs-rook-and-roll-p39-Kxf4', 'e4f4', 'a1c3', -264)
+CHANGED: ('round-68-vs-rook-and-roll-p41-Bf5', 'e7e5', 'g6f5', -771)
+CHANGED: ('round-70-vs-kingsguard-p12-Nb4', 'c6b4', 'f6d5', -71)
+CHANGED: ('round-70-vs-kingsguard-p42-Bh4', 'f6h4', 'a8g8', -130)
+CHANGED: ('round-70-vs-kingsguard-p46-Rac8', 'a8b8', 'c7b7', -66)
+CHANGED: ('round-71-vs-magnus-p18-Be2', 'g1h1', 'c3d5', -53)
+CHANGED: ('round-71-vs-magnus-p38-fxe3', 'f8c5', 'd7g4', -68)
+CHANGED: ('round-74-vs-rohan-p12-Bd2', 'c1d2', 'e1g1', -7)
+CHANGED: ('round-74-vs-rohan-p24-Ne5', 'f3e5', 'c3a5', -27)
+CHANGED: ('round-74-vs-rohan-p54-Qd2', 'b4d2', 'b4f4', -15)
+CHANGED: ('round-74-vs-rohan-p62-g3', 'g2g3', 'e2e5', 48)
+CHANGED: ('round-74-vs-rohan-p66-Qa5', 'a6a5', 'b1g6', 21)
+CHANGED: ('round-74-vs-rohan-p70-Qa5', 'c5a5', 'b1g6', 36)
+CHANGED: ('round-74-vs-rohan-p98-Kb5', 'b4b5', 'f5d3', 46)
+CHANGED: ('round-75-vs-prophylaxis-p86-Bc6', 'd5c6', 'd5b7', -197)
+CHANGED: ('round-76-vs-mcai-p134-Rh6+', 'h7h6', 'g4g5', -246)
+CHANGED: ('round-76-vs-mcai-p144-Rh1+', 'e4f4', 'g1h1', -57)
+CHANGED: ('round-76-vs-mcai-p32-Nxh6+', 'f5h6', 'b2c3', -158)
+CHANGED: ('round-76-vs-mcai-p46-Rb6', 'b3b6', 'e4d2', -99)
+CHANGED: ('round-77-vs-frisky-p17-Qb6', 'd8b6', 'a7a6', -58)
+CHANGED: ('round-77-vs-frisky-p35-Nxe5', 'd7e5', 'd6e5', -108)
+CHANGED: ('round-83-vs-404-not-found-p121-Re8', 'f8e8', 'f8g8', -100)
+CHANGED: ('round-83-vs-404-not-found-p39-Rhd8', 'c8c7', 'a6c4', -186)
+CHANGED: ('round-83-vs-404-not-found-p41-Kc7', 'c8b8', 'd7c7', -248)
+CHANGED: ('round-83-vs-404-not-found-p75-Bxe5', 'g7e5', 'f8h8', -109)
+REG: ('round-68-vs-rook-and-roll-p41-Bf5', 0, -771, 'e7e5', 'g6f5')
