@@ -30,7 +30,7 @@ import chess.pgn  # noqa: E402
 
 SF = str(Path.home() / ".local/bin/stockfish")
 VAL = {chess.PAWN: 1, chess.KNIGHT: 3, chess.BISHOP: 3,
-       chess.ROOK: 5, chess.QUEEN: 9}
+       chess.ROOK: 5, chess.QUEEN: 9, chess.KING: 0}
 
 
 def _sf_eval(engine, board, depth):
@@ -39,7 +39,7 @@ def _sf_eval(engine, board, depth):
     s = info.get("score")
     if s is None:
         return 0
-    pv = s.pov(chess.WHITE)
+    pv = s.pov(board.turn)
     if pv.is_mate():
         m = pv.mate()
         return 30000 - abs(m) * 100 if m > 0 else -30000 + abs(m) * 100
@@ -67,6 +67,14 @@ def classify(loss, sac):
     return "blunder"
 
 
+def _game_board(g):
+    """Starting board of a game, honoring [SetUp]/[FEN] headers."""
+    b = g.board()
+    if g.headers.get("SetUp") and g.headers.get("FEN"):
+        b.set_fen(g.headers["FEN"])
+    return b
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("pgn")
@@ -77,12 +85,13 @@ def main():
 
     g = chess.pgn.read_game(open(a.pgn))
     engine = chess.engine.SimpleEngine.popen_uci(SF)
+    engine.configure({"Threads": 6})
     nodes = list(g.mainline())
     t0 = time.time()
 
     # E_0..E_n: score every position
     evals = []
-    b = g.board()
+    b = _game_board(g)
     for i in range(len(nodes) + 1):
         evals.append(_sf_eval(engine, b, a.depth))
         if i < len(nodes):
@@ -92,25 +101,24 @@ def main():
                   file=sys.stderr)
 
     rows = []
-    b = g.board()
+    b = _game_board(g)
     for i, node in enumerate(nodes):
         mv = node.move
         mover = "white" if b.turn == chess.WHITE else "black"
+        san = b.san(mv)
+        sign = 1 if b.turn == chess.WHITE else -1
+        mat_before = _mat(b)
         b.push(mv)
         loss = max(0, evals[i] + evals[i + 1])
-        b1 = g.board()
-        for k in range(i):
-            b1.push(nodes[k].move)
-        sign = 1 if b1.turn == chess.WHITE else -1
-        sac = sign * (_mat(b1) - _mat(b)) >= 3
+        sac = sign * (mat_before - _mat(b)) >= 3
         v = classify(loss, sac)
-        rows.append({"ply": i + 1, "side": mover, "san": b.san(mv),
+        rows.append({"ply": i + 1, "side": mover, "san": san,
                      "uci": mv.uci(), "cp_loss": round(loss),
                      "eval_before": evals[i], "verdict": v,
                      "sacrifice": sac})
         if a.side and mover != a.side:
             continue
-        print(f"{i+1:3d} {mover[0].upper()} {b.san(mv):<12s} "
+        print(f"{i+1:3d} {mover[0].upper()} {san:<12s} "
               f"loss {loss:6.0f}  {v}")
 
     counts = {}

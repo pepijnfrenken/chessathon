@@ -45,7 +45,7 @@ from engine import board as B  # noqa: E402
 from engine import search as S  # noqa: E402
 
 VAL = {chess.PAWN: 1, chess.KNIGHT: 3, chess.BISHOP: 3,
-       chess.ROOK: 5, chess.QUEEN: 9}
+       chess.ROOK: 5, chess.QUEEN: 9, chess.KING: 0}
 
 CLAMP = 30000
 
@@ -83,6 +83,14 @@ def classify(loss, sac_ok, was_best):
     return "blunder"
 
 
+def _game_board(g):
+    """Starting board of a game, honoring [SetUp]/[FEN] headers."""
+    b = g.board()
+    if g.headers.get("SetUp") and g.headers.get("FEN"):
+        b.set_fen(g.headers["FEN"])
+    return b
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("pgn")
@@ -92,7 +100,7 @@ def main():
     a = ap.parse_args()
 
     g = chess.pgn.read_game(open(a.pgn))
-    b = g.board()
+    b = _game_board(g)
     rows = []
     evals = []          # E_i per position index (side_i perspective)
     nodes = list(g.mainline())
@@ -110,11 +118,14 @@ def main():
                   file=sys.stderr)
 
     # classify moves i (0-based ply index): uses E_i and E_{i+1}
-    b = g.board()
+    b = _game_board(g)
     side_names = {chess.WHITE: "white", chess.BLACK: "black"}
     for i, node in enumerate(nodes):
         mv = node.move
         mover = side_names[b.turn]
+        san = b.san(mv)
+        sign = 1 if b.turn == chess.WHITE else -1
+        mat_before = _mat(b)
         b.push(mv)
         E_i = evals[i]
         E_next = evals[i + 1]
@@ -122,26 +133,17 @@ def main():
         mate = abs(E_i) >= 29000 or abs(E_next) >= 29000
         loss = max(0, loss)
         # sacrifice detection: mover's material dropped by >= 3 in this move
-        b2 = g.board()
-        for k in range(i + 1):
-            b2.push(nodes[k].move)
-        # material before move == material at position i: track incrementally
-        # (cheap redo: mat_before from board with i pushes)
-        b1 = g.board()
-        for k in range(i):
-            b1.push(nodes[k].move)
-        sign = 1 if b1.turn == chess.WHITE else -1
-        sac = sign * (_mat(b1) - _mat(b)) >= 3
+        sac = sign * (mat_before - _mat(b)) >= 3
         v = classify(loss, sac, loss <= 10)
         rows.append({
-            "ply": i + 1, "side": mover, "san": b.san(mv),
+            "ply": i + 1, "side": mover, "san": san,
             "uci": mv.uci(), "cp_loss": round(loss),
             "eval_before": E_i, "verdict": v, "sacrifice": sac,
             "mate_ctx": mate,
         })
         if a.side and mover != a.side:
             continue
-        print(f"{i+1:3d} {mover[0].upper()} {b.san(mv):<12s} "
+        print(f"{i+1:3d} {mover[0].upper()} {san:<12s} "
               f"loss {loss:6.0f}  {v}")
 
     counts = {}
