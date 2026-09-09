@@ -815,7 +815,11 @@ def search_root(st, nodes, deadline, ttk, ttv, mask, killers, hist, rep,
     for depth in range(1, max_depth + 1):
         if _NOW() >= deadline:
             break
-        _order_moves(st, scratch[0], sscratch[0], cnt, 0, killers, hist, 0)
+        # q5-night3 (codex1 H3): search the previous iteration's best move
+        # first via the existing ttmove ordering slot — PVS wastes a
+        # zero-window + full re-search on the true best move when it is
+        # ordered later. Last-completed-iteration fallback stays intact.
+        _order_moves(st, scratch[0], sscratch[0], cnt, best_move, killers, hist, 0)
         iter_move, iter_best = _root_iter(st, depth, -INF, INF, cnt, nodes,
                                           deadline, ttk, ttv, mask, killers,
                                           hist, rep, scratch, sscratch,
