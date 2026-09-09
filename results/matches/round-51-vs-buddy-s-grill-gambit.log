@@ -1,0 +1,61 @@
+AI CHESSATHON MATCH LOG
+=======================
+
+MATCH
+  Round          Rated 51
+  Team           En Passant Labs
+  Colour         White
+  Opponent       Buddy's Grill Gambit
+  Opening        Italian Game
+  Start FEN      r1bqk2r/ppp2ppp/2np1n2/2b1p3/2B1P3/2PP1N2/PP1N1PPP/R1BQK2R b KQkq - 1 6
+  You moved      Second
+  Machine        w-0a44b0
+  Finished       2026-09-07 12:38:25 UTC
+  Match ID       32279af8-d423-4328-81e7-3788a3b42cc5
+
+INIT
+  Ready in       26.7 s
+  Budget         90.0 s
+  Used           30 percent
+
+CLOCK
+  Base           120.0 s plus 0.5 s per move
+  Moves          19
+  Time used      42.0 s
+  Slowest        3.3 s on move 1
+  Fastest        0.0 s on move 19
+  Average        2.2 s
+  Left at end    87.5 s
+
+RESULT
+  Lost by checkmate
+  Game lasted 115.5 s
+
+MOVES
+    #  move          time     clock left
+    1  exd5          3.3 s      117.2 s
+    2  Bxd5          3.1 s      114.6 s
+    3  Qc2           3.0 s      112.0 s
+    4  Kf1           3.0 s      109.6 s
+    5  Kg1           2.9 s      107.1 s
+    6  Qd1           2.9 s      104.7 s
+    7  Nxe5          2.8 s      102.4 s
+    8  Qh5           2.8 s      100.1 s
+    9  Qh4           2.7 s       97.9 s
+   10  a3            2.7 s       95.7 s
+   11  Qxd8          2.6 s       93.6 s
+   12  b3            2.6 s       91.5 s
+   13  Nf3           2.5 s       89.5 s
+   14  Bb2           2.5 s       87.5 s
+   15  Rf1           0.0 s       88.0 s
+   16  Nd4           2.5 s       86.0 s
+   17  h3            0.0 s       86.5 s
+   18  Kh2           0.0 s       87.0 s
+   19  f4            0.0 s       87.5 s
+
+OUTPUT
+  49 bytes on stderr
+
+  [chessathon] numba warmup 25.8s (init budget ok)
+
+Email hello@aichessathon.com with this file if anything here is unclear.

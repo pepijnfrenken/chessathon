@@ -1,0 +1,72 @@
+AI CHESSATHON MATCH LOG
+=======================
+
+MATCH
+  Round          Rated 70
+  Team           En Passant Labs
+  Colour         Black
+  Opponent       KingsGuard
+  Opening        English Symmetrical
+  Start FEN      r1bq1rk1/1p2ppbp/p1np1np1/2p5/2P4P/2NP1NP1/PP2PPB1/1RBQK2R w K - 0 9
+  You moved      Second
+  Machine        w-002d36
+  Finished       2026-09-08 16:30:54 UTC
+  Match ID       dc3aab14-5bd4-47ad-a2c4-032b1be6eb0d
+
+INIT
+  Ready in       37.7 s
+  Budget         90.0 s
+  Used           42 percent
+
+CLOCK
+  Base           120.0 s plus 0.5 s per move
+  Moves          30
+  Time used      67.7 s
+  Slowest        4.3 s on move 1
+  Fastest        0.0 s on move 30
+  Average        2.3 s
+  Left at end    67.3 s
+
+RESULT
+  Lost by checkmate
+  Game lasted 198.8 s
+
+MOVES
+    #  move          time     clock left
+    1  Qb6           4.3 s      116.2 s
+    2  Nd4           3.1 s      113.7 s
+    3  Be6           3.0 s      111.1 s
+    4  Nc6           3.0 s      108.7 s
+    5  Bxd5          2.9 s      106.2 s
+    6  Nb4           2.9 s      103.9 s
+    7  Bxf6          2.8 s      101.6 s
+    8  Na2           2.8 s       99.3 s
+    9  Qb5           2.7 s       97.1 s
+   10  Qxb2          2.7 s       94.9 s
+   11  Qxc2          2.6 s       92.8 s
+   12  Rfc8          2.6 s       90.8 s
+   13  Rc7           2.5 s       88.7 s
+   14  c4            2.5 s       86.8 s
+   15  b5            2.4 s       84.8 s
+   16  Bg7           2.4 s       83.0 s
+   17  Bf6           2.3 s       81.1 s
+   18  gxh5          2.3 s       79.3 s
+   19  Kg7           2.3 s       77.5 s
+   20  Kh6           2.2 s       75.8 s
+   21  Bh4           2.2 s       74.1 s
+   22  Kxh5          2.1 s       72.5 s
+   23  Rac8          2.1 s       70.9 s
+   24  Bg5           2.1 s       69.3 s
+   25  f6            2.0 s       67.8 s
+   26  fxg5          2.0 s       66.2 s
+   27  Kh6           0.9 s       65.8 s
+   28  Rf8           0.0 s       66.3 s
+   29  Rf5           0.0 s       66.8 s
+   30  c3            0.0 s       67.3 s
+
+OUTPUT
+  49 bytes on stderr
+
+  [chessathon] numba warmup 36.7s (init budget ok)
+
+Email hello@aichessathon.com with this file if anything here is unclear.

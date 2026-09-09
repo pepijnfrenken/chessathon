@@ -1,0 +1,59 @@
+AI CHESSATHON MATCH LOG
+=======================
+
+MATCH
+  Round          Rated 67
+  Team           En Passant Labs
+  Colour         Black
+  Opponent       Chess
+  Opening        Petroff Defence
+  Start FEN      rnbqkb1r/ppp2ppp/8/3p4/3Pn3/5N2/PPP1BPPP/RNBQK2R b KQkq - 1 6
+  You moved      First
+  Machine        w-896745
+  Finished       2026-09-08 13:29:28 UTC
+  Match ID       bdcdd54f-761c-46a2-a231-272fa8e2e76f
+
+INIT
+  Ready in       35.3 s
+  Budget         90.0 s
+  Used           39 percent
+
+CLOCK
+  Base           120.0 s plus 0.5 s per move
+  Moves          17
+  Time used      37.7 s
+  Slowest        4.2 s on move 1
+  Fastest        0.0 s on move 17
+  Average        2.2 s
+  Left at end    90.8 s
+
+RESULT
+  Won by checkmate
+  Game lasted 95.8 s
+
+MOVES
+    #  move          time     clock left
+    1  Nc6           4.2 s      116.3 s
+    2  Bf5           3.1 s      113.7 s
+    3  Qf6           3.0 s      111.2 s
+    4  dxe4          3.0 s      108.7 s
+    5  Nxe5          2.9 s      106.3 s
+    6  Qxe5          2.9 s      103.9 s
+    7  Bd6           2.8 s      101.6 s
+    8  exf3          2.8 s       99.4 s
+    9  Qxh2+         2.7 s       97.2 s
+   10  Qg3+          2.7 s       95.0 s
+   11  Qf4+          2.6 s       92.9 s
+   12  Qxf5+         2.6 s       90.8 s
+   13  Bc5+          2.5 s       88.8 s
+   14  Qf4+          0.0 s       89.3 s
+   15  Qe5+          0.0 s       89.8 s
+   16  Qxe3+         0.0 s       90.3 s
+   17  Qxe2#         0.0 s       90.8 s
+
+OUTPUT
+  49 bytes on stderr
+
+  [chessathon] numba warmup 34.4s (init budget ok)
+
+Email hello@aichessathon.com with this file if anything here is unclear.

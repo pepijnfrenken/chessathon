@@ -1,0 +1,80 @@
+AI CHESSATHON MATCH LOG
+=======================
+
+MATCH
+  Round          Rated 73
+  Team           En Passant Labs
+  Colour         Black
+  Opponent       SkyLab
+  Opening        French Winawer
+  Start FEN      rnbqk2r/pp2nppp/4p3/2ppP3/3P4/P1P5/2P2PPP/1RBQKBNR b Kkq - 2 7
+  You moved      First
+  Machine        w-443834
+  Finished       2026-09-08 19:28:33 UTC
+  Match ID       ba432ff2-4f81-42cd-8bdf-fc42cedb947b
+
+INIT
+  Ready in       33.7 s
+  Budget         90.0 s
+  Used           37 percent
+
+CLOCK
+  Base           120.0 s plus 0.5 s per move
+  Moves          38
+  Time used      78.1 s
+  Slowest        4.1 s on move 1
+  Fastest        0.0 s on move 35
+  Average        2.1 s
+  Left at end    60.9 s
+
+RESULT
+  Won by checkmate
+  Game lasted 157.5 s
+
+MOVES
+    #  move          time     clock left
+    1  cxd4          4.1 s      116.4 s
+    2  Nf5           3.1 s      113.8 s
+    3  Nh4           3.0 s      111.2 s
+    4  Nc6           3.0 s      108.8 s
+    5  bxc6          2.9 s      106.4 s
+    6  Ba6           2.9 s      104.0 s
+    7  O-O           2.8 s      101.7 s
+    8  Bc4           2.8 s       99.4 s
+    9  Nf5           2.7 s       97.2 s
+   10  Re8           2.7 s       95.0 s
+   11  Rb8           2.6 s       92.9 s
+   12  Rb7           2.6 s       90.9 s
+   13  Qb6           2.5 s       88.8 s
+   14  Rc8           2.5 s       86.9 s
+   15  Nxd4          2.4 s       84.9 s
+   16  c5            2.4 s       83.0 s
+   17  Rxc5          2.3 s       81.2 s
+   18  Ba2           2.3 s       79.4 s
+   19  Qa5+          2.3 s       77.6 s
+   20  Rbc7          2.2 s       75.9 s
+   21  d4            2.2 s       74.2 s
+   22  Rc8           0.0 s       74.7 s
+   23  Rxc3          2.2 s       73.0 s
+   24  Qxc3+         2.1 s       71.4 s
+   25  Qxc2+         2.1 s       69.8 s
+   26  Bb3           2.1 s       68.3 s
+   27  Qd3+          2.0 s       66.8 s
+   28  Bd5+          2.0 s       65.3 s
+   29  exd5          2.0 s       63.8 s
+   30  Qe4+          1.9 s       62.4 s
+   31  Qxe5          1.9 s       61.0 s
+   32  Rc2+          1.9 s       59.6 s
+   33  Rxf2+         1.7 s       58.4 s
+   34  Qh2+          0.0 s       58.9 s
+   35  d3            0.0 s       59.4 s
+   36  d2            0.0 s       59.9 s
+   37  Kxh7          0.0 s       60.4 s
+   38  d1=Q#         0.0 s       60.9 s
+
+OUTPUT
+  49 bytes on stderr
+
+  [chessathon] numba warmup 32.8s (init budget ok)
+
+Email hello@aichessathon.com with this file if anything here is unclear.

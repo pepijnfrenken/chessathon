@@ -1,0 +1,56 @@
+AI CHESSATHON MATCH LOG
+=======================
+
+MATCH
+  Round          Rated 55
+  Team           En Passant Labs
+  Colour         Black
+  Opponent       Minimax Two
+  Opening        Italian Game
+  Start FEN      r1bqk2r/1pp2ppp/1bnp1n2/pP2p3/P1B1P3/2PP1N2/5PPP/RNBQK2R b KQkq - 0 8
+  You moved      First
+  Machine        w-791165
+  Finished       2026-09-07 16:39:39 UTC
+  Match ID       a6639443-7b63-4da5-bb10-60ee5bd3065a
+
+INIT
+  Ready in       38.5 s
+  Budget         90.0 s
+  Used           43 percent
+
+CLOCK
+  Base           120.0 s plus 0.5 s per move
+  Moves          14
+  Time used      39.5 s
+  Slowest        3.3 s on move 1
+  Fastest        2.5 s on move 14
+  Average        2.8 s
+  Left at end    87.5 s
+
+RESULT
+  Drawn by threefold repetition
+  Game lasted 41.4 s
+
+MOVES
+    #  move          time     clock left
+    1  Nxe4          3.3 s      117.2 s
+    2  Ne7           3.1 s      114.6 s
+    3  Bg4           3.0 s      112.0 s
+    4  Kxf7          3.0 s      109.5 s
+    5  d5            2.9 s      107.1 s
+    6  Bxf3          2.9 s      104.7 s
+    7  Bxf2          2.8 s      102.4 s
+    8  Bh4           2.8 s      100.1 s
+    9  Qd6           2.7 s       97.9 s
+   10  Rhb8          2.7 s       95.7 s
+   11  Rh8           2.6 s       93.6 s
+   12  Rhb8          2.6 s       91.5 s
+   13  Rh8           2.5 s       89.4 s
+   14  Rhb8          2.5 s       87.5 s
+
+OUTPUT
+  49 bytes on stderr
+
+  [chessathon] numba warmup 37.4s (init budget ok)
+
+Email hello@aichessathon.com with this file if anything here is unclear.

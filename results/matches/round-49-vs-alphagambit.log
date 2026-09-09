@@ -1,0 +1,68 @@
+AI CHESSATHON MATCH LOG
+=======================
+
+MATCH
+  Round          Rated 49
+  Team           En Passant Labs
+  Colour         Black
+  Opponent       AlphaGambit
+  Opening        Catalan Opening
+  Start FEN      rnbq1rk1/p3bppp/1pp1pn2/3p4/2PP4/1P3NP1/P3PPBP/RNBQ1RK1 w - - 0 8
+  You moved      Second
+  Machine        w-0a44b0
+  Finished       2026-09-07 10:32:06 UTC
+  Match ID       5fe038f8-d5e3-4940-8c70-bcace7788b6c
+
+INIT
+  Ready in       26.8 s
+  Budget         90.0 s
+  Used           30 percent
+
+CLOCK
+  Base           120.0 s plus 0.5 s per move
+  Moves          26
+  Time used      58.0 s
+  Slowest        3.3 s on move 1
+  Fastest        0.0 s on move 16
+  Average        2.2 s
+  Left at end    75.0 s
+
+RESULT
+  Lost by checkmate
+  Game lasted 176.0 s
+
+MOVES
+    #  move          time     clock left
+    1  dxc4          3.3 s      117.2 s
+    2  b5            3.1 s      114.6 s
+    3  Qa5           3.0 s      112.1 s
+    4  cxb5          3.0 s      109.6 s
+    5  b4            2.9 s      107.1 s
+    6  bxc3          2.9 s      104.7 s
+    7  Qc7           2.8 s      102.4 s
+    8  Nbd7          2.8 s      100.1 s
+    9  Nxe5          2.7 s       97.9 s
+   10  Ne4           2.7 s       95.7 s
+   11  Bg5           2.6 s       93.6 s
+   12  Bxf4          2.6 s       91.5 s
+   13  Qc5+          2.5 s       89.5 s
+   14  Qe3           2.5 s       87.5 s
+   15  Qc5           2.4 s       85.6 s
+   16  Kh8           0.0 s       86.1 s
+   17  Qxc2          2.4 s       84.1 s
+   18  g5            2.4 s       82.3 s
+   19  g4            2.3 s       80.4 s
+   20  Ba6           2.3 s       78.6 s
+   21  Rc8           2.2 s       76.9 s
+   22  Bxe2          2.2 s       75.2 s
+   23  Rxc5          2.2 s       73.5 s
+   24  Ba6           0.0 s       74.0 s
+   25  Bb5           0.0 s       74.5 s
+   26  Be8           0.0 s       75.0 s
+
+OUTPUT
+  49 bytes on stderr
+
+  [chessathon] numba warmup 26.0s (init budget ok)
+
+Email hello@aichessathon.com with this file if anything here is unclear.

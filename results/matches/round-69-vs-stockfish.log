@@ -1,0 +1,93 @@
+AI CHESSATHON MATCH LOG
+=======================
+
+MATCH
+  Round          Rated 69
+  Team           En Passant Labs
+  Colour         White
+  Opponent       Stockfish
+  Opening        Caro-Kann Exchange
+  Start FEN      r1bqkb1r/pp2pppp/2n2n2/3p4/3P1B2/2PB4/PP3PPP/RN1QK1NR b KQkq - 2 6
+  You moved      Second
+  Machine        w-443834
+  Finished       2026-09-08 15:31:20 UTC
+  Match ID       05a38636-b160-49f8-b545-0701d1b040ad
+
+INIT
+  Ready in       34.2 s
+  Budget         90.0 s
+  Used           38 percent
+
+CLOCK
+  Base           120.0 s plus 0.5 s per move
+  Moves          51
+  Time used      99.1 s
+  Slowest        4.1 s on move 1
+  Fastest        0.0 s on move 25
+  Average        1.9 s
+  Left at end    46.4 s
+
+RESULT
+  Won by checkmate
+  Game lasted 194.3 s
+
+MOVES
+    #  move          time     clock left
+    1  Qc2           4.1 s      116.4 s
+    2  Nd2           3.1 s      113.8 s
+    3  Ngf3          3.0 s      111.3 s
+    4  O-O           3.0 s      108.8 s
+    5  Bg3           2.9 s      106.4 s
+    6  Bf5           2.9 s      104.0 s
+    7  Qxf5+         2.8 s      101.7 s
+    8  Nb3           2.8 s       99.4 s
+    9  Ne5           2.7 s       97.2 s
+   10  Bxe5          2.7 s       95.0 s
+   11  Qxe6          2.6 s       92.9 s
+   12  Nc5           2.6 s       90.9 s
+   13  Nxe6          2.5 s       88.8 s
+   14  Nf4           2.5 s       86.9 s
+   15  Nh5           2.4 s       84.9 s
+   16  Nxf6          2.4 s       83.0 s
+   17  Bxf6          2.3 s       81.2 s
+   18  Bxh8          2.3 s       79.4 s
+   19  Rab1          2.3 s       77.6 s
+   20  Rfe1          2.2 s       75.9 s
+   21  Re6           2.2 s       74.2 s
+   22  Rxh6          2.2 s       72.6 s
+   23  Kf1           2.1 s       70.9 s
+   24  Re1           2.1 s       69.4 s
+   25  Kxe1          0.0 s       69.9 s
+   26  Rxd6+         2.1 s       68.3 s
+   27  cxb4          2.0 s       66.8 s
+   28  Kd2           2.0 s       65.3 s
+   29  Kc3           2.0 s       63.9 s
+   30  a3            1.9 s       62.4 s
+   31  g3            1.9 s       61.0 s
+   32  b3            1.9 s       59.7 s
+   33  Kxb3          1.8 s       58.4 s
+   34  Ka4           1.8 s       57.1 s
+   35  Kb5           1.8 s       55.8 s
+   36  Ka6           1.7 s       54.5 s
+   37  b5            1.7 s       53.3 s
+   38  b6            1.7 s       52.1 s
+   39  b7            1.7 s       51.0 s
+   40  b8=Q          1.6 s       49.9 s
+   41  Qf4+          1.6 s       48.7 s
+   42  Qxg4          1.6 s       47.7 s
+   43  Qd1+          1.6 s       46.6 s
+   44  Kb5           1.5 s       45.6 s
+   45  Kc5           1.5 s       44.5 s
+   46  Qe2           1.1 s       43.9 s
+   47  Kd4           0.0 s       44.4 s
+   48  Kc3           0.0 s       44.9 s
+   49  Kb3           0.0 s       45.4 s
+   50  Qd3           0.0 s       45.9 s
+   51  Qc2#          0.0 s       46.4 s
+
+OUTPUT
+  49 bytes on stderr
+
+  [chessathon] numba warmup 33.3s (init budget ok)
+
+Email hello@aichessathon.com with this file if anything here is unclear.

@@ -62,10 +62,20 @@ host CPU nps; fix direction = root-move stability, not eval. (3) Kxh5/Rf5
 replay + eval probe, see §6 P1): r61 = dead-equal hold (raw 0.00, every
 alternative ≤ −21), r62 = converts, r63 = defensive draw allowed by design.
 
-**Open items:** ladder rounds 51–60 match records missing · uploads freeze
+**Ladder updates (dashboard export, 2026-09-09):** r75 **WIN** vs Prophylaxis
+(White, checkmate, 21:30 Sep 8, `results/matches/round-75-vs-prophylaxis.pgn`)
+· r76 **LOSS** vs MCAI (White, checkmate, 07:30 Sep 9 — the newest game;
+`results/matches/round-76-vs-mcai.pgn`). Dashboard standing 09:40 UTC:
+**rank #267/410 · rating 1461 (peak 1466) · 12W-7D-10L** (v5 upload
+`6abb1ca1affa` Active). Gap **r51–60 PGNs+logs CLOSED** — full set r48–r76
+now in `results/matches/` (dashboard fetch, moves byte-verified vs chat
+copies for r61–74) + per-round metadata in `results/dashboard/games.csv`.
+
+**Open items:** · uploads freeze
 11 Sep 11:00 (freeze strategy: §5/#5, §6 P5) · **rank 336/387 (Sep 8) —
 the crater is stateless-era damage (r48–60); stateful build r61+ = W/D,
-climbing** (recovery tracker: §6 P4).
+climbing** (recovery tracker: §6 P4; dashboard now shows #267/410 — see
+above).
 
 **Deadlines:** qualifier rated rounds 4–11 Sep (hourly 08:00–22:00 UTC) ·
 50 London seats in finishing order · final Swiss 12 Sep, Encode Club.
@@ -200,9 +210,11 @@ Every major decision, with the evidence that made it. (Full narratives:
   machine (r63's move-1 overrun, 4.9s vs 3.2s budget, caused a TT-state
   divergence that is a machine artifact, not behaviour — r61's clean
   13/13 proves the path is sound).
-- **P3 — ladder record r51–60 missing** — pull from the dashboard if
-  still available; if not, note the gap in the write-up (honest process).
-- **P4 — ladder standing (Sep 8, through r74): rank 336/387.** Attribution:
+- **P3 — ladder record r51–60 missing** — RESOLVED 2026-09-09: full set
+  r48–r76 fetched from the dashboard (PGN+log, `results/matches/`,
+  metadata `results/dashboard/games.csv`); r51–60 gap closed.
+- **P4 — ladder standing: rank 336/387 (Sep 8, through r74) → #267/410,
+  rating 1461, 12W-7D-10L (Sep 9 dashboard, through r76).** Attribution:
   v1 = 1a pure-Python (rated 47/351 at launch), v2 = stateless 1b→Phase-3
   (r48-60 crater), v3 = stateful Phase-4 (r61+). V5 (r70+)
   record: W-L-W-W-L (r70 L KingsGuard, r71 W Magnus, r72 W Stocked Fish,

@@ -1,0 +1,12 @@
+[Event "AI Chessathon Rated"]
+[Site "aichessathon.com"]
+[Date "2026.09.07"]
+[Round "55"]
+[White "Minimax Two"]
+[Black "En Passant Labs"]
+[Result "1/2-1/2"]
+[FEN "r1bqk2r/1pp2ppp/1bnp1n2/pP2p3/P1B1P3/2PP1N2/5PPP/RNBQK2R b KQkq - 0 8"]
+[SetUp "1"]
+[Termination "threefold_repetition"]
+
+8... Nxe4 { [%clk 0:01:57.164] } 9. dxe4 { [%clk 0:02:00.367] } 9... Ne7 { [%clk 0:01:54.558] } 10. Ke2 { [%clk 0:02:00.725] } 10... Bg4 { [%clk 0:01:52.009] } 11. Bxf7+ { [%clk 0:02:01.107] } 11... Kxf7 { [%clk 0:01:49.514] } 12. Qb3+ { [%clk 0:02:01.49] } 12... d5 { [%clk 0:01:47.079] } 13. Kd3 { [%clk 0:02:01.871] } 13... Bxf3 { [%clk 0:01:44.696] } 14. gxf3 { [%clk 0:02:02.266] } 14... Bxf2 { [%clk 0:01:42.368] } 15. Ra2 { [%clk 0:02:02.669] } 15... Bh4 { [%clk 0:01:40.091] } 16. Be3 { [%clk 0:02:03.059] } 16... Qd6 { [%clk 0:01:37.864] } 17. Rg1 { [%clk 0:02:03.412] } 17... Rhb8 { [%clk 0:01:35.687] } 18. h3 { [%clk 0:02:03.77] } 18... Rh8 { [%clk 0:01:33.558] } 19. Re2 { [%clk 0:02:04.109] } 19... Rhb8 { [%clk 0:01:31.476] } 20. Ra2 { [%clk 0:02:04.469] } 20... Rh8 { [%clk 0:01:29.442] } 21. Rgg2 { [%clk 0:02:04.812] } 21... Rhb8 { [%clk 0:01:27.452] } 22. Rg1 { [%clk 0:02:05.166] } 1/2-1/2bc:[\

@@ -1,0 +1,69 @@
+AI CHESSATHON MATCH LOG
+=======================
+
+MATCH
+  Round          Rated 60
+  Team           En Passant Labs
+  Colour         Black
+  Opponent       Minimax Three
+  Opening        English Symmetrical
+  Start FEN      r1bq1rk1/pp2ppbp/2np1np1/2p5/2P4P/2NP1NP1/PP2PPB1/1RBQK2R b K - 1 8
+  You moved      First
+  Machine        w-b524ed
+  Finished       2026-09-07 21:42:07 UTC
+  Match ID       e4062c4e-46a8-4f31-bf63-556f3e55f95c
+
+INIT
+  Ready in       32.0 s
+  Budget         90.0 s
+  Used           36 percent
+
+CLOCK
+  Base           120.0 s plus 0.5 s per move
+  Moves          27
+  Time used      62.2 s
+  Slowest        3.3 s on move 1
+  Fastest        0.0 s on move 27
+  Average        2.3 s
+  Left at end    71.3 s
+
+RESULT
+  Won by checkmate
+  Game lasted 66.4 s
+
+MOVES
+    #  move          time     clock left
+    1  Nb4           3.3 s      117.2 s
+    2  Nxd3+         3.1 s      114.6 s
+    3  Ng4           3.0 s      112.0 s
+    4  Bd7           3.0 s      109.6 s
+    5  Nf6           2.9 s      107.1 s
+    6  exf6          2.9 s      104.7 s
+    7  Bf5           2.8 s      102.4 s
+    8  Bg4           2.8 s      100.1 s
+    9  Be2           2.7 s       97.9 s
+   10  Bg4           2.7 s       95.7 s
+   11  Rb8           2.6 s       93.6 s
+   12  Qc7           2.6 s       91.5 s
+   13  Qxd6          2.5 s       89.5 s
+   14  Qc7           2.5 s       87.5 s
+   15  Bxf6          2.4 s       85.5 s
+   16  Rxb7          2.4 s       83.6 s
+   17  Rb6           2.4 s       81.8 s
+   18  Be6           2.3 s       80.0 s
+   19  g5            2.3 s       78.2 s
+   20  Bg7           2.2 s       76.4 s
+   21  Kh8           2.2 s       74.7 s
+   22  Bd4           2.2 s       73.1 s
+   23  Kg7           2.1 s       71.5 s
+   24  Qxf7          2.1 s       69.9 s
+   25  Qh5+          0.0 s       70.3 s
+   26  Bxf2+         0.0 s       70.8 s
+   27  Qh3#          0.0 s       71.3 s
+
+OUTPUT
+  49 bytes on stderr
+
+  [chessathon] numba warmup 31.1s (init budget ok)
+
+Email hello@aichessathon.com with this file if anything here is unclear.

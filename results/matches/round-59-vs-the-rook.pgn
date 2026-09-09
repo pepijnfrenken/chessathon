@@ -1,0 +1,12 @@
+[Event "AI Chessathon Rated"]
+[Site "aichessathon.com"]
+[Date "2026.09.07"]
+[Round "59"]
+[White "En Passant Labs"]
+[Black "The Rook"]
+[Result "1/2-1/2"]
+[FEN "r1bq1rk1/2p1bppp/p2p1n2/np2p3/4P3/P2P1N2/BPP2PPP/RNBQR1K1 b - - 2 10"]
+[SetUp "1"]
+[Termination "threefold_repetition"]
+
+10... Bg4 { [%clk 0:01:55.498] } 11. Nbd2 { [%clk 0:01:57.195] } 11... Nc6 { [%clk 0:01:50.997] } 12. Rb1 { [%clk 0:01:54.588] } 12... Re8 { [%clk 0:01:46.495] } 13. Ra1 { [%clk 0:01:52.04] } 13... Kf8 { [%clk 0:01:41.994] } 14. Rb1 { [%clk 0:01:49.549] } 14... Kg8 { [%clk 0:01:37.492] } 15. Ra1 { [%clk 0:01:47.113] } 15... Kf8 { [%clk 0:01:33.118] } 16. Rb1 { [%clk 0:01:44.731] } 16... Kg8 { [%clk 0:01:28.964] } 1/2-1/2b8:[\

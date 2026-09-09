@@ -1,0 +1,48 @@
+AI CHESSATHON MATCH LOG
+=======================
+
+MATCH
+  Round          Rated 59
+  Team           En Passant Labs
+  Colour         White
+  Opponent       The Rook
+  Opening        Ruy Lopez, Closed
+  Start FEN      r1bq1rk1/2p1bppp/p2p1n2/np2p3/4P3/P2P1N2/BPP2PPP/RNBQR1K1 b - - 2 10
+  You moved      Second
+  Machine        w-5fdd24
+  Finished       2026-09-07 20:41:40 UTC
+  Match ID       13d25fe3-2a06-41db-b7da-3b1c7b1bd28b
+
+INIT
+  Ready in       32.4 s
+  Budget         90.0 s
+  Used           36 percent
+
+CLOCK
+  Base           120.0 s plus 0.5 s per move
+  Moves          6
+  Time used      18.3 s
+  Slowest        3.3 s on move 1
+  Fastest        2.9 s on move 6
+  Average        3.0 s
+  Left at end    104.7 s
+
+RESULT
+  Drawn by threefold repetition
+  Game lasted 52.8 s
+
+MOVES
+    #  move          time     clock left
+    1  Nbd2          3.3 s      117.2 s
+    2  Rb1           3.1 s      114.6 s
+    3  Ra1           3.0 s      112.0 s
+    4  Rb1           3.0 s      109.5 s
+    5  Ra1           2.9 s      107.1 s
+    6  Rb1           2.9 s      104.7 s
+
+OUTPUT
+  49 bytes on stderr
+
+  [chessathon] numba warmup 31.5s (init budget ok)
+
+Email hello@aichessathon.com with this file if anything here is unclear.

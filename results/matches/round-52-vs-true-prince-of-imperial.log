@@ -1,0 +1,111 @@
+AI CHESSATHON MATCH LOG
+=======================
+
+MATCH
+  Round          Rated 52
+  Team           En Passant Labs
+  Colour         White
+  Opponent       True Prince of Imperial
+  Opening        Ruy Lopez, Closed
+  Start FEN      r2q1rk1/2pbbppp/p1np1n2/1p2p3/P2PP3/1BP2N2/1P3PPP/RNBQR1K1 b - - 0 10
+  You moved      Second
+  Machine        w-0a44b0
+  Finished       2026-09-07 13:42:18 UTC
+  Match ID       70c804f3-16cc-4b94-ba98-e964ef05334a
+
+INIT
+  Ready in       26.9 s
+  Budget         90.0 s
+  Used           30 percent
+
+CLOCK
+  Base           120.0 s plus 0.5 s per move
+  Moves          69
+  Time used      127.9 s
+  Slowest        3.3 s on move 1
+  Fastest        0.1 s on move 62
+  Average        1.9 s
+  Left at end    26.6 s
+
+RESULT
+  Drawn by insufficient material
+  Game lasted 275.3 s
+
+MOVES
+    #  move          time     clock left
+    1  cxd4          3.3 s      117.2 s
+    2  Bxa4          3.1 s      114.6 s
+    3  Bxc6          3.0 s      112.0 s
+    4  Rxa6          3.0 s      109.5 s
+    5  Ra5           2.9 s      107.1 s
+    6  Rxb5          2.9 s      104.7 s
+    7  Nbd2          2.8 s      102.4 s
+    8  Qc2           2.8 s      100.1 s
+    9  Rd1           2.7 s       97.9 s
+   10  Re1           2.7 s       95.7 s
+   11  Rd1           2.6 s       93.6 s
+   12  Re1           2.6 s       91.5 s
+   13  Nc4           2.5 s       89.5 s
+   14  Bd2           2.5 s       87.5 s
+   15  Qxb3          2.4 s       85.5 s
+   16  Nxd6          2.4 s       83.6 s
+   17  h3            2.4 s       81.8 s
+   18  hxg4          2.3 s       80.0 s
+   19  e5            2.3 s       78.2 s
+   20  Nf5           2.2 s       76.4 s
+   21  Nxe7          2.2 s       74.7 s
+   22  e6            2.2 s       73.1 s
+   23  Ng6+          2.1 s       71.5 s
+   24  gxf3          2.1 s       69.9 s
+   25  Rxe6+         2.1 s       68.3 s
+   26  Rxc6          2.0 s       66.8 s
+   27  Rc7+          2.0 s       65.3 s
+   28  Kg2           2.0 s       63.9 s
+   29  Rc6+          1.9 s       62.4 s
+   30  f4            1.9 s       61.0 s
+   31  f3            1.9 s       59.7 s
+   32  Kf2           1.8 s       58.4 s
+   33  Rxf6          1.8 s       57.1 s
+   34  Ke2           1.8 s       55.8 s
+   35  Kd2           1.7 s       54.5 s
+   36  Kc2           1.7 s       53.3 s
+   37  Kb3           1.7 s       52.1 s
+   38  Kc3           1.7 s       51.0 s
+   39  Kb3           1.6 s       49.9 s
+   40  Ka3           1.6 s       48.7 s
+   41  Ka4           1.6 s       47.7 s
+   42  Kb4           1.6 s       46.6 s
+   43  Kc4           1.5 s       45.6 s
+   44  Kb4           1.5 s       44.5 s
+   45  Ka4           1.5 s       43.6 s
+   46  Kb4           1.5 s       42.6 s
+   47  Kc4           1.4 s       41.6 s
+   48  Kd4           1.4 s       40.7 s
+   49  Kc3           1.4 s       39.8 s
+   50  Kb3           1.4 s       38.9 s
+   51  Kc3           1.4 s       38.1 s
+   52  Kb4           1.3 s       37.2 s
+   53  Kb5           1.3 s       36.4 s
+   54  Kb4           1.3 s       35.6 s
+   55  Kb5           1.3 s       34.8 s
+   56  Kb4           1.3 s       34.0 s
+   57  Ka3           1.3 s       33.2 s
+   58  Kb3           1.2 s       32.5 s
+   59  Kxb2          1.2 s       31.8 s
+   60  Kc2           0.8 s       31.4 s
+   61  Kb3           1.2 s       30.7 s
+   62  Kb4           0.1 s       31.1 s
+   63  Kb5           1.2 s       30.4 s
+   64  Ka6           1.2 s       29.8 s
+   65  Ka7           1.2 s       29.1 s
+   66  Ka6           1.1 s       28.5 s
+   67  Kb6           1.1 s       27.8 s
+   68  Kc6           1.1 s       27.2 s
+   69  Kxd5          1.1 s       26.6 s
+
+OUTPUT
+  49 bytes on stderr
+
+  [chessathon] numba warmup 25.9s (init budget ok)
+
+Email hello@aichessathon.com with this file if anything here is unclear.

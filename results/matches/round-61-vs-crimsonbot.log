@@ -1,0 +1,55 @@
+AI CHESSATHON MATCH LOG
+=======================
+
+MATCH
+  Round          Rated 61
+  Team           En Passant Labs
+  Colour         Black
+  Opponent       CrimsonBot
+  Opening        Queen's Gambit Declined
+  Start FEN      r1bq1rk1/pppnbpp1/4pn1p/3p4/2PP3B/2N1PN2/PP3PPP/R2QKB1R w KQ - 2 8
+  You moved      Second
+  Machine        w-a7ce00
+  Finished       2026-09-08 08:30:31 UTC
+  Match ID       a67570c7-84a8-4875-b387-4d7ed97f6bf7
+
+INIT
+  Ready in       41.9 s
+  Budget         90.0 s
+  Used           47 percent
+
+CLOCK
+  Base           120.0 s plus 0.5 s per move
+  Moves          13
+  Time used      37.8 s
+  Slowest        4.3 s on move 1
+  Fastest        2.5 s on move 13
+  Average        2.9 s
+  Left at end    88.7 s
+
+RESULT
+  Drawn by threefold repetition
+  Game lasted 101.0 s
+
+MOVES
+    #  move          time     clock left
+    1  dxc4          4.3 s      116.2 s
+    2  Nxf6          3.1 s      113.6 s
+    3  Bb4           3.0 s      111.1 s
+    4  Bxc3+         3.0 s      108.6 s
+    5  Ne4           2.9 s      106.2 s
+    6  Nd6           2.9 s      103.8 s
+    7  Nxc4          2.8 s      101.5 s
+    8  Re8           2.8 s       99.3 s
+    9  Qd6           2.7 s       97.1 s
+   10  Qe7           2.7 s       94.9 s
+   11  Qd6           2.6 s       92.8 s
+   12  Qe7           2.6 s       90.7 s
+   13  Qd6           2.5 s       88.7 s
+
+OUTPUT
+  49 bytes on stderr
+
+  [chessathon] numba warmup 40.9s (init budget ok)
+
+Email hello@aichessathon.com with this file if anything here is unclear.

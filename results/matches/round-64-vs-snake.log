@@ -1,0 +1,154 @@
+AI CHESSATHON MATCH LOG
+=======================
+
+MATCH
+  Round          Rated 64
+  Team           En Passant Labs
+  Colour         White
+  Opponent       Snake
+  Opening        Nimzo-Indian Defence
+  Start FEN      rnbq1rk1/pp3ppp/4pn2/2p5/1bBP4/2N1P2P/PP3PP1/R1BQK1NR w KQ - 0 8
+  You moved      First
+  Machine        w-284681
+  Finished       2026-09-08 10:35:23 UTC
+  Match ID       26475748-449e-4da4-8b11-9f103ae9634c
+
+INIT
+  Ready in       37.0 s
+  Budget         90.0 s
+  Used           41 percent
+
+CLOCK
+  Base           120.0 s plus 0.5 s per move
+  Moves          112
+  Time used      161.1 s
+  Slowest        4.3 s on move 1
+  Fastest        0.0 s on move 37
+  Average        1.4 s
+  Left at end    14.9 s
+
+RESULT
+  Lost by checkmate
+  Game lasted 323.1 s
+
+MOVES
+    #  move          time     clock left
+    1  Nf3           4.3 s      116.2 s
+    2  Bd2           3.1 s      113.6 s
+    3  Nxd4          3.0 s      111.1 s
+    4  Nf3           3.0 s      108.6 s
+    5  Qc2           2.9 s      106.2 s
+    6  Bd3           2.9 s      103.8 s
+    7  Ng5           2.8 s      101.5 s
+    8  Bc4           2.8 s       99.3 s
+    9  Qb3           2.7 s       97.1 s
+   10  Rd1           2.7 s       94.9 s
+   11  Bd3           2.6 s       92.8 s
+   12  Kf1           2.6 s       90.7 s
+   13  Qc2           2.5 s       88.7 s
+   14  Be1           2.5 s       86.7 s
+   15  Bf5           2.4 s       84.8 s
+   16  Kg1           2.4 s       82.9 s
+   17  Bxc8          2.3 s       81.1 s
+   18  Qb1           2.3 s       79.3 s
+   19  Bxc3          2.3 s       77.5 s
+   20  bxc3          2.2 s       75.8 s
+   21  Rh2           2.2 s       74.1 s
+   22  Rc1           2.1 s       72.5 s
+   23  Qb2           2.1 s       70.8 s
+   24  Rc2           2.1 s       69.3 s
+   25  Qa3           2.0 s       67.7 s
+   26  h4            2.0 s       66.2 s
+   27  Qb2           2.0 s       64.7 s
+   28  Qa1           1.9 s       63.3 s
+   29  Rh1           1.9 s       61.9 s
+   30  Nh3           1.9 s       60.5 s
+   31  Nf4           1.8 s       59.2 s
+   32  Rh3           1.8 s       57.9 s
+   33  Nxh5          1.8 s       56.6 s
+   34  Ng3           1.8 s       55.3 s
+   35  exf4          1.7 s       54.1 s
+   36  f3            1.7 s       52.9 s
+   37  Kh1           0.0 s       53.4 s
+   38  Kh2           1.7 s       52.2 s
+   39  Kxh3          1.7 s       51.0 s
+   40  Qe1           1.6 s       49.9 s
+   41  Ne4           1.6 s       48.8 s
+   42  Rxc3          1.6 s       47.7 s
+   43  Rc1           1.6 s       46.6 s
+   44  Qxa5          1.5 s       45.6 s
+   45  fxe4          1.5 s       44.6 s
+   46  Qd5+          1.5 s       43.6 s
+   47  Qf5+          1.5 s       42.6 s
+   48  Qf7+          1.4 s       41.7 s
+   49  Qf8+          1.4 s       40.7 s
+   50  Qe7+          1.4 s       39.8 s
+   51  Qd8+          1.4 s       38.9 s
+   52  Qd7+          1.4 s       38.1 s
+   53  Qd6+          1.3 s       37.2 s
+   54  Qd5+          1.3 s       36.4 s
+   55  Qe5+          1.3 s       35.6 s
+   56  Qd5+          1.3 s       34.8 s
+   57  Qd8+          1.3 s       34.0 s
+   58  Qe7+          1.3 s       33.3 s
+   59  Qf6+          1.2 s       32.5 s
+   60  Qe7+          1.2 s       31.8 s
+   61  Qe6+          1.2 s       31.1 s
+   62  Qe5+          1.2 s       30.4 s
+   63  Qf6+          1.2 s       29.7 s
+   64  Qxg6+         1.2 s       29.1 s
+   65  Qh7+          1.1 s       28.4 s
+   66  Qg8+          1.1 s       27.8 s
+   67  Qg7+          1.1 s       27.2 s
+   68  Qe5+          1.1 s       26.6 s
+   69  Qd5+          1.1 s       26.0 s
+   70  Qb7+          1.1 s       25.4 s
+   71  Qa8+          1.1 s       24.8 s
+   72  Qd5+          1.1 s       24.3 s
+   73  Qb7+          1.0 s       23.7 s
+   74  Qb6+          1.0 s       23.2 s
+   75  Qa7+          1.0 s       22.7 s
+   76  Qd4+          1.0 s       22.2 s
+   77  Qg7+          1.0 s       21.7 s
+   78  Qf6+          1.0 s       21.2 s
+   79  Qe6+          1.0 s       20.7 s
+   80  Qg8+          1.0 s       20.3 s
+   81  Qf7+          1.0 s       19.8 s
+   82  Qb3+          0.9 s       19.4 s
+   83  e5            0.9 s       18.9 s
+   84  Kg3           0.9 s       18.5 s
+   85  Kg4           0.9 s       18.1 s
+   86  Kh3           0.9 s       17.7 s
+   87  Qc4+          0.9 s       17.3 s
+   88  Qd5+          0.9 s       16.9 s
+   89  Qe6+          0.9 s       16.5 s
+   90  Qg8           0.9 s       16.2 s
+   91  h5            0.9 s       15.8 s
+   92  Qxa2          0.9 s       15.4 s
+   93  h6            0.8 s       15.1 s
+   94  Kh2           0.8 s       14.8 s
+   95  h7            0.8 s       14.4 s
+   96  Kxh1          0.8 s       14.1 s
+   97  Kh2           0.0 s       14.6 s
+   98  Kg1           0.8 s       14.3 s
+   99  Kf1           0.8 s       14.0 s
+  100  Kf2           0.8 s       13.7 s
+  101  Kg3           0.8 s       13.4 s
+  102  e6            0.8 s       13.1 s
+  103  f5            0.8 s       12.8 s
+  104  Kh2           0.8 s       12.5 s
+  105  Kg1           0.5 s       12.4 s
+  106  g3            0.8 s       12.2 s
+  107  Kf1           0.2 s       12.4 s
+  108  Kg2           0.0 s       12.9 s
+  109  Kf1           0.0 s       13.4 s
+  110  Kg1           0.0 s       13.9 s
+  111  Kf1           0.0 s       14.4 s
+  112  Kg1           0.0 s       14.9 s
+
+OUTPUT
+  49 bytes on stderr
+
+  [chessathon] numba warmup 36.0s (init budget ok)
+
+Email hello@aichessathon.com with this file if anything here is unclear.
