@@ -1,0 +1,33 @@
+=== v9k (repo HEAD, king flip + dpfix) ===
+=== r92 FRESH-TT fixed-depth probe [/home/pino/projects/chessathon] ===
+
+m35 (game move d5b3)
+  depth  6: e5d3 score=    59 nodes=   146800
+  depth  7: d5b3 score=    48 nodes=   702692  <-- GAME-as-played
+  depth  8: e5d3 score=     7 nodes=  1506626
+  depth  9: e5d3 score=     0 nodes=  3186775
+  depth 10: e5d3 score=    -3 nodes=  6163384
+
+m36 (game move b4b5)
+  depth  6: d4b2 score=    79 nodes=   222100
+  depth  7: d4b2 score=    75 nodes=   571957
+  depth  8: g3h2 score=    64 nodes=  1055298
+  depth  9: d4b2 score=    41 nodes=  2402254
+  depth 10: g3h2 score=    55 nodes=  4047189
+
+=== v7ref (live v7) ===
+=== r92 FRESH-TT fixed-depth probe [/tmp/chessathon-v7ref] ===
+
+m35 (game move d5b3)
+  depth  6: e5d3 score=    99 nodes=   186606
+  depth  7: d5b3 score=    70 nodes=   467314  <-- GAME-as-played
+  depth  8: d5b3 score=    68 nodes=   924306  <-- GAME-as-played
+  depth  9: d5b3 score=    65 nodes=  1859105  <-- GAME-as-played
+  depth 10: e5d3 score=     0 nodes=  8547021
+
+m36 (game move b4b5)
+  depth  6: b4b5 score=   101 nodes=   144202  <-- GAME-as-played
+  depth  7: b4b5 score=    87 nodes=   363374  <-- GAME-as-played
+  depth  8: g3h2 score=    78 nodes=  1239058
+  depth  9: g3h2 score=    84 nodes=  1931123
+  depth 10: g3h2 score=    85 nodes=  3305011

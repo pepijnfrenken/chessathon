@@ -1,0 +1,120 @@
+corpus=results/leak_suite/fens.json rows=107  A=v9k (107 probed)  B=v7ref (107 probed)
+game                            ply    sf16    v9k_s v9k_mv  v7ref_s v7ref_mv    dA-B
+round-64-vs-snake                 9       0      -13   d1c2       -1   e3e4     -12  MV!
+round-64-vs-snake                23      20       -2   e3e4       14   e3e4     -16
+round-64-vs-snake                51    -170       10   a3b2        9   c3c4       1  MV!
+round-64-vs-snake                63     165      115   f4e2      115   f4e2       0
+round-64-vs-snake                69      70       50   g3e2       89   g3e2     -39
+round-64-vs-snake                83    -279        7   c2c1       30   c2c1     -23
+round-64-vs-snake               129       0      -10   g6g7       -8   g6g5      -2  MV!
+round-64-vs-snake               181    -192     -111   f4f5     -100   h4h5     -11  MV!
+round-64-vs-snake               183    -617     -124   g8d8     -140   g8d8      16
+round-64-vs-snake               187   -1092     -921   h3h2     -921   h3h2       0
+round-64-vs-snake               189   -1064     -659   h6h7     -662   h6h7       3
+round-64-vs-snake               193   -7671        0   h1h2        0   h1h2       0
+round-64-vs-snake               195    -994     -697   g2g4     -703   g2g4       6
+round-64-vs-snake               197   -7504     -815   g1f1     -809   g1f2      -6  MV!
+round-64-vs-snake               207   -6486    -1102   e6e7    -1102   e6e7       0
+round-68-vs-rook-and-roll        13      54       30   g6c2       37   a2c2      -7  MV!
+round-68-vs-rook-and-roll        15       0       94   a2a1       85   a2a1       9
+round-68-vs-rook-and-roll        29    -460      -69   c7d6      -18   c7d6     -51
+round-68-vs-rook-and-roll        33    -822     -217   a1f6     -225   a1f6       8
+round-68-vs-rook-and-roll        39    -995     -762   e4f4     -771   e4f4       9
+round-68-vs-rook-and-roll        41   -1276     -800   g6f5     -790   g6f5     -10
+round-68-vs-rook-and-roll        43   -1734     -676   f4e5     -594   f4e5     -82
+round-70-vs-kingsguard           12     -71      -17   c6e5       -8   c6b4      -9  MV!
+round-70-vs-kingsguard           42    -560     -256   a8g8     -241   a8g8     -15
+round-70-vs-kingsguard           46    -758     -243   c7a7     -239   c7b7      -4  MV!
+round-70-vs-kingsguard           48   -1713     -655   h4g5     -734   h4g5      79
+round-70-vs-kingsguard           50   -1271     -802   f7f6     -777   f7f6     -25
+round-71-vs-magnus               10     132       53   f3g3       53   f3g3       0
+round-71-vs-magnus               18     467       73   c3d5       68   c3d5       5
+round-71-vs-magnus               38     724      470   f8g7      465   f8g7       5
+round-71-vs-magnus               68    1640      980   g2h3     1045   g2h3     -65
+round-73-vs-skylab               53    1983     1291   c2d3     1226   c2d3      65
+round-73-vs-skylab               57    2513     1309   e6d5     1320   e6d5     -11
+round-74-vs-rohan                12      18      116   e1g1      129   e1g1     -13
+round-74-vs-rohan                24       7      105   f3e5      123   c3a5     -18  MV!
+round-74-vs-rohan                34    -118      105   c2b1      118   c2b1     -13
+round-74-vs-rohan                36     -37      344   d2c2      320   d2c2      24
+round-74-vs-rohan                38    -301      217   c2c4      232   c2c4     -15
+round-74-vs-rohan                54     593      471   b4f4      487   b4f4     -16
+round-74-vs-rohan                62      68      439   e2e5      450   f3g3     -11  MV!
+round-74-vs-rohan                66    -598     -158   a6a5     -145   a6a5     -13
+round-74-vs-rohan                70    -427     -132   b1g6     -130   b1g6      -2
+round-74-vs-rohan                98   -1243     -972   f5d3    -1012   b4b5      40  MV!
+round-74-vs-rohan               112   -6921    -1319   b6b5    -1305   b6b5     -14
+round-75-vs-prophylaxis          46     362       69   g7h6       80   g7h6     -11
+round-75-vs-prophylaxis          86    7964      960   d5b7      901   d5a8      59  MV!
+round-76-vs-mcai                 32      56      -61   e1e4      -71   b2c3      10  MV!
+round-76-vs-mcai                 34    -455     -205   b2c3     -220   b2c3      15
+round-76-vs-mcai                 46    -780     -249   e4d2     -248   e4d2      -1
+round-76-vs-mcai                 48   -1087     -405   e4d2     -418   e4d2      13
+round-76-vs-mcai                 50    -958     -418   e3e8     -423   b2b3       5  MV!
+round-76-vs-mcai                 76   -1054     -537   f1e1     -467   f1e1     -70
+round-76-vs-mcai                 96   -1012     -845   d3c4     -821   d3c4     -24
+round-76-vs-mcai                122    -959     -481   a8h8     -481   a8h8       0
+round-76-vs-mcai                134   -1077     -969   d4c4     -961   d4c4      -8
+round-76-vs-mcai                144   -1823    -1331   e4f4    -1344   g1h1      13  MV!
+round-77-vs-frisky               17     394       55   a7a6       55   a7a6       0
+round-77-vs-frisky               35     571      261   h3e6      255   d6e5       6  MV!
+round-77-vs-frisky               41     282      237   c4b2      226   c4b2      11
+round-80-vs-gmmmmm                7     -66      -90   g4f3      -90   g4f3       0
+round-80-vs-gmmmmm               11     -60     -118   c5a6     -143   c5a6      25
+round-80-vs-gmmmmm               21      56      -90   d8f6      -74   a7a6     -16  MV!
+round-81-vs-magnus-carlson       38     882      547   c3f6      536   c3f6      11
+round-82-vs-team7347             32    -172      -21   e1g1      -46   e1f2      25  MV!
+round-82-vs-team7347             40    -168       51   e3e4       47   e3e4       4
+round-82-vs-team7347             48      32       90   h1h4      103   h1h4     -13
+round-82-vs-team7347             62       0       45   b6c5       56   b6a6     -11  MV!
+round-83-vs-404-not-found        21     -51      -37   e8g8      -44   e8g8       7
+round-83-vs-404-not-found        29     -54      -70   e8g8      -60   e8c8     -10  MV!
+round-83-vs-404-not-found        31    -174      -70   f6g5      -60   f6g5     -10
+round-83-vs-404-not-found        35     -53      -58   a7a6      -40   a7a6     -18
+round-83-vs-404-not-found        39     -43      -54   a6c4      -43   a6c4     -11
+round-83-vs-404-not-found        41     -44      -53   a6c4      -53   c8b8       0  MV!
+round-83-vs-404-not-found        75    -124      -72   f8h8      -65   f8h8      -7
+round-83-vs-404-not-found       109    -740     -491   d8g8     -451   d8g8     -40
+round-83-vs-404-not-found       115   -1386     -598   a7a8     -606   a7a8       8
+round-83-vs-404-not-found       117    -988     -643   a8a7     -646   a8a7       3
+round-83-vs-404-not-found       121   -1879     -755   f8e8     -746   f8g8      -9  MV!
+round-90-vs-chessbuster-9000     29     189       25   c3c1       17   c3c1       8
+round-90-vs-chessbuster-9000     59     262       -8   a7a5       -8   a7a5       0
+round-90-vs-chessbuster-9000     63      22      -26   e6d8      -26   e6d8       0
+round-90-vs-chessbuster-9000     69    -710     -185   h3g2     -154   h3h4     -31  MV!
+round-90-vs-chessbuster-9000     81   -1366     -741   f1g1    -1309   f1g1     568
+round-91-vs-epoch-mate           86    1322      965   g5g4      835   a3a2     130  MV!
+round-92-vs-team-i-love-fortni   54       0       97   d4e3      107   d4e3     -10
+round-92-vs-team-i-love-fortni   56    -180       48   d5b3       68   d5b3     -20
+round-92-vs-team-i-love-fortni   58    -193       64   g3h2       87   b4b5     -23  MV!
+round-92-vs-team-i-love-fortni   62    -644     -146   g4e3     -124   g4e3     -22
+round-92-vs-team-i-love-fortni   64   -1043     -251   b3d5     -223   b3d5     -28
+round-92-vs-team-i-love-fortni   66   -1498     -696   d4e3     -793   d4e3      97
+round-93-vs-brokefish            24     490       69   c1c4       70   c1c4      -1
+round-93-vs-brokefish            28     725      178   c4c5      167   c4c5      11
+round-93-vs-brokefish            30     565      186   c1c2      186   c1c2       0
+round-93-vs-brokefish            32     301      186   d2g5      186   d2g5       0
+round-93-vs-brokefish            82     561      187   b7b8      193   b7b8      -6
+round-93-vs-brokefish            86     645      119   c6b4      125   c6b4      -6
+round-94-vs-tal                  38    1339      822   h2g1      834   h2g1     -12
+round-94-vs-tal                  42    1221      939   e6e5      919   g8f8      20  MV!
+round-96-vs-bongcloud            31     -24     -127   e7e5     -125   e7e5      -2
+round-96-vs-bongcloud            33     -71     -125   e5e4     -123   f7e6      -2  MV!
+round-96-vs-bongcloud            65    -341     -149   b7a6     -121   b7a6     -28
+round-96-vs-bongcloud            83    -832     -253   e6f7     -218   e6f7     -35
+round-96-vs-bongcloud            85    -870     -156   g4g5     -167   g4g5      11
+round-96-vs-bongcloud            87   -1117     -236   f7e6     -232   f7e6      -4
+round-96-vs-bongcloud            89   -4627     -205   e6d5     -193   e6d5     -12
+round-96-vs-bongcloud            91   -1849     -244   d5e6     -546   d5e6     302
+round-96-vs-bongcloud            93   -6110     -581   e6f5     -470   e6d6    -111  MV!
+
+rows compared        : 107
+mean score delta A-B : +4.8 cp
+median score delta   : -2.0 cp
+moves changed        : 28
+A >=300cp WORSE rows : 0
+A >=300cp better rows: 2
+   ('round-90-vs-chessbuster-9000', 81) sf16=-1366 B=-1309 A=-741
+   ('round-96-vs-bongcloud', 91) sf16=-1849 B=-546 A=-244
+mean |score-SF16|    : A=713 cp B=711 cp (n=107 cp-scale rows)
+median |score-SF16|  : A=297 cp B=302 cp

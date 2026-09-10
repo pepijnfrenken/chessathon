@@ -1,0 +1,7 @@
+=== gate_parallel tag=v9k_par ===
+seeds [7, 11, 13] | games/gate 24 @ 500ms | wall 1729s
+  seed    7: 10W-8L-6D (0.542) rc=0 1729s
+  seed   11: 8W-13L-3D (0.396) rc=0 1523s
+  seed   13: 12W-9L-3D (0.562) rc=0 1641s
+POOLED: 30W-30L-12D over 72 games -> 0.500 (normal-approx 95% CI +-0.115)
+band: NEUTRAL (0.45-0.55)   [bands as calibrated solo; pooled N tightens them, it does not shift them]

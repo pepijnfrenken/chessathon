@@ -1,0 +1,81 @@
+q5-v9k BATTERY + GATES — king-PST orientation flip (on top of the dpfix)
+========================================================================
+tree   : repo HEAD (king flip + dpfix), patch committed 416833d
+control: /tmp/chessathon-v7ref  (= git archive dbf8958, the live v7 build)
+dates  : 2026-09-10 14:03-15:25Z, one engine workload at a time.
+
+BATTERY (all green)
+  perft ................ results/v9k_perft.log          ALL PASS
+  decompose parity ..... results/v9k_decompose.log      135/135 exact
+                         (recon == jitted, both colours, taper + mate-drive
+                          + tempo + forced_zero; the king term moving DOES
+                          change decomposed rows and parity still holds)
+  determinism .......... results/v9k_det.log            232561 nodes /
+                         best=47988 / score=-40, 2 procs x 2 runs with a
+                         fresh NUMBA_CACHE_DIR each — all four identical
+                         (node count and score differ from v8dp's 228055 /
+                         -46, as expected: the king term moves)
+  eg_check @300ms ...... results/v9k_eg_check.log       7/8 (KPK-w DRAW)
+                         v7ref @300ms 7/8 (KPK-b DRAW) — the KPK cell is the
+                         100cp < 500cp-adjudication boundary cell and flips
+                         on BOTH builds (results/v8dp_eg_v7ref_300.log)
+  shuffle @500ms ....... results/v9k_shuffle.log        10/12, zero
+                         threefolds (both KPK cells draw)
+                         KPK boundary re-run x3 per build:
+                         results/v9k_kpk_boundary.log
+                           candidate: KPK-w W,D,D | KPK-b D,D,D
+                           v7ref    : KPK-w W,D,D | KPK-b D,W,W
+                         -> a variance boundary for both builds, no
+                            build-specific signal, and NO threefold drawn
+
+GATES (vs /tmp/chessathon-v7ref, gate_parallel.py, 24 games/gate @500ms)
+  dpfix alone  (v8dp)  : 0.417 / 0.562 single gates (same seed 7) — the
+                         NOISE PRECEDENT; pooled 3 seeds = 0.583 POSITIVE
+  king flip    (v9k)   : results/gate_v9k_par_summary.txt
+                           seed  7: 10W-8L-6D (0.542)
+                           seed 11:  8W-13L-3D (0.396)
+                           seed 13: 12W-9L-3D (0.562)
+                           POOLED  : 30W-30L-12D = 0.500, zero flags,
+                                     95% CI +-0.115, band NEUTRAL
+  External (orchestrator, other boxes — recorded here for context, not
+  re-derived): Modal v9k vs v8ref 0.542 / 0.516 (2 x 216g); real-clock
+  bout 0.500 (24g); v8ref vs v7ref 0.512 / 0.521; desktop 6-seed pool
+  pending. No instrument shows a regression.
+
+L2 CORPUS (107-row leak suite, sha fc285bb601e16e7e, 2.6s, keyed (game,ply))
+  results/v9k_leak_compare.log / _mate.log
+  fens.json : mean delta +4.8cp, median -2.0, 28 moves changed,
+              ZERO rows >=300cp worse, 2 better (r90 p81 -1309->-741,
+              r96 p91 -546->-244, both toward the SF referee)
+              mean |score-SF16| 713 vs 711 cp  (unchanged)
+  mate      : mean +17.1cp, 4 moves changed, 0 worse, 1 better
+              mean |score-SF16| 27511 vs 27519 cp (unchanged)
+
+r92 TUNNEL — measured, with a CORRECTION to the handoff claim
+  (a) fresh-TT fixed-depth, per tree: results/v9k_r92_depth_probe.txt
+        v7ref m35: d5b3 at depths 7/8/9 (the game blunder), e5d3 at 6/10
+        v9k   m35: d5b3 ONLY at depth 7; e5d3 at depths 6/8/9/10
+        v7ref m36: b4b5 at 6/7; g3h2 at 8/9/10
+        v9k   m36: d4b2 at 6/7/9; g3h2 at 8/10
+      => the blunder's DEPTH WINDOW narrows from {7,8,9} to {7}: a real
+         improvement, not elimination.
+  (b) committed warm-TT budget tool: results/v9k_r92_probe.txt
+        m35 exact-budget pick = d5b3 (still SAME-as-game)
+        m36 exact-budget pick = d4b2 (CHANGED from the game's b4b5)
+        static m35 103->70, m36 102->68 (exactly the pre-registered
+        per-term prediction); black still finds e7g5 refutation @~1.08s
+      => "the r92 blunder is GONE" overstates it. What the evidence shows:
+         narrower depth window + one of the two sites changed + the
+         eval-level incentive corrected.
+  Cost note: v9k's depth-8 tree at m35 is 1.51M nodes vs v7ref's 0.92M
+  (+63%), so under the ~1.94s venue budget depth 8 is LESS likely to
+  complete — and depth 7 is precisely the one depth where v9k still
+  blunders. The tunnel is budget-hazardous, not fixed.
+
+ZIP (staged, NOT uploaded)
+  /tmp/night-candidates/chess-v9k.zip
+  make_zip.sh from repo HEAD 416833d -> 34,699 bytes
+  sha256 dd5a9652cc6f6441857218181660338216acdeca448c7f6394aece6b0a826416
+  unzip to temp + cmp: ALL 7 shipped files byte-identical to the tree
+  contents: agent.py + engine/{__init__,board,eval,search,time,tt}.py
+  init import+JIT 46.2s, first move 4.48s (total 50.7s < 60s), move e2e3 legal

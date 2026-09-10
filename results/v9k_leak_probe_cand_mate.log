@@ -1,0 +1,25 @@
+# tag=v9k root=/home/pino/projects/chessathon corpus=results/leak_suite/mate_stratum.json sha256=793db1466a2b2da4 rows=24 budget_s=2.6
+v9k round-64-vs-snake ply=201 vloss=400 nodes=1907712 score=-971 depth=13 best=g2g3
+v9k round-68-vs-rook-and-roll ply=35 vloss=400 nodes=0 score=0 depth=0 best=d6e5
+v9k round-68-vs-rook-and-roll ply=65 vloss=300 nodes=1420288 score=-1383 depth=8 best=h7h5
+v9k round-71-vs-magnus ply=72 vloss=27264 nodes=1516544 score=1091 depth=10 best=b5a6
+v9k round-72-vs-stocked-fish ply=69 vloss=26871 nodes=1942528 score=1062 depth=12 best=e5f5
+v9k round-72-vs-stocked-fish ply=73 vloss=500 nodes=1996800 score=1242 depth=13 best=g7g5
+v9k round-72-vs-stocked-fish ply=75 vloss=27240 nodes=1981440 score=1241 depth=13 best=g7g5
+v9k round-72-vs-stocked-fish ply=77 vloss=18836 nodes=2014208 score=1264 depth=13 best=g7g5
+v9k round-72-vs-stocked-fish ply=79 vloss=27041 nodes=2180096 score=1259 depth=13 best=g7g5
+v9k round-73-vs-skylab ply=51 vloss=27382 nodes=1235968 score=1613 depth=9 best=c2c3
+v9k round-73-vs-skylab ply=61 vloss=200 nodes=1525760 score=1485 depth=9 best=e4h4
+v9k round-76-vs-mcai ply=148 vloss=200 nodes=1614848 score=-1344 depth=11 best=g1h1
+v9k round-77-vs-frisky ply=59 vloss=26945 nodes=1117184 score=1022 depth=7 best=g6g5
+v9k round-77-vs-frisky ply=61 vloss=200 nodes=393511 score=29991 depth=7 best=d3f4
+v9k round-78-vs-stockfish ply=75 vloss=300 nodes=1744896 score=1331 depth=11 best=e7d7
+v9k round-80-vs-gmmmmm ply=45 vloss=500 nodes=1378304 score=1675 depth=8 best=g5g2
+v9k round-81-vs-magnus-carlson ply=82 vloss=200 nodes=1895424 score=2311 depth=13 best=a6a7
+v9k round-83-vs-404-not-found ply=125 vloss=200 nodes=1717248 score=-1284 depth=12 best=e8c8
+v9k round-83-vs-404-not-found ply=127 vloss=200 nodes=1770496 score=-1734 depth=12 best=c8e8
+v9k round-83-vs-404-not-found ply=137 vloss=200 nodes=122268 score=-29988 depth=8 best=b5b4
+v9k round-92-vs-team-i-love-fortnite ply=76 vloss=300 nodes=1290240 score=-1152 depth=9 best=f5f4
+v9k round-93-vs-brokefish ply=112 vloss=26812 nodes=1997824 score=1301 depth=15 best=e5e6
+v9k round-94-vs-tal ply=36 vloss=28044 nodes=1357824 score=808 depth=8 best=g8g7
+v9k round-95-vs-subzero ply=86 vloss=600 nodes=121071 score=29989 depth=9 best=c2b2

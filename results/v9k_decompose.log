@@ -1,0 +1,138 @@
+OK  fens/round-64-vs-snake/p9                      mg=    -42 eg=     15 ph=24 drive=   0 recon=    -32 jitted=    -32
+OK  fens/round-64-vs-snake/p23                     mg=    -30 eg=     25 ph=24 drive=   0 recon=    -20 jitted=    -20
+OK  fens/round-64-vs-snake/p51                     mg=     82 eg=    108 ph=17 drive=   0 recon=     99 jitted=     99
+OK  fens/round-64-vs-snake/p63                     mg=    -15 eg=    -48 ph=17 drive=   0 recon=    -15 jitted=    -15
+OK  fens/round-64-vs-snake/p69                     mg=     55 eg=     15 ph=17 drive=   0 recon=     53 jitted=     53
+OK  fens/round-64-vs-snake/p83                     mg=    -99 eg=   -149 ph=14 drive=   0 recon=   -110 jitted=   -110
+OK  fens/round-64-vs-snake/p129                    mg=    -47 eg=    -38 ph=10 drive=   0 recon=    -32 jitted=    -32
+OK  fens/round-64-vs-snake/p181                    mg=    -24 eg=    -14 ph=10 drive=   0 recon=     -9 jitted=     -9
+OK  fens/round-64-vs-snake/p183                    mg=   -133 eg=   -142 ph=10 drive=   0 recon=   -129 jitted=   -129
+OK  fens/round-64-vs-snake/p187                    mg=   -121 eg=   -110 ph= 2 drive=   0 recon=   -101 jitted=   -101
+OK  fens/round-64-vs-snake/p189                    mg=   -154 eg=   -199 ph= 2 drive=   0 recon=   -186 jitted=   -186
+OK  fens/round-64-vs-snake/p193                    mg=   -263 eg=   -244 ph= 4 drive= -50 recon=   -288 jitted=   -288
+OK  fens/round-64-vs-snake/p195                    mg=   -277 eg=   -230 ph= 4 drive= -50 recon=   -278 jitted=   -278
+OK  fens/round-64-vs-snake/p197                    mg=   -246 eg=   -227 ph= 4 drive=-100 recon=   -321 jitted=   -321
+OK  fens/round-64-vs-snake/p207                    mg=   -669 eg=   -664 ph= 4 drive=-200 recon=   -855 jitted=   -855
+OK  fens/round-68-vs-rook-and-roll/p13             mg=     54 eg=     -7 ph=22 drive=   0 recon=    -58 jitted=    -58
+OK  fens/round-68-vs-rook-and-roll/p15             mg=    -68 eg=   -129 ph=22 drive=   0 recon=     64 jitted=     64
+OK  fens/round-68-vs-rook-and-roll/p29             mg=     24 eg=    -73 ph=17 drive=   0 recon=     -5 jitted=     -5
+OK  fens/round-68-vs-rook-and-roll/p33             mg=     -6 eg=   -147 ph=17 drive=   0 recon=     38 jitted=     38
+OK  fens/round-68-vs-rook-and-roll/p39             mg=    110 eg=    -83 ph=17 drive=   0 recon=    -63 jitted=    -63
+OK  fens/round-68-vs-rook-and-roll/p41             mg=    121 eg=    -40 ph=17 drive=   0 recon=    -84 jitted=    -84
+OK  fens/round-68-vs-rook-and-roll/p43             mg=     92 eg=    -63 ph=17 drive=   0 recon=    -56 jitted=    -56
+OK  fens/round-70-vs-kingsguard/p12                mg=    -43 eg=    -50 ph=22 drive=   0 recon=     34 jitted=     34
+OK  fens/round-70-vs-kingsguard/p42                mg=    270 eg=    194 ph=11 drive=   0 recon=   -238 jitted=   -238
+OK  fens/round-70-vs-kingsguard/p46                mg=    227 eg=    131 ph=11 drive=   0 recon=   -185 jitted=   -185
+OK  fens/round-70-vs-kingsguard/p48                mg=    247 eg=    141 ph=11 drive=   0 recon=   -199 jitted=   -199
+OK  fens/round-70-vs-kingsguard/p50                mg=    220 eg=    115 ph=11 drive=   0 recon=   -173 jitted=   -173
+OK  fens/round-71-vs-magnus/p10                    mg=    122 eg=     81 ph=22 drive=   0 recon=    128 jitted=    128
+OK  fens/round-71-vs-magnus/p18                    mg=     58 eg=     -3 ph=22 drive=   0 recon=     62 jitted=     62
+OK  fens/round-71-vs-magnus/p38                    mg=    409 eg=    313 ph=11 drive=   0 recon=    367 jitted=    367
+OK  fens/round-71-vs-magnus/p68                    mg=    467 eg=    588 ph= 5 drive= 200 recon=    772 jitted=    772
+OK  fens/round-73-vs-skylab/p53                    mg=   -540 eg=   -505 ph=13 drive=   0 recon=    514 jitted=    514
+OK  fens/round-73-vs-skylab/p57                    mg=   -184 eg=   -150 ph=12 drive=   0 recon=    157 jitted=    157
+OK  fens/round-74-vs-rohan/p12                     mg=    131 eg=    207 ph=24 drive=   0 recon=    141 jitted=    141
+OK  fens/round-74-vs-rohan/p24                     mg=     94 eg=    165 ph=22 drive=   0 recon=    109 jitted=    109
+OK  fens/round-74-vs-rohan/p34                     mg=    129 eg=    187 ph=20 drive=   0 recon=    148 jitted=    148
+OK  fens/round-74-vs-rohan/p36                     mg=     85 eg=    155 ph=20 drive=   0 recon=    106 jitted=    106
+OK  fens/round-74-vs-rohan/p38                     mg=     82 eg=    160 ph=20 drive=   0 recon=    105 jitted=    105
+OK  fens/round-74-vs-rohan/p54                     mg=    285 eg=    419 ph=13 drive= 100 recon=    456 jitted=    456
+OK  fens/round-74-vs-rohan/p62                     mg=    285 eg=    377 ph=13 drive= 150 recon=    487 jitted=    487
+OK  fens/round-74-vs-rohan/p66                     mg=    238 eg=    330 ph=13 drive= 150 recon=    440 jitted=    440
+OK  fens/round-74-vs-rohan/p70                     mg=    260 eg=    352 ph=13 drive= 150 recon=    462 jitted=    462
+OK  fens/round-74-vs-rohan/p98                     mg=   -586 eg=   -553 ph= 5 drive=-100 recon=   -650 jitted=   -650
+OK  fens/round-74-vs-rohan/p112                    mg=   -948 eg=   -833 ph= 4 drive= -50 recon=   -893 jitted=   -893
+OK  fens/round-75-vs-prophylaxis/p46               mg=      3 eg=      0 ph=12 drive=   0 recon=     11 jitted=     11
+OK  fens/round-75-vs-prophylaxis/p86               mg=    619 eg=    504 ph= 1 drive= 200 recon=    718 jitted=    718
+OK  fens/round-76-vs-mcai/p32                      mg=   -176 eg=   -204 ph=16 drive=   0 recon=   -176 jitted=   -176
+OK  fens/round-76-vs-mcai/p34                      mg=    -80 eg=   -144 ph=16 drive=   0 recon=    -92 jitted=    -92
+OK  fens/round-76-vs-mcai/p46                      mg=   -314 eg=   -333 ph=13 drive=   0 recon=   -313 jitted=   -313
+OK  fens/round-76-vs-mcai/p48                      mg=   -320 eg=   -336 ph=13 drive=   0 recon=   -318 jitted=   -318
+OK  fens/round-76-vs-mcai/p50                      mg=   -346 eg=   -365 ph=13 drive=   0 recon=   -345 jitted=   -345
+OK  fens/round-76-vs-mcai/p76                      mg=   -355 eg=   -377 ph= 9 drive= -50 recon=   -409 jitted=   -409
+OK  fens/round-76-vs-mcai/p96                      mg=   -428 eg=   -325 ph= 9 drive=-150 recon=   -504 jitted=   -504
+OK  fens/round-76-vs-mcai/p122                     mg=   -626 eg=   -569 ph= 9 drive=-250 recon=   -831 jitted=   -831
+OK  fens/round-76-vs-mcai/p134                     mg=   -208 eg=   -257 ph= 7 drive=   0 recon=   -233 jitted=   -233
+OK  fens/round-76-vs-mcai/p144                     mg=   -736 eg=   -768 ph= 6 drive=-200 recon=   -950 jitted=   -950
+OK  fens/round-77-vs-frisky/p17                    mg=     21 eg=     22 ph=22 drive=   0 recon=    -31 jitted=    -31
+OK  fens/round-77-vs-frisky/p35                    mg=   -404 eg=   -365 ph=21 drive=   0 recon=    390 jitted=    390
+OK  fens/round-77-vs-frisky/p41                    mg=   -276 eg=   -260 ph=16 drive=   0 recon=    261 jitted=    261
+OK  fens/round-80-vs-gmmmmm/p7                     mg=      9 eg=     10 ph=24 drive=   0 recon=    -19 jitted=    -19
+OK  fens/round-80-vs-gmmmmm/p11                    mg=     37 eg=     26 ph=24 drive=   0 recon=    -47 jitted=    -47
+OK  fens/round-80-vs-gmmmmm/p21                    mg=     71 eg=     71 ph=22 drive=   0 recon=    -81 jitted=    -81
+OK  fens/round-81-vs-magnus-carlson/p38            mg=    262 eg=    263 ph=18 drive=   0 recon=    272 jitted=    272
+OK  fens/round-82-vs-team7347/p32                  mg=      1 eg=    -17 ph=22 drive=   0 recon=      9 jitted=      9
+OK  fens/round-82-vs-team7347/p40                  mg=    -17 eg=    -25 ph=20 drive=   0 recon=     -9 jitted=     -9
+OK  fens/round-82-vs-team7347/p48                  mg=     22 eg=     38 ph=20 drive=   0 recon=     34 jitted=     34
+OK  fens/round-82-vs-team7347/p62                  mg=     73 eg=    108 ph=18 drive=   0 recon=     91 jitted=     91
+OK  fens/round-83-vs-404-not-found/p21             mg=     70 eg=      6 ph=18 drive=   0 recon=    -64 jitted=    -64
+OK  fens/round-83-vs-404-not-found/p29             mg=     84 eg=     18 ph=18 drive=   0 recon=    -77 jitted=    -77
+OK  fens/round-83-vs-404-not-found/p31             mg=     80 eg=     35 ph=18 drive=   0 recon=    -78 jitted=    -78
+OK  fens/round-83-vs-404-not-found/p35             mg=     33 eg=      8 ph=18 drive=   0 recon=    -36 jitted=    -36
+OK  fens/round-83-vs-404-not-found/p39             mg=     71 eg=     38 ph=18 drive=   0 recon=    -72 jitted=    -72
+OK  fens/round-83-vs-404-not-found/p41             mg=     54 eg=     23 ph=18 drive=   0 recon=    -56 jitted=    -56
+OK  fens/round-83-vs-404-not-found/p75             mg=     73 eg=     73 ph=18 drive=   0 recon=    -83 jitted=    -83
+OK  fens/round-83-vs-404-not-found/p109            mg=    237 eg=    246 ph= 9 drive=   0 recon=   -252 jitted=   -252
+OK  fens/round-83-vs-404-not-found/p115            mg=    185 eg=    256 ph= 5 drive=   0 recon=   -251 jitted=   -251
+OK  fens/round-83-vs-404-not-found/p117            mg=    175 eg=    283 ph= 5 drive=   0 recon=   -270 jitted=   -270
+OK  fens/round-83-vs-404-not-found/p121            mg=    201 eg=    301 ph= 5 drive=   0 recon=   -290 jitted=   -290
+OK  fens/round-90-vs-chessbuster-9000/p29          mg=    -42 eg=    -20 ph=12 drive=   0 recon=     21 jitted=     21
+OK  fens/round-90-vs-chessbuster-9000/p59          mg=     76 eg=     84 ph= 2 drive=   0 recon=    -93 jitted=    -93
+OK  fens/round-90-vs-chessbuster-9000/p63          mg=     13 eg=     47 ph= 2 drive=   0 recon=    -54 jitted=    -54
+OK  fens/round-90-vs-chessbuster-9000/p69          mg=    -22 eg=     52 ph= 2 drive=   0 recon=    -55 jitted=    -55
+OK  fens/round-90-vs-chessbuster-9000/p81          mg=    198 eg=    200 ph= 1 drive=   0 recon=   -209 jitted=   -209
+OK  fens/round-91-vs-epoch-mate/p86                mg=   -327 eg=   -508 ph= 4 drive=-250 recon=    718 jitted=    718
+OK  fens/round-92-vs-team-i-love-fortnite/p54      mg=     99 eg=    112 ph=16 drive=   0 recon=    113 jitted=    113
+OK  fens/round-92-vs-team-i-love-fortnite/p56      mg=     31 eg=    119 ph=16 drive=   0 recon=     70 jitted=     70
+OK  fens/round-92-vs-team-i-love-fortnite/p58      mg=     30 eg=    116 ph=16 drive=   0 recon=     68 jitted=     68
+OK  fens/round-92-vs-team-i-love-fortnite/p62      mg=     39 eg=    114 ph=16 drive=   0 recon=     74 jitted=     74
+OK  fens/round-92-vs-team-i-love-fortnite/p64      mg=     29 eg=    114 ph=16 drive=   0 recon=     67 jitted=     67
+OK  fens/round-92-vs-team-i-love-fortnite/p66      mg=   -332 eg=   -231 ph=15 drive=   0 recon=   -285 jitted=   -285
+OK  fens/round-93-vs-brokefish/p24                 mg=     38 eg=     12 ph=22 drive=   0 recon=     45 jitted=     45
+OK  fens/round-93-vs-brokefish/p28                 mg=     -7 eg=    -40 ph=22 drive=   0 recon=      0 jitted=      0
+OK  fens/round-93-vs-brokefish/p30                 mg=     18 eg=    -72 ph=20 drive=   0 recon=     13 jitted=     13
+OK  fens/round-93-vs-brokefish/p32                 mg=     31 eg=    -55 ph=20 drive=   0 recon=     26 jitted=     26
+OK  fens/round-93-vs-brokefish/p82                 mg=    150 eg=    226 ph= 6 drive=   0 recon=    217 jitted=    217
+OK  fens/round-93-vs-brokefish/p86                 mg=    148 eg=    219 ph= 6 drive=   0 recon=    211 jitted=    211
+OK  fens/round-94-vs-tal/p38                       mg=   -255 eg=   -222 ph=14 drive=   0 recon=    232 jitted=    232
+OK  fens/round-94-vs-tal/p42                       mg=   -795 eg=   -715 ph=12 drive=-100 recon=    845 jitted=    845
+OK  fens/round-96-vs-bongcloud/p31                 mg=    209 eg=    178 ph=11 drive=   0 recon=   -202 jitted=   -202
+OK  fens/round-96-vs-bongcloud/p33                 mg=    125 eg=    122 ph=11 drive=   0 recon=   -133 jitted=   -133
+OK  fens/round-96-vs-bongcloud/p65                 mg=    138 eg=     75 ph= 9 drive=   0 recon=   -108 jitted=   -108
+OK  fens/round-96-vs-bongcloud/p83                 mg=    147 eg=     71 ph= 9 drive=   0 recon=   -109 jitted=   -109
+OK  fens/round-96-vs-bongcloud/p85                 mg=    146 eg=    126 ph= 9 drive=   0 recon=   -143 jitted=   -143
+OK  fens/round-96-vs-bongcloud/p87                 mg=    139 eg=    122 ph= 9 drive=   0 recon=   -138 jitted=   -138
+OK  fens/round-96-vs-bongcloud/p89                 mg=    163 eg=     92 ph= 9 drive=   0 recon=   -128 jitted=   -128
+OK  fens/round-96-vs-bongcloud/p91                 mg=    212 eg=     95 ph= 9 drive=   0 recon=   -148 jitted=   -148
+OK  fens/round-96-vs-bongcloud/p93                 mg=    176 eg=    105 ph= 9 drive=   0 recon=   -141 jitted=   -141
+OK  mate_stratum/round-64-vs-snake/p201            mg=   -527 eg=   -514 ph= 4 drive=-150 recon=   -657 jitted=   -657
+OK  mate_stratum/round-68-vs-rook-and-roll/p35     mg=     23 eg=   -112 ph=17 drive=   0 recon=      7 jitted=      7
+OK  mate_stratum/round-68-vs-rook-and-roll/p65     mg=   1187 eg=   1117 ph=11 drive=  50 recon=  -1209 jitted=  -1209
+OK  mate_stratum/round-71-vs-magnus/p72            mg=    518 eg=    671 ph= 5 drive= 200 recon=    849 jitted=    849
+OK  mate_stratum/round-72-vs-stocked-fish/p69      mg=   -553 eg=   -644 ph= 1 drive=-200 recon=    831 jitted=    831
+OK  mate_stratum/round-72-vs-stocked-fish/p73      mg=   -611 eg=   -741 ph= 1 drive=-250 recon=    976 jitted=    976
+OK  mate_stratum/round-72-vs-stocked-fish/p75      mg=   -625 eg=   -763 ph= 1 drive=-250 recon=    998 jitted=    998
+OK  mate_stratum/round-72-vs-stocked-fish/p77      mg=   -615 eg=   -743 ph= 1 drive=-250 recon=    978 jitted=    978
+OK  mate_stratum/round-72-vs-stocked-fish/p79      mg=   -707 eg=   -827 ph= 1 drive=-250 recon=   1062 jitted=   1062
+OK  mate_stratum/round-73-vs-skylab/p51            mg=   -527 eg=   -473 ph=13 drive=   0 recon=    493 jitted=    493
+OK  mate_stratum/round-73-vs-skylab/p61            mg=  -1099 eg=  -1089 ph= 8 drive= -50 recon=   1133 jitted=   1133
+OK  mate_stratum/round-76-vs-mcai/p148             mg=   -741 eg=   -815 ph= 6 drive=-250 recon=  -1037 jitted=  -1037
+OK  mate_stratum/round-77-vs-frisky/p59            mg=   -298 eg=   -235 ph=14 drive=   0 recon=    262 jitted=    262
+OK  mate_stratum/round-77-vs-frisky/p61            mg=   -296 eg=   -240 ph=14 drive=   0 recon=    263 jitted=    263
+OK  mate_stratum/round-78-vs-stockfish/p75         mg=   -808 eg=   -805 ph= 2 drive=-250 recon=   1046 jitted=   1046
+OK  mate_stratum/round-80-vs-gmmmmm/p45            mg=   -851 eg=   -838 ph=15 drive=   0 recon=    837 jitted=    837
+OK  mate_stratum/round-81-vs-magnus-carlson/p82    mg=    515 eg=    681 ph= 0 drive= 250 recon=    941 jitted=    941
+OK  mate_stratum/round-83-vs-404-not-found/p125    mg=    346 eg=    491 ph= 5 drive= 100 recon=   -570 jitted=   -570
+OK  mate_stratum/round-83-vs-404-not-found/p127    mg=    322 eg=    479 ph= 5 drive= 100 recon=   -556 jitted=   -556
+OK  mate_stratum/round-83-vs-404-not-found/p137    mg=   1678 eg=   1679 ph= 7 drive= 200 recon=  -1888 jitted=  -1888
+OK  mate_stratum/round-92-vs-team-i-love-fortnit   mg=   -713 eg=   -560 ph=10 drive=-250 recon=   -864 jitted=   -864
+OK  mate_stratum/round-93-vs-brokefish/p112        mg=    263 eg=    394 ph= 0 drive= 150 recon=    554 jitted=    554
+OK  mate_stratum/round-94-vs-tal/p36               mg=   -264 eg=   -230 ph=14 drive=   0 recon=    240 jitted=    240
+OK  mate_stratum/round-95-vs-subzero/p86           mg=    539 eg=    543 ph= 2 drive= 250 recon=    802 jitted=    802
+OK  startpos                                       mg=      0 eg=      0 ph=24 drive=   0 recon=     10 jitted=     10
+OK  kiwipete                                       mg=    110 eg=     93 ph=24 drive=   0 recon=    120 jitted=    120
+OK  r83-p21                                        mg=     70 eg=      6 ph=18 drive=   0 recon=    -64 jitted=    -64
+OK  kq-vs-k                                        mg=    910 eg=    910 ph= 4 drive=   0 recon=    920 jitted=    920
+
+parity: 135/135 exact
+wrote results/v9k_decompose.json

@@ -1,0 +1,27 @@
+q5-v9k — KPK boundary re-runs (the only failing cell; boundary case: material diff 100cp < the 500cp adjudication threshold)
+date: 2026-09-10T14:30:03Z
+--- candidate KPK run 1
+KPK        strong-as-white ply= 61 WIN  streak= 0 no2x
+KPK        strong-as-black ply= 38 DRAW streak= 0 2x@[34]
+exit=1
+--- candidate KPK run 2
+KPK        strong-as-white ply= 34 DRAW streak= 0 no2x
+KPK        strong-as-black ply= 38 DRAW streak= 0 2x@[34]
+exit=1
+--- candidate KPK run 3
+KPK        strong-as-white ply= 37 DRAW streak= 0 no2x
+KPK        strong-as-black ply= 42 DRAW streak= 0 2x@[20]
+exit=1
+--- v7ref KPK x3
+--- v7ref KPK run 1
+KPK        strong-as-white ply= 43 WIN  streak= 0 no2x
+KPK        strong-as-black ply= 36 DRAW streak= 0 2x@[32]
+exit=1
+--- v7ref KPK run 2
+KPK        strong-as-white ply= 32 DRAW streak= 0 no2x
+KPK        strong-as-black ply= 41 WIN  streak= 0 no2x
+exit=1
+--- v7ref KPK run 3
+KPK        strong-as-white ply= 36 DRAW streak= 0 no2x
+KPK        strong-as-black ply= 43 WIN  streak= 0 no2x
+exit=1

@@ -912,3 +912,102 @@ carries much more value bundled with the king-PST flip, whose evidence
 (432 Modal games pooled 0.529 + the r92 tunnel probe + a real-clock bout at
 parity) is stronger and whose mechanism is measured. The staged zip is
 frozen and byte-verified either way; the upload decision is Pino's.
+
+### 16b. 2026-09-10 — q5-v9k: king-PST orientation flip (audit-6 C1), gated; zip staged
+
+**Defect (audit-6 §C1, verified there and re-verified here).** Every PST
+literal in `engine/eval.py` is authored **rank-8-first** (the classic
+`-30,-40,-40,-50` king centre row comes first) but the consumer indexes
+**rank-1-first** (`s = sq64(sq)`, black mirrors with `^56`). night2 flipped
+only the pawn tables — the source comment even said "king/rook orientation
+is a separate gated change", and it never happened. As read, the king MG
+table punished our own back rank (`e1/g1/c1 = -50/-40/-40`) and rewarded the
+enemy's (`e8/g8/c8 = 0/+30/+10`): an inverted castling incentive across all
+64 cells and both colours.
+
+**Fix — commit `416833d`, one line** (plus a comment):
+
+```python
+p[P_PST_MG + 5*64:P_PST_MG + 6*64] = _KING_MG.reshape(8, 8)[::-1].ravel()
+```
+
+Post-flip as consumed: rank 1 = `[20 30 10 0 0 10 30 20]` (g1 = +30 castled,
+c1 = +10), rank 8 = `[-30 -40 -40 -50 ...]` (enemy back rank punished),
+centralised e4 = −40 in the middlegame. **MG king only**: the
+king+rook+bishop variant measured 0.481 and was rejected; rook/bishop/queen
+and the EG king table are deliberately untouched.
+
+**Cell-exact proof — `results/v9k_cell_diff.txt`.** Dumping `E.EVAL_PARAMS`
+from this tree and from `/tmp/chessathon-v7ref` in separate processes
+(elementwise compare of the 813-vector) shows **exactly 64 differing cells,
+contiguous at 332..395** = `P_PST_MG+5*64 .. +6*64-1`, the king-MG block.
+Nothing else moved.
+
+**Battery — all green** (full detail `results/v9k_battery_summary.txt`):
+
+| gate | v9k | control v7ref | verdict |
+|---|---|---|---|
+| perft | ALL PASS | — | board untouched |
+| decompose parity | **135/135 exact** | — | the king term moves decomposed rows; parity still holds |
+| determinism (d8, 2×2 fresh caches) | 232561 / best 47988 / −40, all four identical | — | same-build identity holds |
+| eg_check @300ms | 7/8 (KPK-w draw) | 7/8 (KPK-b draw) | KPK boundary cell flips on both builds |
+| shuffle @500ms | 10/12, **zero threefolds** | 11/12, zero threefolds | both fail cells are KPK |
+| KPK boundary ×3 per build | W,D,D / D,D,D | W,D,D / D,W,W | variance boundary, **no** build signal, no threefold drawn |
+
+**Gates — pooled multi-seed is the instrument** (`results/
+gate_v9k_par_summary.txt`, 24 games/gate @500ms vs v7ref, zero flags):
+
+| seed | score | W-L-D |
+|---|---|---|
+| 7 | 0.542 | 10-8-6 |
+| 11 | 0.396 | 8-13-3 |
+| 13 | 0.562 | 12-9-3 |
+| **POOLED 72** | **0.500** | **30-30-12**, CI +-0.115, band NEUTRAL |
+
+Context from other boxes (recorded, not re-derived here): Modal v9k vs v8ref
+0.542/0.516 (2×216g), real-clock ladder-format bout 0.500 (24g), v8ref vs
+v7ref 0.512/0.521, desktop 6-seed pool pending. **No instrument shows a
+regression**; the dpfix alone pooled 0.583.
+
+**L2 corpus (107 rows, sha `fc285bb601e16e7e`, 2.6s, keyed `(game,ply)`).**
+fens.json: mean delta **+4.8 cp**, median −2.0, **28 moves changed**,
+**0 rows >=300cp worse**, 2 better (r90 p81 −1309→−741; r96 p91 −546→−244 —
+both toward the SF referee). Mean |score − SF16| 713 vs 711 cp — unchanged.
+Mate stratum: mean +17.1, 4 moves changed, 0 worse, 1 better. Non-regressive.
+
+**r92 tunnel — measured, and the handoff claim needs correcting.** The
+fresh-TT fixed-depth probe (`tools/probe_r92_depth.py`, new; the committed
+`probe_r92_collapse.py` sweep reuses one warm TT and is the artifact audit-6
+§B1 flagged) gives the real picture at m35:
+
+- **v7ref**: `d5b3` (the game blunder) at depths **7, 8, 9**; `e5d3` at 6, 10.
+- **v9k**: `d5b3` **only at depth 7**; `e5d3` at depths 6, 8, 9, 10.
+
+So the blunder's **depth window narrows from {7,8,9} to {7}** — a real
+improvement, **not elimination**. And the committed budget tool still picks
+`d5b3` at m35 on this box at the exact game budget (m36 *did* change, to
+`d4b2`, and the static values moved exactly as predicted: m35 103→70, m36
+102→68). The hazard is concrete: v9k's depth-8 tree at m35 is **1.51M nodes
+vs v7ref's 0.92M (+63%)**, so under the ~1.94s venue budget depth 8 is
+*less* likely to complete — and depth 7 is precisely the one depth where v9k
+still blunders. **Verdict: the tunnel is narrowed and budget-hazardous, not
+killed.** Any claim that the r92 collapse is "gone" overstates the evidence.
+
+**Zip staged, NOT uploaded — `/tmp/night-candidates/chess-v9k.zip`.**
+`make_zip.sh` from repo HEAD `416833d` -> 34,699 bytes, **sha256
+`dd5a9652cc6f6441857218181660338216acdeca448c7f6394aece6b0a826416`**; unzip
+to a temp dir + `cmp` shows **all 7 shipped files byte-identical**
+(`agent.py` + `engine/*.py`); init 46.2s import+JIT, first move 4.48s
+(total 50.7s < 60s budget), first move legal.
+
+**Ship recommendation: v9k is the ship candidate — HOLD the dpfix-only zip
+as superseded, and put v9k forward.** Reasoning: it is the same one-line
+*correctness* class as the dpfix (a table read the wrong way round, not a
+new term), it carries strictly more evidence than the dpfix alone (432
+Modal games 0.529 pooled, 72 VPS games 0.500, a real-clock bout at parity,
+the narrowed tunnel, the corpus moving toward the referee), and its battery
+is fully green. The honest caveat, stated in the record: **no gate anywhere
+has measured a *significant* gain** — all instruments sit inside their
+intervals of 0.50 — so this ships as a *correctness* improvement with a
+non-negative strength signal, and the r92 tunnel remains a live hazard at
+depth 7. Upload decision is Pino's; both zips are frozen and byte-verified.
