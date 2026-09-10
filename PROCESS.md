@@ -1236,3 +1236,186 @@ than v9k's own. No instrument shows a strength *gain* — this uploads as
 robustness+correctness, expectation small-positive via the removed loss
 class. Fallback (hold v9k) is defensible; c345-only is superseded by this.
 Upload action = Pino's (dashboard).
+
+## 18. 2026-09-10 — FINAL CORRECTIONS ROUND: C3 + C4 + C5, each gated; combined stack staged
+
+Brief `docs/agentic-process/briefs/chessathon-q5-final-corrections.md`.
+Candidates build on **HEAD = v9k**; gate baseline is the **`v9k-shipped`
+tag** (`/tmp/chessathon-v9k-base`), NOT v7ref. One focused commit per fix,
+battery per candidate, then an L1 gate per candidate, then the combined
+stack. Three correctness fixes, all from audit-6.
+
+### C3 — mate-vs-fifty-move rule inversion — commit `0080400`
+
+**Defect.** `_draw_score` runs at node entry, i.e. BEFORE move generation,
+so at `halfmove >= 100` it declared a draw on a position that is literally
+checkmate — and on a mating move that LANDS on the 100th halfmove. Measured
+pre-fix: `7k/6Q1/5K2/8/8/8/8/8 b - - 100 1` → 0, correct −29999.
+**Fix.** When `halfmove >= 100`, test for a deliverable mate
+(`in_check(st) and legal_moves(...) == 0`) before declaring the draw.
+Checkmate ends the game; the fifty-move rule is a claim that (FIDE 9.6.2)
+never overrides a mate on the board. Stalemate at hm ≥ 100 stays 0 — both
+rules agree there, so no second test. `_draw_score` takes `scratch` (both
+call sites already hold it); the test runs only on the rare hm ≥ 100 node.
+**Probe** (`tools/probe_c3_mate_fifty.py`, 7 cases, semantics verified
+against python-chess first): **3 failures → 0**. Two checkmates at hm 100
+and the hm-100 mate-in-one corrected; both stalemate controls and the
+bare-kings draw unchanged (no over-correction). `results/c3_mate_fifty_demo.txt`.
+**Battery:** perft ALL PASS · det d8 ×2 procs ×2 runs fresh caches →
+232561 / best 47988 / −40 all four identical · eg 6/8 @300ms (both KPK
+drawn; v9k's record 7/8) · shuffle 11/12, zero threefolds.
+**L1:** **0.479, 10W-11L-3D**, zero flags → NEUTRAL.
+
+### C4 — TT fifty-move context — commit `7764801`
+
+**Defect.** A TT entry carried no fifty-move context, so a WARM entry
+overrode a fifty-move draw the COLD search sees: `7k/8/8/8/8/8/8/KR6 w - -
+99 1` reads 0 cold, then 592 after the identical PLACEMENT is searched at
+halfmove 0 in the same process.
+**Fix.** The entry's spare bits now carry the halfmove the entry was
+computed at — `[move:20][score+32000:16][depth:8][bound:2][halfmove:7]` =
+53 of 64 bits. `tt_probe` returns it, `tt_store` records it. `search`
+reuses a probed score only when the counters match exactly OR both are
+below `TT_HM_SAFE = 100 − MAX_PLY`: the search's ply is hard-bounded by
+`MAX_PLY`, so from a node at halfmove h the deepest reachable node is
+`h + MAX_PLY < 100` whenever `h < TT_HM_SAFE`, and the fifty-move rule
+cannot fire anywhere in that subtree — the score is the pure positional
+value at that depth and is reusable regardless of h. Warm-TT reuse is
+therefore retained for nearly all real nodes while the rule is made sound.
+**Probe** (`tools/probe_c4_tt_halfmove.py`: A cold / B warm-same / C
+warm-after-hm0, two positions): **2 mismatches → 0**; B unchanged, so
+genuine reuse is intact. `results/c4_tt_halfmove_demo.txt`.
+**Battery:** perft ALL PASS · det identical (232561 / 47988 / −40 — and
+*expected* to match v9k, because that position sits at halfmove 4, far
+below `TT_HM_SAFE`, where the fix deliberately keeps reuse unconditional)
+· eg 7/8 @300ms, **exactly v9k's record** · shuffle 10/12, zero threefolds,
+the same KPK cells v9k failed.
+**L1:** **0.521, 11W-10L-3D**, zero flags → NEUTRAL. (Tree carried the
+already-committed C3, so this reads the C3+C4 pair vs v9k-shipped.)
+
+### C5 — EP canonicalisation unification — commit `3afe603`
+
+**Defect.** `parse_fen` and `make_move_apply` disagreed on when the ep
+square exists AND is capturable. `make_move_apply` was pin-BLIND (an enemy
+pawn merely standing beside the pushed pawn created the square);
+`parse_fen` kept whatever the FEN declared, untested. So the same board
+reached by play and by FEN got two different zobrist keys — the audit's
+exact pair `9490302469568603911` vs `3009738484286385424` — breaking
+repetition identity and causing a class of TT misses. python-chess, the
+legality oracle this project validates against, keeps an ep square only
+while `has_legal_en_passant()` holds.
+**Fix.** `engine/board.py` gains `ep_capturable(st, ep_sq, side)` — the
+single source of truth for "the ep square exists and the capture is legal".
+Both callers use it: `make_move_apply` after a double push (capturing side
+= the side to move once the push completes), and `parse_fen`, which now
+drops a declared-but-illegal ep square. King squares are located before the
+canonicalisation because the helper needs them.
+**Probe** (`tools/probe_c5_ep_canonical.py`, 8 checks / 3 families vs
+python-chess): **5 failures → 0** — the pin case, the repetition cycle, the
+raw-FEN case; and no over-correction (an unpinned double push keeps its ep
+square, its key still matches canonical, `d4xe3 e.p.` is still generated).
+Committed P7 probe `tools/probe_ep_key.py` also PASS (4 EP cases + 38-move
+control). `results/c5_ep_canonical_demo.txt`.
+**Battery:** perft ALL PASS · det identical · eg **8/8** @300ms (the first
+clean sweep of the round) · shuffle 10/12, zero threefolds.
+**L1:** **0.542, 10W-8L-6D**, zero flags → NEUTRAL (top of band).
+
+### The contamination event — found, proved inert, and re-run clean
+
+**What happened.** While I was editing `engine/search.py` for C4/C5, the
+orchestrator landed its own **q5-tm1** time-policy candidate in the shared
+repo: `3a52a78` (17:22Z, time.py floor + `search_root` flip guard) and
+`85106bc` (17:25Z, tail gate). My C5 battery (17:41) and C5 gate (18:16)
+therefore ran against a tree that carried tm1 as well — which is *not* the
+C3+C4+C5 stack the brief specifies. The C3 battery/gate (16:04/16:55) and
+the C4 battery/gate (17:02/17:35) finished **before** tm1 landed and are
+clean.
+
+**Why it is provably harmless for this round's numbers** (three independent
+checks, not an assumption):
+1. `tools/engine_side_tree.py` — the gate harness — never imports
+   `engine.time`; it computes its deadline directly from
+   `CHESSATHON_MOVE_BUDGET_MS`. tm1's time-floor mechanism is therefore
+   entirely off the gate path.
+2. tm1's flip guard requires `_rbudget >= 1_200_000_000` ns; every gate in
+   this round passes 500 ms = `500_000_000` ns. The guard cannot fire.
+3. `agent.py` (the real ladder path) **does** call `TM.budget_ms`, so tm1
+   matters for the ladder — just not for any 500 ms gate.
+
+So the "contaminated" and clean runs measured identical engine behaviour;
+their difference is gate noise, not tm1. **I still re-ran the whole affected
+chain clean** (`/tmp/c345-mine` = `v9k-shipped` + C3 + C4 + C5, shipped
+files verified byte-identical to repo commit `3afe603`, tm1 absent), because
+"provably inert" is a claim I would rather corroborate by measurement than
+assert.
+
+### Gates — every number, with its regime
+
+| run | tree | games | W-L-D | score | regime |
+|---|---|---|---|---|---|
+| C3 | C3 | 24 | 10-11-3 | **0.479** | clean |
+| C4 | C3+C4 | 24 | 11-10-3 | **0.521** | clean |
+| C5 | C3+C4+C5 | 24 | 10-8-6 | 0.542 | tm1 present, inert |
+| stack pool 1 | C3+C4+C5 | 72 | 27-25-20 | 0.514 | tm1 present, inert |
+| C5 (clean) | C3+C4+C5 | 24 | 9-12-3 | 0.438 | clean |
+| **stack pool 2 (clean)** | C3+C4+C5 | **72** | **21-27-24** | **0.458** | clean |
+| **combined** | C3+C4+C5 | **144** | **48-52-44** | **0.486** | both |
+
+Zero flags in all 264 games. Both 72-game pools sit inside the NEUTRAL band
+(0.45-0.55); pooled over 144 games the stack reads **0.486, 95% CI ≈ ±0.082**,
+i.e. statistically indistinguishable from parity. The 0.514 → 0.458 spread
+between two *identically-built* pools is the same single-gate noise the
+v8dp round quantified (0.417 vs 0.562 on one seed) — the reason pooled
+multi-seed is the standing instrument. **No instrument anywhere in this
+round shows a strength regression, and none shows a gain.**
+
+### Battery summary (clean tree `/tmp/c345-mine`)
+
+| item | result |
+|---|---|
+| perft | ALL PASS |
+| determinism d8 ×2×2, fresh caches | 232561 / best 47988 / −40, all identical |
+| eg_check @300ms | 7/8 (KPK boundary cell) |
+| shuffle @500ms | 11/12, **zero threefolds** |
+| C3 probe | 3 BAD → 0 |
+| C4 probe | 2 MISMATCH → 0 |
+| C5 probe | 5 MISMATCH → 0 |
+| P7 `probe_ep_key.py` | PASS (4 EP cases + 38-move control) |
+
+### Zip — `/tmp/night-candidates/chess-final-combined.zip` (STAGED, NOT UPLOADED)
+
+Built from the clean C3+C4+C5 tree: **36,769 bytes**, **sha256
+`d575c8789ec1f3709b6079b05eaca88420fc7e20f8cd9a720eda8140f5360c9c`**.
+Unzip to a temp dir + `cmp` → all 7 shipped files byte-identical
+(`agent.py` + `engine/{__init__,board,eval,search,time,tt}.py`); all three
+fixes confirmed present in the *unzipped* source; init 49.2s import+JIT,
+first move 5.05s (total **54.2s < 60s**), first move legal.
+The orchestrator independently staged the same content as
+`chess-v9k-c345.zip` (`7ab16f32…`): the two archives differ only in zip
+timestamps — every shipped file is byte-identical, which is useful
+corroboration that two independent stagings produced the same source.
+
+### Ship recommendation
+
+**Stage the C3+C4+C5 stack; upload decision is Pino's.** All three are
+*correctness* fixes — the class this project has consistently shipped on
+(a rule applied to the wrong position, a key field that was never carried,
+two code paths disagreeing about a legal-move predicate), each with a
+pre/post demonstration against the legality oracle and a green battery.
+None costs measurable strength (144-game pooled 0.486, CI ±0.082).
+
+The honest caveat, stated as plainly as in the v9k record: **no gate here
+measured a gain.** C3's frequency is genuinely rare (it needs the 100th
+halfmove to be the mating move, or a mate already standing at hm ≥ 100);
+C4 changes only nodes inside the fifty-move window; C5 changes only
+positions where an ep square exists but its capture is illegal. They are
+shipped because they make the engine *correct* on the rules it claims to
+implement — and because the repetition-identity repair in C5 closes a hole
+in the same defensive mechanism (P7/anti-threefold) that the ladder results
+depend on.
+
+Note for the upload decision: repo HEAD also carries the orchestrator's
+**q5-tm1** time-policy candidate, which is a *strength/risk* change under an
+open HOLD (§17e — its bout read parity with thinner clock tails). This
+round's zip deliberately excludes it; Pino can bundle later if tm1b
+resolves.
