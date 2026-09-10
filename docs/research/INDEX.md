@@ -102,6 +102,7 @@ Order of implementation (01 §1, 02 §6.2, 05 B3):
 | 15 | q5 codex1 experiment | 182-probe runtime A/B/C + time-hypothesis kill (Sep 9) |
 | 16 | q5 codex3 — r90 review | v6's first ladder loss triage (Sep 9) |
 | 17 | q5 codex4 — night2 re-audit | SHIP-AFTER-FIX-X release review (Sep 9) |
+| 18 | q5 audit6 — deepseek-v4.1 | v7 fresh-eyes + r92-tunnel refutation + PST-orientation finding + ranked candidates (Sep 10) |
 
-Docs 09-17 are the audit/review reports kept verbatim as delivered by the
+Docs 09-18 are the audit/review reports kept verbatim as delivered by the
 agents (referenced from PROCESS.md §10-§13 and BUILD.md).
