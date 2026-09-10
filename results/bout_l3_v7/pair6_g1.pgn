@@ -1,0 +1,11 @@
+[Event "q5fix1-L3-pair6"]
+[Site "?"]
+[Date "????.??.??"]
+[Round "?"]
+[White "q5cand"]
+[Black "v5"]
+[Result "1-0"]
+[FEN "rnbqkb1r/pp3ppp/4pn2/2pp4/2PP4/2N2N2/PP2PPPP/R1BQKB1R w KQkq - 0 5"]
+[SetUp "1"]
+
+5. cxd5 Nxd5 6. e4 Nxc3 7. bxc3 cxd4 8. cxd4 Nc6 9. Bc4 Bd6 10. O-O O-O 11. e5 Bb4 12. Be3 Be7 13. Qc2 Nb4 14. Qe4 Rb8 15. a3 Nd5 16. Bd2 Qd7 17. Ng5 Bxg5 18. Bxg5 Ne7 19. Rab1 Nf5 20. d5 exd5 21. Bxd5 Ne7 22. Bc4 Qf5 23. Qxf5 Nxf5 24. Bd5 b6 25. Be4 Be6 26. Rb4 Rfc8 27. g4 Nh6 28. f3 Rc4 29. Rxc4 Bxc4 30. Rc1 Rc8 31. Bb7 Rc5 32. Be3 Rxe5 33. Rxc4 Kh8 34. Kf2 Re7 35. Rc8+ Ng8 36. Be4 Rd7 37. g5 Re7 38. Bd4 Rd7 39. Ke3 Re7 40. f4 h5 41. f5 Rd7 42. f6 Rxd4 43. Kxd4 gxf6 44. gxf6 h4 45. Bg6 a6 46. Ke5 h3 47. Bxf7 Kh7 48. Rxg8 Kh6 49. Kf5 Kh7 50. Rg3 a5 51. Rxh3# 1-0
