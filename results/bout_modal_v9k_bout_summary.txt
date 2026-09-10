@@ -1,0 +1,5 @@
+=== modal ladder-format bout tag=v9k_bout ===
+A=/tmp/chessathon-v9k vs B=/tmp/chessathon-v8ref | real clock 120000+500ms | seed 11 | games 24 over 12 shards | wall 599s
+A score: 9W-9L-6D (0.500, normal-approx 95% CI +-0.200)
+avg move time 1818ms (max avg 2332ms)
+flags 0 | fatal shards 0 | errors 0
