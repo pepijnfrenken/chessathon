@@ -1,4 +1,5 @@
 round,colour,opponent,result,termination,init_s,moves,time_used_s,slowest_s,fastest_s,average_s,clock_left_s,machine,finished_at
+Rated 95,White,Subzero,Win,Checkmate,43.5,48,93.4,4.4,0.0,1.9,50.6,w-443d0d,2026-09-10T11:22:57.361199+00:00
 Rated 94,Black,tal,Win,Checkmate,36.1,33,73.3,4.2,0.0,2.2,63.2,w-bf0e55,2026-09-10T10:25:16.359558+00:00
 Rated 93,White,Brokefish,Win,Checkmate,36.7,66,119.5,4.2,0.0,1.8,33.5,w-ce5f0d,2026-09-10T09:29:58.737591+00:00
 Rated 92,White,Team I Love Fortnite,Loss,Checkmate,36.6,41,86.1,4.3,0.0,2.1,54.4,w-4552ec,2026-09-10T08:24:56.872878+00:00
