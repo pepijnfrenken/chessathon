@@ -849,16 +849,21 @@ def search_root(st, nodes, deadline, ttk, ttv, mask, killers, hist, rep,
     # flips back). Stopping right after a flip is a coin toss, not a
     # decision. Guard: if the last two completed depths disagree, keep
     # deepening until they agree or a hard cap (2x the original budget) is
-    # reached. Inactive below two completed iterations (tiny-TC harnesses).
+    # reached. Inactive below two completed iterations (tiny-TC harnesses)
+    # and gated off when the original budget is below 1.2 s — that is the
+    # clock-exhaustion tail (R <~ 12 s), where conserving beats depth; all
+    # razor sites sit at 1.5-3 s budgets, so the gate costs nothing there.
     prev1 = 0
     prev2 = 0
     _rstart = _NOW()
-    _ext_cap = _rstart + 2 * (deadline - _rstart)
+    _rbudget = deadline - _rstart
+    _ext_cap = _rstart + 2 * _rbudget
 
     depth = 1
     while depth <= max_depth:
         if _NOW() >= deadline:
-            if completed >= 2 and prev1 != prev2 and _NOW() < _ext_cap:
+            if (completed >= 2 and prev1 != prev2 and _NOW() < _ext_cap
+                    and _rbudget >= 1_200_000_000):
                 deadline = min(_ext_cap, _NOW() + (_ext_cap - _rstart) // 2)
                 continue
             break
@@ -873,7 +878,8 @@ def search_root(st, nodes, deadline, ttk, ttv, mask, killers, hist, rep,
                                           ghist, gcnt)
         if iter_move == 0:
             # timed out mid-iteration; same flip-guard decision (retry depth)
-            if completed >= 2 and prev1 != prev2 and _NOW() < _ext_cap:
+            if (completed >= 2 and prev1 != prev2 and _NOW() < _ext_cap
+                    and _rbudget >= 1_200_000_000):
                 deadline = min(_ext_cap, _NOW() + (_ext_cap - _rstart) // 2)
                 continue
             break
