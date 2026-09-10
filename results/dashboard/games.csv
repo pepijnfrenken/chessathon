@@ -1,4 +1,9 @@
 round,colour,opponent,result,termination,init_s,moves,time_used_s,slowest_s,fastest_s,average_s,clock_left_s,machine,finished_at
+Rated 104,White,TheWinners,Draw,Threefold repetition,38.1,73,133.5,4.3,1.0,1.8,23.0,w-b1bbdd,2026-09-10T20:25:19.029836+00:00
+Rated 103,Black,Hallucinated Gambits,Draw,Threefold repetition,38.7,50,105.0,4.3,0.0,2.1,40.0,w-aed3b9,2026-09-10T19:23:24.721025+00:00
+Rated 102,White,Alpha Knights,Draw,Threefold repetition,35.8,30,74.4,4.2,1.9,2.5,60.6,w-b1bbdd,2026-09-10T18:22:45.578077+00:00
+Rated 101,Black,Desai,Win,Checkmate,41.2,44,93.3,4.3,0.0,2.1,48.7,w-94416c,2026-09-10T17:25:57.41389+00:00
+Rated 100,White,Deep Red,Loss,Checkmate,36.8,65,118.7,4.3,0.0,1.8,33.8,w-940ac8,2026-09-10T16:24:23.963994+00:00
 Rated 99,Black,Rustic Alpha 3,Win,Checkmate,37.2,63,118.0,4.3,0.0,1.9,33.5,w-b5d791,2026-09-10T15:23:45.392751+00:00
 Rated 98,White,hyperfish,Win,Checkmate,36.0,38,81.0,4.2,0.0,2.1,58.0,w-ce5f0d,2026-09-10T14:24:44.092099+00:00
 Rated 97,White,Tempo,Loss,Checkmate,37.9,24,52.0,4.3,0.0,2.2,80.0,w-4e8c1d,2026-09-10T13:22:28.726523+00:00

@@ -1419,3 +1419,29 @@ Note for the upload decision: repo HEAD also carries the orchestrator's
 open HOLD (§17e — its bout read parity with thinner clock tails). This
 round's zip deliberately excludes it; Pino can bundle later if tm1b
 resolves.
+
+### 17g. 2026-09-10 — r104 draw; v10 upload CONFIRMED LIVE (smoke valid, status Active)
+
+**r104 (last game on v9k): Draw vs TheWinners (threefold repetition), White,
+73 moves, finished 20:25Z.** Time 133.5s, slowest 4.3s (move 1), avg 1.8s,
+left 23.0s. Ladder r102-r104 = three straight threefold draws.
+
+**Ladder since r48 (venues CSV): 26W-18L-13D / 57 games (0.570).**
+Today r95-r104: W,L,L,W,W,L,W,D,D,D = 4W-3L-3D (0.55).
+- r95 W Subzero | r96 L Bongcloud | r97 L Tempo | r98 W hyperfish |
+  r99 W Rustic Alpha 3 | r100 L Deep Red | r101 W Desai |
+  r102 D Alpha Knights | r103 D Hallucinated Gambits | r104 D TheWinners
+
+**Upload (Pino, ~20:35Z):** venue receipt `v9 / 10 Sept 2026 21:35 /
+11fa4ad658cc` — sha matches the staged bundle (11fa4ad658cced71...).
+Venue pipeline log: expands to 123,169 bytes → docker build ok → pushed to
+`aichessathon.azurecr.io/agents:e88c2cbb...` → smoke test →
+**`[20:38:44Z] valid`**, submission status `Active`. Smoke details: 2 x
+20-ply games (w + b); ready in 50.5 / 57.9 s of a **90 s init budget**
+(venue gives 90 s, not 60); slowest move 7.6 s (extended razor move w/
+3.17 s budget — extension working as designed, no flag); venue note:
+"your process is suspended while your opponent moves" (no pondering).
+Log archived: `results/dashboard/submission-v9-11fa4ad658cc-smoke.log`.
+
+**v10 is the ACTIVE agent from r105 (21:00Z) onward.** r105 watcher armed
+(auto-fetch pgn+log on land). Draw-quality SF review (r102-r104) running.
