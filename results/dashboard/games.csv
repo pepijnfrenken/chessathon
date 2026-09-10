@@ -1,4 +1,5 @@
 round,colour,opponent,result,termination,init_s,moves,time_used_s,slowest_s,fastest_s,average_s,clock_left_s,machine,finished_at
+Rated 105,Black,Zero Elo,Loss,Checkmate,40.9,80,148.7,6.0,0.0,1.9,11.3,w-aed3b9,2026-09-10T21:23:57.303958+00:00
 Rated 104,White,TheWinners,Draw,Threefold repetition,38.1,73,133.5,4.3,1.0,1.8,23.0,w-b1bbdd,2026-09-10T20:25:19.029836+00:00
 Rated 103,Black,Hallucinated Gambits,Draw,Threefold repetition,38.7,50,105.0,4.3,0.0,2.1,40.0,w-aed3b9,2026-09-10T19:23:24.721025+00:00
 Rated 102,White,Alpha Knights,Draw,Threefold repetition,35.8,30,74.4,4.2,1.9,2.5,60.6,w-b1bbdd,2026-09-10T18:22:45.578077+00:00

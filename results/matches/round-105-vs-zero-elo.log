@@ -1,0 +1,127 @@
+AI CHESSATHON MATCH LOG
+=======================
+
+MATCH
+  Round          Rated 105
+  Team           En Passant Labs
+  Colour         Black
+  Opponent       Zero Elo
+  Opening        Sicilian Classical
+  Start FEN      r1bqkb1r/pp2pppp/2np1n2/8/4P3/1NN5/PPP2PPP/R1BQKB1R b KQkq - 4 6
+  You moved      First
+  Machine        w-aed3b9
+  Finished       2026-09-10 21:23:57 UTC
+  Match ID       dac12474-8a0d-4ead-8c93-828327adb631
+
+INIT
+  Ready in       40.9 s
+  Budget         90.0 s
+  Used           45 percent
+
+CLOCK
+  Base           120.0 s plus 0.5 s per move
+  Moves          80
+  Time used      148.7 s
+  Slowest        6.0 s on move 4
+  Fastest        0.0 s on move 72
+  Average        1.9 s
+  Left at end    11.3 s
+
+RESULT
+  Lost by checkmate
+  Game lasted 302.4 s
+
+MOVES
+    #  move          time     clock left
+    1  e5            4.4 s      116.1 s
+    2  Bg4           3.1 s      113.5 s
+    3  Be6           3.0 s      111.0 s
+    4  Qb6+          6.0 s      105.4 s
+    5  Be7           3.0 s      102.9 s
+    6  O-O           3.0 s      100.4 s
+    7  Qd8           3.0 s       97.9 s
+    8  Nb4           3.0 s       95.4 s
+    9  Nxd3          3.0 s       92.9 s
+   10  Qc7           3.0 s       90.4 s
+   11  Qc6           3.0 s       87.9 s
+   12  Rfc8          3.0 s       85.4 s
+   13  Rc7           3.0 s       82.9 s
+   14  Nh5           3.0 s       80.4 s
+   15  a6            3.0 s       77.9 s
+   16  Rac8          6.0 s       72.4 s
+   17  Nf4           6.0 s       66.9 s
+   18  exf4          3.0 s       64.4 s
+   19  Bxd5          3.0 s       61.9 s
+   20  Bf6           3.0 s       59.4 s
+   21  Qa4           6.0 s       53.9 s
+   22  Rc5           3.0 s       51.4 s
+   23  Rxa5          3.0 s       48.9 s
+   24  Rxd5          3.0 s       46.4 s
+   25  Qb5           3.0 s       43.9 s
+   26  Qxb2          3.0 s       41.4 s
+   27  Qd4+          3.0 s       38.9 s
+   28  Qd3           3.0 s       36.4 s
+   29  Bh4           6.0 s       30.9 s
+   30  Qc2+          3.0 s       28.4 s
+   31  Bg3           2.8 s       26.0 s
+   32  Qd3           2.6 s       23.9 s
+   33  Rc7           2.4 s       22.1 s
+   34  Qe3           2.1 s       20.4 s
+   35  Rxc4          1.9 s       19.0 s
+   36  Rxe4          1.8 s       17.7 s
+   37  Qxe4+         1.6 s       16.7 s
+   38  f3            1.5 s       15.7 s
+   39  f2+           1.3 s       14.9 s
+   40  Qe3           1.2 s       14.1 s
+   41  Bxf2+         1.1 s       13.5 s
+   42  Qxh3          1.1 s       12.9 s
+   43  Qa3           1.0 s       12.4 s
+   44  Qf8           0.0 s       12.9 s
+   45  Qe8           1.0 s       12.4 s
+   46  g6            0.9 s       12.0 s
+   47  Qe5           0.9 s       11.6 s
+   48  Kg7           0.8 s       11.3 s
+   49  Qf4+          0.8 s       11.0 s
+   50  Qe3+          0.8 s       10.8 s
+   51  Qg1+          0.7 s       10.5 s
+   52  Qg2+          0.7 s       10.3 s
+   53  Qd5+          0.7 s       10.2 s
+   54  Qe4+          0.6 s       10.0 s
+   55  Qe6+          0.6 s        9.9 s
+   56  Qe3+          0.6 s        9.8 s
+   57  Qc1+          0.6 s        9.7 s
+   58  Qd2+          0.6 s        9.6 s
+   59  Qc3+          0.6 s        9.5 s
+   60  Qb2+          0.6 s        9.5 s
+   61  Qd4+          0.6 s        9.4 s
+   62  Qb4+          0.6 s        9.3 s
+   63  Qe4+          0.5 s        9.3 s
+   64  Qb1+          0.5 s        9.3 s
+   65  Qg1+          0.5 s        9.2 s
+   66  Qb1+          0.5 s        9.2 s
+   67  Qg1+          0.5 s        9.2 s
+   68  Qg2+          0.5 s        9.1 s
+   69  Qxg4          0.5 s        9.1 s
+   70  Qf4           0.5 s        9.1 s
+   71  g5            0.5 s        9.1 s
+   72  Qxg5          0.0 s        9.6 s
+   73  Kf8           0.6 s        9.5 s
+   74  Ke8           0.6 s        9.4 s
+   75  Kd7           0.6 s        9.4 s
+   76  Ke8           0.6 s        9.3 s
+   77  Kf8           0.0 s        9.8 s
+   78  Kg8           0.0 s       10.3 s
+   79  f5            0.0 s       10.8 s
+   80  Kh8           0.0 s       11.3 s
+
+OUTPUT
+  333 bytes on stderr
+
+  [chessathon] numba warmup 39.9s (init budget ok)
+  [chessathon] slow move: 6002ms (budget 3000ms), depth 10
+  [chessathon] slow move: 6002ms (budget 3000ms), depth 9
+  [chessathon] slow move: 6002ms (budget 3000ms), depth 10
+  [chessathon] slow move: 6001ms (budget 3000ms), depth 10
+  [chessathon] slow move: 6001ms (budget 3000ms), depth 10
+
+Email hello@aichessathon.com with this file if anything here is unclear.
