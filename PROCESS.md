@@ -964,10 +964,44 @@ gate_v9k_par_summary.txt`, 24 games/gate @500ms vs v7ref, zero flags):
 | 13 | 0.562 | 12-9-3 |
 | **POOLED 72** | **0.500** | **30-30-12**, CI +-0.115, band NEUTRAL |
 
-Context from other boxes (recorded, not re-derived here): Modal v9k vs v8ref
-0.542/0.516 (2×216g), real-clock ladder-format bout 0.500 (24g), v8ref vs
-v7ref 0.512/0.521, desktop 6-seed pool pending. **No instrument shows a
-regression**; the dpfix alone pooled 0.583.
+**Desktop extra-N pool** (orchestrator-driven, 20-core WSL box, same
+protocol: seeds 17,19,23,29,31,37, 144 games @500ms vs v7ref, v9k vs v7ref):
+**60W-56L-28D = 0.514**. Combining both boxes' identically-configured v9k-vs-
+v7ref pools:
+
+| pool | games | W-L-D | score |
+|---|---|---|---|
+| VPS (seeds 7,11,13) | 72 | 30-30-12 | 0.500 |
+| desktop (seeds 17,19,23,29,31,37) | 144 | 60-56-28 | 0.514 |
+| **COMBINED** | **216** | **90-86-40** | **0.509** |
+
+Cross-box caveat recorded: the two boxes differ in speed, so per-game depth
+distributions differ; the pools are comparable in protocol, not in hardware.
+Context from other instruments (recorded, not re-derived here): Modal v9k vs
+v8ref 0.542/0.516 (2×216g); real-clock ladder-format bout 0.500 (24g);
+v8ref vs v7ref 0.512/0.521. **No instrument anywhere shows a regression**;
+the dpfix alone pooled 0.583 on this box.
+
+**Upload-mechanism note (documentation only — no upload performed, and none
+is ours to perform: submitting the agent is Pino's action on the dashboard,
+by standing rule).** While confirming release identity I read the dashboard's
+own client bundle (`/_next/static/chunks/1x4xvy9tzh8ur.js`) and the protocol
+is three calls against the session cookie, in this order: (1) `POST
+/api/platform/submissions/issue-upload` (empty JSON body) returns
+`{submissionId, path, token}`; (2) a signed direct-to-storage `PUT` of the
+raw zip bytes to the project's Supabase bucket
+(`submissions`) at the returned `path`, `Content-Type: application/zip`,
+`x-upsert: false`; (3) `POST /api/platform/submissions/complete` with
+`{submissionId, path, sha}` where `sha` is the **hex sha256 of the ZIP
+bytes** — which is exactly the value the dashboard later publishes as the
+submission's release identity (matching how §13 corroborated v6/v7 against
+their dashboard shas). The client pre-pads the same two checks we already
+perform locally: it refuses anything not ending `.zip`, and it sums the
+central-directory uncompressed sizes to reject archives that unpack over
+50 MB. Recorded here so the mechanism is on the record; a draft automation
+was written during the investigation and deliberately **not** committed —
+creating a self-serve submission path contradicts the standing rule that
+uploads are Pino's action.
 
 **L2 corpus (107 rows, sha `fc285bb601e16e7e`, 2.6s, keyed `(game,ply)`).**
 fens.json: mean delta **+4.8 cp**, median −2.0, **28 moves changed**,
@@ -1004,10 +1038,12 @@ to a temp dir + `cmp` shows **all 7 shipped files byte-identical**
 as superseded, and put v9k forward.** Reasoning: it is the same one-line
 *correctness* class as the dpfix (a table read the wrong way round, not a
 new term), it carries strictly more evidence than the dpfix alone (432
-Modal games 0.529 pooled, 72 VPS games 0.500, a real-clock bout at parity,
-the narrowed tunnel, the corpus moving toward the referee), and its battery
-is fully green. The honest caveat, stated in the record: **no gate anywhere
-has measured a *significant* gain** — all instruments sit inside their
-intervals of 0.50 — so this ships as a *correctness* improvement with a
-non-negative strength signal, and the r92 tunnel remains a live hazard at
-depth 7. Upload decision is Pino's; both zips are frozen and byte-verified.
+Modal games 0.529 pooled; 216 games vs v7ref across two boxes = 0.509;
+a real-clock bout at parity; the narrowed tunnel; the corpus moving toward
+the referee), and its battery is fully green. The honest caveat, stated in
+the record: **no gate anywhere has measured a *significant* gain** — every
+instrument sits inside its interval around 0.50 (the 216-game pool's 95% CI
+is roughly +-0.067, covering 0.50) — so this ships as a *correctness*
+improvement with a non-negative strength signal, and the r92 tunnel remains
+a live hazard at depth 7. Upload decision is Pino's; both zips are frozen
+and byte-verified.

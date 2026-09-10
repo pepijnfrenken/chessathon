@@ -37,10 +37,13 @@ GATES (vs /tmp/chessathon-v7ref, gate_parallel.py, 24 games/gate @500ms)
                            seed 13: 12W-9L-3D (0.562)
                            POOLED  : 30W-30L-12D = 0.500, zero flags,
                                      95% CI +-0.115, band NEUTRAL
-  External (orchestrator, other boxes — recorded here for context, not
-  re-derived): Modal v9k vs v8ref 0.542 / 0.516 (2 x 216g); real-clock
-  bout 0.500 (24g); v8ref vs v7ref 0.512 / 0.521; desktop 6-seed pool
-  pending. No instrument shows a regression.
+  External (orchestrator, other boxes — recorded for context, not
+  re-derived here): Modal v9k vs v8ref 0.542 / 0.516 (2 x 216g); real-clock
+  ladder-format bout 0.500 (24g); v8ref vs v7ref 0.512 / 0.521.
+  Desktop 6-seed pool (seeds 17,19,23,29,31,37, 144 games, v9k vs v7ref):
+  60W-56L-28D = 0.514.
+  COMBINED with this box's 72 games: 90W-86L-40D over 216 games = 0.509.
+  No instrument anywhere shows a regression.
 
 L2 CORPUS (107-row leak suite, sha fc285bb601e16e7e, 2.6s, keyed (game,ply))
   results/v9k_leak_compare.log / _mate.log
@@ -78,4 +81,8 @@ ZIP (staged, NOT uploaded)
   sha256 dd5a9652cc6f6441857218181660338216acdeca448c7f6394aece6b0a826416
   unzip to temp + cmp: ALL 7 shipped files byte-identical to the tree
   contents: agent.py + engine/{__init__,board,eval,search,time,tt}.py
+  king-flip line verified INSIDE the unzipped artifact
+  (engine/eval.py:312 `_KING_MG.reshape(8, 8)[::-1].ravel()`)
+  `git diff 416833d..HEAD -- agent.py engine/` is empty, so the staged
+  artifact == the fix commit == repo HEAD for everything that ships
   init import+JIT 46.2s, first move 4.48s (total 50.7s < 60s), move e2e3 legal
