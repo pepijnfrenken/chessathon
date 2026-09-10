@@ -302,7 +302,14 @@ def _build_hand() -> np.ndarray:
     p[P_PST_MG + 2 * 64:P_PST_MG + 3 * 64] = _BISHOP_MG
     p[P_PST_MG + 3 * 64:P_PST_MG + 4 * 64] = _ROOK_MG
     p[P_PST_MG + 4 * 64:P_PST_MG + 5 * 64] = _QUEEN_MG
-    p[P_PST_MG + 5 * 64:P_PST_MG + 6 * 64] = _KING_MG
+    # q5-v9k (audit-6 C1): the king tables are authored rank-8-first like
+    # the pawns, but the consumer is rank-1-first, so as-read the engine
+    # punished its OWN back rank (e1/g1/c1 = -50/-40/-40 MG) and rewarded
+    # the ENEMY's (e8/g8/c8 = 0/+30/+10) — an inverted castling incentive,
+    # 64/64 cells, both colours (black mirrors with ^56). Same one-line row
+    # flip that night2 applied to the pawns; MG king only — the
+    # king+rook+bishop variant measured 0.481 and was rejected.
+    p[P_PST_MG + 5 * 64:P_PST_MG + 6 * 64] = _KING_MG.reshape(8, 8)[::-1].ravel()
     p[P_PST_EG + 0 * 64:P_PST_EG + 1 * 64] = _PAWN_EG.reshape(8, 8)[::-1].ravel()
     p[P_PST_EG + 1 * 64:P_PST_EG + 2 * 64] = _KNIGHT_MG
     p[P_PST_EG + 2 * 64:P_PST_EG + 3 * 64] = _BISHOP_MG

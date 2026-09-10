@@ -1,0 +1,20 @@
+q5-v9k — king-MG PST flip: parameter-cell diff vs /tmp/chessathon-v7ref (the live v7 build)
+date: 2026-09-10T14:03:14Z  git: c8a8bc7 (patch applied, pre-commit)
+
+method: dump E.EVAL_PARAMS from each tree in its own process (hand config), compare elementwise.
+
+E.EVAL_PARAMS length          : 813
+differing cells               : 64  (contiguous 332..395 = P_PST_MG+5*64 .. +6*64-1 = the king MIDDLEGAME block)
+all diffs inside that block   : YES
+dpfix code change             : present in both trees (engine/eval.py:597-603 FILE_SQ[f])
+
+post-flip king-MG as CONSUMED (row 0 = rank 1, sq64 indexing, black mirrors with ^56):
+  rank 1 : [20 30 10  0  0 10 30 20]
+  rank 8 : [-30 -40 -40 -50 -50 -40 -40 -30]
+  read at: e1=0  g1=+30  c1=+10   |   e8=-50  g8=-40  c8=-40
+  castled g1 MG = +30 ; centralised e4 MG = -40
+
+pre-flip read (for contrast, audit-6 C1): e1/g1/c1 = -50/-40/-40 ; e8/g8/c8 = 0/+30/+10
+
+verdict: castling is rewarded, a centralised middlegame king is punished,
+         the enemy back rank is punished — the intended profile.
