@@ -1,0 +1,7 @@
+=== gate_parallel tag=v8dp_par ===
+seeds [7, 11, 13] | games/gate 24 @ 500ms | wall 1917s
+  seed    7: 10W-8L-6D (0.542) rc=0 1917s
+  seed   11: 15W-7L-2D (0.667) rc=0 1504s
+  seed   13: 12W-10L-2D (0.542) rc=0 1682s
+POOLED: 37W-25L-10D over 72 games -> 0.583 (normal-approx 95% CI +-0.114)
+band: POSITIVE (>=0.55)   [bands as calibrated solo; pooled N tightens them, it does not shift them]

@@ -773,3 +773,142 @@ moves changed; static delta min -43 / max +25 / mean -7.3; ZERO deltas
 move toward the SF referee (mean -9.2, less optimistic); the r92 tunnel row
 (round-92 ply 58 Rb5) now picks g3h2 (SF-side) where v7ref keeps b4b5.
 dpfix alone (v8ref vs v7ref): 18/107 changed, deltas max +-12.
+
+## 16. 2026-09-10 — q5-v8dp round: doubled-pawn file indexing fix (correctness), gated; zip staged
+
+**Mission (brief `docs/agentic-process/briefs/chessathon-q5-v8dp.md`; audit
+codex5 finding 1).** `engine/eval.py:597-603` sampled `FILE_SQ[f * 8]` for
+`f = 0..7`, i.e. a1..a8 — **all twelve loop iterations masked the a-file**,
+so doubled pawns on files b-h scored no penalty at all while a-file doubled
+pawns were charged 8x. The dev tuner carried the identical subscript
+(`tools/texel_tune.py:253-257`), which is why the tuner's bit-parity mirror
+could not detect it. Code-verified by the orchestrator before the round.
+
+**Fix — commit `590f5ff` (one message, four subscripts total).**
+`FILE_SQ[f * 8] -> FILE_SQ[f]` in both the white and the black loop of
+`engine/eval.py` (lines 597-603) and in the same two subscripts of
+`tools/texel_tune.py` (dev tool, not shipped). Nothing else: no other eval
+term, no search change, no `agent.py` change.
+
+**Demonstration in the jitted path — `results/v8dp_doubled_demo.txt`,
+`tools/probe_doubled_index.py` (new dev tool).** numba freezes module-level
+numpy globals at compile time, so the parameter array cannot be mutated at
+runtime; the isolation instead uses the committed pawn-group gate:
+`jit_delta = evaluate(EVAL_GATE=1111) - evaluate(EVAL_GATE=0111)` IS the
+tapered pawn-group term. Eight startpos variants, one per file, each with
+exactly one doubled pawn pair and material held constant, so the doubled
+count is the only pawn-structure feature that varies (isolated = passed =
+blocked = 0 in all eight, verified). Result, both loops, through jitted
+`E.evaluate`:
+
+| | prefix `FILE_SQ[f*8]` | postfix `FILE_SQ[f]` |
+|---|---|---|
+| a-file | **-96** (white) / **+96** (black) | -12 / +12 |
+| b-h files | **exactly 0** | -12 / +12 |
+
+i.e. 8 pawns' worth of penalty piled on a, zero elsewhere, now one pawn's
+worth on every file. Mirror feature count 8 -> 1 (white), -8 -> -1 (black).
+
+**Battery — all green, one engine workload at a time, control =
+`/tmp/chessathon-v7ref` (= `git archive dbf8958`, the live v7 build).**
+Full per-item detail: `results/v8dp_battery_summary.txt`.
+
+| gate | candidate | v7ref control | verdict |
+|---|---|---|---|
+| perft (6 positions d1-5 + python-chess + breakdowns) | ALL PASS | — | board untouched |
+| determinism (d8, 2 procs x 2 runs, fresh `NUMBA_CACHE_DIR`) | 228055 / best 47988 / score -46, all four identical | v7 recorded 230245 | same-build identity holds; node counts differ from v7 as expected |
+| eval_decompose parity (`tools/check_decompose_parity.py`, new) | **125/125 exact** (98->107 leak FENs + mate stratum + 4 standard) | — | recon == jitted, both colours |
+| eg_check @300ms | 7/8 (KPK-b DRAW) | 7/8 (KPK-b DRAW) | **identical verdicts** |
+| shuffle @500ms | 11/12, **zero threefolds** | 11/12, zero threefolds | fail cell = KPK, opposite colours |
+| r92 tunnel probe (SWEEP=1) | d5b3 / b4b5 still reproduce at exact game budgets; avoided >=3s; black still finds e7g5 @1.08s | same | audit's "no change" prediction holds |
+
+Two premise corrections, recorded because they matter for the record's
+honesty: (a) the brief's "v7's last eg record = 8/8 incl KPK-b" did **not**
+reproduce — a fresh v7ref run is 7/8 (KPK-strong-as-black draw), and the
+candidate matched it exactly. Per the brief's rule the differing case was
+re-run at 2000ms: candidate 6/8, v7ref 7/8 — the KPK cells flip on **both**
+builds and `eg_check` budgets are wall-clock, so reached depth varies with
+machine timing. Classified as a boundary cell for both builds, not a
+candidate regression. (b) the same applies to the shuffle suite's KPK cell.
+
+**L1 gate — the noise precedent (this is the round's most important
+instrument finding).** Two runs of the *identical* command (same trees, same
+seed 7, 24 games @500ms vs v7ref):
+
+| run | score | W-L-D |
+|---|---|---|
+| 1 | **0.417** | 6-10-8 |
+| 2 | **0.562** | 11-8-5 |
+
+A **0.145 swing with no code change**, entirely from time-limited search
+flipping whole games on timing jitter. A lone 24-game gate at this TC cannot
+distinguish a neutral correctness fix from a 60-elo one. `tools/
+gate_parallel.py` (already in the repo) exists for exactly this; the
+orchestrator made pooled multi-seed the standing rule (PROCESS §8 item 11).
+
+**Official gate — pooled multi-seed vs v7ref** (`gate_parallel.py
+--seeds 7,11,13 --games 24 --move-ms 500`, background process, quiet box,
+`results/gate_v8dp_par_summary.txt`):
+
+| seed | score | W-L-D |
+|---|---|---|
+| 7 | 0.542 | 10-8-6 |
+| 11 | 0.667 | 15-7-2 |
+| 13 | 0.542 | 12-10-2 |
+| **POOLED 72 games** | **0.583** | **37-25-10**, zero flags |
+
+Band: **POSITIVE (>=0.55)**, 95% CI +-0.114. Never negative across four
+independent 24-game samples (0.417 / 0.562 / 0.583-pooled-per-seed band).
+
+**L2 leak-FEN probes — non-regressive.** 107-row corpus
+`results/leak_suite/fens.json` (sha256 `fc285bb601e16e7e`; the orchestrator
+refreshed 98 -> 107 mid-round, so both trees were probed against the SAME
+107-row corpus, with the corpus hash recorded in each log header), 2.6s
+budget, candidate vs v7ref, keyed by `(game, ply)` — `tools/
+leak_probe_tree.py` + `tools/leak_compare.py` (both new), logs
+`results/v8dp_leak_probe_{cand,v7ref}.log` + comparisons
+`results/v8dp_leak_compare{,_mate}.log`:
+
+- fens.json (107 rows): mean score delta **+6.0 cp**, median 0.0,
+  **10 moves changed (9.3%)**, **0 rows >=300cp worse**, 1 row >=300cp
+  better (r90 p81, -1309 -> -704, toward the SF referee's -1366).
+  Mean |score - SF16| 716 vs 711 cp — unchanged.
+- mate stratum (24 rows, diagnostic): 1 move changed, 1 row >=300cp worse
+  (r83 p127, -1742 -> -2222 — both non-mate cp-scale in a lost position)
+  and 1 better (r73 p61, 1490 -> 29991, a mate score the control missed).
+  Mean |score - SF16| 27487 vs 27495 cp — unchanged.
+- Interpretation: the fix is **strength-neutral by construction** (it
+  corrects a feature count, it does not add a term) and its fingerprint in
+  the corpus is exactly that — mild re-rankings in already-decided
+  positions. Note this **corrects codex5's "1/27 searched moves changed"**
+  figure: at full corpus and real budget the term moves ~9% of searched
+  moves, so it was more load-bearing than the earlier digest suggested.
+
+**Two evidence defects in my own new tooling, found by audit-6 and fixed
+here** (recorded so they are not repeated): (A16) the first corpus row was
+lost to cold JIT (`nodes=0 score=-32000`) because the tool imports
+`engine.*` directly and so never runs `agent._warmup()`; fixed with a
+disposable warmup `search_root` call before the corpus loop, plus the
+corpus sha256 in the log header. (A17) the cand/control logs were not
+row-aligned (98 vs 107 corpus versions + space-padded game names); the
+format is now machine-joinable (`<tag> <game> ply=N k=v ...`, no padding,
+no truncation) and every comparison is keyed on `(game, ply)`.
+
+**Zip staged, NOT uploaded — `/tmp/night-candidates/chess-v8-dpfix.zip`.**
+`make_zip.sh` -> 34,472 bytes, **sha256
+`ec010c78fddc04e801ae49df8f7b1c9fe3149a565e9789770d86a46e1e481c94`**; unzip
+to a temp dir then `cmp` shows **all 7 shipped files byte-identical** to the
+tree (`agent.py` + `engine/{__init__,board,eval,search,time,tt}.py`);
+import+JIT warmup 48.0s, init 52.9s incl. first move (< 60s budget), first
+move legal (`e2e3`), shipped eval config `hand`.
+
+**Ship recommendation: HOLD as a standalone upload; carry into the king-PST
+round (v9k) instead.** Reasoning, stated plainly: the dpfix is a *correctness*
+fix whose whole risk is that it changes play at all, and the measured effect
+is a small positive-to-neutral result (pooled 0.583, CI +-0.114, i.e. the
+interval includes 0.50). Uploading it alone spends one of the six daily
+slots on a change the gate cannot separate from noise, while the same slot
+carries much more value bundled with the king-PST flip, whose evidence
+(432 Modal games pooled 0.529 + the r92 tunnel probe + a real-clock bout at
+parity) is stronger and whose mechanism is measured. The staged zip is
+frozen and byte-verified either way; the upload decision is Pino's.

@@ -1,0 +1,37 @@
+corpus=results/leak_suite/mate_stratum.json rows=24  A=v8dp (24 probed)  B=v7ref (24 probed)
+game                            ply    sf16   v8dp_s v8dp_mv  v7ref_s v7ref_mv    dA-B
+round-64-vs-snake               201  -28500     -983   g2g3     -977   g2g3      -6
+round-68-vs-rook-and-roll        35  -28900        0   d6e5        0   d6e5       0
+round-68-vs-rook-and-roll        65  -29300    -1406   a7a6    -1406   a7a6       0
+round-71-vs-magnus               72   28600     1084   b5a6     1096   b5a6     -12
+round-72-vs-stocked-fish         69   27700     1072   e5f5     1072   e5f5       0
+round-72-vs-stocked-fish         73   28200     1241   g7g5     1241   g7g5       0
+round-72-vs-stocked-fish         75   28300     1241   f4f3     1241   f4f3       0
+round-72-vs-stocked-fish         77   28000     1257   g7g5     1257   g7g5       0
+round-72-vs-stocked-fish         79   28300     1259   g7g5     1259   g7g5       0
+round-73-vs-skylab               51   28900     1239   d4d3     1239   d4d3       0
+round-73-vs-skylab               61   29500    29991   e4h4     1490   e4h4   28501
+round-76-vs-mcai                148  -28800    -1346   g1h1    -1346   g1h1       0
+round-77-vs-frisky               59   29100     1020   g6g5     1067   g6g5     -47
+round-77-vs-frisky               61   29500    29991   d3f4    29991   d3f4       0
+round-78-vs-stockfish            75   29100     1328   e7d7     1345   e7d7     -17
+round-80-vs-gmmmmm               45   29200     1668   g5g2     1679   g5g2     -11
+round-81-vs-magnus-carlson       82   29100     2067   b2b4     2319   a6a7    -252  MV!
+round-83-vs-404-not-found       125  -29000    -1373   e8c8    -1373   e8c8       0
+round-83-vs-404-not-found       127  -29100    -2222   c8e8    -1742   c8e8    -480
+round-83-vs-404-not-found       137  -29400   -29988   b5b4   -29988   b5b4       0
+round-92-vs-team-i-love-fortni   76  -29100    -1142   f5f4    -1142   f5f4       0
+round-93-vs-brokefish           112   28400     1318   e5e6     1318   e5e6       0
+round-94-vs-tal                  36   29200      790   f2f6      790   f2f6       0
+round-95-vs-subzero              86   29100    29989   c2b2    29989   c2b2       0
+
+rows compared        : 24
+mean score delta A-B : +1153.2 cp
+median score delta   : +0.0 cp
+moves changed        : 1
+A >=300cp WORSE rows : 1
+   ('round-83-vs-404-not-found', 127) sf16=-29100 B=-1742 A=-2222
+A >=300cp better rows: 1
+   ('round-73-vs-skylab', 61) sf16=29500 B=1490 A=29991
+mean |score-SF16|    : A=27487 cp B=27495 cp (n=20 cp-scale rows)
+median |score-SF16|  : A=27516 cp B=27512 cp

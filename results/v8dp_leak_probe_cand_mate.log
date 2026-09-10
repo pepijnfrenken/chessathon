@@ -1,0 +1,25 @@
+# tag=v8dp root=/home/pino/projects/chessathon corpus=results/leak_suite/mate_stratum.json sha256=793db1466a2b2da4 rows=24 budget_s=2.6
+v8dp round-64-vs-snake ply=201 vloss=400 nodes=2042880 score=-983 depth=14 best=g2g3
+v8dp round-68-vs-rook-and-roll ply=35 vloss=400 nodes=0 score=0 depth=0 best=d6e5
+v8dp round-68-vs-rook-and-roll ply=65 vloss=300 nodes=1489920 score=-1406 depth=8 best=a7a6
+v8dp round-71-vs-magnus ply=72 vloss=27264 nodes=1513472 score=1084 depth=10 best=b5a6
+v8dp round-72-vs-stocked-fish ply=69 vloss=26871 nodes=1872896 score=1072 depth=12 best=e5f5
+v8dp round-72-vs-stocked-fish ply=73 vloss=500 nodes=1964032 score=1241 depth=13 best=g7g5
+v8dp round-72-vs-stocked-fish ply=75 vloss=27240 nodes=2102272 score=1241 depth=13 best=f4f3
+v8dp round-72-vs-stocked-fish ply=77 vloss=18836 nodes=2161664 score=1257 depth=13 best=g7g5
+v8dp round-72-vs-stocked-fish ply=79 vloss=27041 nodes=2330624 score=1259 depth=13 best=g7g5
+v8dp round-73-vs-skylab ply=51 vloss=27382 nodes=1171456 score=1239 depth=8 best=d4d3
+v8dp round-73-vs-skylab ply=61 vloss=200 nodes=1533143 score=29991 depth=10 best=e4h4
+v8dp round-76-vs-mcai ply=148 vloss=200 nodes=1657856 score=-1346 depth=11 best=g1h1
+v8dp round-77-vs-frisky ply=59 vloss=26945 nodes=1187840 score=1020 depth=7 best=g6g5
+v8dp round-77-vs-frisky ply=61 vloss=200 nodes=1002341 score=29991 depth=8 best=d3f4
+v8dp round-78-vs-stockfish ply=75 vloss=300 nodes=1762304 score=1328 depth=11 best=e7d7
+v8dp round-80-vs-gmmmmm ply=45 vloss=500 nodes=1405952 score=1668 depth=8 best=g5g2
+v8dp round-81-vs-magnus-carlson ply=82 vloss=200 nodes=2143232 score=2067 depth=13 best=b2b4
+v8dp round-83-vs-404-not-found ply=125 vloss=200 nodes=1553408 score=-1373 depth=12 best=e8c8
+v8dp round-83-vs-404-not-found ply=127 vloss=200 nodes=1734656 score=-2222 depth=13 best=c8e8
+v8dp round-83-vs-404-not-found ply=137 vloss=200 nodes=91043 score=-29988 depth=8 best=b5b4
+v8dp round-92-vs-team-i-love-fortnite ply=76 vloss=300 nodes=1451008 score=-1142 depth=9 best=f5f4
+v8dp round-93-vs-brokefish ply=112 vloss=26812 nodes=2004992 score=1318 depth=15 best=e5e6
+v8dp round-94-vs-tal ply=36 vloss=28044 nodes=1210368 score=790 depth=7 best=f2f6
+v8dp round-95-vs-subzero ply=86 vloss=600 nodes=120362 score=29989 depth=9 best=c2b2
