@@ -32,4 +32,10 @@ results/c3_kpk_boundary.log: 10 samples across candidate and control,
 flipping on both). It does establish that c5 does not BREAK it: the
 endgame suite is at least as healthy as v9k's.
 
-VERDICT: PASS pending the L1 number in results/gate_c5_vs_v9k.log.
+L1 GATE (tools/gate_match_tree.py, 24 games @500ms, seed 7, vs v9k-shipped)
+  results/gate_c5_vs_v9k.log + .stream.log
+  score 10W-8L-6D = 0.542, zero flags -> band NEUTRAL (0.45-0.55), the top
+  of it. 18 decisive, one-sided p ~ 0.81.
+
+VERDICT: PASS (neutral-positive). All three individual gates clear the 0.45
+line: c3 0.479, c4 0.521, c5 0.542 — so the combined stack gate runs.
