@@ -14,14 +14,16 @@ keep the TL;DR fresh, append to the right section, never delete history.
 
 **CURRENT (supersedes the Sep 8-era text further down this section):**
 **v7 is live** — night3 build (null-sign fix + KBN zeroing fix + pawn-PST
-flip + root-best ordering), uploaded Sep 10 06:19Z, ACTIVE from 06:22Z,
-plays r91 onward. Full ship record + release identity: §13. v6 (null fix)
-was live Sep 9 20:42Z → r90; V5 before it (r70-89). **Authoritative ladder
-record (PGN headers × platform export, cross-checked 2026-09-10, 0
+flip + root-best ordering), uploaded Sep 10 06:19Z, ACTIVE from 06:22Z.
+**Debut r91: WIN vs Epoch & Mate (0-1 as Black, mate m63, 112 plies, zero
+flags)** — grind-then-finish: +1 pawn from the Nxd4/Bxb5 trade, queen trade
+m17, rook endgame ground down (+4 pawns), a-pawn promotion, then QUEEN SAC
+Qxg1+ forcing Rh1#; mate played at 0.0s/move (precomputed). Full ship
+record + release identity: §13. v6 (null fix) was live Sep 9 20:42Z → r90; V5 before it (r70-89). **Authoritative ladder record (PGN headers × platform export, cross-checked 2026-09-10, 0
 mismatches; supersedes every earlier tally incl. the wrong "r87/r88
-losses" reading):** r48-90 = **19W-10D-14L** — v1/v2 era r48-60 3W-5D-5L ·
+losses" reading):** r48-91 = **20W-10D-14L** — v1/v2 era r48-60 3W-5D-5L ·
 v3/v4 r61-69 5W-2D-2L · **V5 r70-89 11W-3D-6L** · v6 r90 0-0-1 (single
-tactical miss, not leak-family). Leak-family losses with committed SF16
+tactical miss, not leak-family) · **v7 r91 1-0-0**. Leak-family losses with committed SF16
 reviews = r64/r68/r70/r74/r76/r83 — each carries 5-20 SF-visible bad moves
 vs 0-4 for reviewed wins/draws; r85/r87/r88/r89 await reviews (r90 =
 reviewed, single tactical miss, not leak-family).
