@@ -978,5 +978,95 @@
   "verdict": "mistake",
   "eval_before": 1221,
   "fen_before": "6k1/pp5p/4prp1/2p5/B7/PKPP2b1/1P2Q3/q7 b - - 1 28"
+ },
+ {
+  "game": "round-96-vs-bongcloud",
+  "side": "black",
+  "ply": 31,
+  "san": "e5",
+  "cp_loss": 248,
+  "verdict": "mistake",
+  "eval_before": -24,
+  "fen_before": "5b1r/4pkp1/1Nb2p1p/8/8/5nB1/PPP4P/2KR1R2 b - - 5 22"
+ },
+ {
+  "game": "round-96-vs-bongcloud",
+  "side": "black",
+  "ply": 33,
+  "san": "Ke6",
+  "cp_loss": 167,
+  "verdict": "mistake",
+  "eval_before": -71,
+  "fen_before": "5b1r/3N1kp1/2b2p1p/4p3/8/5nB1/PPP4P/2KR1R2 b - - 1 23"
+ },
+ {
+  "game": "round-96-vs-bongcloud",
+  "side": "black",
+  "ply": 65,
+  "san": "Ba6",
+  "cp_loss": 306,
+  "verdict": "blunder",
+  "eval_before": -341,
+  "fen_before": "r7/1b4p1/4kn1p/P1B1p3/1PP2p2/R7/7P/2K3R1 b - - 11 39"
+ },
+ {
+  "game": "round-96-vs-bongcloud",
+  "side": "black",
+  "ply": 83,
+  "san": "Kf7",
+  "cp_loss": 168,
+  "verdict": "mistake",
+  "eval_before": -832,
+  "fen_before": "Q7/6p1/R3kn1p/4p3/5prP/8/2K5/8 b - - 2 48"
+ },
+ {
+  "game": "round-96-vs-bongcloud",
+  "side": "black",
+  "ply": 85,
+  "san": "Rg5",
+  "cp_loss": 2480,
+  "verdict": "blunder",
+  "eval_before": -870,
+  "fen_before": "Q7/5kp1/R4n1p/4p2P/5pr1/8/2K5/8 b - - 0 49"
+ },
+ {
+  "game": "round-96-vs-bongcloud",
+  "side": "black",
+  "ply": 87,
+  "san": "Ke6",
+  "cp_loss": 6043,
+  "verdict": "blunder",
+  "eval_before": -1117,
+  "fen_before": "Q7/R4kp1/5n1p/4p1rP/5p2/8/2K5/8 b - - 2 50"
+ },
+ {
+  "game": "round-96-vs-bongcloud",
+  "side": "black",
+  "ply": 89,
+  "san": "Kd5",
+  "cp_loss": 756,
+  "verdict": "blunder",
+  "eval_before": -4627,
+  "fen_before": "2Q5/R5p1/4kn1p/4p1rP/5p2/8/2K5/8 b - - 4 51"
+ },
+ {
+  "game": "round-96-vs-bongcloud",
+  "side": "black",
+  "ply": 91,
+  "san": "Ke6",
+  "cp_loss": 6457,
+  "verdict": "blunder",
+  "eval_before": -1849,
+  "fen_before": "8/RQ4p1/5n1p/3kp1rP/5p2/8/2K5/8 b - - 6 52"
+ },
+ {
+  "game": "round-96-vs-bongcloud",
+  "side": "black",
+  "ply": 93,
+  "san": "Kd6",
+  "cp_loss": 23190,
+  "verdict": "blunder",
+  "eval_before": -6110,
+  "fen_before": "8/R5p1/4kn1p/4p1rP/5p2/1Q6/2K5/8 b - - 8 53"
  }
 ]

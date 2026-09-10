@@ -228,5 +228,15 @@
   "verdict": "blunder",
   "eval_before": 29200,
   "fen_before": "6k1/pp5p/4p1p1/2p5/B7/P1PP2b1/1P3r1q/R2KQ3 b - - 1 25"
+ },
+ {
+  "game": "round-95-vs-subzero",
+  "side": "white",
+  "ply": 86,
+  "san": "Rd2",
+  "cp_loss": 600,
+  "verdict": "blunder",
+  "eval_before": 29100,
+  "fen_before": "8/8/6p1/5pK1/p7/P5Pk/2R4P/8 w - - 0 50"
  }
 ]
