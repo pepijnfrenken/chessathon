@@ -1,16 +1,14 @@
 {
  "source": "aichessathon.com/dashboard rating graph",
- "captured_utc": "2026-09-10T15:42Z",
+ "captured_utc": "2026-09-10T16:29Z",
  "calibration": "y=18->1775, y=174->1025 (gridlines); x: r48@44px, 11.52px/round; anchors verified r95=1686 / r97=1588",
  "stats": {
-  "rank": 209,
+  "rank": 194,
   "teams": 441,
-  "top_pct": 47,
-  "rating": 1629,
+  "top_pct": 44,
+  "rating": 1671,
   "peak": 1686,
-  "record": "25-10-17",
-  "checkmates": 25,
-  "best_streak": 5
+  "record": "25-10-18"
  },
  "series": [
   {
@@ -223,7 +221,7 @@
   },
   {
    "round": 74,
-   "rating": 1412.0,
+   "rating": 1461.4,
    "kind": "marker",
    "result": "Loss",
    "opponent": "Rohan",
@@ -231,7 +229,7 @@
   },
   {
    "round": 75,
-   "rating": 1461.4,
+   "rating": 1424.1,
    "kind": "marker",
    "result": "Win",
    "opponent": "Prophylaxis",
@@ -239,7 +237,7 @@
   },
   {
    "round": 76,
-   "rating": 1424.1,
+   "rating": 1459.1,
    "kind": "marker",
    "result": "Loss",
    "opponent": "MCAI",
@@ -247,7 +245,7 @@
   },
   {
    "round": 77,
-   "rating": 1459.1,
+   "rating": 1480.5,
    "kind": "marker",
    "result": "Win",
    "opponent": "Frisky",
@@ -255,7 +253,7 @@
   },
   {
    "round": 78,
-   "rating": 1480.5,
+   "rating": 1509.7,
    "kind": "marker",
    "result": "Win",
    "opponent": "Stockfish",
@@ -263,7 +261,7 @@
   },
   {
    "round": 79,
-   "rating": 1509.7,
+   "rating": 1540.2,
    "kind": "marker",
    "result": "Win",
    "opponent": "Stochastic Gambit",
@@ -271,7 +269,7 @@
   },
   {
    "round": 80,
-   "rating": 1540.2,
+   "rating": 1572.6,
    "kind": "marker",
    "result": "Win",
    "opponent": "GMmmmm",
@@ -279,7 +277,7 @@
   },
   {
    "round": 81,
-   "rating": 1572.6,
+   "rating": 1571.5,
    "kind": "marker",
    "result": "Win",
    "opponent": "Magnus CarlSON \ud83d\ude2d",
@@ -287,7 +285,7 @@
   },
   {
    "round": 82,
-   "rating": 1571.5,
+   "rating": 1549.1,
    "kind": "marker",
    "result": "Draw",
    "opponent": "Team7347",
@@ -295,7 +293,7 @@
   },
   {
    "round": 83,
-   "rating": 1549.1,
+   "rating": 1544.1,
    "kind": "marker",
    "result": "Loss",
    "opponent": "404 Not Found",
@@ -303,7 +301,7 @@
   },
   {
    "round": 84,
-   "rating": 1544.1,
+   "rating": 1525.1,
    "kind": "marker",
    "result": "Draw",
    "opponent": "Ablation",
@@ -311,7 +309,7 @@
   },
   {
    "round": 85,
-   "rating": 1525.1,
+   "rating": 1529.5,
    "kind": "marker",
    "result": "Loss",
    "opponent": "Knight",
@@ -319,7 +317,7 @@
   },
   {
    "round": 86,
-   "rating": 1529.5,
+   "rating": 1547.0,
    "kind": "marker",
    "result": "Draw",
    "opponent": "Zagreus 2.3.1",
@@ -327,7 +325,7 @@
   },
   {
    "round": 87,
-   "rating": 1547.0,
+   "rating": 1561.0,
    "kind": "marker",
    "result": "Win",
    "opponent": "Fork 72",
@@ -335,7 +333,7 @@
   },
   {
    "round": 88,
-   "rating": 1561.0,
+   "rating": 1543.8,
    "kind": "marker",
    "result": "Win",
    "opponent": "Prompt and Circumstance",
@@ -343,7 +341,7 @@
   },
   {
    "round": 89,
-   "rating": 1543.8,
+   "rating": 1479.1,
    "kind": "marker",
    "result": "Loss",
    "opponent": "Team7347",
@@ -351,7 +349,7 @@
   },
   {
    "round": 90,
-   "rating": 1479.1,
+   "rating": 1581.1,
    "kind": "marker",
    "result": "Loss",
    "opponent": "Chessbuster 9000",
@@ -359,7 +357,7 @@
   },
   {
    "round": 91,
-   "rating": 1581.1,
+   "rating": 1490.5,
    "kind": "marker",
    "result": "Win",
    "opponent": "Epoch & Mate",
@@ -367,7 +365,7 @@
   },
   {
    "round": 92,
-   "rating": 1490.5,
+   "rating": 1566.7,
    "kind": "marker",
    "result": "Loss",
    "opponent": "Team I Love Fortnite",
@@ -375,7 +373,7 @@
   },
   {
    "round": 93,
-   "rating": 1566.7,
+   "rating": 1635.1,
    "kind": "marker",
    "result": "Win",
    "opponent": "Brokefish",
@@ -383,7 +381,7 @@
   },
   {
    "round": 94,
-   "rating": 1635.1,
+   "rating": 1686.5,
    "kind": "marker",
    "result": "Win",
    "opponent": "tal",
@@ -391,7 +389,7 @@
   },
   {
    "round": 95,
-   "rating": 1686.5,
+   "rating": 1642.1,
    "kind": "marker",
    "result": "Win",
    "opponent": "Subzero",
@@ -399,7 +397,7 @@
   },
   {
    "round": 96,
-   "rating": 1642.1,
+   "rating": 1588.4,
    "kind": "marker",
    "result": "Loss",
    "opponent": "Bongcloud",
@@ -407,7 +405,7 @@
   },
   {
    "round": 97,
-   "rating": 1588.4,
+   "rating": 1628.5,
    "kind": "marker",
    "result": "Loss",
    "opponent": "Tempo",
@@ -415,7 +413,7 @@
   },
   {
    "round": 98,
-   "rating": 1628.5,
+   "rating": 1670.6,
    "kind": "end",
    "result": "Win",
    "opponent": "hyperfish",

@@ -1057,3 +1057,35 @@ is roughly +-0.067, covering 0.50) — so this ships as a *correctness*
 improvement with a non-negative strength signal, and the r92 tunnel remains
 a live hazard at depth 7. Upload decision is Pino's; both zips are frozen
 and byte-verified.
+
+### 16c. 2026-09-10 — r100 post-mortem (v9k debut loss vs Deep Red): shallow-band endgame collapse, NOT bad luck
+
+**Game.** White vs Deep Red (Sicilian Sveshnikov), mated on move 73 (65 moves
+ours; 249.3s; init 36.8s). SF d26 trajectory: ~equal opening → -1.5 by mv15 →
+-2..-4 (mvs 33-44) → **-7.6 lost at mv45**. Deep Red then threw it back with
+**46...Ra2** (+7.6 → -0.65, 731cp) and our engine found the **only** saving
+line (47.Rd8+ 48.Rb8 = SF's exact top moves) back to 0.00. At mv50 the engine
+played **h3 — the losing move** (SF d26: 0.00 → -6.1; the position's only
+drawing moves are Rb8+/f4/Rb7; every quiet move loses 6-9 pawns), and the
+endgame was gone.
+
+**Repro + attribution.**
+- Fresh-TT fixed-depth probe (`tools/probe_r100_h3.py`, both boxes): m50 pick
+  by depth — **d6-d10: Kxg5 (SF -8.5, our eval ~-0.2 = blind); d11+: Rb7
+  (draw, 0.00)**. h3 itself is never picked from a cold search. **v7ref has the
+  identical band** → not a v9k regression.
+- Warm segment replay through the shipped entry point (`agent.get_move`,
+  exact clocks from the log, one process like a game): #37-#40 reproduced
+  **move-for-move** (incl. the Rd8+/Rb8 save); #41 picked h3 (still 0.00 at
+  that ply per SF), #42 Rb7 (0.00). The comp box played Rb6→h3 on the same
+  two plies — **same candidate set {Rb6, h3, Rb7, Kxg5}, jitter-ordered**;
+  the lottery landed wrong on the one ply where h3 crosses the draw boundary.
+  Consistent with the §16b budget-hazard note (comp box ≈1 depth behind this
+  box at equal time; v9k's bigger trees complete fewer depths).
+- Full PGN replay diverges at ~mv36 (same jitter): the line is not
+  re-derivable move-for-move in this regime.
+
+**Class:** r92 "blunder band ≤2s" family — low-depth search cannot separate
+drawing from losing in razor endgames while its own eval reads ~equal.
+**Not luck; not v9k-specific.** Artifacts: `results/matches/round-100-vs-deep-red.{pgn,log}`,
+`results/leak_reviews/round-100-vs-deep-red.sf16.json`, `tools/probe_r100_h3.py`.
