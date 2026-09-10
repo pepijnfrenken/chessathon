@@ -5,8 +5,10 @@ briefs, raw agent traces, decisions, and evidence — so the process itself can
 be audited, written up, or replayed later.*
 
 - **Repo:** `/home/pino/projects/chessathon` (event: AI Chessathon, London, Sep 2026)
-- **Build day:** 2026-09-07 (all phases below ran that day; ladder rounds r48–r61
-  bracketed them). Upload of the final Phase-4 build: 2026-09-08.
+- **Build days:** 2026-09-07 → 2026-09-10. Day 1 (Sep 7): phases 1a–4 below,
+  with ladder rounds r48–r61 bracketing them; the Phase-4 build was uploaded
+  Sep 8. Days 2–4: the audit batteries + V5 ship, the q5 instrument/fix
+  rounds, and the v6/v7 upload chain — see §2b/§3b below.
 - **Companion docs:** `BUILD.md` (engineering design log — verdicts, gates,
   risks) · `ORIGINALITY.md` (submission law every agent acknowledged) ·
   `docs/research/` (the knowledge base the research workstreams produced).
@@ -28,6 +30,11 @@ fleet of autonomous agents:
 Agents ran as OMP sessions (model via FreeInference/featherless; deepseek
 preferred, qwen fallback) in herdr panes with cwd = repo. Every final report
 acknowledges `ORIGINALITY.md` — the traces show it, per-run.
+
+Later phases added a **Codex lane** (openai-codex fresh-eyes auditors,
+read-only, audits only — never builders/gates/ops; from Sep 9) and
+**tooling** runs that validate an instrument (quality_ab) before it is
+allowed to gate anything.
 
 **Gate tooling (all in `tools/`):** `perft_check.py` (movegen parity vs
 python-chess), `eg_check.py` (won-endgame conversion suite),
@@ -53,6 +60,27 @@ python-chess), `eg_check.py` (won-endgame conversion suite),
 | 3.1 | 16:22–19:47 | Builder (egfix) | `egfix` | `6908a55`, `fc0098e` REVERT, `bcc1efa` | Endgame conversion fixer **REVERTED**: gates regress 0.417/0.396; regression pinned to qsearch stalemate probes, invariant to net scope (v3–v6 gates all ~0.417) |
 | 4 | 19:43–21:00 | Builder + **Auditor** (19:44, parallel, read-only) | `build-phase4`, `audit` | `caede75`, `496b86a`, `49c4c0e` | **SHIPPED — first decisive gate win:** stateful anti-threefold agent + auditor-found qsearch knight-capture fix; **0.750 vs HEAD**, eg_check 8/8, shuffle suite zero threefolds |
 | — | 2026-09-08 | Post-ship investigation | (this conversation) | `tools/replay_pgn.py` | Ladder r61 drawn by threefold (queen shuffle) — classification pending PGN replay: old-build lag vs legitimate defensive draw vs real bug |
+
+---
+
+## 2b. Timeline map — the later phases (Sep 8 → Sep 10)
+
+| # | Window (UTC) | Role / session | Brief | Commits | Verdict (evidence) |
+|---|---|---|---|---|---|
+| A2 | 09-08 12:21–13:46 | Auditors 2-A/2-B/2-C (+ sound resume) | `aud2-sound`, `aud2-strength`, `aud2-prod` | — (read-only) | Reports 09/10/11. 2-A found the EP-capture key corruption (→P7); P8 found by the builder's own all-legal-moves control sweep |
+| B4 | 09-08 13:20–16:00 | Builder round B4 | (in-session) | `73c7d44`, `08d4cb6` + gate logs | P7+P8 fixed with falsification probes; tree A/B null (0.479) → shipped as **V5** on correctness (upload 16:49, sha 6abb1ca1) |
+| A3 | 09-08 14:31 | Auditor 3 (builder-check) | `aud3-builder` | `9162302` (gate logs) | Fix round verified on a fresh snapshot incl. probe sensitivity → report 12 |
+| BA/BB | 09-08 19:17 → 09-09 07:21 | Research brainA / brainB | `brief-brainA/B` | — | Ranked probe menus → reports 06/07 |
+| P4/SEE | 09-08 21:00 → 09-09 00:30 | Builder (in-session) | — | `7c08f42`, `ce5c774` + SEE gates | NULL_DEEP 0.438 → **REVERTED**; SEE 0.438 / SEEPRUNE 0.458 → stay OFF |
+| T | 09-09 07:22–07:47 | Tooling + qab auditor | `q5-tooling`, `q5-tooling2`, `q5-audit-qab` | `89971a6` | `tools/quality_ab.py` built + validated |
+| A2b | 09-09 10:08–12:46 | Auditor round 2 (+resume) | `audit2`, `audit2b` | `a2d7003` (stats patch) | quality_ab design verdict: replay mechanics sound, decision metrics clamp-dominated → report 13 |
+| C1 | 09-09 13:31–16:20 | Builder `clamp1` | `clamp1` | `2a115cd`, `3aaaf99` | COMPCLAMP L1 0.417 → stays default-OFF |
+| CX1 | 09-09 17:08–18:29 | Codex fresh-eyes (round 1) | `codex1` | — (read-only) | Wrong-sign null cutoff; inverted PST; lost root ordering → reports 14/15 |
+| N1 | 09-09 18:33 → 09-10 01:19 | Builder `fix1` (night queue) | `fix1` | `aebee58` … `96d7397` (12 commits) | null 0.708; egfix 0.625; pstflip 1.000; rootorder 0.604; L3 bout night3 vs V5 **12-0**; zips staged |
+| U6 | 09-09 20:39–42 | Operator | — | — | **v6 uploaded** (sha 71c172ee) — null fix live |
+| CX2-4 | 09-09 20:55–23:03 | Codex rounds 2–4 | `codex2/3/4` | — (read-only) | codex2 aborted at launch; codex3 r90 review → report 16; codex4 night re-audit **SHIP-AFTER-FIX-X** → report 17 |
+| U7 | 09-10 06:19–22 | Operator | — | — | **v7 uploaded** = night3 zip (sha d5d57f6a) → Active; release identity verified |
+| H | 09-10 06:21→ | Orchestrator (hygiene) | — | `06782b2`… | Duplicates removed, night evidence backfilled, traces archived, records reconciled; quiet-box shuffle repro — see PROCESS.md §13 |
 
 ---
 
@@ -147,6 +175,62 @@ awaiting match PGN.)*
 
 ---
 
+## 3b. Later phases — why each run happened (Sep 8 → Sep 10)
+
+### Sep 8 — the audit battery and V5
+The Phase-4 ship (Sep 8 morning) put a new build on the ladder, so a
+three-persona audit battery (2-A soundness hawk / 2-B strength skeptic /
+2-C production engineer) ran against the live engine. 2-A found the
+en-passant hash corruption (P7); the builder's own all-legal-moves control
+sweep then found the sibling castling-rights-vanish bug (P8) the battery
+had missed — lesson: test every incremental-hash transition TO the
+absent/zero state. Both were fixed with falsification probes on the unfixed
+tree, and a tree-A/B gate read null (0.479) → **V5 shipped on correctness**
+(upload 16:49). Auditor 3 then verified the fix round on a fresh snapshot
+(the "verify-the-builder" pattern: diff hygiene + independent rerun +
+probe sensitivity) → report 12. That evening brainA/brainB produced the
+ranked probe menus (reports 06/07), and the builder gated P4 NULL_DEEP
+(0.438 → reverted) and SEE ordering/pruning (0.438/0.458 → stays OFF).
+
+### Sep 9 — instrument verdicts and the codex reframe
+quality_ab was built and independently audited; audit round 2's verdict
+(report 13): its replay mechanics are sound but the decision metrics were
+mate-clamp-dominated — hence the L1-L4 stack where L4 alone can never ship
+or kill. `clamp1` built COMPCLAMP behind a default-off toggle, gated to
+L1 0.417 → stays OFF. Then the pivotal event: a cheap codex fresh-eyes pass
+found what in-house replay tooling had missed for a day — a **wrong-sign
+null-move cutoff** (a plain negamax algebra error on one score path), PST
+tables consumed **vertically inverted** (home pawns credited the "advanced"
+row), and root ordering that dropped the previous iteration's best move.
+The codex runtime experiment (182 probes) reproduced the null defect and
+also killed the time-multiplier hypothesis (2× budget repaired zero leaked
+positions).
+
+### Sep 9-10 night — the fix queue, every item gated
+fix1 ran an ordered queue, one fix per commit+gate: null-sign fix → L1
+0.708 (first above-null-band score in project history); insufficient-
+material zeroing fix (KBN-v-K was scored 0; now +875) → 0.625; pawn-PST
+flip (the measured phantom root cause) → L1 1.000 + leak-score collapse
+toward referee truth; root ordering → 0.604 + −53% nodes at fixed depth
+with the same best move. L3 real-clock bout: night3 vs V5 **12-0**,
+color-balanced, zero flags. Zips for night1/2/3 were staged. v6 (null fix)
+uploaded Sep 9 20:42; its first ladder game (r90) was reviewed by codex3 as
+a single tactical miss, NOT leak-family. codex4's night re-audit returned
+SHIP-AFTER-FIX-X = release identity + evidence reconciliation (no engine
+defect found). v7 (night3) uploaded Sep 10 06:19, Active 06:22.
+
+### Sep 10 — hygiene pass
+A full dashboard re-fetch after midnight had written 43 `-vs-unknown.pgn`
+duplicates; r90 review artifacts sat uncommitted; the night det/KBN/eg/
+shuffle evidence lived only in /tmp + session traces; briefs/reports/traces
+were unarchived; one PROCESS §12 line carried a garbled shuffle claim. All
+resolved in the Sep 10 hygiene pass — audit-4's asks, the corrected numbers,
+and the quiet-box shuffle repro (night3 wins the flagged case both colors;
+the V5 control threefolded it; loaded parallel runs flake) are recorded in
+PROCESS.md §13.
+
+---
+
 ## 4. The retrospective — "it broke too many times" (Pino, after Phase 2)
 
 Written into the Phase-3 brief as operational law after Phase 2's
@@ -176,6 +260,34 @@ breakages. Every item below cost real hours:
 9. **Auditors are read-only and parallel:** md5 snapshot → `/tmp` copy →
    independent re-verification — they never write the tree, so their
    findings are trustworthy and their runs can't corrupt the builder's.
+10. **Sign conventions are a first-class audit surface:** when a score-based
+    verdict confuses, check negation on ALL score paths — the codex pass
+    found the wrong-sign null cutoff after months of in-house tooling had
+    missed it. Cheap fresh-eyes reads of independent code beat more
+    in-house instruments.
+11. **Evidence lands in the repo at commit time:** anything a commit message
+    cites (det runs, KBN batteries, shuffle/eg outputs) must be a committed
+    file — not a `/tmp` artifact or a line inside a session trace. The night
+    QA numbers had to be recovered from session JSONLs during the Sep 10
+    hygiene pass; don't make the next reader do that.
+12. **Suites under contention flake:** a 2000 ms shuffle case threefolded
+    while eg_check ran in parallel on the same box; the same case converts
+    cleanly on a quiet box (night3 won it both colors, Sep 10 repro). Run
+    decision-grade suites without concurrent load; re-run flaky cases quiet
+    before classifying them.
+13. **Reconcile numbers against artifacts before writing them into records:**
+    a night-record line claimed "10/12 / V5 control 10/12" while every
+    artifact showed 11/12 with *different* failed cases — a record that
+    rounds off evidence framing invites the next auditor to distrust the
+    whole entry.
+14. **Release identity is byte-level:** dashboard sha == sha256(zip); verify
+    the zip against the gated tree file-by-file AND `git diff` the shipped
+    files since the gated commit. Done for v6/v7 (§13) — the uploaded
+    artifact is traceable to its gate commits.
+15. **Long runs can wedge silently:** real-clock bout drivers froze between
+    games three times; agents error-looped on empty provider output. Poll
+    file mtimes + process CPU, and prefer plain bash liveness loops over
+    hub wait-chains.
 
 ---
 
@@ -185,14 +297,17 @@ breakages. Every item below cost real hours:
   session id appended at the bottom; extracted verbatim from the session's
   first message). `build-p2finish` and `audit` were reused across attempts.
 - `sessions/*.jsonl.gz` — raw OMP session logs (message stream: brief,
-  tool calls, reasoning, final reports). 16 files, 17.1 MB → 3.6 MB
-  gzipped. Read with `zcat file.jsonl.gz | jq -c 'select(.type=="message")'`.
+  tool calls, reasoning, final reports). 39 files: 16 from Sep 7
+  (17.1 MB raw) + 23 from Sep 8-10 (~16 MB raw) → ~6.6 MB gzipped. Read
+  with `zcat file.jsonl.gz | jq -c 'select(.type=="message")'`.
   Originals live in `~/.omp/agent/sessions/-projects-chessathon/`.
-- **Secret scan:** all 16 traces scanned for credential patterns before
+- **Secret scan:** all 39 traces scanned for credential patterns before
   archiving. One regex hit, verified false positive: a public Mixpanel
   meta-tag (`meta-mixpanel-api-key`) scraped from aichessathon.com page
-  content inside a research agent's web output. No keys, tokens, or
-  credentials are present.
+  content inside a research agent's web output. Two Sep 9 sessions contain
+  an *elided* cloudflared token fragment from `ps aux` output
+  (`eyJhIj...aSJ9` — literal ellipsis, not recoverable). No keys, tokens,
+  or credentials are present.
 - Evidence logs: `results/*.log` (gates, eg_check, shuffle, SPRT, repros),
   referenced by commit messages — kept in-repo so every claim in the git
   history is checkable at the same revision.

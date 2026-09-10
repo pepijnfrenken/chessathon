@@ -93,3 +93,15 @@ Order of implementation (01 §1, 02 §6.2, 05 B3):
 | 06 | Brain-A radical search/eval probes | ranked pre-freeze probe menu (read-only research, Sep 8) |
 | 07 | Brain-B meta / wild probes | alternative-approach probe menu + evidence (read-only) |
 | 08 | PST phantom decomposition | the inverted pawn-table root cause + ranked PST ablation spec (Sep 9) |
+| 09 | Audit 2-A — soundness hawk | EP-capture key corruption (P7) + soundness findings (Sep 8) |
+| 10 | Audit 2-B — strength skeptic | ladder/leak-profile strength verdicts (Sep 8) |
+| 11 | Audit 2-C — production engineer | box contract, zip, init-budget findings (Sep 8) |
+| 12 | Audit 3 — builder check | P7+P8 key-fix verification incl. probe sensitivity (Sep 8) |
+| 13 | q5 audit round 2 | quality_ab ship-gate instrument verdict (Sep 9) |
+| 14 | q5 codex1 fresh-eyes | null-sign / PST-inversion / root-ordering findings (Sep 9) |
+| 15 | q5 codex1 experiment | 182-probe runtime A/B/C + time-hypothesis kill (Sep 9) |
+| 16 | q5 codex3 — r90 review | v6's first ladder loss triage (Sep 9) |
+| 17 | q5 codex4 — night2 re-audit | SHIP-AFTER-FIX-X release review (Sep 9) |
+
+Docs 09-17 are the audit/review reports kept verbatim as delivered by the
+agents (referenced from PROCESS.md §10-§13 and BUILD.md).
