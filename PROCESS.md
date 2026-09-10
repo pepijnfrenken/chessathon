@@ -685,7 +685,21 @@ chess-v7-night2-pstflip.zip`), slot available until the Sep 11 10:00 UTC
 freeze if r94+ shows a second Qg5+-motif collapse loss. Artifacts:
 `results/bout_n2_vs_n3/` (18 PGNs + pair logs + SUMMARY.txt).
 
-**Corpus/evidence.** Leak suite 84 → 90 FENs + mate_stratum 20 → 21 (r92 rows
-additive; refresh now a committed tool: `tools/refresh_leak_suite.py`).
+**r93 SF16 review + repro probe (10:00-10:20Z; battery ran after the bout
+cleared the box).** Our 66 moves: 42 best / 6 exc / 8 good / 3 inacc / 4
+mistake / 3 blunder — the 'win, not greatly' signature: m20-24 mistake
+cluster (Rc4 286, Rxc5 193, R1c2 262, Bg5 215 — each bleeding a winning
+position toward +0.9), then m49/m51 blunders Rb8+ (311) + Nb4 (567) slid
++6.45 → +0.78, and m64 e6 gave back the forced mate (mate-clamp stratum,
+still +15.9; converted manually m71-74). 10 bad of 66 = FIRST reviewed win
+outside the 0-4 win band — won on Brokefish's clock collapse (3s by m33).
+Probe at exact budgets (/tmp/r93_probe.py, r92 method): m49 reproduces on v7
+(b7b8) while night2 picks c6b8 — rootorder-class; m51 Nb4 reproduces on BOTH
+trees — shared behavior. Single obs per cell; bout verdict stands — watch
+data for r94+.
+
+**Corpus/evidence.** Leak suite 84 → 96 FENs + mate_stratum 20 → 22 (r92
++6/+1, r93 +6/+1, all additive; refresh now a committed tool:
+`tools/refresh_leak_suite.py`).
 Evidence: `results/probe_r92_collapse.txt` (+ `probe_r92_decomp_v7/v5.json`).
 Repro tool: `tools/probe_r92_collapse.py`.

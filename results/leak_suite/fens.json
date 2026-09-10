@@ -898,5 +898,65 @@
   "verdict": "mistake",
   "eval_before": -1498,
   "fen_before": "6k1/p4pp1/Pp5p/1R1Q4/3BP3/4r1KP/3q2P1/2r5 w - - 0 40"
+ },
+ {
+  "game": "round-93-vs-brokefish",
+  "side": "white",
+  "ply": 24,
+  "san": "Rc4",
+  "cp_loss": 286,
+  "verdict": "mistake",
+  "eval_before": 490,
+  "fen_before": "2r3k1/1p1b2p1/1qn1p3/p1b1Pr1p/3pQ3/5N1P/PP1BBPP1/1RR3K1 w - - 2 20"
+ },
+ {
+  "game": "round-93-vs-brokefish",
+  "side": "white",
+  "ply": 28,
+  "san": "Rxc5",
+  "cp_loss": 193,
+  "verdict": "mistake",
+  "eval_before": 725,
+  "fen_before": "2r3k1/1p1b1rp1/1qn1p3/p1b1P2p/2R1Q3/3p1N1P/PP1BBPP1/2R3K1 w - - 0 22"
+ },
+ {
+  "game": "round-93-vs-brokefish",
+  "side": "white",
+  "ply": 30,
+  "san": "R1c2",
+  "cp_loss": 262,
+  "verdict": "mistake",
+  "eval_before": 565,
+  "fen_before": "2r3k1/1p1b1rp1/1qn1p3/p1R1P2p/4Q3/5N1P/PP1BpPP1/2R3K1 w - - 0 23"
+ },
+ {
+  "game": "round-93-vs-brokefish",
+  "side": "white",
+  "ply": 32,
+  "san": "Bg5",
+  "cp_loss": 215,
+  "verdict": "mistake",
+  "eval_before": 301,
+  "fen_before": "2r3k1/1p1b1rp1/q1n1p3/p1R1P2p/4Q3/5N1P/PPRBpPP1/6K1 w - - 2 24"
+ },
+ {
+  "game": "round-93-vs-brokefish",
+  "side": "white",
+  "ply": 82,
+  "san": "Rb8+",
+  "cp_loss": 311,
+  "verdict": "blunder",
+  "eval_before": 561,
+  "fen_before": "4k3/1R1b4/2N1p1p1/4P2p/p4K1P/8/1P3PP1/3r4 w - - 15 49"
+ },
+ {
+  "game": "round-93-vs-brokefish",
+  "side": "white",
+  "ply": 86,
+  "san": "Nb4",
+  "cp_loss": 567,
+  "verdict": "blunder",
+  "eval_before": 645,
+  "fen_before": "3R4/3b1k2/2N1p1p1/3rP2p/p4K1P/8/1P3PP1/8 w - - 19 51"
  }
 ]

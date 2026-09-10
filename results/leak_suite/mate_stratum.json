@@ -208,5 +208,15 @@
   "verdict": "mistake",
   "eval_before": -29100,
   "fen_before": "8/p3Qppk/Pp5p/1q3K2/4P3/2r4P/6P1/8 w - - 0 45"
+ },
+ {
+  "game": "round-93-vs-brokefish",
+  "side": "white",
+  "ply": 112,
+  "san": "e6",
+  "cp_loss": 26812,
+  "verdict": "blunder",
+  "eval_before": 28400,
+  "fen_before": "8/3K4/7k/4P3/6Pp/P7/6P1/8 w - - 1 64"
  }
 ]
