@@ -1,0 +1,11 @@
+c345 CLEAN determinism — depth 8, 2 procs x 2 runs, fresh NUMBA_CACHE_DIR each
+tree: /tmp/c345-mine (v9k-shipped + c3 + c4 + c5, no tm1)
+fen: r3k2r/ppq1bppp/2p1p3/2P5/P2P4/2B1P3/4QPPP/R4RK1 b kq - 4 18
+--- run 1
+proc: nodes=232561 best=47988 score=-40 depth=8
+proc: nodes=232561 best=47988 score=-40 depth=8
+run1 exit=0
+--- run 2
+proc: nodes=232561 best=47988 score=-40 depth=8
+proc: nodes=232561 best=47988 score=-40 depth=8
+run2 exit=0
