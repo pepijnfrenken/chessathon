@@ -1,0 +1,31 @@
+[13:20:01Z] building
+[13:20:02Z] upload expands to 86,984 bytes
+[13:20:02Z] docker build
+Sending build context to Docker daemon  94.77kB
+
+Step 1/2 : FROM aichessathon/agent-base:latest
+ ---> eeaf64b96a67
+Step 2/2 : COPY . /agent
+ ---> 59a782d337b8
+Successfully built 59a782d337b8
+Successfully tagged aichessathon/agent:16903808-8877-4511-a521-0d61aa3b4d37
+DEPRECATED: The legacy builder is deprecated and will be removed in a future release.
+            Install the buildx component to build images with BuildKit:
+            https://docs.docker.com/go/buildx/
+[13:20:13Z] pushed aichessathon.azurecr.io/agents:16903808-8877-4511-a521-0d61aa3b4d37
+[13:20:13Z] image aichessathon.azurecr.io/agents@sha256:59a782d337b8da2fae0ab865ce3d961d6fead5e75790fad2bf2d5071395570c1
+[13:20:13Z] smoke
+[13:20:13Z] your process is suspended while your opponent moves, so anything you compute between your own moves does not run
+[13:20:13Z] smoke game: 20 plies as white from rnbq1rk1/ppp2ppp/4pn2/3p4/2PP4/P1PBP3/5PPP/R1BQK1NR b KQ - 0 7
+[13:21:18Z] ready in 34.9 s of the 90 s init budget
+[13:21:18Z] played 10 moves, slowest 3.3 s
+[13:21:18Z] game ended draw by ply_cap
+[13:21:18Z] your agent wrote to stderr
+[chessathon] numba warmup 34.0s (init budget ok)
+[13:21:18Z] smoke game: 20 plies as black from r1bq1rk1/2p1bppp/p1np1n2/1p2p3/4P3/PB1P1N2/1PP2PPP/RNBQR1K1 b - - 0 9
+[13:22:23Z] ready in 35.0 s of the 90 s init budget
+[13:22:23Z] played 10 moves, slowest 3.3 s
+[13:22:23Z] game ended draw by ply_cap
+[13:22:23Z] your agent wrote to stderr
+[chessathon] numba warmup 34.1s (init budget ok)
+[13:22:23Z] valid
