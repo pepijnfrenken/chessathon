@@ -1,0 +1,150 @@
+R92 COLLAPSE PROBE — repro + attribution (post-mortem for ladder r92, v7's first loss)
+======================================================================================
+Date: 2026-09-10 ~08:00-09:30 UTC. Ladder runs on the venue; this box ran these probes.
+Game: r92 LOSS 0-1 vs Team I Love Fortnite (White, mated m48). SF16 our-side: 3 blunder
+(Qb3 455, Rb5 407, Ne3 346) + 4 mistake + 6 inacc across 41 moves. Both decisive
+blunders answered by the same motif: ...Qg5+ (SF d20: -657 / -605).
+
+Trees (all gated historical builds, preserved):
+  v7     = /home/pino/projects/chessathon  (night3; byte-verified == uploaded zip d5d57f6a6e4a)
+  night2 = /tmp/chessathon_n3base           (v7 minus the rootorder change; SAME eval)
+  night1 = /tmp/chessathon_n2base           (night2 minus pstflip)
+  v6     = /tmp/chessathon_n1base           (fix1; the pre-night upload)
+  v5ref  = /tmp/chessathon_v5ref            (V5 @3aaaf99)
+
+Probe: tools/probe_r92_collapse.py — exact in-game budgets (tl=64.754s / 63.313s;
+budget = tl//45+500 = 1938ms / 1907ms). Real game moves: m35 d5b3 (Qb3), m36 b4b5 (Rb5).
+
+RESULT SUMMARY
+- v7 exact-budget: plays BOTH collapse moves — 4/4 clean observations, zero crossovers
+  (this file + matched reps; earlier exploratory runs consistent).
+- night2: avoids BOTH (e5d3 / h3h4) — 4/4 observations.  <-- key attribution signal
+- v6 / night1 / v5ref: avoid both (1-2 obs each; v5ref 2/2).
+- v7 budget sweep: blunder band <=2s; avoided at >=3s (both positions) -> shallow-
+  horizon artifact; deeper search resolves it. Non-monotonic (nps-lottery flavor).
+- Blind test (black to move after our blunder): v7 FINDS e7g5 (Qg5+) at 1.1s; the
+  older trees miss it (c1e1) after Qb3. The motif is known; the white-side search
+  doesn't reach it at ~1.9s.
+
+NOTE (honest limits): first call after warmup overran its budget (~3.2-3.7s wall on
+the 1938ms budget call; depth v7=d7 vs others=d6) — the harness is a match, not a
+per-ms replica; the crossover (v7 blunders / night2 avoids) survived 3+3 fresh
+matched reps. Machine-parity limit applies as always.
+
+====================================================================================
+SECTION A — SF d20 refutation lines (/tmp/r92_sf_refute.py, stockfish 20)
+====================================================================================
+=== m35 position (we to move) ===
+SF eval: -159 | best line: Kh2 Rd8 Ng6 Qc7+ Be5
+after Qb3: -657 | Qb3 ... Qg5+ Ng4 Qd2 Qf3 Qxb4
+after Nd3: -250 | Nd3 ... Rd1 Nf2 Rc3+ Kh2 Qxb4
+after Kh2: -180 | Kh2 ... Rd8 Ng6 Qc7+ Be5 Rxd5
+
+=== m36 position (we to move) ===
+SF eval: -190 | best line: Kh2 Rd2 Nf3 Re2 Rc4
+after Rb5: -605 | Rb5 ... Qg5+ Ng4 Qd2 Qf3 Qxd4
+after Kh2: -197 | Kh2 ... Rd2 Nf3 Re2 Rc4 Qe6
+
+
+====================================================================================
+SECTION B — attribution chain, one run per tree (all output captured)
+====================================================================================
+########## v7 (/home/pino/projects/chessathon) sweep=1
+[chessathon] numba warmup 46.3s (init budget ok)
+=== r92 collapse probe [/home/pino/projects/chessathon] ===
+[chessathon] slow move: 3570ms (budget 1938ms), depth 7
+m35 before Qb3: static=103 | real=d5b3 | exact-budget pick=d5b3 (3.57s) [SAME-as-game]
+    1000ms -> d5b3 (1.00s)
+    2000ms -> d5b3 (2.00s)
+    3000ms -> e5d3 (3.00s)
+    5000ms -> e5d3 (5.00s)
+    10000ms -> e5d3 (10.00s)
+    25000ms -> e5d3 (25.00s)
+m36 before Rb5: static=102 | real=b4b5 | exact-budget pick=b4b5 (1.91s) [SAME-as-game]
+    1000ms -> h3h4 (1.00s)
+    2000ms -> h3h4 (2.00s)
+    3000ms -> g3h2 (3.00s)
+    5000ms -> g3h2 (5.00s)
+    10000ms -> g3h2 (10.00s)
+    25000ms -> g3h2 (25.00s)
+after Qb3 (black to move; SF says Qg5+): static(mover=black)=-94 | pick=e7g5 (1.09s)
+after Rb5 (black to move; SF says Qg5+): static(mover=black)=-103 | pick=e7g5 (1.07s)
+
+########## v5ref (/tmp/chessathon_v5ref) sweep=0
+[chessathon] numba warmup 48.5s (init budget ok)
+=== r92 collapse probe [/tmp/chessathon_v5ref] ===
+[chessathon] slow move: 3176ms (budget 1938ms), depth 6
+m35 before Qb3: static=-18 | real=d5b3 | exact-budget pick=e5d3 (3.18s) [different]
+m36 before Rb5: static=-20 | real=b4b5 | exact-budget pick=b4a4 (1.91s) [different]
+after Qb3 (black to move; SF says Qg5+): static(mover=black)=27 | pick=c1e1 (1.09s)
+after Rb5 (black to move; SF says Qg5+): static(mover=black)=18 | pick=e7g5 (1.07s)
+
+########## v6 (/tmp/chessathon_n1base) sweep=0
+[chessathon] numba warmup 47.6s (init budget ok)
+=== r92 collapse probe [/tmp/chessathon_n1base] ===
+[chessathon] slow move: 3315ms (budget 1938ms), depth 6
+m35 before Qb3: static=-18 | real=d5b3 | exact-budget pick=e5d3 (3.32s) [different]
+m36 before Rb5: static=-20 | real=b4b5 | exact-budget pick=h3h4 (1.91s) [different]
+after Qb3 (black to move; SF says Qg5+): static(mover=black)=27 | pick=c1e1 (1.09s)
+after Rb5 (black to move; SF says Qg5+): static(mover=black)=18 | pick=e7g5 (1.07s)
+
+########## night1 (/tmp/chessathon_n2base) sweep=0
+[chessathon] numba warmup 46.2s (init budget ok)
+=== r92 collapse probe [/tmp/chessathon_n2base] ===
+[chessathon] slow move: 3360ms (budget 1938ms), depth 6
+m35 before Qb3: static=-18 | real=d5b3 | exact-budget pick=e5d3 (3.36s) [different]
+m36 before Rb5: static=-20 | real=b4b5 | exact-budget pick=b4a4 (1.91s) [different]
+after Qb3 (black to move; SF says Qg5+): static(mover=black)=27 | pick=c1e1 (1.09s)
+after Rb5 (black to move; SF says Qg5+): static(mover=black)=18 | pick=e7g5 (1.07s)
+
+########## night2 (/tmp/chessathon_n3base) sweep=0
+[chessathon] numba warmup 49.7s (init budget ok)
+=== r92 collapse probe [/tmp/chessathon_n3base] ===
+[chessathon] slow move: 3268ms (budget 1938ms), depth 6
+m35 before Qb3: static=103 | real=d5b3 | exact-budget pick=e5d3 (3.27s) [different]
+m36 before Rb5: static=102 | real=b4b5 | exact-budget pick=h3h4 (1.91s) [different]
+after Qb3 (black to move; SF says Qg5+): static(mover=black)=-94 | pick=c1e1 (1.09s)
+after Rb5 (black to move; SF says Qg5+): static(mover=black)=-103 | pick=e7g5 (1.07s)
+
+ALL-DONE
+
+
+====================================================================================
+SECTION C — matched fresh-process reps: v7 vs night2 (3 each, alternating)
+====================================================================================
+[chessathon] numba warmup 48.6s (init budget ok)
+[chessathon] slow move: 3740ms (budget 1938ms), depth 7
+REP v7-#1: m35=d5b3 m36=b4b5
+[chessathon] numba warmup 49.4s (init budget ok)
+[chessathon] slow move: 3648ms (budget 1938ms), depth 6
+REP night2-#1: m35=e5d3(diff) m36=h3h4(diff)
+[chessathon] numba warmup 48.7s (init budget ok)
+[chessathon] slow move: 3771ms (budget 1938ms), depth 7
+REP v7-#2: m35=d5b3 m36=b4b5
+[chessathon] numba warmup 47.2s (init budget ok)
+[chessathon] slow move: 3625ms (budget 1938ms), depth 6
+REP night2-#2: m35=e5d3(diff) m36=h3h4(diff)
+[chessathon] numba warmup 48.1s (init budget ok)
+[chessathon] slow move: 3647ms (budget 1938ms), depth 7
+REP v7-#3: m35=d5b3 m36=b4b5
+[chessathon] numba warmup 46.8s (init budget ok)
+[chessathon] slow move: 3509ms (budget 1938ms), depth 6
+REP night2-#3: m35=e5d3(diff) m36=h3h4(diff)
+DONE-REPS
+
+====================================================================================
+SECTION D — eval decomposition (mover POV; v7 vs v5ref on the three collapse FENs)
+====================================================================================
+m35-before-Qb3: total 103 vs -18 (mover POV) | pst PAWN [20, 15] vs [-80, -150] | pst KNIGHT [20, 20] vs [20, 20] | pst KING [0, 30] vs [0, 30] | mobility [96, 30] vs [96, 30] | king_safety [-40, -16] vs [-40, -16]
+m36-before-Rb5: total 102 vs -20 (mover POV) | pst PAWN [20, 15] vs [-80, -150] | pst KNIGHT [20, 20] vs [20, 20] | pst KING [0, 30] vs [0, 30] | mobility [96, 34] vs [96, 34] | king_safety [-40, -16] vs [-40, -16]
+m34-before-Kg3: total 126 vs 5 (mover POV) | pst PAWN [20, 15] vs [-80, -150] | pst KNIGHT [20, 20] vs [20, 20] | pst KING [10, 10] vs [10, 10] | mobility [96, 44] vs [96, 44] | king_safety [-24, -12] vs [-24, -12]
+
+(night2 shares v7's eval exactly — the +121..+126 swing vs v5ref is entirely the
+night2 pawn-PST flip: pawn term drops from [-80,-150] to [+20,+15] in these positions.
+The flip is the gated-correct table (1.000 sweep vs night1); in this structure its
+advanced-pawn credit feeds an optimistic leaf eval at horizon depth.)
+
+====================================================================================
+SECTION E — bout (decision instrument): results/bout_n2_vs_n3/ — 9 pairs x 2 games,
+night2 vs v7 @ 120s+0.5 ladder-TC emulation. Started 2026-09-10 09:17Z. Result:
+pending at file creation (see PROCESS 14 + pair logs).

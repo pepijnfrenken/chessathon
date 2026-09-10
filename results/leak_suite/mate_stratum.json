@@ -198,5 +198,15 @@
   "verdict": "mistake",
   "eval_before": -29400,
   "fen_before": "1R4Q1/1p6/pB2p3/Pk1pP3/5P2/4K3/8/8 b - - 2 76"
+ },
+ {
+  "game": "round-92-vs-team-i-love-fortnite",
+  "side": "white",
+  "ply": 76,
+  "san": "Kf4",
+  "cp_loss": 300,
+  "verdict": "mistake",
+  "eval_before": -29100,
+  "fen_before": "8/p3Qppk/Pp5p/1q3K2/4P3/2r4P/6P1/8 w - - 0 45"
  }
 ]

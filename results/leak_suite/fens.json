@@ -838,5 +838,65 @@
   "verdict": "blunder",
   "eval_before": 1322,
   "fen_before": "8/8/8/5pp1/Rp3k1p/p6P/1r3PK1/8 b - - 3 50"
+ },
+ {
+  "game": "round-92-vs-team-i-love-fortnite",
+  "side": "white",
+  "ply": 54,
+  "san": "Kg3",
+  "cp_loss": 180,
+  "verdict": "mistake",
+  "eval_before": 0,
+  "fen_before": "2r3k1/p1q2pp1/Pp5p/3QN3/1R1BP3/7P/6PK/2r5 w - - 2 34"
+ },
+ {
+  "game": "round-92-vs-team-i-love-fortnite",
+  "side": "white",
+  "ply": 56,
+  "san": "Qb3",
+  "cp_loss": 455,
+  "verdict": "blunder",
+  "eval_before": -180,
+  "fen_before": "2r3k1/p3qpp1/Pp5p/3QN3/1R1BP3/6KP/6P1/2r5 w - - 4 35"
+ },
+ {
+  "game": "round-92-vs-team-i-love-fortnite",
+  "side": "white",
+  "ply": 58,
+  "san": "Rb5",
+  "cp_loss": 407,
+  "verdict": "blunder",
+  "eval_before": -193,
+  "fen_before": "6k1/p3qpp1/Pp5p/4N3/1R1BP3/1Q4KP/2r3P1/2r5 w - - 6 36"
+ },
+ {
+  "game": "round-92-vs-team-i-love-fortnite",
+  "side": "white",
+  "ply": 62,
+  "san": "Ne3",
+  "cp_loss": 346,
+  "verdict": "blunder",
+  "eval_before": -644,
+  "fen_before": "6k1/p4pp1/Pp5p/1R6/3BP1N1/1Q4KP/2rq2P1/2r5 w - - 10 38"
+ },
+ {
+  "game": "round-92-vs-team-i-love-fortnite",
+  "side": "white",
+  "ply": 64,
+  "san": "Qd5",
+  "cp_loss": 210,
+  "verdict": "mistake",
+  "eval_before": -1043,
+  "fen_before": "6k1/p4pp1/Pp5p/1R6/3BP3/1Qr1N1KP/3q2P1/2r5 w - - 12 39"
+ },
+ {
+  "game": "round-92-vs-team-i-love-fortnite",
+  "side": "white",
+  "ply": 66,
+  "san": "Bxe3",
+  "cp_loss": 181,
+  "verdict": "mistake",
+  "eval_before": -1498,
+  "fen_before": "6k1/p4pp1/Pp5p/1R1Q4/3BP3/4r1KP/3q2P1/2r5 w - - 0 40"
  }
 ]

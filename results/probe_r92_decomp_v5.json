@@ -1,0 +1,245 @@
+[
+ {
+  "phase": 16,
+  "forced_zero": false,
+  "mg": -19,
+  "eg": -46,
+  "tapered_pretampo": -28,
+  "groups_mg_eg": {
+   "material": [
+    50,
+    50
+   ],
+   "pst": {
+    "PAWN": [
+     -80,
+     -150
+    ],
+    "KNIGHT": [
+     20,
+     20
+    ],
+    "BISHOP": [
+     10,
+     10
+    ],
+    "ROOK": [
+     0,
+     0
+    ],
+    "QUEEN": [
+     5,
+     5
+    ],
+    "KING": [
+     0,
+     30
+    ]
+   },
+   "pawn_struct": [
+    0,
+    -24
+   ],
+   "mobility": [
+    96,
+    30
+   ],
+   "king_safety": [
+    -40,
+    -16
+   ],
+   "bishop_pair": [
+    0,
+    0
+   ],
+   "tropism": [
+    0,
+    0
+   ],
+   "tempo": [
+    10,
+    10
+   ]
+  },
+  "kings": {
+   "white": {
+    "sq64": 22,
+    "algebraic_from": 22,
+    "king_mg_raw": -40,
+    "king_eg_raw": -10
+   },
+   "black": {
+    "sq64": 6,
+    "algebraic_from": 62,
+    "king_mg_raw": -40,
+    "king_eg_raw": -40
+   }
+  },
+  "id": "m35-before-Qb3",
+  "fen": "2r3k1/p3qpp1/Pp5p/3QN3/1R1BP3/6KP/6P1/2r5 w - - 4 35",
+  "side": "?",
+  "eval_mover_pov": -18
+ },
+ {
+  "phase": 16,
+  "forced_zero": false,
+  "mg": -20,
+  "eg": -49,
+  "tapered_pretampo": -30,
+  "groups_mg_eg": {
+   "material": [
+    50,
+    50
+   ],
+   "pst": {
+    "PAWN": [
+     -80,
+     -150
+    ],
+    "KNIGHT": [
+     20,
+     20
+    ],
+    "BISHOP": [
+     10,
+     10
+    ],
+    "ROOK": [
+     0,
+     0
+    ],
+    "QUEEN": [
+     0,
+     0
+    ],
+    "KING": [
+     0,
+     30
+    ]
+   },
+   "pawn_struct": [
+    0,
+    -24
+   ],
+   "mobility": [
+    96,
+    34
+   ],
+   "king_safety": [
+    -40,
+    -16
+   ],
+   "bishop_pair": [
+    0,
+    0
+   ],
+   "tropism": [
+    0,
+    0
+   ],
+   "tempo": [
+    10,
+    10
+   ]
+  },
+  "kings": {
+   "white": {
+    "sq64": 22,
+    "algebraic_from": 22,
+    "king_mg_raw": -40,
+    "king_eg_raw": -10
+   },
+   "black": {
+    "sq64": 6,
+    "algebraic_from": 62,
+    "king_mg_raw": -40,
+    "king_eg_raw": -40
+   }
+  },
+  "id": "m36-before-Rb5",
+  "fen": "6k1/p3qpp1/Pp5p/4N3/1R1BP3/1Q4KP/2r3P1/2r5 w - - 6 36",
+  "side": "?",
+  "eval_mover_pov": -20
+ },
+ {
+  "phase": 16,
+  "forced_zero": false,
+  "mg": 19,
+  "eg": -53,
+  "tapered_pretampo": -5,
+  "groups_mg_eg": {
+   "material": [
+    50,
+    50
+   ],
+   "pst": {
+    "PAWN": [
+     -80,
+     -150
+    ],
+    "KNIGHT": [
+     20,
+     20
+    ],
+    "BISHOP": [
+     10,
+     10
+    ],
+    "ROOK": [
+     0,
+     0
+    ],
+    "QUEEN": [
+     5,
+     5
+    ],
+    "KING": [
+     10,
+     10
+    ]
+   },
+   "pawn_struct": [
+    0,
+    -24
+   ],
+   "mobility": [
+    96,
+    44
+   ],
+   "king_safety": [
+    -24,
+    -12
+   ],
+   "bishop_pair": [
+    0,
+    0
+   ],
+   "tropism": [
+    0,
+    0
+   ],
+   "tempo": [
+    10,
+    10
+   ]
+  },
+  "kings": {
+   "white": {
+    "sq64": 15,
+    "algebraic_from": 15,
+    "king_mg_raw": -30,
+    "king_eg_raw": -30
+   },
+   "black": {
+    "sq64": 6,
+    "algebraic_from": 62,
+    "king_mg_raw": -40,
+    "king_eg_raw": -40
+   }
+  },
+  "id": "m34-before-Kg3",
+  "fen": "2r3k1/p1q2pp1/Pp5p/3QN3/1R1BP3/7P/6PK/2r5 w - - 2 34",
+  "side": "?",
+  "eval_mover_pov": 5
+ }
+]

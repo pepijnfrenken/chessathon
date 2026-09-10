@@ -19,12 +19,18 @@ flip + root-best ordering), uploaded Sep 10 06:19Z, ACTIVE from 06:22Z.
 flags)** — grind-then-finish: +1 pawn from the Nxd4/Bxb5 trade, queen trade
 m17, rook endgame ground down (+4 pawns), a-pawn promotion, then QUEEN SAC
 Qxg1+ forcing Rh1#; mate played at 0.0s/move (precomputed). Full ship
-record + release identity: §13. v6 (null fix) was live Sep 9 20:42Z → r90; V5 before it (r70-89). **Authoritative ladder record (PGN headers × platform export, cross-checked 2026-09-10, 0
+record + release identity: §13. **r92: LOSS vs Team I Love Fortnite (1-0 as
+White, mated m48; committed 0cbd1be)** — first v7 leak-family game: SF16
+flags 3 our-side blunders (Qb3 455, Rb5 407, Ne3 346); both decisive ones
+reproduce in the lab at exact game budgets and trace to the night3 rootorder
+search-order change — full post-mortem + repro + the real-clock night2-vs-v7
+bout: **§14**. v6 (null fix) was live Sep 9 20:42Z → r90; V5 before it (r70-89). **Authoritative ladder record (PGN headers × platform export, cross-checked 2026-09-10, 0
 mismatches; supersedes every earlier tally incl. the wrong "r87/r88
-losses" reading):** r48-91 = **20W-10D-14L** — v1/v2 era r48-60 3W-5D-5L ·
+losses" reading):** r48-92 = **20W-10D-15L** — v1/v2 era r48-60 3W-5D-5L ·
 v3/v4 r61-69 5W-2D-2L · **V5 r70-89 11W-3D-6L** · v6 r90 0-0-1 (single
-tactical miss, not leak-family) · **v7 r91 1-0-0 — reviewed clean: 54/56
-moves good-or-better, both flags are won-position artifacts**. Leak-family losses with committed SF16
+tactical miss, not leak-family) · **v7 r91-r92 1-1 — r91 reviewed clean (54/56
+moves good-or-better, both flags won-position artifacts); r92 = the repro'd
+collapse, §14**. Leak-family losses with committed SF16
 reviews = r64/r68/r70/r74/r76/r83 — each carries 5-20 SF-visible bad moves
 vs 0-4 for reviewed wins/draws; r85/r87/r88/r89 await reviews (r90 =
 reviewed, single tactical miss, not leak-family).
@@ -624,3 +630,48 @@ Sep 10 06:22Z.
 codex4 — idle, no work in flight); the pre-freeze instruments not yet run
 for v7 (ask 4 above); freeze Sep 11 10:00 UTC; ladder rounds hourly
 07:00-21:00 UTC.
+
+## 14. 2026-09-10 — r92 post-mortem: v7's first loss reproduces in the lab; rootorder A/B bout
+
+**Game.** r92 LOSS 0-1 vs Team I Love Fortnite (White, mated m48; committed
+0cbd1be). SF16 on our 41 moves: 17 best/7 exc/4 good/13 bad — **3 blunder**
+(m35 Qb3 455, m36 Rb5 407, m38 Ne3 346), 4 mistake (incl m34 Kg3 180), 6
+inacc. Arc: dead equal (0.00) through m33 → m34 Kg3 → m35 Qb3 (−635) →
+black's gift R8c2 (−442; we re-blundered instantly) → m36 Rb5 (−600) →
+cascade to mate. Both decisive blunders fall to the same motif: ...Qg5+
+queen infiltration (SF d20 −657/−605). Clock never a factor (avg 2.1s/move;
+slowest move of the whole game 4.3s; 54.4s left at mate — the deep look that
+resolves the position (≥3s, see repro) was never spent).
+
+**Repro** (`tools/probe_r92_collapse.py` @ exact game budgets tl=64754/63313ms;
+budget = tl//45+500 = 1.94/1.91s). v7 plays BOTH collapse moves (d5b3/b4b5) —
+4/4 clean observations, zero crossovers. **night2 (v7 minus rootorder; SAME
+eval) avoids BOTH (e5d3/h3h4) 4/4.** v6/night1/v5ref avoid (1-2 obs each).
+Budget sweep on v7: blunder band ≤2s, avoided at ≥3s → shallow-horizon
+artifact of the ~2s regime; deeper search resolves it. Blind test: v7 as
+black FINDS e7g5 (Qg5+) at 1.1s — the motif is known to the engine; the
+white-side search just doesn't reach it at its budget. Eval decomposition:
+the entire v7-vs-V5 static delta in these positions is the night2 pawn-PST
+flip (pawn term [−80,−150] → [+20,+15]; totals −18/−20 → +103/+102 where SF
+truth is −159/−190) — the gated-correct table feeding a horizon-limited leaf
+eval.
+
+**Attribution.** Only engine diff v7 vs night2 = the night3 rootorder
+one-liner (prev-iteration best move into the ttmove slot; −53% nodes; gate
+0.604 @500ms — the weakest gate of the chain). night2 avoids both collapse
+moves in the lab. **Real-clock A/B bout launched (`results/bout_n2_vs_n3/`):
+night2 vs v7, 9 pairs × 2 games @120s+0.5 ladder-TC emulation — result
+pending; this is the decision instrument for a possible revert.** (§13's
+pre-declared rollback target was v6; the sharper cut is rootorder-only — v6
+would throw away the pstflip, the 1.000-gate win, which nothing indicates.)
+
+**Decision stance (pre-bout):** stay on v7; revert to night2 only if the
+bout shows night2 ≥ v7 at real clocks — then upload before the Sep 11
+10:00 UTC freeze (slots available). Watch: remaining rounds r93+ hourly — a
+repeat leak-family collapse in this motif-class re-opens with more ladder
+data.
+
+**Corpus/evidence.** Leak suite 84 → 90 FENs + mate_stratum 20 → 21 (r92 rows
+additive; refresh now a committed tool: `tools/refresh_leak_suite.py`).
+Evidence: `results/probe_r92_collapse.txt` (+ `probe_r92_decomp_v7/v5.json`).
+Repro tool: `tools/probe_r92_collapse.py`.
