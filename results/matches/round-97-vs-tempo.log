@@ -1,0 +1,66 @@
+AI CHESSATHON MATCH LOG
+=======================
+
+MATCH
+  Round          Rated 97
+  Team           En Passant Labs
+  Colour         White
+  Opponent       Tempo
+  Opening        Grunfeld Defence
+  Start FEN      rnbqk2r/ppp1ppbp/6p1/8/3PP3/2P1B3/P4PPP/R2QKBNR b KQkq - 2 7
+  You moved      Second
+  Machine        w-4e8c1d
+  Finished       2026-09-10 13:22:28 UTC
+  Match ID       bbc10967-64b3-4336-8fdd-27dfc21f2608
+
+INIT
+  Ready in       37.9 s
+  Budget         90.0 s
+  Used           42 percent
+
+CLOCK
+  Base           120.0 s plus 0.5 s per move
+  Moves          24
+  Time used      52.0 s
+  Slowest        4.3 s on move 1
+  Fastest        0.0 s on move 23
+  Average        2.2 s
+  Left at end    80.0 s
+
+RESULT
+  Lost by checkmate
+  Game lasted 117.5 s
+
+MOVES
+    #  move          time     clock left
+    1  Nf3           4.3 s      116.2 s
+    2  Bc4           3.1 s      113.6 s
+    3  Qb3           3.0 s      111.1 s
+    4  gxf3          3.0 s      108.6 s
+    5  cxd4          2.9 s      106.2 s
+    6  Rd1           2.9 s      103.8 s
+    7  Bxd4          2.8 s      101.5 s
+    8  Qxb7          2.8 s       99.3 s
+    9  Qb4           2.7 s       97.1 s
+   10  Ke2           2.7 s       94.9 s
+   11  Bb5           2.6 s       92.8 s
+   12  Qa4           2.6 s       90.7 s
+   13  Bd3           2.5 s       88.7 s
+   14  Bc2           2.5 s       86.7 s
+   15  Rd2           2.4 s       84.8 s
+   16  Rhd1          2.4 s       82.9 s
+   17  Ke1           2.3 s       81.1 s
+   18  Re2           2.3 s       79.3 s
+   19  Rd8+          2.3 s       77.5 s
+   20  Rxc2          0.0 s       78.0 s
+   21  Kf1           0.0 s       78.5 s
+   22  Rc1           0.0 s       79.0 s
+   23  Ke1           0.0 s       79.5 s
+   24  Kd1           0.0 s       80.0 s
+
+OUTPUT
+  49 bytes on stderr
+
+  [chessathon] numba warmup 36.9s (init budget ok)
+
+Email hello@aichessathon.com with this file if anything here is unclear.

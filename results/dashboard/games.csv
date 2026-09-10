@@ -1,4 +1,5 @@
 round,colour,opponent,result,termination,init_s,moves,time_used_s,slowest_s,fastest_s,average_s,clock_left_s,machine,finished_at
+Rated 97,White,Tempo,Loss,Checkmate,37.9,24,52.0,4.3,0.0,2.2,80.0,w-4e8c1d,2026-09-10T13:22:28.726523+00:00
 Rated 96,Black,Bongcloud,Loss,Checkmate,42.6,52,102.1,4.4,0.0,2.0,43.9,w-94416c,2026-09-10T12:21:20.963329+00:00
 Rated 95,White,Subzero,Win,Checkmate,43.5,48,93.4,4.4,0.0,1.9,50.6,w-443d0d,2026-09-10T11:22:57.361199+00:00
 Rated 94,Black,tal,Win,Checkmate,36.1,33,73.3,4.2,0.0,2.2,63.2,w-bf0e55,2026-09-10T10:25:16.359558+00:00
