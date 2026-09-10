@@ -1,0 +1,13 @@
+q5-v8dp determinism — fixed-depth node identity, fresh process + fresh NUMBA_CACHE_DIR per run
+date: 2026-09-10T10:49:51Z git: 590f5ff
+fen: r3k2r/ppq1bppp/2p1p3/2P5/P2P4/2B1P3/4QPPP/R4RK1 b kq - 4 18  depth: 8
+
+--- run 1 (fresh cache /tmp/v8dp_det1)
+proc: nodes=228055 best=47988 score=-46 depth=8
+proc: nodes=228055 best=47988 score=-46 depth=8
+run1 exit=0
+
+--- run 2 (fresh cache /tmp/v8dp_det2)
+proc: nodes=228055 best=47988 score=-46 depth=8
+proc: nodes=228055 best=47988 score=-46 depth=8
+run2 exit=0

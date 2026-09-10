@@ -1,0 +1,19 @@
+q5-v8dp BATTERY — all on the candidate tree (FILE_SQ[f] fix), one engine workload at a time
+date: 2026-09-10T11:27:39Z  git: 590f5ff
+control tree: /tmp/chessathon-v7ref = 'git archive dbf8958' (v7, the live build)
+
+1) perft ............ results/v8dp_perft.log        -> ALL PASS (6 positions d1-5 vs published + python-chess oracle + move-type breakdowns)
+2) determinism ...... results/v8dp_det.log          -> 228055 nodes x2 procs x2 runs w/ fresh NUMBA_CACHE_DIR, best=47988 score=-46
+3) decompose parity . results/v8dp_decompose.log    -> 125/125 exact (98 leak FENs + 22-23 mate FENs + 4 standard)
+   tool: tools/check_decompose_parity.py
+4) eg_check ......... results/v8dp_eg_check.log      -> candidate @300ms 7/8 (KPK-b DRAW)
+                      results/v8dp_eg_v7ref_300.log  -> v7ref    @300ms 7/8 (KPK-b DRAW)  [IDENTICAL verdicts]
+                      results/v8dp_eg_check_2000.log -> candidate @2000ms 6/8 (KPK-w + KPK-b DRAW)
+                      results/v8dp_eg_v7ref_2000.log-> v7ref    @2000ms 7/8 (KPK-b DRAW)
+                      KPK is the 100cp<500cp-adjudication boundary cell and flips on BOTH builds (wall-clock budget => depth depends on machine timing). No build-specific signal.
+5) shuffle @500ms ... results/v8dp_shuffle.log       -> candidate 11/12, ZERO threefolds
+                      results/v8dp_shuffle_v7ref.log-> v7ref     11/12, ZERO threefolds
+                      both fail only the KPK cell, in opposite colours.
+6) r92 tunnel ....... results/v8dp_r92_probe.txt    -> both collapse moves still reproduce at exact game budget; avoided >=3s; black still finds e7g5 at ~1.08s. Audit prediction (no change) confirmed.
+
+v7-era reference artifacts for the shuffle/eg comparisons: results/night_evidence/
