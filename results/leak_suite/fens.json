@@ -958,5 +958,25 @@
   "verdict": "blunder",
   "eval_before": 645,
   "fen_before": "3R4/3b1k2/2N1p1p1/3rP2p/p4K1P/8/1P3PP1/8 w - - 19 51"
+ },
+ {
+  "game": "round-94-vs-tal",
+  "side": "black",
+  "ply": 38,
+  "san": "Qg1+",
+  "cp_loss": 342,
+  "verdict": "blunder",
+  "eval_before": 1339,
+  "fen_before": "6k1/pp5p/4prp1/2p5/B7/P1PP2b1/1P2Q2q/R2K4 b - - 3 26"
+ },
+ {
+  "game": "round-94-vs-tal",
+  "side": "black",
+  "ply": 42,
+  "san": "e5",
+  "cp_loss": 265,
+  "verdict": "mistake",
+  "eval_before": 1221,
+  "fen_before": "6k1/pp5p/4prp1/2p5/B7/PKPP2b1/1P2Q3/q7 b - - 1 28"
  }
 ]
