@@ -1,4 +1,5 @@
 round,colour,opponent,result,termination,init_s,moves,time_used_s,slowest_s,fastest_s,average_s,clock_left_s,machine,finished_at
+Rated 92,White,Team I Love Fortnite,Loss,Checkmate,36.6,41,86.1,4.3,0.0,2.1,54.4,w-4552ec,2026-09-10T08:24:56.872878+00:00
 Rated 91,Black,Epoch & Mate,Win,Checkmate,36.0,56,103.6,4.2,0.0,1.9,44.4,w-4552ec,2026-09-10T07:30:49.764327+00:00
 Rated 90,Black,Chessbuster 9000,Loss,Checkmate,34.4,59,109.3,4.1,0.0,1.9,40.2,w-460910,2026-09-09T21:25:20.71612+00:00
 Rated 89,White,Team7347,Loss,Checkmate,37.5,54,105.8,4.3,0.0,2.0,41.2,w-4b43cf,2026-09-09T20:26:52.749934+00:00

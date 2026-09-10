@@ -1,0 +1,83 @@
+AI CHESSATHON MATCH LOG
+=======================
+
+MATCH
+  Round          Rated 92
+  Team           En Passant Labs
+  Colour         White
+  Opponent       Team I Love Fortnite
+  Opening        Italian Game
+  Start FEN      r1bqk2r/ppp2ppp/1bnp1n2/4p3/PPB1P3/2PP1N2/5PPP/RNBQK2R b KQkq - 0 7
+  You moved      Second
+  Machine        w-4552ec
+  Finished       2026-09-10 08:24:56 UTC
+  Match ID       0e054a1b-9da1-448b-893f-a7d99d163cc9
+
+INIT
+  Ready in       36.6 s
+  Budget         90.0 s
+  Used           41 percent
+
+CLOCK
+  Base           120.0 s plus 0.5 s per move
+  Moves          41
+  Time used      86.1 s
+  Slowest        4.3 s on move 1
+  Fastest        0.0 s on move 41
+  Average        2.1 s
+  Left at end    54.4 s
+
+RESULT
+  Lost by checkmate
+  Game lasted 208.1 s
+
+MOVES
+    #  move          time     clock left
+    1  O-O           4.3 s      116.2 s
+    2  Bg5           3.1 s      113.6 s
+    3  a5            3.0 s      111.1 s
+    4  Rxf2          3.0 s      108.7 s
+    5  Kxf2          2.9 s      106.2 s
+    6  Be3           2.9 s      103.9 s
+    7  Nbd2          2.8 s      101.6 s
+    8  Nxc4          2.8 s       99.3 s
+    9  b5            2.7 s       97.1 s
+   10  Qb3           2.7 s       94.9 s
+   11  Ra2           2.6 s       92.8 s
+   12  a6            2.6 s       90.8 s
+   13  Rb2           2.5 s       88.7 s
+   14  Kg1           2.5 s       86.8 s
+   15  bxc6          2.4 s       84.8 s
+   16  Qb5           2.4 s       82.9 s
+   17  Kh1           2.3 s       81.1 s
+   18  h3            2.3 s       79.3 s
+   19  Qd5           2.3 s       77.5 s
+   20  Rb4           2.2 s       75.8 s
+   21  d4            2.2 s       74.1 s
+   22  dxe5          2.1 s       72.5 s
+   23  Nfxe5         2.1 s       70.9 s
+   24  Kh2           2.1 s       69.3 s
+   25  Nxe5          2.0 s       67.7 s
+   26  Bd4           2.0 s       66.2 s
+   27  Kg3           2.0 s       64.8 s
+   28  Qb3           1.9 s       63.3 s
+   29  Rb5           1.9 s       61.9 s
+   30  Ng4           1.9 s       60.5 s
+   31  Ne3           1.8 s       59.2 s
+   32  Qd5           1.8 s       57.9 s
+   33  Bxe3          1.8 s       56.6 s
+   34  Kg4           1.8 s       55.3 s
+   35  Qd8+          1.7 s       54.1 s
+   36  Qe7           1.7 s       52.9 s
+   37  Kf5           0.9 s       52.4 s
+   38  Kf4           0.0 s       52.9 s
+   39  h4            0.0 s       53.4 s
+   40  Qxf6          0.0 s       53.9 s
+   41  g3            0.0 s       54.4 s
+
+OUTPUT
+  49 bytes on stderr
+
+  [chessathon] numba warmup 35.6s (init budget ok)
+
+Email hello@aichessathon.com with this file if anything here is unclear.
