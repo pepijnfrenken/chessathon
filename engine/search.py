@@ -347,15 +347,27 @@ def _is_quiet(mv: int) -> bool:
 
 
 @njit
-def _draw_score(st, rep, ply) -> bool:
+def _draw_score(st, rep, ply, scratch) -> bool:
     """Fifty-move and repetition draws. Records rep[GAME_HIST + ply] =
     key and returns True if the position repeats a game position or an
     earlier position on the search path (Phase 4: rep[0..GAME_HIST) is
     pre-seeded with the REAL game's position keys — see search_root —
     so repetitions ACROSS moves in the game are visible to the search
     instead of looking fresh every get_move). The step-2 scan keeps the
-    side-to-move parity (matching keys carry their own side)."""
+    side-to-move parity (matching keys carry their own side).
+
+    q5-c3: the fifty-move test runs at node entry, i.e. BEFORE move
+    generation, so it used to declare a draw on a position that is
+    literally checkmate — and on a mating move that lands on the 100th
+    halfmove. Checkmate ends the game immediately and the fifty-move rule
+    is a *claim* that (FIDE 9.6.2) never overrides a mate on the board.
+    The test is cheap and only runs on the rare hm >= 100 node: no legal
+    move while in check => mate => report "not a draw" and let the caller
+    score it. (Stalemate at hm >= 100 stays a draw — both rules agree on
+    0, so the early return is correct there without a second test.)"""
     if st['halfmove'][0] >= 100:
+        if in_check(st) and legal_moves(st, scratch[ply], False) == 0:
+            return False
         return True
     key = st['key'][0]
     g = GAME_HIST + ply
@@ -440,7 +452,7 @@ def qsearch(st, ply: int, alpha: int, beta: int, qdepth: int, nodes,
     nodes[0] += 1
     if (nodes[0] & 1023) == 0 and _NOW() >= deadline:
         return TIMEOUT
-    if _draw_score(st, rep, ply):
+    if _draw_score(st, rep, ply, scratch):
         return 0
 
     check = in_check(st)
@@ -542,7 +554,7 @@ def search(st, depth: int, alpha: int, beta: int, ply: int, nodes,
     nodes[0] += 1
     if (nodes[0] & 1023) == 0 and _NOW() >= deadline:
         return TIMEOUT
-    if _draw_score(st, rep, ply):
+    if _draw_score(st, rep, ply, scratch):
         return 0
 
     check = in_check(st)

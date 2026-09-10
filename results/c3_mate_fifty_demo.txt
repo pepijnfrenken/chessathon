@@ -1,0 +1,52 @@
+q5-c3 — mate-vs-fifty-move rule inversion: demonstration
+tool: tools/probe_c3_mate_fifty.py (dev tool, NOT shipped)
+date: 2026-09-10T16:27:00Z
+
+Fix: engine/search.py _draw_score — when halfmove >= 100, test for a
+deliverable mate (in_check AND legal_moves == 0) before declaring the
+draw. Checkmate ends the game immediately and the fifty-move rule is a
+claim that (FIDE 9.6.2) never overrides a mate on the board. Stalemate at
+hm >= 100 stays a draw (both rules agree on 0).
+
+Case semantics verified against python-chess (the legality oracle) first:
+  7k/6Q1/5K2/8/8/8/8/8 b - - 100 1  -> checkmate, legal=0
+  7k/6Q1/6K1/8/8/8/8/8 b - - 100 1  -> checkmate, legal=0
+  7k/8/6Q1/8/8/8/8/K7 b - - 100 1   -> STALEMATE, legal=0, check=False
+  7k/8/5KQ1/8/8/8/8/8 w - - 99 1    -> 23 legal moves, Qg7# lands on hm 100
+Expected at ply 1: mated side -MATE+1 = -29999; mating side +(MATE-2) = 29998;
+draws 0.
+
+================ PRE-FIX  (control = /tmp/chessathon-v9k-base, v9k-shipped) ================
+
+  q5-c3 mate-vs-fifty probe — tree: /tmp/chessathon-v9k-base
+  (fixed depth 3, fresh TT per case; expected = the CORRECT score)
+  case                                 score  expected  verdict
+  mate on board @ hm100                    0    -29999      BAD
+  mate on board @ hm99 (control)      -29999    -29999       OK
+  mate adj-queen @ hm100                   0    -29999      BAD
+  stalemate @ hm100 (stays 0)              0         0       OK
+  stalemate @ hm99 (control)               0         0       OK
+  mate-in-1 landing on hm100               0     29998      BAD
+  bare kings @ hm100 (dead draw)           0         0       OK
+  
+  failures: 3
+
+================ POST-FIX (repo HEAD + c3 patch) ================
+
+  q5-c3 mate-vs-fifty probe — tree: /home/pino/projects/chessathon
+  (fixed depth 3, fresh TT per case; expected = the CORRECT score)
+  case                                 score  expected  verdict
+  mate on board @ hm100               -29999    -29999       OK
+  mate on board @ hm99 (control)      -29999    -29999       OK
+  mate adj-queen @ hm100              -29999    -29999       OK
+  stalemate @ hm100 (stays 0)              0         0       OK
+  stalemate @ hm99 (control)               0         0       OK
+  mate-in-1 landing on hm100           29998     29998       OK
+  bare kings @ hm100 (dead draw)           0         0       OK
+  
+  failures: 0
+
+RESULT: 3 failures -> 0. The three inverted cases were exactly the two
+checkmates on the board at hm 100 plus the mate-in-one whose mating move
+lands on the 100th halfmove; the two stalemate controls and the bare-kings
+draw were and remain 0 (no over-correction into 'everything is mate').
