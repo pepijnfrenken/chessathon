@@ -1515,3 +1515,9 @@ f6/Kf8 hold).
 regression, not the razor-band class, not fixable by the time formula.**
 No change ships tonight; uploads (10/24h budget) stay in reserve. r106
 (22:00Z) runs on v10 as-is.
+
+**17i-addendum (22:00Z):** the #42 finding replicated on an independent
+second run (same script, separate launch): e3h3/Qxh3 at 1.0/1.35/2/3/5s,
+scores +184/+184/+184/+176/+162, depths 10/10/10/11/12 — moves and scores
+byte-identical across runs, only node counts differ. Also committed the
+r105 corpus (pgn/log/dashboard) and analysis scripts under tools/r105/.
