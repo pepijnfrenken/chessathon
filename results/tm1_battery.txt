@@ -1,0 +1,54 @@
+tm1 razor battery — 4 sites x 5 reps, fresh TT, each tree at its own formula budget.
+Good/bad sets are SF-verified per site (see results/tm1_sf_class.txt / PROCESS 16c).
+m36 is the documented eval-hole case (engine prefers d4b2 at depth 9; SF says -7.2 vs -2.5
+for g3h2) — NOT a time-management issue; tm1 extends to the cap there (6000ms) and lands
+d4b2 exactly like shipped — no regression, cost noted (~6s on that move).
+
+BATTERY: TM1 ################
+=== battery [/tmp/chessathon-tm1] ===
+site,budget_ms,rep,uci,cls,score,depth,nodes,elapsed_ms
+r92-m35,3000,1,e5d3,GOOD,7,8,2800640,6004
+r92-m35,3000,2,e5d3,GOOD,7,8,2759680,6000
+r92-m35,3000,3,e5d3,GOOD,7,8,2691072,6002
+r92-m35,3000,4,e5d3,GOOD,7,8,2841600,6003
+r92-m35,3000,5,e5d3,GOOD,7,8,2643968,6001
+r92-m36,3000,1,d4b2,BAD,41,9,2686976,6003
+r92-m36,3000,2,d4b2,BAD,41,9,2639872,6002
+r92-m36,3000,3,d4b2,BAD,41,9,2782208,6002
+r92-m36,3000,4,d4b2,BAD,41,9,2633728,6000
+r92-m36,3000,5,d4b2,BAD,41,9,2684928,6000
+r100-m49,3000,1,b8b6,GOOD,-43,13,1624064,3001
+r100-m49,3000,2,b8b6,GOOD,-43,13,1762304,3002
+r100-m49,3000,3,b8b6,GOOD,-43,13,1864704,3001
+r100-m49,3000,4,b8b6,GOOD,-43,13,1783808,3001
+r100-m49,3000,5,b8b6,GOOD,-43,13,1686528,3000
+r100-m50,3000,1,b6b7,GOOD,-42,13,1689600,3001
+r100-m50,3000,2,b6b7,GOOD,-42,13,1704960,3001
+r100-m50,3000,3,b6b7,GOOD,-42,13,1874944,3003
+r100-m50,3000,4,b6b7,GOOD,-42,13,1657856,3001
+r100-m50,3000,5,b6b7,GOOD,-42,13,1731584,3001
+
+################ BATTERY: SHIPPED ################
+=== battery [/tmp/chessathon-v9k-base] ===
+site,budget_ms,rep,uci,cls,score,depth,nodes,elapsed_ms
+r92-m35,1938,1,d5b3,BAD,48,7,1077248,1939
+r92-m35,1938,2,d5b3,BAD,48,7,1052672,1939
+r92-m35,1938,3,d5b3,BAD,48,7,970752,1939
+r92-m35,1938,4,d5b3,BAD,48,7,984064,1939
+r92-m35,1938,5,d5b3,BAD,48,7,1025024,1939
+r92-m36,1906,1,d4b2,BAD,75,7,867328,1907
+r92-m36,1906,2,d4b2,BAD,75,7,877568,1907
+r92-m36,1906,3,d4b2,BAD,75,7,941056,1906
+r92-m36,1906,4,d4b2,BAD,75,7,929792,1907
+r92-m36,1906,5,d4b2,BAD,75,7,919552,1906
+r100-m49,1573,1,b8b6,GOOD,-26,12,909312,1577
+r100-m49,1573,2,b8b6,GOOD,-26,12,1020928,1574
+r100-m49,1573,3,b8b6,GOOD,-26,12,1007616,1574
+r100-m49,1573,4,b8b6,GOOD,-26,12,1021952,1574
+r100-m49,1573,5,b8b6,GOOD,-26,12,1009664,1574
+r100-m50,1560,1,b6b7,GOOD,-43,11,862208,1561
+r100-m50,1560,2,b6b7,GOOD,-43,11,961536,1561
+r100-m50,1560,3,b6b7,GOOD,-51,12,1008640,1561
+r100-m50,1560,4,b6b7,GOOD,-51,12,997376,1560
+r100-m50,1560,5,b6b7,GOOD,-43,11,960512,1560
+

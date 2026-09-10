@@ -1,0 +1,33 @@
+tm1 unit A/B — razor sites at fixed budgets, tm1 tree vs shipped (v9k-base) tree.
+Budgets passed explicitly (1939 = shipped formula at r92 m35's clock; 3000 = tm1 formula).
+Box shared with other agent sessions (contention) — picks are the signal, absolute timings vary.
+KEY A/B: m35@3000 SAME budget -> shipped d5b3 (game blunder, d7) vs tm1 e5d3 (SF-correct, d8)
+via the flip guard extending to the 2x cap (elapsed 6001ms). m50@1549: tm1 extends from the
+d10<->d11 flip (1549 -> 3099ms) landing d13 b6b7 (drawing); shipped stops at that boundary.
+
+########## TM1 ##########
+=== /tmp/chessathon-tm1 ===
+m35@1939 (guard test) rep1: e5d3 score=59 depth=6 nodes=421888 elapsed=1942ms
+m35@1939 (guard test) rep2: e5d3 score=59 depth=6 nodes=362496 elapsed=1940ms
+m35@3000 (tm1 formula) rep1: e5d3 score=7 depth=8 nodes=2154496 elapsed=6001ms
+m35@3000 (tm1 formula) rep2: e5d3 score=7 depth=8 nodes=2668544 elapsed=6001ms
+m49@3000 (tm1 formula) rep1: b8b6 score=-43 depth=13 nodes=1790976 elapsed=3001ms
+m49@3000 (tm1 formula) rep2: b8b6 score=-43 depth=13 nodes=1803264 elapsed=3000ms
+m50@3000 (tm1 formula) rep1: b6b7 score=-42 depth=13 nodes=1717248 elapsed=3001ms
+m50@3000 (tm1 formula) rep2: b6b7 score=-42 depth=13 nodes=1725440 elapsed=3000ms
+m50@1549 (shipped budget) rep1: b6b7 score=-42 depth=13 nodes=1936384 elapsed=3099ms
+m50@1549 (shipped budget) rep2: b6b7 score=-42 depth=13 nodes=1902592 elapsed=3099ms
+
+########## SHIPPED (v9k-base) ##########
+=== /tmp/chessathon-v9k-base ===
+m35@1939 (guard test) rep1: d5b3 score=48 depth=7 nodes=924672 elapsed=1939ms
+m35@1939 (guard test) rep2: d5b3 score=48 depth=7 nodes=904192 elapsed=1940ms
+m35@3000 (tm1 formula) rep1: d5b3 score=48 depth=7 nodes=1400832 elapsed=3002ms
+m35@3000 (tm1 formula) rep2: d5b3 score=48 depth=7 nodes=1406976 elapsed=3002ms
+m49@3000 (tm1 formula) rep1: b8b6 score=-43 depth=13 nodes=1623040 elapsed=3002ms
+m49@3000 (tm1 formula) rep2: b8b6 score=-43 depth=13 nodes=1906688 elapsed=3002ms
+m50@3000 (tm1 formula) rep1: b6b7 score=-42 depth=13 nodes=1876992 elapsed=3001ms
+m50@3000 (tm1 formula) rep2: b6b7 score=-42 depth=13 nodes=1602560 elapsed=3001ms
+m50@1549 (shipped budget) rep1: b6b7 score=-43 depth=11 nodes=910336 elapsed=1551ms
+m50@1549 (shipped budget) rep2: b6b7 score=-43 depth=11 nodes=945152 elapsed=1550ms
+########## DONE Thu Sep 10 05:08:38 PM UTC 2026 ##########

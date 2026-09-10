@@ -843,9 +843,24 @@ def search_root(st, nodes, deadline, ttk, ttv, mask, killers, hist, rep,
     best_move = 0
     best_score = -INF
     completed = 0
+    # q5-tm1 (flip guard). The r92/r100 loss class: the deadline lands just
+    # after the root best move CHANGED between consecutive completed depths
+    # (r92 m35: depth 6 e5d3 -> depth 7 d5b3, game stopped at 7; depth 8
+    # flips back). Stopping right after a flip is a coin toss, not a
+    # decision. Guard: if the last two completed depths disagree, keep
+    # deepening until they agree or a hard cap (2x the original budget) is
+    # reached. Inactive below two completed iterations (tiny-TC harnesses).
+    prev1 = 0
+    prev2 = 0
+    _rstart = _NOW()
+    _ext_cap = _rstart + 2 * (deadline - _rstart)
 
-    for depth in range(1, max_depth + 1):
+    depth = 1
+    while depth <= max_depth:
         if _NOW() >= deadline:
+            if completed >= 2 and prev1 != prev2 and _NOW() < _ext_cap:
+                deadline = min(_ext_cap, _NOW() + (_ext_cap - _rstart) // 2)
+                continue
             break
         # q5-night3 (codex1 H3): search the previous iteration's best move
         # first via the existing ttmove ordering slot — PVS wastes a
@@ -857,10 +872,17 @@ def search_root(st, nodes, deadline, ttk, ttv, mask, killers, hist, rep,
                                           hist, rep, scratch, sscratch,
                                           ghist, gcnt)
         if iter_move == 0:
-            break                        # timed out mid-iteration
+            # timed out mid-iteration; same flip-guard decision (retry depth)
+            if completed >= 2 and prev1 != prev2 and _NOW() < _ext_cap:
+                deadline = min(_ext_cap, _NOW() + (_ext_cap - _rstart) // 2)
+                continue
+            break
+        prev2 = prev1
+        prev1 = iter_move
         best_move = iter_move
         best_score = iter_best
         completed = depth
         if best_score >= MATE - 32 or best_score <= -MATE + 32:
             break                        # forced mate found: stop early
+        depth += 1
     return best_move, best_score, completed

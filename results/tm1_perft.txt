@@ -1,0 +1,18 @@
+tm1 perft parity vs python-chess + published values (board untouched by tm1).
+
+TM1: perft ################
+  pos6       depth 3: ours=89890 python-chess=89890 OK [0.9s]
+== 3. move-type breakdown vs python-chess (depth 2-3) ==
+  startpos   d3: ours=(8902, 34, 0, 0, 0, 12)
+              pc  =(8902, 34, 0, 0, 0, 12)  OK
+  kiwipete   d3: ours=(97862, 17461, 46, 3255, 0, 993)
+              pc  =(97862, 17461, 46, 3255, 0, 993)  OK
+  pos3       d3: ours=(2812, 224, 2, 0, 0, 267)
+              pc  =(2812, 224, 2, 0, 0, 267)  OK
+  pos4       d3: ours=(9467, 1108, 4, 6, 168, 38)
+              pc  =(9467, 1108, 4, 6, 168, 38)  OK
+  pos5       d2: ours=(1486, 228, 0, 1, 4, 117)
+              pc  =(1486, 228, 0, 1, 4, 117)  OK
+  pos6       d3: ours=(89890, 9677, 0, 0, 0, 1783)
+              pc  =(89890, 9677, 0, 0, 0, 1783)  OK
+== result: ALL PASS

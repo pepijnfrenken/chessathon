@@ -1,0 +1,36 @@
+m36 position: 6k1/p3qpp1/Pp5p/4N3/1R1BP3/1Q4KP/2r3P1/2r5 w - - 6 36
+  36.b4b5   -> eval(white after): -647
+  36.g3h2   -> eval(white after): -213
+  36.d4b2   -> eval(white after): -726
+  36.e5d3   -> eval(white after): #-13
+  36.b3a2   -> eval(white after): #-9
+b4b2: illegal
+  36.e5c6   -> eval(white after): #-3
+  36.b3c3   -> eval(white after): #-7
+
+m35 sanity (game position):
+  35.d5b3   -> -721
+  35.e5d3   -> -335
+  35.e5c6   -> -793
+  35.d5b5   -> -710
+=== m50: SF eval AFTER each candidate (white POV) ===
+  50.Rb8+   -> 0   | 50...Kf7 51. f4 a5 52. Kxg5 a4 53. Rb7+
+  50.f4     -> 0   | 50...gxf4 51. h4 a5 52. h5 a4 53. h6
+  50.Rb7    -> 0   | 50...a5 51. Kxg5 a4 52. Kf6 Ke8 53. Ke6
+  50.Kxg5   -> -844   | 50...Ra5+ 51. Kf6 Rb5 52. Rxa6 Rb8 53. Ra4
+  50.h3     -> -585   | 50...a5 51. Rb8+ Kf7 52. Kf5 Ke7 53. Kxg5
+  50.Kf5    -> -848   | 50...Ra5+ 51. Kf6 Rb5 52. Rd6 Rb8 53. Rd1
+  50.Kg3    -> -767   | 50...a5 51. f4 a4 52. Kg4 gxf4 53. Kf5
+  50.h4     -> -672   | 50...gxh4 51. Rb8+ Kf7 52. f4 a5 53. Rb7+
+=== before 46...Ra2 (black to move) ===
+  #1 eval(white) -757 | 46...Rc5 47. f4 Rb5 48. fxg5 b2 49. Rd8+ Kf7 50. Rd1
+  #2 eval(white) -757 | 46...Kf8 47. f4 Rb5 48. fxg5 b2 49. Rd8+ Ke7 50. Rd1
+  #3 eval(white) -757 | 46...Kf7 47. f4 Rb5 48. fxg5 b2 49. Rd7+ Kf8 50. Rd8+
+  #4 eval(white) -756 | 46...Rb5 47. Rd8+ Kf7 48. Rd7+ Kf8 49. Rd8+ Ke7 50. Rd2
+
+=== after 46...Ra2 (white to move) — our reprieve ===
+  #1 eval(white) -69 | 47. Rd8+ Kf7 48. Rb8 Ra3 49. f4 gxf4 50. Kxf4 a5
+  #2 eval(white) -749 | 47. Rd5 Ra4+ 48. f4 Rb4 49. Rxg5+ Kf7 50. Rf5+ Ke7
+  #3 eval(white) -766 | 47. Rd6 Ra5 48. Rd8+ Kf7 49. Rd7+ Ke8 50. Rd2 Rb5
+
+black best per SF #1: 46...Rc5 47. f4 Rb5 48. fxg5 b2 49. Rd8+

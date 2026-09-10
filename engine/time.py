@@ -18,6 +18,21 @@ def budget_ms(remaining_ms: int, inc_ms: int = 500) -> int:
     if remaining_ms <= 0:
         return 50
     b = remaining_ms // 45 + inc_ms
+    # q5-tm1: late-game floor. The decay model above leaves a large
+    # surplus unused (median 36% of the clock left over 53 rated games;
+    # 25% over games >= 50 moves; zero games below 10 s) while the
+    # r92/r100 loss class shows the razor phase (moves ~30-65) needs
+    # ~3 s+ per move: r92 post-mortem (blunder band <= 2 s, avoided
+    # >= 3 s) and the r100 m50 depth sweep (losing family <= depth 10,
+    # drawing family >= 11). Floor the per-move budget at 3 s once the
+    # remaining clock can afford it; never more than 1/10 of what is
+    # left, so the geometric decay and the never-flag property stand.
+    floor = 3000
+    cap = remaining_ms // 10
+    if cap < floor:
+        floor = cap
+    if b < floor:
+        b = floor
     if b > 45000:
         b = 45000
     if b < 50:

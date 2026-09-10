@@ -1,0 +1,12 @@
+tm1 determinism — fixed depth 8, fresh NUMBA_CACHE_DIR, 2 procs x 2 runs.
+Reference (v9k-shipped, c3/c4/c5): 232561 / best 47988 / score -40.
+tm1 (flip guard inert at fixed depth): identical, all four proc lines.
+
+--- run 1
+proc: nodes=232561 best=47988 score=-40 depth=8
+proc: nodes=232561 best=47988 score=-40 depth=8
+run1 exit=0
+--- run 2
+proc: nodes=232561 best=47988 score=-40 depth=8
+proc: nodes=232561 best=47988 score=-40 depth=8
+run2 exit=0

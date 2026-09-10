@@ -1,0 +1,11 @@
+bundle smoke on live HEAD (v9k+c3+c4+c5+tm1): guard fires on the razor sites.
+
+=== bundle smoke (live repo) ===
+m35@3000 rep1: e5d3 score=7 depth=8 nodes=2887680 elapsed=6000ms EXTENDED
+m35@3000 rep2: e5d3 score=7 depth=8 nodes=2868224 elapsed=6001ms EXTENDED
+m49@3000 rep1: b8b6 score=-31 depth=14 nodes=1935360 elapsed=3001ms 
+m49@3000 rep2: b8b6 score=-31 depth=14 nodes=1998848 elapsed=3001ms 
+m50@3000 rep1: b6b7 score=-42 depth=13 nodes=1916928 elapsed=3000ms 
+m50@3000 rep2: b6b7 score=-42 depth=13 nodes=1771520 elapsed=3000ms 
+m50@1549 rep1: b6b7 score=-42 depth=13 nodes=1763328 elapsed=3099ms EXTENDED
+m50@1549 rep2: b6b7 score=-42 depth=13 nodes=1839104 elapsed=3098ms EXTENDED
