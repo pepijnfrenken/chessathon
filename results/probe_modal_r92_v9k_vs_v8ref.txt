@@ -1,0 +1,45 @@
+=== modal probe tag=r92_v9k_vs_v8ref ===
+script tools/probe_r92_collapse.py | env {'SWEEP': '1'}
+A = /tmp/chessathon-v9k
+B = /tmp/chessathon-v8ref
+
+----- tree A (/tree_a) rc=0 -----
+=== r92 collapse probe [/tree_a] ===
+m35 before Qb3: static=70 | real=d5b3 | exact-budget pick=e5d3 (2.67s) [different]
+    1000ms -> e5d3 (1.00s)
+    2000ms -> e5d3 (2.00s)
+    3000ms -> e5d3 (3.00s)
+    5000ms -> d5b3 (5.00s)
+    10000ms -> e5d3 (10.00s)
+    25000ms -> e5d3 (25.00s)
+m36 before Rb5: static=68 | real=b4b5 | exact-budget pick=d4b2 (1.91s) [different]
+    1000ms -> g3h2 (1.00s)
+    2000ms -> g3h2 (2.00s)
+    3000ms -> g3h2 (3.00s)
+    5000ms -> d4b2 (5.00s)
+    10000ms -> g3h2 (10.00s)
+    25000ms -> g3h2 (25.00s)
+after Qb3 (black to move; SF says Qg5+): static(mover=black)=-61 | pick=e7g5 (1.09s)
+after Rb5 (black to move; SF says Qg5+): static(mover=black)=-70 | pick=e7g5 (1.07s)
+[stderr tail] [chessathon] numba warmup 33.4s (init budget ok)
+
+----- tree B (/tree_b) rc=0 -----
+=== r92 collapse probe [/tree_b] ===
+m35 before Qb3: static=103 | real=d5b3 | exact-budget pick=d5b3 (2.67s) [SAME-as-game]
+    1000ms -> d5b3 (1.00s)
+    2000ms -> d5b3 (2.00s)
+    3000ms -> e5d3 (3.00s)
+    5000ms -> e5d3 (5.00s)
+    10000ms -> e5d3 (10.00s)
+    25000ms -> e5d3 (25.00s)
+m36 before Rb5: static=102 | real=b4b5 | exact-budget pick=h3h4 (1.91s) [different]
+    1000ms -> h3h4 (1.00s)
+    2000ms -> g3h2 (2.00s)
+    3000ms -> g3h2 (3.00s)
+    5000ms -> d4b2 (5.00s)
+    10000ms -> g3h2 (10.00s)
+    25000ms -> g3h2 (25.00s)
+after Qb3 (black to move; SF says Qg5+): static(mover=black)=-94 | pick=e7g5 (1.09s)
+after Rb5 (black to move; SF says Qg5+): static(mover=black)=-103 | pick=e7g5 (1.07s)
+[stderr tail] [chessathon] numba warmup 33.1s (init budget ok)
+
