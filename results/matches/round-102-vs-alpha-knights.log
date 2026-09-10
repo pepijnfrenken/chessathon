@@ -1,0 +1,72 @@
+AI CHESSATHON MATCH LOG
+=======================
+
+MATCH
+  Round          Rated 102
+  Team           En Passant Labs
+  Colour         White
+  Opponent       Alpha Knights
+  Opening        Grunfeld Defence
+  Start FEN      rn1qk2r/pp2ppbp/6p1/2p5/3PP1b1/2P1BN2/P4PPP/2RQKB1R b Kkq - 3 9
+  You moved      Second
+  Machine        w-b1bbdd
+  Finished       2026-09-10 18:22:45 UTC
+  Match ID       a633187d-723f-4694-9e45-7ec89b25cd1b
+
+INIT
+  Ready in       35.8 s
+  Budget         90.0 s
+  Used           40 percent
+
+CLOCK
+  Base           120.0 s plus 0.5 s per move
+  Moves          30
+  Time used      74.4 s
+  Slowest        4.2 s on move 1
+  Fastest        1.9 s on move 30
+  Average        2.5 s
+  Left at end    60.6 s
+
+RESULT
+  Drawn by threefold repetition
+  Game lasted 194.7 s
+
+MOVES
+    #  move          time     clock left
+    1  cxd4          4.2 s      116.3 s
+    2  Qxf3          3.1 s      113.7 s
+    3  Qd1           3.0 s      111.2 s
+    4  d5            3.0 s      108.7 s
+    5  Be2           2.9 s      106.3 s
+    6  Rxc8          2.9 s      103.9 s
+    7  Qb3           2.8 s      101.6 s
+    8  Bxa7          2.8 s       99.4 s
+    9  Qd1           2.7 s       97.1 s
+   10  Bxg4          2.7 s       95.0 s
+   11  Kf1           2.6 s       92.9 s
+   12  Qb1           2.6 s       90.8 s
+   13  h4            2.5 s       88.8 s
+   14  Qxa2          2.5 s       86.8 s
+   15  g3            2.4 s       84.9 s
+   16  Rh2           2.4 s       83.0 s
+   17  Be2           2.3 s       81.1 s
+   18  Bc4           2.3 s       79.3 s
+   19  Bd3           2.3 s       77.6 s
+   20  Rg2           2.2 s       75.9 s
+   21  Bc2           2.2 s       74.2 s
+   22  f4            2.2 s       72.5 s
+   23  Rd2           2.1 s       70.9 s
+   24  Kg2           2.1 s       69.3 s
+   25  Re2           2.0 s       67.8 s
+   26  Bb1           2.0 s       66.3 s
+   27  Rd2           2.0 s       64.8 s
+   28  Re2           1.9 s       63.4 s
+   29  Rd2           1.9 s       61.9 s
+   30  Re2           1.9 s       60.6 s
+
+OUTPUT
+  49 bytes on stderr
+
+  [chessathon] numba warmup 34.9s (init budget ok)
+
+Email hello@aichessathon.com with this file if anything here is unclear.

@@ -1,0 +1,86 @@
+AI CHESSATHON MATCH LOG
+=======================
+
+MATCH
+  Round          Rated 101
+  Team           En Passant Labs
+  Colour         Black
+  Opponent       Desai
+  Opening        Nimzo-Indian Defence
+  Start FEN      rnbq1rk1/pp3ppp/4pn2/2p5/1bBP4/2N1P3/PPQ2PPP/R1B1K1NR w KQ - 0 8
+  You moved      Second
+  Machine        w-94416c
+  Finished       2026-09-10 17:25:57 UTC
+  Match ID       a00df0a3-f8c9-4e87-9f81-8e0bd1642ee4
+
+INIT
+  Ready in       41.2 s
+  Budget         90.0 s
+  Used           46 percent
+
+CLOCK
+  Base           120.0 s plus 0.5 s per move
+  Moves          44
+  Time used      93.3 s
+  Slowest        4.3 s on move 1
+  Fastest        0.0 s on move 44
+  Average        2.1 s
+  Left at end    48.7 s
+
+RESULT
+  Won by checkmate
+  Game lasted 202.2 s
+
+MOVES
+    #  move          time     clock left
+    1  Bxc5          4.3 s      116.2 s
+    2  Nc6           3.1 s      113.6 s
+    3  e5            3.0 s      111.1 s
+    4  Bg4           3.0 s      108.6 s
+    5  Bh5           2.9 s      106.2 s
+    6  Bg6           2.9 s      103.8 s
+    7  Nxe4          2.8 s      101.5 s
+    8  Bxe4          2.8 s       99.3 s
+    9  Be7           2.7 s       97.0 s
+   10  Qd5           2.7 s       94.9 s
+   11  a6            2.6 s       92.8 s
+   12  Qe6           2.6 s       90.7 s
+   13  Rfd8          2.5 s       88.7 s
+   14  Rac8          2.5 s       86.7 s
+   15  Rxd8          2.4 s       84.8 s
+   16  Rd7           2.4 s       82.9 s
+   17  Qd5           2.3 s       81.1 s
+   18  Rd8           2.3 s       79.3 s
+   19  Qb3           2.3 s       77.5 s
+   20  g6            2.2 s       75.8 s
+   21  Qxa3          2.2 s       74.1 s
+   22  Qb3           2.1 s       72.4 s
+   23  Bxb4          2.1 s       70.8 s
+   24  Qxb4          2.1 s       69.2 s
+   25  f5            2.0 s       67.7 s
+   26  Kf7           2.0 s       66.2 s
+   27  bxc6          2.0 s       64.7 s
+   28  Qh4           1.9 s       63.3 s
+   29  Re8           1.9 s       61.9 s
+   30  Kg7           1.9 s       60.5 s
+   31  Re7           1.8 s       59.1 s
+   32  Rf7           1.8 s       57.8 s
+   33  Qxh7          1.8 s       56.5 s
+   34  Kh6           1.8 s       55.3 s
+   35  g5            1.7 s       54.0 s
+   36  Qg6           1.7 s       52.8 s
+   37  f4            1.7 s       51.7 s
+   38  fxg3          1.7 s       50.5 s
+   39  Qf5           1.6 s       49.4 s
+   40  Qf2+          1.6 s       48.3 s
+   41  Qxg3          1.6 s       47.2 s
+   42  Qe1+          0.0 s       47.7 s
+   43  Rf2+          0.0 s       48.2 s
+   44  Qg1#          0.0 s       48.7 s
+
+OUTPUT
+  49 bytes on stderr
+
+  [chessathon] numba warmup 40.2s (init budget ok)
+
+Email hello@aichessathon.com with this file if anything here is unclear.
