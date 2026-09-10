@@ -337,6 +337,13 @@ Every major decision, with the evidence that made it. (Full narratives:
    never let them write the tree.
 10. Save every ladder round file immediately (`results/matches/`) —
     git history is the only durable record.
+11. **Gates default to multi-seed POOLED** (`tools/gate_parallel.py`):
+    3 seeds × 24 games run CONCURRENTLY — ~30 min wall → 72 pooled games
+    (box = 6 cores, 1 core per engine proc, ≤3 pairs sanctioned; run 2
+    pairs when another instrument shares the box). Decide on the pooled
+    score vs the same bands. Single 24-game gates OVER-READ: two identical
+    re-runs (seed 7, v8-dpfix vs v7ref, Sep 10) scored 0.417 vs 0.562 —
+    time-limited search flips whole games on timing jitter.
 
 ## 9. 2026-09-09 — quality_ab instrument validated (tooling mission)
 
