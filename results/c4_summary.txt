@@ -1,0 +1,31 @@
+q5-c4 — TT fifty-move context: battery + L1 gate
+================================================
+tree    : repo HEAD + c3 + c4  (NOTE: the c4 candidate carried c3, which
+          was already committed and gated at 0.479 — so this gate reads the
+          c3+c4 stack against v9k-shipped, not c4 in isolation)
+control : /tmp/chessathon-v9k-base (= git archive v9k-shipped)
+date    : 2026-09-10 17:0x-17:5xZ, one engine workload at a time.
+
+TARGETED PROBE (results/c4_tt_halfmove_demo.txt)
+  A cold / B warm-same / C warm-after-hm0, two positions.
+  pre-fix A=0 B=0 C=592 (2 MISMATCH) -> post-fix A=0 B=0 C=0 (0).
+  B unchanged, so genuine warm-TT reuse is intact.
+
+BATTERY
+  perft ......... results/c4_perft.log      ALL PASS
+  determinism ... results/c4_det.log        232561 / best 47988 / -40,
+                  4 proc lines, 2/2 clean exits, fresh NUMBA_CACHE_DIR each
+                  IDENTICAL to v9k's record. Expected: the probe position
+                  sits at halfmove 4, far below TT_HM_SAFE (100 - MAX_PLY),
+                  where the fix deliberately keeps reuse unconditional.
+  eg_check ...... results/c4_eg_check.log   7/8 @300ms (KPK-w DRAW)
+                  = EXACTLY v9k's record (7/8, KPK-w DRAW)
+  shuffle ....... results/c4_shuffle.log    10/12, ZERO threefolds
+                  (both KPK cells) — v9k's record was 10/12 the same way
+
+L1 GATE (tools/gate_match_tree.py, 24 games @500ms, seed 7, vs v9k-shipped)
+  results/gate_c4_vs_v9k.log + .stream.log
+  score 11W-10L-3D = 0.521, zero flags -> band NEUTRAL (0.45-0.55)
+  21 decisive, one-sided p ~ 0.83.
+
+VERDICT: PASS (neutral). Correctness fix, no strength regression.
