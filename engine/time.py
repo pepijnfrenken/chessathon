@@ -33,6 +33,19 @@ def budget_ms(remaining_ms: int, inc_ms: int = 500) -> int:
         floor = cap
     if b < floor:
         b = floor
+    # q5-tm1b: tail-safe reserve. tm1 alone drains long games (bout: end
+    # clocks 1-21 s vs v9k's 4-60 s, minima 1.0 s at 300 plies) because it
+    # keeps spending ~R//10 into the tail. Cap the spend so the clock has
+    # a stable point once the increment is counted: spend <= max(250,
+    # (R - 5000) // 8) -> below R = 9 s each move nets +500 ms, at
+    # R = 9 s spend = 500 ms = the increment; above, the clock relaxes
+    # back down. Binds only when (R - 5000)/8 < 3000 i.e. R < 29 s, so
+    # every razor-phase budget (R >= 30 s) is untouched.
+    tail = (remaining_ms - 5000) // 8
+    if tail < 250:
+        tail = 250
+    if b > tail:
+        b = tail
     if b > 45000:
         b = 45000
     if b < 50:
