@@ -509,5 +509,11 @@ files md5==commit, init 48.5s, first move legal, 34.5KB).
 Night verdicts: item1 FIXED+PASS (0.625), item2 FIXED+PASS (1.000 —
 strongest gate result of the event, mechanistically explained), item3
 FIXED+PASS (0.604 + -53% nodes). Ship recommendation for the morning:
-night3 (2615f8a) is the gated build; L3 real-clock SF bout + quality_ab
-still to run before the 11 Sep 10:00 freeze.
+night3 (2615f8a) is the gated build. **L3 REAL-CLOCK BOUT DONE (01:20 UTC
+Sep 10): night3 vs V5 12-0** (6 pairs x 2 games, 120s+0.5 emulation via
+tools/bout_pair.py — per-move budget = time.py policy, per-tree numba
+caches, banner-sync warmup; 6W as White + 6W as Black, 61-154 plies,
+zero flags; results/bout_l3_v7/). The 1.000 L1 sweep reproduces at real
+clocks — the inverted-PST error was a real ~1-pawn-class tax on every
+position and night3 collects it both colors. Remaining pre-freeze
+instruments: SF19-e2200 bout + quality_ab corpus on night3.
