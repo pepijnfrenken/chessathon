@@ -26,11 +26,12 @@ reproduce in the lab at exact game budgets and trace to the night3 rootorder
 search-order change — full post-mortem + repro + the real-clock night2-vs-v7
 bout: **§14**. v6 (null fix) was live Sep 9 20:42Z → r90; V5 before it (r70-89). **Authoritative ladder record (PGN headers × platform export, cross-checked 2026-09-10, 0
 mismatches; supersedes every earlier tally incl. the wrong "r87/r88
-losses" reading):** r48-92 = **20W-10D-15L** — v1/v2 era r48-60 3W-5D-5L ·
+losses" reading):** r48-93 = **21W-10D-15L** — v1/v2 era r48-60 3W-5D-5L ·
 v3/v4 r61-69 5W-2D-2L · **V5 r70-89 11W-3D-6L** · v6 r90 0-0-1 (single
-tactical miss, not leak-family) · **v7 r91-r92 1-1 — r91 reviewed clean (54/56
-moves good-or-better, both flags won-position artifacts); r92 = the repro'd
-collapse, §14**. Leak-family losses with committed SF16
+tactical miss, not leak-family) · **v7 r91-r93 2W-1L — r91 reviewed clean; r92
+= the repro'd collapse (§14); r93 W vs Brokefish (grind: material flat 0/+1,
+opponent clock-collapsed, pawn-ending promos m67/m71, mate m74). Rootorder
+bout resolved: stay v7 — night2 7.0/18 vs v7 11.0/18 @ real clocks (§14)**. Leak-family losses with committed SF16
 reviews = r64/r68/r70/r74/r76/r83 — each carries 5-20 SF-visible bad moves
 vs 0-4 for reviewed wins/draws; r85/r87/r88/r89 await reviews (r90 =
 reviewed, single tactical miss, not leak-family).
@@ -670,6 +671,19 @@ bout shows night2 ≥ v7 at real clocks — then upload before the Sep 11
 10:00 UTC freeze (slots available). Watch: remaining rounds r93+ hourly — a
 repeat leak-family collapse in this motif-class re-opens with more ladder
 data.
+
+**BOUT RESULT + FINAL CALL (result 09:49Z).** 9 pairs × 2 games @120s+0.5,
+zero flags, plies 57-205: **night2 7.0/18 (0.389) — v7 11.0/18 (0.611), v7
+10W-6L-2D**. Independently re-derived from the 18 PGNs (identical tally).
+Pre-declared rule (revert only if night2 ≥ v7) resolves **NO REVERT — stay
+on v7, no re-upload**. Honest stats read: 16 decisive games, one-sided
+binomial p ≈ 0.23 → leans v7, not significant alone, but decisively not a
+revert signal. Exposure bounded: one ladder loss (r92) to the reproducible
+shallow-horizon tunnel vs parity-or-better head-to-head at real clocks.
+Fallback stays armed: night2 zip staged (`/tmp/night-candidates/
+chess-v7-night2-pstflip.zip`), slot available until the Sep 11 10:00 UTC
+freeze if r94+ shows a second Qg5+-motif collapse loss. Artifacts:
+`results/bout_n2_vs_n3/` (18 PGNs + pair logs + SUMMARY.txt).
 
 **Corpus/evidence.** Leak suite 84 → 90 FENs + mate_stratum 20 → 21 (r92 rows
 additive; refresh now a committed tool: `tools/refresh_leak_suite.py`).

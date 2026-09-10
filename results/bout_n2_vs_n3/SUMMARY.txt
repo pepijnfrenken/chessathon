@@ -1,0 +1,50 @@
+ROOTORDER A/B BOUT — night2 vs v7 @ real clocks (r92 post-mortem decision instrument)
+====================================================================================
+Run: 2026-09-10 09:17:30 -> 09:49:49 UTC. tools/bout_pair.py, 9 pairs x 2 games
+= 18 games, 120s+0.5s ladder-TC emulation (per-move budget = time.py policy,
+driver clamps), mid-book opening FENs (common.OPENING_FENS), color-balanced
+within each pair. ZERO flags across all 18 games. Plies 57-205.
+
+Labels in the PGNs: "q5cand" = night2 (CAND slot = /tmp/chessathon_n3base),
+"v5" = v7 (second slot = /home/pino/projects/chessathon tree).
+Preflight: shipped-file diff vs night2 = exactly ONE file (engine/search.py —
+the rootorder one-liner). All 7 other shipped files byte-identical.
+
+RESULT (driver tally, in-code scoring)
+--------------------------------------
+night2  7.0 / 18  (0.389)
+v7     11.0 / 18  (0.611)   [v7 10W-6L-2D / night2 6W-10L-2D]
+
+Pair summaries (cand_pts = night2's points):
+PAIR 1: g1 1-0 ply=95  | g2 1-0  ply=165 | cand_pts 1.0/2
+PAIR 2: g1 1/2 ply=146 | g2 1-0  ply=87  | cand_pts 0.5/2
+PAIR 3: g1 1-0 ply=81  | g2 1/2  ply=116 | cand_pts 0.5/2
+PAIR 4: g1 0-1 ply=106 | g2 0-1  ply=174 | cand_pts 1.0/2
+PAIR 5: g1 0-1 ply=130 | g2 1-0  ply=205 | cand_pts 2.0/2
+PAIR 6: g1 0-1 ply=184 | g2 1-0  ply=143 | cand_pts 0.0/2
+PAIR 7: g1 1-0 ply=57  | g2 0-1  ply=140 | cand_pts 0.0/2
+PAIR 8: g1 0-1 ply=152 | g2 0-1  ply=138 | cand_pts 1.0/2
+PAIR 9: g1 1-0 ply=171 | g2 1-0  ply=131 | cand_pts 1.0/2
+
+INDEPENDENT VERIFICATION (re-derived from the 18 saved PGNs, not the driver log)
+--------------------------------------------------------------------------------
+games=18 | night2 7.0/18 | v7 11.0/18 | night2 W-L-D [6,10,2] | v7 [10,6,2]
+(identical to the driver tally; both computed with color-aware winner parsing)
+
+READING + DECISION
+------------------
+- Pre-declared revert rule (PROCESS 14): revert to night2 only if the bout shows
+  night2 >= v7 at real clocks. Result is the OPPOSITE (night2 0.389).
+- Honest stats read: 16 decisive games, one-sided binomial p ~= 0.23 for v7's
+  10/16 — LEANS v7, not significant on its own; near-identical engines produce
+  noisy head-to-heads. But it is decisively NOT a revert signal.
+- DECISION: STAY ON v7 (no re-upload). The r92 collapse stays classified as a
+  reproducible shallow-horizon tunnel (band <=2s) from the rootorder change,
+  but at real clocks the change measures parity-or-better, and the only ladder
+  cost observed is the single r92 game.
+- Exposure + fallback: rollback artifact remains staged
+  (/tmp/night-candidates/chess-v7-night2-pstflip.zip, sha-checked family of the
+  v7 zips); upload slot available until the Sep 11 10:00 UTC freeze if r94+
+  shows a second collapse-motif (Qg5+-class queen-infiltration) loss.
+
+ARTIFACTS: this dir (18 PGNs + pair logs + smoke logs), PROCESS 14.
