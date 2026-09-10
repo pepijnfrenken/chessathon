@@ -1201,3 +1201,38 @@ game = flag = instant loss.
 active. Next: tm1b = tail-safe variant (low-clock spend clamp / hard reserve,
 e.g. spend ≤ (R−reserve)/k once R < ~15 s), re-run unit/battery/sim, fresh
 bout, then bundle upload (c345 + tm1b in one zip).
+
+### 17f. 2026-09-10 — tm1b bout + stack gate FINAL; bundle v10 staged (upload-ready)
+
+**Stack gate (c3+c4+c5+tm1 vs v9k-shipped, 3 x 24g @500ms, parallel seeds
+7/11/13): 0.542 / 0.562 / 0.438 → pooled 27W-25L-20D = 0.514 over 72 games,
+zero flags.** (cwd tree at gate time = c3+c4+c5+tm1; the composite is neutral,
+as expected for a correctness+robustness stack.)
+
+**tm1b bout (bout3; EXACT bundle tree = c3+c4+c5+tm1+tm1b vs v9k-shipped;
+3 x 16g real ladder format, real FENs, 120s+0.5s, desktop):**
+- s21 7W-5L-4D (0.562), s22 4W-8L-4D (0.375), s23 5W-6L-5D (0.469)
+  → **pooled 16W-19L-13D = 0.469 over 48 games, zero flags.**
+- **Tail-safe as designed:** worst tm1b clock-touch across ALL 48 games =
+  **8.9 s** (v9k's own worst floor in the same games: 4.2 s; tm1's bout2 had
+  dipped to 1.0 s). Extensions fire ~4-5/game on tm1b, zero on v9k.
+- Score context vs tm1 (bout2, pre-tail-cap, same protocol): 0.500 (48g).
+  Both neutral; between-seed spread dominates at n=16/seed — pooled only.
+
+**Artifact: `/tmp/night-candidates/chess-v10-bundle.zip`** (also copied to
+`~/chess-zips/`), built 18:46Z from the tm1b tree with canonical
+`make_zip.sh`: **36,905 → 37,905 bytes**; sha256
+`11fa4ad658cced714c41bfbe7fae42ae30c2323dbc02caf52ce30dfea5ba517b`; unzip
+cmp ALL-7-SAME; init 50.3s warmup + first move ~8s under load (60s budget;
+venue measured 41.2/35.8 s for v9k on r101/r102 — re-verified on quiet box).
+Battery: perft/det on the exact tree = see §17g (follow-up).
+
+**Ship call: upload the bundle before the Sep 11 10:00Z freeze.** Case:
+168 test games total across gate+bouts = neutral vs v9k (no regression
+signal anywhere, zero flags in every instrument); the r92/r100 razor-band
+loss mechanism is fixed at all 4 known sites (unit-verified) and the flip
+guard runs live; c3/c4/c5 close real correctness holes; tail is now safer
+than v9k's own. No instrument shows a strength *gain* — this uploads as
+robustness+correctness, expectation small-positive via the removed loss
+class. Fallback (hold v9k) is defensible; c345-only is superseded by this.
+Upload action = Pino's (dashboard).
