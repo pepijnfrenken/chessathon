@@ -23,7 +23,8 @@ record + release identity: §13. v6 (null fix) was live Sep 9 20:42Z → r90; V5
 mismatches; supersedes every earlier tally incl. the wrong "r87/r88
 losses" reading):** r48-91 = **20W-10D-14L** — v1/v2 era r48-60 3W-5D-5L ·
 v3/v4 r61-69 5W-2D-2L · **V5 r70-89 11W-3D-6L** · v6 r90 0-0-1 (single
-tactical miss, not leak-family) · **v7 r91 1-0-0**. Leak-family losses with committed SF16
+tactical miss, not leak-family) · **v7 r91 1-0-0 — reviewed clean: 54/56
+moves good-or-better, both flags are won-position artifacts**. Leak-family losses with committed SF16
 reviews = r64/r68/r70/r74/r76/r83 — each carries 5-20 SF-visible bad moves
 vs 0-4 for reviewed wins/draws; r85/r87/r88/r89 await reviews (r90 =
 reviewed, single tactical miss, not leak-family).

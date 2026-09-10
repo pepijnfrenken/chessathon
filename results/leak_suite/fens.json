@@ -778,5 +778,65 @@
   "verdict": "mistake",
   "eval_before": -1879,
   "fen_before": "k4r2/1p3p1R/p3p3/P1BpP1P1/5P2/4K3/8/8 b - - 8 68"
+ },
+ {
+  "game": "round-90-vs-chessbuster-9000",
+  "side": "black",
+  "ply": 29,
+  "san": "Rc6",
+  "cp_loss": 239,
+  "verdict": "mistake",
+  "eval_before": 189,
+  "fen_before": "r5k1/p2b1p1p/1p1Pp1pn/3p2N1/1P1P2P1/2r5/4BP1P/R1R3K1 b - - 1 22"
+ },
+ {
+  "game": "round-90-vs-chessbuster-9000",
+  "side": "black",
+  "ply": 59,
+  "san": "Ne6+",
+  "cp_loss": 241,
+  "verdict": "mistake",
+  "eval_before": 262,
+  "fen_before": "3n4/p6p/1pB2kp1/1P6/3P1KP1/7P/8/8 b - - 0 37"
+ },
+ {
+  "game": "round-90-vs-chessbuster-9000",
+  "side": "black",
+  "ply": 63,
+  "san": "Nf8",
+  "cp_loss": 508,
+  "verdict": "blunder",
+  "eval_before": 22,
+  "fen_before": "8/p2B3p/1p2n1p1/1P4k1/3P2P1/4K2P/8/8 b - - 4 39"
+ },
+ {
+  "game": "round-90-vs-chessbuster-9000",
+  "side": "black",
+  "ply": 69,
+  "san": "Kg3",
+  "cp_loss": 249,
+  "verdict": "mistake",
+  "eval_before": -710,
+  "fen_before": "2B2n2/p6p/1p1P2p1/1P6/6P1/4K2k/8/8 b - - 0 42"
+ },
+ {
+  "game": "round-90-vs-chessbuster-9000",
+  "side": "black",
+  "ply": 81,
+  "san": "Ke1",
+  "cp_loss": 26534,
+  "verdict": "blunder",
+  "eval_before": -1366,
+  "fen_before": "8/p6p/1p4p1/1P1B2P1/8/4K3/8/5k2 b - - 4 48"
+ },
+ {
+  "game": "round-91-vs-epoch-mate",
+  "side": "black",
+  "ply": 86,
+  "san": "g4",
+  "cp_loss": 474,
+  "verdict": "blunder",
+  "eval_before": 1322,
+  "fen_before": "8/8/8/5pp1/Rp3k1p/p6P/1r3PK1/8 b - - 3 50"
  }
 ]
