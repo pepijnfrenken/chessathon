@@ -1,0 +1,14 @@
+=== modal gate tag=v9k ===
+trees A=/tmp/chessathon-v9k vs B=/tmp/chessathon-v8ref | 500ms/move | seeds [7, 11, 13, 17, 19, 23, 29, 31, 37] | 24 games/seed
+shards 72 | wall 526s | errors 0
+  seed    7: 8W-9L-7D (0.479) n=24
+  seed   11: 11W-9L-4D (0.542) n=24
+  seed   13: 10W-9L-5D (0.521) n=24
+  seed   17: 12W-6L-6D (0.625) n=24
+  seed   19: 12W-8L-4D (0.583) n=24
+  seed   23: 9W-10L-5D (0.479) n=24
+  seed   29: 11W-7L-6D (0.583) n=24
+  seed   31: 10W-10L-4D (0.500) n=24
+  seed   37: 12W-9L-3D (0.562) n=24
+POOLED: 95W-77L-44D over 216 games -> 0.542 (normal-approx 95% CI +-0.066)
+band: NEUTRAL (0.45-0.55)  [VPS-calibrated bands; Modal CPUs differ — cross-box offset not yet measured]
