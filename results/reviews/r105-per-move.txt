@@ -1,0 +1,114 @@
+=== our moves: #, SAN, [time], eval_before, eval_after, delta ===
+  # 1 e5      [ 4.4s]     -22 ->    -23  (   -1)
+  # 2 Bg4     [ 3.1s]      -2 ->    -24  (  -22)
+  # 3 Be6     [ 3.0s]     -21 ->    -23  (   -2)
+  # 4 Qb6+    [ 6.0s]     -13 ->    -35  (  -22)
+  # 5 Be7     [ 3.0s]     -21 ->    -21  (   +0)
+  # 6 O-O     [ 3.0s]     -29 ->    -38  (   -9)
+  # 7 Qd8     [ 3.0s]     -37 ->    -34  (   +3)
+  # 8 Nb4     [ 3.0s]     +19 ->    +13  (   -6)
+  # 9 Nxd3    [ 3.0s]     +13 ->     -1  (  -14)
+  #10 Qc7     [ 3.0s]      +0 ->     +2  (   +2)
+  #11 Qc6     [ 3.0s]     +27 ->    +22  (   -5)
+  #12 Rfc8    [ 3.0s]     +77 ->    +59  (  -18)
+  #13 Rc7     [ 3.0s]     +84 ->    +29  (  -55)
+  #14 Nh5     [ 3.0s]     +33 ->    +18  (  -15)
+  #15 a6      [ 3.0s]     +22 ->    +13  (   -9)
+  #16 Rac8    [ 6.0s]     +27 ->    +11  (  -16)
+  #17 Nf4     [ 6.0s]     +71 ->    +71  (   +0)
+  #18 exf4    [ 3.0s]     +74 ->    +68  (   -6)
+  #19 Bxd5    [ 3.0s]     +99 ->   +116  (  +17)
+  #20 Bf6     [ 3.0s]    +115 ->     +3  ( -112)
+  #21 Qa4     [ 6.0s]      +0 ->     +0  (   +0)
+  #22 Rc5     [ 3.0s]     +84 ->    +50  (  -34)
+  #23 Rxa5    [ 3.0s]     +46 ->    +33  (  -13)
+  #24 Rxd5    [ 3.0s]    +100 ->    +49  (  -51)
+  #25 Qb5     [ 3.0s]     +42 ->    +40  (   -2)
+  #26 Qxb2    [ 3.0s]     +98 ->    +94  (   -4)
+  #27 Qd4+    [ 3.0s]    +142 ->   +173  (  +31)
+  #28 Qd3     [ 3.0s]    +177 ->   +121  (  -56)
+  #29 Bh4     [ 6.0s]    +275 ->   +132  ( -143) <<<
+  #30 Qc2+    [ 3.0s]    +129 ->   +155  (  +26)
+  #31 Bg3     [ 2.8s]    +143 ->   +133  (  -10)
+  #32 Qd3     [ 2.6s]    +132 ->    +47  (  -85)
+  #33 Rc7     [ 2.4s]    +222 ->    +82  ( -140) <<<
+  #34 Qe3     [ 2.1s]     +69 ->    +47  (  -22)
+  #35 Rxc4    [ 1.9s]    +301 ->   +212  (  -89)
+  #36 Rxe4    [ 1.8s]    +459 ->   +555  (  +96)
+  #37 Qxe4+   [ 1.6s]    +512 ->   +540  (  +28)
+  #38 f3      [ 1.5s]    +547 ->   +533  (  -14)
+  #39 f2+     [ 1.3s]    +597 ->   +593  (   -4)
+  #40 Qe3     [ 1.2s]    +600 ->   +599  (   -1)
+  #41 Bxf2+   [ 1.1s]    +599 ->   +575  (  -24)
+  #42 Qxh3    [ 1.1s]    +566 ->    +79  ( -487) <<<<<
+  #43 Qa3     [ 1.0s]    +113 ->     +0  ( -113)
+  #44 Qf8     [ 0.0s]      +0 ->     +0  (   +0)
+  #45 Qe8     [ 1.0s]      +0 ->     +0  (   +0)
+  #46 g6      [ 0.9s]      +0 ->   -144  ( -144) <<<
+  #47 Qe5     [ 0.9s]    -442 ->   -491  (  -49)
+  #48 Kg7     [ 0.8s]    -516 ->   -447  (  +69)
+  #49 Qf4+    [ 0.8s]    -533 ->   -524  (   +9)
+  #50 Qe3+    [ 0.8s]    -521 ->   -571  (  -50)
+  #51 Qg1+    [ 0.7s]    -561 ->   -542  (  +19)
+  #52 Qg2+    [ 0.7s]    -552 ->   -572  (  -20)
+  #53 Qd5+    [ 0.7s]    -604 ->   -565  (  +39)
+  #54 Qe4+    [ 0.6s]    -584 ->   -601  (  -17)
+  #55 Qe6+    [ 0.6s]    -623 ->   -625  (   -2)
+  #56 Qe3+    [ 0.6s]    -630 ->   -615  (  +15)
+  #57 Qc1+    [ 0.6s]    -616 ->   -645  (  -29)
+  #58 Qd2+    [ 0.6s]    -631 ->   -613  (  +18)
+  #59 Qc3+    [ 0.6s]    -702 ->   -718  (  -16)
+  #60 Qb2+    [ 0.6s]    -719 ->   -719  (   +0)
+  #61 Qd4+    [ 0.6s]    -720 ->   -721  (   -1)
+  #62 Qb4+    [ 0.6s]    -716 ->   -729  (  -13)
+  #63 Qe4+    [ 0.5s]    -733 ->   -733  (   +0)
+  #64 Qb1+    [ 0.5s]    -637 ->   -716  (  -79)
+  #65 Qg1+    [ 0.5s]    -683 ->   -730  (  -47)
+  #66 Qb1+    [ 0.5s]    -746 ->   -744  (   +2)
+  #67 Qg1+    [ 0.5s]    -729 ->   -744  (  -15)
+  #68 Qg2+    [ 0.5s]    -685 ->   -769  (  -84)
+  #69 Qxg4    [ 0.5s]    -802 ->   -823  (  -21)
+  #70 Qf4     [ 0.5s]    -897 ->  -1066  ( -169) <<<
+  #71 g5      [ 0.5s]   -1164 ->  -9990  (-8826) <<<<<
+  #72 Qxg5    [ 0.0s]   -9991 ->  -9991  (   +0)
+  #73 Kf8     [ 0.6s]   -9992 ->  -9992  (   +0)
+  #74 Ke8     [ 0.6s]    -755 ->   -796  (  -41)
+  #75 Kd7     [ 0.6s]    -762 ->   -797  (  -35)
+  #76 Ke8     [ 0.6s]    -771 ->  -9993  (-9222) <<<<<
+  #77 Kf8     [ 0.0s]   -9995 ->  -9995  (   +0)
+  #78 Kg8     [ 0.0s]   -9996 ->  -9996  (   +0)
+  #79 f5      [ 0.0s]   -9998 ->  -9998  (   +0)
+  #80 Kh8     [ 0.0s]   -9999 ->  -9999  (   +0)
+
+=== deep checks (d18) at the collapse ===
+blunder move numbers: [42, 71, 76]
+Traceback (most recent call last):
+  File "/tmp/r105_focus.py", line 77, in <module>
+    eng.configure({"MultiPV": 2})
+    ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^
+  File "/tmp/chessbench/lib/python3.14/site-packages/chess/engine.py", line 2958, in configure
+    return future.result()
+           ~~~~~~~~~~~~~^^
+  File "/usr/lib/python3.14/concurrent/futures/_base.py", line 450, in result
+    return self.__get_result()
+           ~~~~~~~~~~~~~~~~~^^
+  File "/usr/lib/python3.14/concurrent/futures/_base.py", line 395, in __get_result
+    raise self._exception
+  File "/usr/lib/python3.14/asyncio/tasks.py", line 488, in wait_for
+    return await fut
+           ^^^^^^^^^
+  File "/tmp/chessbench/lib/python3.14/site-packages/chess/engine.py", line 1493, in configure
+    return await self.communicate(UciConfigureCommand)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/chessbench/lib/python3.14/site-packages/chess/engine.py", line 1021, in communicate
+    return await command.result
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/tmp/chessbench/lib/python3.14/site-packages/chess/engine.py", line 1287, in _start
+    self.start()
+    ~~~~~~~~~~^^
+  File "/tmp/chessbench/lib/python3.14/site-packages/chess/engine.py", line 1488, in start
+    self.engine._configure(options)
+    ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^
+  File "/tmp/chessbench/lib/python3.14/site-packages/chess/engine.py", line 1478, in _configure
+    raise EngineError("cannot set {} which is automatically managed".format(name))
+chess.engine.EngineError: cannot set MultiPV which is automatically managed

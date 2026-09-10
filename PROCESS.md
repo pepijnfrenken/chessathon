@@ -1479,3 +1479,39 @@ better than +1.25 (0/61 positions >= +1.5).
 **Verdict across the three:** zero thrown wins by us; two escapes (one huge)
 + one even game. The r102-r104 draw streak is defensive success (plus one
 opponent clock blow-up) — not conversion failure. No v10 change indicated.
+
+### 17i. 2026-09-10 — r105 post-mortem (v10 DEBUT LOSS vs Zero Elo): thrown win, endgame blindness — NOT clock/mechanism
+
+**Result.** Loss (checkmate) as Black vs Zero Elo, 86 moves (our 80), 21:23Z.
+Record 26W-19L-13D / 58 (0.560). Log facts: ready 40.9s; 148.7s used; slowest
+6.0 (move 4); avg 1.9; left 11.3s. Stderr clean: only 5 normal "slow move"
+lines (flip-guard extensions at 3s budget → 6s).
+
+**Clock mechanism: behaved AS DESIGNED (no finding).** Floor 3s/move while
+R>=30s; then decay; tail cap bound from ~move 31 (R<29s) and the clock
+STABILIZED at 9.1-11.3s for the last 28 moves (vs tm1's drain to ~1s — the
+tm1b fix doing its job, in a loss). Extensions 5x, all pre-razor, normal.
+
+**SF autopsy (SF17 local; artifacts results/reviews/r105-*).** We OUTPLAYED
+them to a winning position: +3.6 d16 at move 29-34 (peak +5.5 d24), +6.2
+d20/24 before our move 47. THE WIN WAS THROWN AT MOVE 47: only 47...Qxf2+
+(+6.33 d20; queen trade into a WON K+P endgame; multipv6: next-best Qxh3
++0.40) keeps the win. We played 47...Qxh3 (+0.4-1.4 = win thrown).
+Then: 48...Qa3 -> 0.00 (dead draw; g6: 51...g6 -1.4ish, White's 52.d6! ->
+-5.4 d20) -> queen endgame lost -> mate move 86.
+
+**Our-engine forensics (the key result).** On the pre-47 position our v10
+tree plays **e3h3 (Qxh3) at EVERY budget — 1.0 / 1.35 / 2.0 / 3.0 / 5.0 s,
+3 reps each; depth 10->11->12; score +184->+176->+162; NEVER Qxf2+**
+(artifacts r105-engine-budgets.txt). So this loss was NOT a time/budget
+issue: the engine cannot resolve the queen-trade endgame win at any budget
+we can afford (5s d12 still misses it; SF needs d18+). Related: fresh
+search of the post-trade K+P endgame scores +3.0-3.3 (it PARTIALLY sees it)
+but from the root the trade never wins comparison; and in the queen endgame
+it overestimates (+1.5 vs SF 0.00) and drifts (plays g6/g5 where SF says
+f6/Kf8 hold).
+
+**Verdict: a search/eval ENDGAME-CONVERSION loss class — not a v10
+regression, not the razor-band class, not fixable by the time formula.**
+No change ships tonight; uploads (10/24h budget) stay in reserve. r106
+(22:00Z) runs on v10 as-is.

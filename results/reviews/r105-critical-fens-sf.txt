@@ -1,0 +1,46 @@
+
+=== #42 pre Qxh3 ===
+    FEN: 6k1/5ppp/p7/3P4/6P1/4q2P/5Q2/6K1 b - - 0 47
+    d12: +527
+    d16: +579
+    d20: +622
+    d24: +622
+    d18 top3 (our POV):
+      Qxf2+ Kxf2 Kf8 d6 Ke8 h4 Kd7 h5  (+639)
+      Qxh3 Qf4 h6 Qb8+ Kh7 Qf4 Qc3 d6  (+141)
+      Qe5 Qc5 g6 Kg2 h5 gxh5 gxh5 Qc8+  (+51)
+
+=== #46 pre g6 ===
+    FEN: 4q1k1/2Q2ppp/p7/3P4/6P1/8/5K2/8 b - - 7 51
+    d12: -2
+    d16: +0
+    d20: +0
+    d24: +0
+    d18 top3 (our POV):
+      f6 d6 Qe5 Qc8+ Kf7 d7 Qd4+ Ke1  (+0)
+      Kf8 g5 Qe4 d6 Qd4+ Ke2 Qb2+ Ke3  (+0)
+      f5 d6 Qe5 gxf5 Qxf5+ Ke3 Qe5+ Kd3  (+0)
+
+=== #47 pre Qe5 ===
+    FEN: 4q1k1/2Q2p1p/p2P2p1/8/6P1/8/5K2/8 b - - 0 52
+    d12: -544
+    d16: -550
+    d20: -674
+    d24: -690
+    d18 top3 (our POV):
+      Qe5 Qc8+ Kg7 d7 Qd4+ Ke2 Qe4+ Kd2  (-703)
+      Qa4 d7 Qd4+ Ke1 Qe3+ Kd1 Qd4+ Kc2  (-755)
+      Qe4 d7 Qd4+ Ke1 Qe3+ Kd1 Qd4+ Kc2  (-755)
+
+=== #33 pre Rc7 ===
+    FEN: 2r3k1/1p3ppp/p2N4/3P4/2P2pP1/3q1PbP/8/1R4QK b - - 13 38
+    d12: +254
+    d16: +383
+    d20: +483
+    d24: +605
+    d18 top3 (our POV):
+      Rd8 Nf5 g6 Nxg3 fxg3 Re1 Qxc4 Kg2  (+601)
+      Rb8 Qd1 Qa3 Ne4 Qa2 Qg1 Qxc4 d6  (+231)
+      Ra8 Qd1 Qa3 Ne4 Qa2 Qg1 Qxc4 d6  (+197)
+
+PART1B-DONE

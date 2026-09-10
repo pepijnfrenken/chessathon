@@ -1,0 +1,17 @@
+=== pawn endgame after Qxf2+ Kxf2 ===
+    FEN 6k1/5ppp/p7/3P4/6P1/8/5K2/8 b - - 0 48
+    1000ms rep1: g8f8 score=298 depth=14 nodes=633856 elapsed=1000
+    1000ms rep2: g8f8 score=298 depth=14 nodes=692224 elapsed=1001
+    3000ms rep1: g8f8 score=328 depth=16 nodes=2075648 elapsed=3000
+    3000ms rep2: g8f8 score=328 depth=16 nodes=1951744 elapsed=3000
+    5000ms rep1: g8f8 score=328 depth=16 nodes=3224576 elapsed=5001
+    5000ms rep2: g8f8 score=328 depth=16 nodes=3210240 elapsed=5003
+=== #46 pre-g6 (SF: 0.00 draw) ===
+    FEN 4q1k1/2Q2ppp/p7/3P4/6P1/8/5K2/8 b - - 7 51
+    1000ms rep1: g7g6 score=144 depth=9 nodes=496640 elapsed=1001
+    1000ms rep2: g7g6 score=144 depth=9 nodes=497664 elapsed=1001
+    3000ms rep1: g7g5 score=157 depth=11 nodes=1432576 elapsed=3000
+    3000ms rep2: g7g5 score=157 depth=11 nodes=1484800 elapsed=3002
+    5000ms rep1: g7g5 score=157 depth=11 nodes=2439168 elapsed=5001
+    5000ms rep2: g7g5 score=157 depth=11 nodes=2348032 elapsed=5001
+PART3-DONE
