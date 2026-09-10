@@ -931,6 +931,9 @@ The engine's remaining known limits are unchanged: KBN/KRvK conversion
 at short TC is horizon-limited; KNN/KNNN false-wins are accepted (rare,
 cheaper than discarding real wins).
 
-Staged candidates (NOT uploaded): /tmp/night-candidates/
-chess-v7-night{1-egfix,2-pstflip,3-rootorder}.zip — all gated PASS,
-md5-verified against their commits, init 48.5s < 60s. Lead: night3.
+Staged candidates: /tmp/night-candidates/chess-v7-night{1-egfix,2-pstflip,
+3-rootorder}.zip — all gated PASS, md5-verified against their commits,
+init 48.5s < 60s. **night3 shipped as v7** (uploaded Sep 10 06:19Z,
+Active; sha256 d5d57f6a6e4a == dashboard submission sha — release identity
++ audit-4 resolution in PROCESS §13). night1/2 remain staged in /tmp only,
+for reference.

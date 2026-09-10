@@ -479,8 +479,12 @@ kept advance-reward invariants. perft ALL PASS; **L1 vs night1 24W-0L-0D
 error every position); L2: our-side leak scores drop mean -95.9cp toward
 referee truth, moves changed on the exact leak rows in the intended direction,
 one nominal >=300 row (r68 p41: V5's 0 was the wrong read, candidate -771
-closer to -1276 truth); eg 8/8; shuffle 10/12 (KRvK-close-w threefold =
-documented horizon-flake band; V5 control 10/12); det identical 493,820 nodes.
+closer to -1276 truth); eg 8/8; shuffle 11/12 (KRvK-close-w threefold —
+CORRECTED in §13: the quiet-box re-run Sep 10 shows night3 WINS this case
+both colors; the threefold was load contention. The control artifact also
+reads 11/12 with a DIFFERENT failed case (KPK-w), not this one — the
+"10/12 / V5 control 10/12" phrasing committed in 2615f8a was a miscount);
+det identical 493,820 nodes.
 
 **q5-night3 (9a85717) — root ordering uses previous best_move:** root re-
 ordered with ttmove=0 every iteration; prior best lost its priority slot and
@@ -516,4 +520,88 @@ caches, banner-sync warmup; 6W as White + 6W as Black, 61-154 plies,
 zero flags; results/bout_l3_v7/). The 1.000 L1 sweep reproduces at real
 clocks — the inverted-PST error was a real ~1-pawn-class tax on every
 position and night3 collects it both colors. Remaining pre-freeze
-instruments: SF19-e2200 bout + quality_ab corpus on night3.
+instruments for night3 (SF19-e2200 bout + quality_ab corpus) were NOT run
+before upload — that waiver is recorded explicitly in §13 (audit-4 ask 4).
+**v7 = night3 was uploaded Sep 10 06:19Z and is ACTIVE** (release-
+identity + full ship record in §13).
+
+## 13. 2026-09-10 — v7 ship record, audit-4 (codex4) resolution, repo hygiene pass
+
+**v7 shipped (night3 = q5-fix1 + egfix + pstflip + rootorder).** Uploaded
+Sep 10 06:19Z (07:19 London); validation building->valid 06:20-06:22Z
+(init 48.7s / 39.8s warmup in the two smoke games, both draws by
+ply_cap); status Active — v7 plays r91 and every round after. **Release
+identity:** the dashboard's published submission sha `d5d57f6a6e4a` equals
+the sha256 of the staged artifact `/tmp/night-candidates/
+chess-v7-night3-rootorder.zip` (`d5d57f6a6e4a42b8...`); all 7 shipped
+files in the zip are byte-identical to the working tree, and
+`git diff 2615f8a..HEAD -- agent.py engine/` is empty — the uploaded
+artifact == the gated night3 tree == the commit record. (Same pattern
+corroborates v6: zip sha256 `71c172ee28a7...` == its dashboard sha.)
+All seven submission validation logs are preserved at
+`results/dashboard/aichessathon-v*.log`.
+
+**v6 ship record (backfilled).** Submitted Sep 9 20:39Z, validated/Active
+20:42Z (sha 71c172ee28a7) = the null-sign fix (aebee58), gated L1 0.708;
+played r90 as its first ladder game (review: report 16). Superseded by v7
+Sep 10 06:22Z.
+
+**Audit-4 (codex4) resolution — all four asks:**
+1. *Shuffle evidence discrepancy* -> resolved + corrected. The flagged
+   night2 artifact does show a KRvK-close-w threefold; the V5 control
+   artifact's one draw was KPK-w (no threefold), so the "documented
+   flake band / V5 control 10/12 too" framing did NOT match the artifacts
+   (both read 11/12; "10/12" was a miscount — corrected in §12; the git
+   message stands as-is, messages are immutable). Quiet-box re-runs
+   Sep 10 (single suite at a time, no co-load; candidate x2, control x1):
+   candidate W(39) / D(142, no 3x) + [loaded] D(150) w/ threefold;
+   control D(150) w/ threefold + [loaded] W(59). **Classification:
+   KRvK-close-w is a variance-prone boundary case for BOTH builds
+   (~1 conversion per 2-3 attempts, load-independent). No night3-specific
+   regression.** Raw evidence: results/night_evidence/
+   shuffle_quietbox_repro_20260910.txt.
+2. *Attach det/KBN/eg evidence to the night source* -> done. Recovered
+   verbatim from the fix1 session trace into `results/night_evidence/`
+   (det: 493,820 x2 identical on night2, 230,245 x2 identical on night3,
+   same best move 47988 score -50; KBN battery pre/post incl. the full
+   rows 875/870/864/902/897 + true-insufficient exactly 0; eg 8/8
+   artifacts for item1/item2/fix + the V5 control run; perft; the 3
+   shuffle artifacts). 13 files, provenance headers inside each.
+3. *Package/verify the frozen source* -> done: v7 zip byte-verified
+   (above); night1/2 zips remain in /tmp/night-candidates/ for reference
+   only.
+4. *Record waived/replaced instruments* -> **waived for v7: SF19-e2200
+   real-clock bout + quality_ab corpus.** Ship decision stood on L1
+   (0.604 vs night2) + L2 (night2 corpus probes; leak scores toward
+   referee truth) + L3 (real-clock bout night3 vs V5 12-0, color-balanced,
+   zero flags) + the correctness-fix chain. Accepted exposure: no
+   whole-game leak-class instrument for v7; levers = 6/day upload slots +
+   today's ladder watch; rollback target if v7 shows leak-family losses =
+   v6 (null fix) while investigating.
+
+**Hygiene pass (this commit series).**
+- Removed 43 untracked `results/matches/round-NN-vs-unknown.pgn`
+  duplicates written by an overnight FULL re-fetch (Sep 9 21:44):
+  r48-75 differed from the committed files by exactly 2 tail bytes
+  (capture junk after the result token), r76-90 were byte-identical.
+  Root cause: the one-off fetch script's `-vs-unknown` fallback on a
+  partial metadata parse. Fixed forward in `tools/fetch_dashboard.py`
+  (add-only, junk-tail strip, fail-loud on empty metadata, SSR/RSC row
+  dedupe). 3 genuine round-log gaps filled add-only (r48/r68/r90 `.log`).
+  Tracked round files untouched; audit trail (git history) unaffected.
+- r90 review artifacts committed (black-deep.json = codex3's cited
+  evidence; sf18 depth pass; superseded intermediate black.json dropped
+  as untracked).
+- Dashboard snapshot refreshed through r90; all v1-v7 submission
+  validation logs preserved.
+- Night evidence backfilled: `results/night_evidence/` (13 files).
+- `docs/research/` renumber: 07-pst-phantom -> 08 (collision with
+  07-brainB); INDEX rows for 06-17; audit reports 09-17 archived verbatim.
+- Agentic archive extended: +16 briefs, +9 reports, +23 raw traces
+  (39 total, ~33 MB raw -> ~6.6 MB gz); sessions/README.md index updated;
+  AGENTIC-PROCESS.md §2b/§3b timeline + retrospective items 10-15.
+
+**Open/parked:** three idle herdr panes remain parked (fix1, codex3,
+codex4 — idle, no work in flight); the pre-freeze instruments not yet run
+for v7 (ask 4 above); freeze Sep 11 10:00 UTC; ladder rounds hourly
+07:00-21:00 UTC.
