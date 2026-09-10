@@ -722,9 +722,9 @@ Repro tool: `tools/probe_r92_collapse.py`.
 
 ---
 
-## 15. 2026-09-10 — ladder watch r94-r96: two wins, then a tactical loss
+## 15. 2026-09-10 — ladder watch r94-r97: two wins, then two losses (different families)
 
-**§0 tally: r48-96 = 23W-10D-16L; v7 era 4W-2L (r91-r96).**
+**§0 tally: r48-97 = 23W-10D-17L; v7 era 4W-3L (r91-r97).**
 
 **r94 WIN vs tal (0-1 as Black, mate m40, 33 moves; committed dbf8958).**
 Clean material conversion: white's 20.Rxe6 rook-for-bishop offer answered
@@ -749,9 +749,27 @@ precomputed at 0.0-0.1s into 55.Rh1# (black king cornered on h3).
 16...f6, 17.Nc7+ Kf7 (played at 0.0s), 18.Nxa8 — a rook for essentially
 nothing, and the conversion ran cleanly against us: their a-pawn marched
 (44.a7, 46.a8=Q), Q+R mop-up finished 59.Ra6#. Clock never the story (avg
-2.0s/move; 43.9s left at mate). **NOT the r92 pattern on the face of it**
-(no queen-infiltration collapse from a dead-equal position; this is an
-early tactical fork miss) — classification pending SF16 on the critical
-phase. SF16 reviews for r95 + r96 both queued: the box runs the v8-dpfix
-gate now; reviews fire when the builder's battery clears (quiet-box
-protocol).
+2.0s/move; 43.9s left at mate). SF16 review (committed de22461): 6 bad —
+late-conversion rows (clamp artifacts at -0.8..-6.1) + TWO pre-collapse
+rows (m16 e5 248, m17 Ke6 167 at ~level) — a tactical miss at m15-16, NOT
+the r92 collapse motif.
+
+**r97 LOSS vs Tempo (0-1 as White, mated 31...Rxc1#, 24 moves; committed
+6482ab5).** Grunfeld start at m7; fast game (117.5s, we left 80s). SF16
+review (committed cf4943a): our 24 plies = 10 best/5 exc/4 mistake/3
+inacc/2 blunder — 6 bad = loss-family band (low end). The slide: Qb3 (232)
+at eval +8 (game m10) is the first real error; by our m9 (Qb4) the eval
+read -476, by m11 (Bb5) -787; the biggest real loss, Re2 (911), was
+already at -1008 (a lost position); the tail (last 5 moves, 0.0s each)
+was forced into mate. Verdict: gradual loss vs a sharp attack, driven by
+the early Qb3-class error — NOT a collapse-from-equal, NOT the r92 motif.
+v7-era error map across reviewed games stays bimodal: wins 0-4 bad,
+losses 5-20 bad.
+
+**Corpus regression evidence for the king-flip ship candidate (Modal, 107
+FENs @2.6s; committed cf4943a).** v9k (king flip + dpfix) vs v7ref: 30/107
+moves changed; static delta min -43 / max +25 / mean -7.3; ZERO deltas
+>=50cp (the no-new->=300-swings criterion PASSES); lost-position rows (47)
+move toward the SF referee (mean -9.2, less optimistic); the r92 tunnel row
+(round-92 ply 58 Rb5) now picks g3h2 (SF-side) where v7ref keeps b4b5.
+dpfix alone (v8ref vs v7ref): 18/107 changed, deltas max +-12.
