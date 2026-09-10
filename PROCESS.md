@@ -26,11 +26,13 @@ reproduce in the lab at exact game budgets and trace to the night3 rootorder
 search-order change — full post-mortem + repro + the real-clock night2-vs-v7
 bout: **§14**. v6 (null fix) was live Sep 9 20:42Z → r90; V5 before it (r70-89). **Authoritative ladder record (PGN headers × platform export, cross-checked 2026-09-10, 0
 mismatches; supersedes every earlier tally incl. the wrong "r87/r88
-losses" reading):** r48-93 = **21W-10D-15L** — v1/v2 era r48-60 3W-5D-5L ·
+losses" reading):** r48-95 = **23W-10D-15L** — v1/v2 era r48-60 3W-5D-5L ·
 v3/v4 r61-69 5W-2D-2L · **V5 r70-89 11W-3D-6L** · v6 r90 0-0-1 (single
-tactical miss, not leak-family) · **v7 r91-r93 2W-1L — r91 reviewed clean; r92
+tactical miss, not leak-family) · **v7 r91-r95 4W-1L — r91 reviewed clean; r92
 = the repro'd collapse (§14); r93 W vs Brokefish (grind: material flat 0/+1,
-opponent clock-collapsed, pawn-ending promos m67/m71, mate m74). Rootorder
+opponent clock-collapsed, pawn-ending promos m67/m71, mate m74); r94 W vs tal
+(SF16: 6 bad all won-phase, zero pre-collapse leak rows); r95 W vs Subzero
+(mate m48, 0.0s precomputed finish; review queued). Rootorder
 bout resolved: stay v7 — night2 7.0/18 vs v7 11.0/18 @ real clocks (§14)**. Leak-family losses with committed SF16
 reviews = r64/r68/r70/r74/r76/r83 — each carries 5-20 SF-visible bad moves
 vs 0-4 for reviewed wins/draws; r85/r87/r88/r89 await reviews (r90 =
@@ -709,3 +711,28 @@ data for r94+.
 `tools/refresh_leak_suite.py`).
 Evidence: `results/probe_r92_collapse.txt` (+ `probe_r92_decomp_v7/v5.json`).
 Repro tool: `tools/probe_r92_collapse.py`.
+
+---
+
+## 15. 2026-09-10 — ladder watch r94/r95: two more wins, no collapse-motif repeat
+
+**§0 tally updated: r48-95 = 23W-10D-15L; v7 era now 4W-1L (r91-r95).**
+
+**r94 WIN vs tal (0-1 as Black, mate m40, 33 moves; committed dbf8958).**
+Clean material conversion: white's 20.Rxe6 rook-for-bishop offer answered
+Qxh2+/fxe6; the king hunt then collected Rxf2+/Qxa1/Qxb2/Qxa3/Qxg3 → +16 by
+m37, Qd6# m40. Piece-sac defense and conversion both ruthless; zero flags,
+avg 2.2s/move, 63s left. **SF16 review (evidence 1fc4402):** our 33 moves =
+20 best / 5 exc / 2 good / 3 inacc / 1 mistake / 2 blunder — the 6 bad are
+ALL won-phase slack: Rf6 (mate-clamp artifact, +29.2→+11.6), Qg1+ (342 at
++13.4), e5 265 / Rb6+ 146 / Qb2 114 at +10..+12, Bd4 130 at level. **Zero
+pre-collapse leak rows** — the r92 Qg5+-collapse motif did NOT repeat.
+Reviewer biggest-5 mixes sides again (Ba4/Bh6/Bb5/Qxg3 = tal's). Leak suite
+96 → 98 FENs + 22 → 23 mate (additive).
+
+**r95 WIN vs Subzero (1-0 as White, mate m48, 48 moves; committed bf960ab).**
+QID start at m7 (black moved first; we moved second). Zero flags; avg
+1.9s/move, 93.4s used, 50.6s left, init 43.5s, game 202.6s. Last 7 moves
+precomputed at 0.0-0.1s into 55.Rh1# (black king cornered on h3). SF16
+review + suite refresh queued: the box is on the v8-dpfix L1 gate (quiet-box
+protocol), r95's review runs when the builder's battery clears.
