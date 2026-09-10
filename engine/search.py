@@ -64,6 +64,12 @@ from engine.board import (EMPTY, PAWN, KNIGHT, BISHOP, ROOK, QUEEN, KING,
                           make_move_apply, unmake_move, legal_moves,
                           in_check, sq64, _KNIGHT_DELTAS, _KING_DELTAS)
 from engine.eval import evaluate
+# q5-c4: halfmove counters below this are "fifty-move-safe": the deepest
+# node reachable from such a node (h + MAX_PLY) is still < 100, so the
+# fifty-move rule can never fire in that subtree and the TT score does not
+# depend on the counter.
+TT_HM_SAFE = 100 - MAX_PLY
+
 from engine.tt import (BOUND_NONE, BOUND_LOWER, BOUND_UPPER, BOUND_EXACT,
                        tt_probe, tt_store)
 
@@ -565,8 +571,21 @@ def search(st, depth: int, alpha: int, beta: int, ply: int, nodes,
     orig_alpha = alpha
     ttmove = 0
 
-    hit, bound, ttscore, ttdepth, ttmove = tt_probe(ttk, ttv, mask, key, ply)
-    if hit and ttdepth >= depth and bound != BOUND_NONE:
+    hit, bound, ttscore, ttdepth, ttmove, tthm = tt_probe(ttk, ttv, mask,
+                                                          key, ply)
+    # q5-c4: a TT score may only be reused when the fifty-move rule cannot
+    # differentiate the two nodes. The search's ply is hard-bounded by
+    # MAX_PLY (the scratch/history arrays are indexed by it), so a node at
+    # halfmove h can only ever reach nodes up to halfmove h + MAX_PLY. If
+    # h + MAX_PLY < 100 the rule can never fire anywhere in either subtree
+    # and the score is the pure positional value at that depth — reusable
+    # regardless of h. Otherwise the counters must match exactly. Without
+    # this, a warm entry stored at a low counter overrode a fifty-move draw
+    # a cold search sees (audit-6 §C4 / codex5 F4).
+    if hit and ttdepth >= depth and bound != BOUND_NONE \
+            and (tthm == st['halfmove'][0]
+                 or (tthm < TT_HM_SAFE
+                     and st['halfmove'][0] < TT_HM_SAFE)):
         if bound == BOUND_EXACT:
             return ttscore
         if bound == BOUND_LOWER and ttscore >= beta:
@@ -703,7 +722,8 @@ def search(st, depth: int, alpha: int, beta: int, ply: int, nodes,
             bound = BOUND_LOWER
         else:
             bound = BOUND_EXACT
-        tt_store(ttk, ttv, mask, key, ply, depth, bound, best, bestmove)
+        tt_store(ttk, ttv, mask, key, ply, depth, bound, best, bestmove,
+                 st['halfmove'][0])
     return best
 
 

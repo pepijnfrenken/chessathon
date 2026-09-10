@@ -4,7 +4,10 @@ Packed numpy arrays (NOT dicts — dict costs ~100-200 MB per million
 entries), 16 bytes/entry, default 2^22 = 4.2M entries = 64 MB.
 
 Entry layout (one uint64 "val" per key):
-  [move:20][score+32000:16][depth:8][bound:2] = 46 bits
+  [move:20][score+32000:16][depth:8][bound:2][halfmove:7] = 53 bits
+The 7-bit halfmove field (q5-c4) is the fifty-move counter the entry was
+computed at; `search` uses it to decide whether the score is reusable —
+see the compatibility rule there. Bits above 53 stay spare.
 The key (uint64) lives in a parallel array; an entry is empty when its
 key is 0. Two candidate slots per position (independent hash functions),
 depth-preferred replacement.
@@ -30,6 +33,12 @@ _SCORE_OFFSET = 32000
 _SCORE_BITS = 16
 _DEPTH_BITS = 8
 _BOUND_BITS = 2
+# q5-c4: fifty-move counter of the node the entry was stored at. Capped at
+# 127; the search never stores a node at halfmove >= 100 (that node is a
+# draw or a mate and returns before the store), so 7 bits is ample.
+_HM_BITS = 7
+_HM_SHIFT = _MOVE_BITS + _SCORE_BITS + _DEPTH_BITS + _BOUND_BITS   # 46
+_HM_MAX = (1 << _HM_BITS) - 1
 
 
 def make(num_entries: int = 1 << 22):
@@ -45,10 +54,12 @@ def _idx(keys, key, shift: int, mask):
 
 @njit
 def tt_probe(keys, vals, mask, key, ply):
-    """Return (hit, bound, score, depth, move) for `key`.
+    """Return (hit, bound, score, depth, move, halfmove) for `key`.
 
     `key` must be a non-zero position key. Score is converted back from
     MATE-ply storage using the node ply. Bound BOUND_NONE means no hit.
+    `halfmove` is the fifty-move counter the entry was stored at (q5-c4);
+    the caller decides whether that makes the score reusable.
     """
     idx = int(key & mask)
     if keys[idx] == key:
@@ -57,11 +68,12 @@ def tt_probe(keys, vals, mask, key, ply):
         score = int((v >> _MOVE_BITS) & ((1 << _SCORE_BITS) - 1)) - _SCORE_OFFSET
         depth = int((v >> (_MOVE_BITS + _SCORE_BITS)) & 0xFF)
         bound = int((v >> (_MOVE_BITS + _SCORE_BITS + _DEPTH_BITS)) & 3)
+        hm = int((v >> _HM_SHIFT) & _HM_MAX)
         if score > 29000:
             score -= ply
         elif score < -29000:
             score += ply
-        return True, bound, score, depth, move
+        return True, bound, score, depth, move, hm
     idx = _idx(keys, key, 22, mask)
     if keys[idx] == key:
         v = vals[idx]
@@ -69,19 +81,22 @@ def tt_probe(keys, vals, mask, key, ply):
         score = int((v >> _MOVE_BITS) & ((1 << _SCORE_BITS) - 1)) - _SCORE_OFFSET
         depth = int((v >> (_MOVE_BITS + _SCORE_BITS)) & 0xFF)
         bound = int((v >> (_MOVE_BITS + _SCORE_BITS + _DEPTH_BITS)) & 3)
+        hm = int((v >> _HM_SHIFT) & _HM_MAX)
         if score > 29000:
             score -= ply
         elif score < -29000:
             score += ply
-        return True, bound, score, depth, move
-    return False, BOUND_NONE, 0, 0, 0
+        return True, bound, score, depth, move, hm
+    return False, BOUND_NONE, 0, 0, 0, 0
 
 
 @njit
-def tt_store(keys, vals, mask, key, ply, depth, bound, score, move):
+def tt_store(keys, vals, mask, key, ply, depth, bound, score, move, halfmove):
     """Store (or replace) an entry for `key`. Depth-preferred across the
     two candidate slots. `score` may be a mate score — stored MATE-ply
-    adjusted with the node ply."""
+    adjusted with the node ply. `halfmove` is the fifty-move counter of
+    this node, carried so a probe can tell whether the score is reusable
+    under the fifty-move rule (q5-c4)."""
     if score > 29000:
         score += ply
     elif score < -29000:
@@ -89,7 +104,9 @@ def tt_store(keys, vals, mask, key, ply, depth, bound, score, move):
     packed = (int(move)
               | ((score + _SCORE_OFFSET) << _MOVE_BITS)
               | (int(depth) << (_MOVE_BITS + _SCORE_BITS))
-              | (int(bound) << (_MOVE_BITS + _SCORE_BITS + _DEPTH_BITS)))
+              | (int(bound) << (_MOVE_BITS + _SCORE_BITS + _DEPTH_BITS))
+              | (int(halfmove if halfmove < _HM_MAX else _HM_MAX)
+                 << _HM_SHIFT))
     idx0 = int(key & mask)
     idx1 = _idx(keys, key, 22, mask)
 

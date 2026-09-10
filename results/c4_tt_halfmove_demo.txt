@@ -1,0 +1,43 @@
+q5-c4 — TT fifty-move context: demonstration
+============================================
+tool: tools/probe_c4_tt_halfmove.py (dev tool, NOT shipped)
+date: 2026-09-10
+
+PROBLEM (audit-6 §C4, codex5 F4)
+A TT entry carried no fifty-move context, so a WARM entry could override a
+fifty-move draw that a COLD search sees. The probe runs three readings of
+the same FEN per tree, at depth 2:
+  A. COLD       fresh TT, search the hm=99 position      <- the truth
+  B. WARM-same  search it twice in one process, one TT
+  C. WARM-hm0   same TT: search the identical PLACEMENT at halfmove 0
+                (legitimately a different value) first, then the hm=99
+                position. The hostile ordering.
+
+FIX
+  * engine/tt.py: the entry's spare bits now carry a 7-bit halfmove field
+    ([move:20][score+32000:16][depth:8][bound:2][halfmove:7] = 53 of 64
+    bits). tt_probe returns it; tt_store records st['halfmove'].
+  * engine/search.py: a probed score is reused only if the counters match
+    exactly, OR both are below TT_HM_SAFE = 100 - MAX_PLY. The search's ply
+    is hard-bounded by MAX_PLY, so from a node at halfmove h the deepest
+    reachable node is h + MAX_PLY < 100 when h < TT_HM_SAFE: the fifty-move
+    rule cannot fire anywhere in that subtree, so the score is the pure
+    positional value at that depth and is reusable regardless of h.
+
+RESULTS
+  tree = /tmp/chessathon-v9k-base (v9k-shipped, PRE-FIX)
+    case       A cold  B warm-same  C warm-hm0    verdict
+    KRvK            0            0         592   MISMATCH
+    KRvK+           0            0         592   MISMATCH
+    failures: 2
+
+  tree = repo HEAD + c4 patch (POST-FIX)
+    case       A cold  B warm-same  C warm-hm0    verdict
+    KRvK            0            0           0         OK
+    KRvK+           0            0           0         OK
+    failures: 0
+
+C matches the cold reading exactly on both positions after the fix; before
+it, the warm entry turned a fifty-move draw (0) into 592 cp of phantom
+advantage. B never differed, so the fix did not break warm-TT reuse of
+genuinely equivalent entries.
