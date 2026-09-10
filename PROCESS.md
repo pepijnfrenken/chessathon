@@ -1089,3 +1089,56 @@ endgame was gone.
 drawing from losing in razor endgames while its own eval reads ~equal.
 **Not luck; not v9k-specific.** Artifacts: `results/matches/round-100-vs-deep-red.{pgn,log}`,
 `results/leak_reviews/round-100-vs-deep-red.sf16.json`, `tools/probe_r100_h3.py`.
+
+### 17. 2026-09-10 — q5-tm1: late-game time floor + root flip guard (r92/r100 razor-band fix candidate)
+
+**Problem (§14 + §16c):** both live losses share one failure class — the engine
+stops with its last completed depth *mid-flip* between candidate moves, in a
+position its own eval reads as ~equal, and picks from the losing family.
+Fresh-TT budget sweep on shipped v9k (`tools/probe_razor_budget.py`, 4 sites x
+8 budgets x 3 reps, `results/tm1_sweep_v9k.csv`): **r92-m35**: good (e5d3) at
+<=1200 ms, **bad (d5b3) 1600-3000 ms**, good again >=4000 ms (non-monotonic!);
+**r100-m49**: bad (Kf5) at 800, good (Rb6) >=1200; **r100-m50**: bad family
+(Kxg5/h3) <=1200, good (Rb7) >=1600; **r92-m36**: bad at *every* depth except
+d8 (SF: d4b2 -7.2 vs g3h2 -2.5) — an *eval hole*, not a time problem; tm1
+cannot fix it and does not regress it.
+
+**Cost headroom (measured):** median 36% of the clock unused over 53 rated
+games (25% over games >= 50 moves; zero games below 10 s). codex5 finding 7
+corroborated: reducing the divisor front-loads and does NOT raise late-game
+budgets (decay eats it) — a floor is the right shape, not a divisor cut.
+
+**Fix (two mechanisms, one class; `3a52a78`):**
+1. `engine/time.py`: per-move budget floored at `min(3000, R//10)` whenever
+   the decay formula would spend less (clamps unchanged; never-flag geometry
+   stands).
+2. `engine/search.py` search_root: at the deadline, if the last two completed
+   depths disagree on the best move, extend in +budget chunks up to a hard
+   2x cap until two consecutive depths agree. Inactive below two completed
+   iterations, so tiny-TC harness shapes are untouched.
+
+**Evidence (all in `results/tm1_*`):**
+- **Unit A/B, identical budget 3000 ms**: shipped v9k plays `d5b3` (the r92
+  game blunder) at d7; tm1 plays `e5d3` (SF-correct) at d8, elapsed 6001 ms =
+  the 2x cap (guard extended). **m50@1549** (the r100 game's exact budget):
+  tm1 extends 1549 -> 3099 ms and lands d13 `b6b7` (drawing family); shipped
+  stops exactly at the flip boundary. 5-rep battery: m35 5/5 GOOD (shipped
+  5/5 BAD), m49 5/5 GOOD, m50 5/5 GOOD.
+- **Clock sim** over all 53 real per-move clock series (`results/tm1_clock_sim.txt`):
+  floor 3 s / cap R//10: median end 23.2 s, **min end 5.5 s, zero games < 5 s**;
+  median extra spend +22 s. Guard cost is bounded (<= 2x on flip moves only;
+  the bout logs count them live).
+- **Correctness**: det 232561 / best 47988 / -40, all four procs (guard inert
+  at fixed depth — byte-identical to the reference); perft ALL PASS (board
+  untouched).
+- **Live-HEAD bundle smoke (v9k+c3+c4+c5+tm1)**: all razor picks GOOD; guard
+  fires exactly on the designed cases (m35@3000: e5d3 at the 6000 ms cap;
+  m50@1549: b6b7 at 3099 ms).
+
+**Composition:** tm1 touches only time.py + the search_root loop — disjoint
+from c3 (_draw_score), c4/c5 (TT/board). It composes cleanly with the
+c3/c4/c5 bundle in the same tree (smoke run above).
+
+**Status: CANDIDATE, not uploaded.** Real-clock ladder-format bout vs
+v9k-shipped in progress (desktop, 2 x 16 games, real FENs, 120 s+0.5 s);
+results land as a follow-up commit. Upload decision = Pino's.
