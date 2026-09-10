@@ -1,0 +1,73 @@
+q5-v8dp — doubled-pawn file-indexing fix, jitted demonstration
+tool: tools/probe_doubled_index.py (dev tool, NOT shipped)
+date: 2026-09-10T10:48:46Z
+git: prefix run at 1fc4402 (pre-fix tree), postfix run at the fix commit
+method: jit_delta = evaluate(EVAL_GATE=1111) - evaluate(EVAL_GATE=0111), i.e. the tapered pawn-group contribution; the eight FENs differ only in the doubled count (isolated=passed=blocked=0 in all eight).
+
+================ PREFIX (FILE_SQ[f*8]) ================
+
+  q5-v8dp doubled-pawn file-indexing probe (jitted path)
+  params: P_DOUBLED_MG=-12 P_DOUBLED_EG=-10 EVAL_CONFIG=hand
+  jit_delta = evaluate(gate=1111) - evaluate(gate=0111) = tapered pawn-group contribution
+  all eight positions: isolated=0, passed=0, blocked=0 -> only the doubled count varies across files
+  
+  --- white doubled pawns (f2+f3 / f7+f6, material constant)
+  file eval_1111 eval_0111 jit_delta mirror_dbl  phase
+  a          -92         4       -96          8     24
+  b           43        43         0          0     24
+  c           24        24         0          0     24
+  d           -6        -6         0          0     24
+  e            9         9         0          0     24
+  f           -5        -5         0          0     24
+  g           -2        -2         0          0     24
+  h            4         4         0          0     24
+  verdict[white]: jit_delta identical on all eight files = NO (buggy: per-file counts differ)  min=-96 max=0
+  
+  --- black doubled pawns (f2+f3 / f7+f6, material constant)
+  file eval_1111 eval_0111 jit_delta mirror_dbl  phase
+  a          112        16        96         -8     24
+  b          -23       -23         0          0     24
+  c           -4        -4         0          0     24
+  d           26        26         0          0     24
+  e           11        11         0          0     24
+  f           25        25         0          0     24
+  g           22        22         0          0     24
+  h           16        16         0          0     24
+  verdict[black]: jit_delta identical on all eight files = NO (buggy: per-file counts differ)  min=0 max=96
+  
+  FIXED iff both verdicts are YES (each file carries exactly one doubled pawn penalty).
+  OVERALL: BUGGY
+
+================ POSTFIX (FILE_SQ[f]) ================
+
+  q5-v8dp doubled-pawn file-indexing probe (jitted path)
+  params: P_DOUBLED_MG=-12 P_DOUBLED_EG=-10 EVAL_CONFIG=hand
+  jit_delta = evaluate(gate=1111) - evaluate(gate=0111) = tapered pawn-group contribution
+  all eight positions: isolated=0, passed=0, blocked=0 -> only the doubled count varies across files
+  
+  --- white doubled pawns (f2+f3 / f7+f6, material constant)
+  file eval_1111 eval_0111 jit_delta mirror_dbl  phase
+  a           -8         4       -12          1     24
+  b           31        43       -12          1     24
+  c           12        24       -12          1     24
+  d          -18        -6       -12          1     24
+  e           -3         9       -12          1     24
+  f          -17        -5       -12          1     24
+  g          -14        -2       -12          1     24
+  h           -8         4       -12          1     24
+  verdict[white]: jit_delta identical on all eight files = YES (fixed)  min=-12 max=-12
+  
+  --- black doubled pawns (f2+f3 / f7+f6, material constant)
+  file eval_1111 eval_0111 jit_delta mirror_dbl  phase
+  a           28        16        12         -1     24
+  b          -11       -23        12         -1     24
+  c            8        -4        12         -1     24
+  d           38        26        12         -1     24
+  e           23        11        12         -1     24
+  f           37        25        12         -1     24
+  g           34        22        12         -1     24
+  h           28        16        12         -1     24
+  verdict[black]: jit_delta identical on all eight files = YES (fixed)  min=12 max=12
+  
+  FIXED iff both verdicts are YES (each file carries exactly one doubled pawn penalty).
+  OVERALL: FIXED

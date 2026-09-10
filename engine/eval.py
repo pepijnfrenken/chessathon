@@ -595,10 +595,10 @@ def evaluate(st) -> int:
                     else:
                         passed[rk - 3] -= 1
     for f in range(8):
-        c = _popcount64(wp & FILE_SQ[f * 8])
+        c = _popcount64(wp & FILE_SQ[f])
         if c > 1:
             dbl += c - 1
-        c = _popcount64(bp & FILE_SQ[f * 8])
+        c = _popcount64(bp & FILE_SQ[f])
         if c > 1:
             dbl -= c - 1
 

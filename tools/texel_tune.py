@@ -251,10 +251,10 @@ def feature_vector(st) -> tuple[np.ndarray, int, bool]:
                     else:
                         passed[rk - 3] -= 1
     for ff in range(8):
-        c = _popcount(wp & int(E.FILE_SQ[ff * 8]))
+        c = _popcount(wp & int(E.FILE_SQ[ff]))
         if c > 1:
             dbl += c - 1
-        c = _popcount(bp & int(E.FILE_SQ[ff * 8]))
+        c = _popcount(bp & int(E.FILE_SQ[ff]))
         if c > 1:
             dbl -= c - 1
 
