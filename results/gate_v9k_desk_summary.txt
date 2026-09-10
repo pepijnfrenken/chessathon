@@ -1,0 +1,17 @@
+=== desktop pool: v9k (repo HEAD 416833d) vs v7ref | 500ms | seeds 17,19,23,29,31,37 ===
+games 144
+  seed  17: 9W-12L-3D (0.438)
+  seed  19: 11W-8L-5D (0.562)
+  seed  23: 11W-8L-5D (0.562)
+  seed  29: 8W-11L-5D (0.438)
+  seed  31: 11W-9L-4D (0.542)
+  seed  37: 10W-8L-6D (0.542)
+POOLED: 60W-56L-28D -> 0.514 (normal-approx 95% CI +-0.082)
+note: cross-box offset not calibrated (desktop CPUs != VPS)
+note: this corrects an earlier copy which double-counted (glob matched *.log AND *.stream.log -> read 288 games)
+
+=== combined v9k vs v7ref (VPS + desktop, disjoint seeds) ===
+VPS     (seeds 7,11,13):    30W-30L-12D (72g)  -> 0.500
+desktop (seeds 17..37):     60W-56L-28D (144g) -> 0.514
+COMBINED: 90W-86L-40D over 216 games -> 0.509 (normal-approx 95% CI +-0.067)
+band: NEUTRAL (0.45-0.55) on the VPS-calibrated bands

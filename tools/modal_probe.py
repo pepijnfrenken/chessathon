@@ -30,8 +30,13 @@ app = modal.App("chessathon-probe")
 def _ignore(path: Path) -> bool:
     parts = set(path.parts)
     junk = {".git", "__pycache__", ".venv", "venv", "node_modules",
-            "docs", "results", "data", "tmp", "sessions", ".aiwg"}
-    return bool(parts & junk) or path.suffix in {".pyc", ".zip"}
+            "docs", "data", "tmp", "sessions", ".aiwg"}
+    if parts & junk or path.suffix in {".pyc", ".zip"}:
+        return True
+    # keep results/leak_suite (corpus FENs for probes), drop the rest of results/
+    if "results" in parts and "leak_suite" not in parts:
+        return True
+    return False
 
 
 image = (
