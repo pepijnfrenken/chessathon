@@ -68,6 +68,8 @@ def refresh_one(review_path, fens, mate, added_fens, added_mate, dry):
     for r in rows:
         if r.get("side") != side or (r.get("cp_loss") or 0) < CP_THRESHOLD:
             continue
+        if r.get("verdict") not in ("blunder", "mistake"):
+            continue
         key = (game_name, r["ply"])
         if key in have:
             continue
