@@ -1,0 +1,94 @@
+AI CHESSATHON MATCH LOG
+=======================
+
+MATCH
+  Round          Rated 96
+  Team           En Passant Labs
+  Colour         Black
+  Opponent       Bongcloud
+  Opening        Sicilian Classical
+  Start FEN      r1bqkb1r/1p2pppp/p1np1n2/6B1/3NP3/2N5/PPPQ1PPP/R3KB1R b KQkq - 1 7
+  You moved      First
+  Machine        w-94416c
+  Finished       2026-09-10 12:21:20 UTC
+  Match ID       7c58fa29-ba21-424e-b8e1-c6aefa13333e
+
+INIT
+  Ready in       42.6 s
+  Budget         90.0 s
+  Used           47 percent
+
+CLOCK
+  Base           120.0 s plus 0.5 s per move
+  Moves          52
+  Time used      102.1 s
+  Slowest        4.4 s on move 1
+  Fastest        0.0 s on move 11
+  Average        2.0 s
+  Left at end    43.9 s
+
+RESULT
+  Lost by checkmate
+  Game lasted 221.4 s
+
+MOVES
+    #  move          time     clock left
+    1  Nxd4          4.4 s      116.1 s
+    2  b5            3.1 s      113.5 s
+    3  h6            3.0 s      111.0 s
+    4  Qc7           3.0 s      108.5 s
+    5  dxe5          2.9 s      106.1 s
+    6  Nd7           2.9 s      103.8 s
+    7  Qxe5          2.8 s      101.5 s
+    8  Nxe5          2.8 s       99.2 s
+    9  axb5          2.7 s       97.0 s
+   10  f6            2.7 s       94.8 s
+   11  Kf7           0.0 s       95.3 s
+   12  Bb7           2.6 s       93.2 s
+   13  Bxg2          2.6 s       91.1 s
+   14  Bc6           2.5 s       89.1 s
+   15  Nf3           2.5 s       87.1 s
+   16  e5            2.4 s       85.2 s
+   17  Ke6           2.4 s       83.3 s
+   18  Rxf8          2.4 s       81.4 s
+   19  Ng5           2.3 s       79.6 s
+   20  Rc8           2.3 s       77.9 s
+   21  Bd5           2.2 s       76.1 s
+   22  Be4           2.2 s       74.4 s
+   23  f5            2.2 s       72.8 s
+   24  Nh7           2.1 s       71.2 s
+   25  Ra8           2.1 s       69.6 s
+   26  Nf6           2.0 s       68.0 s
+   27  f4            2.0 s       66.5 s
+   28  Rb8           2.0 s       65.0 s
+   29  Ra8           1.9 s       63.6 s
+   30  Bb7           1.9 s       62.2 s
+   31  Be4           1.9 s       60.8 s
+   32  Bb7           1.9 s       59.4 s
+   33  Ba6           1.8 s       58.1 s
+   34  Bxb5          1.8 s       56.8 s
+   35  Rc8           1.8 s       55.5 s
+   36  Rxc5+         1.7 s       54.3 s
+   37  Rxb5          1.7 s       53.1 s
+   38  Rb1+          1.7 s       51.9 s
+   39  Rxg1          1.7 s       50.8 s
+   40  Rg5           1.6 s       49.6 s
+   41  Rg4           1.6 s       48.5 s
+   42  Kf7           1.6 s       47.4 s
+   43  Rg5           1.6 s       46.4 s
+   44  Ke6           1.5 s       45.3 s
+   45  Kd5           1.5 s       44.3 s
+   46  Ke6           1.5 s       43.4 s
+   47  Kd6           1.5 s       42.4 s
+   48  Ke7           1.0 s       41.9 s
+   49  Kd8           0.0 s       42.4 s
+   50  Kc7           0.0 s       42.9 s
+   51  Kb7           0.0 s       43.4 s
+   52  Ka7           0.0 s       43.9 s
+
+OUTPUT
+  49 bytes on stderr
+
+  [chessathon] numba warmup 41.5s (init budget ok)
+
+Email hello@aichessathon.com with this file if anything here is unclear.
