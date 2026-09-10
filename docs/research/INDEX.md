@@ -90,3 +90,6 @@ Order of implementation (01 §1, 02 §6.2, 05 B3):
 | 03 | Openings, endgames, adjudication | book/TB strategy, draw/repetition handling |
 | 04 | Competition landscape | field strength, CCRL bar, schedule, failure modes |
 | 05 | Chess models & methodology | NNUE/AlphaZero/Maia analysis, gated-net feasibility, ROI table |
+| 06 | Brain-A radical search/eval probes | ranked pre-freeze probe menu (read-only research, Sep 8) |
+| 07 | Brain-B meta / wild probes | alternative-approach probe menu + evidence (read-only) |
+| 08 | PST phantom decomposition | the inverted pawn-table root cause + ranked PST ablation spec (Sep 9) |

@@ -918,7 +918,7 @@ insufficient-material zeroing defect. Each fixed in isolation, each gated
    -21..+92 toward referee truth; startpos unchanged by symmetry; L1
    1.000 vs night1 — the inverted tables were a ~1-pawn-class error in
    EVERY position, color-symmetric, invisible to mirror-parity tests.
-   Decomposition + method: docs/research/07-pst-phantom-decomposition.md;
+   Decomposition + method: docs/research/08-pst-phantom-decomposition.md;
    instrument tools/eval_decompose.py (parity-exact incl. mate-drive).
 4. **q5-night3 (9a85717)** — root ID re-orders with the previous
    iteration's best in the ttmove slot (was 0 every iteration): r83-p21
