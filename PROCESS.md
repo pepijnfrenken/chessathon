@@ -26,13 +26,14 @@ reproduce in the lab at exact game budgets and trace to the night3 rootorder
 search-order change — full post-mortem + repro + the real-clock night2-vs-v7
 bout: **§14**. v6 (null fix) was live Sep 9 20:42Z → r90; V5 before it (r70-89). **Authoritative ladder record (PGN headers × platform export, cross-checked 2026-09-10, 0
 mismatches; supersedes every earlier tally incl. the wrong "r87/r88
-losses" reading):** r48-95 = **23W-10D-15L** — v1/v2 era r48-60 3W-5D-5L ·
+losses" reading):** r48-96 = **23W-10D-16L** — v1/v2 era r48-60 3W-5D-5L ·
 v3/v4 r61-69 5W-2D-2L · **V5 r70-89 11W-3D-6L** · v6 r90 0-0-1 (single
-tactical miss, not leak-family) · **v7 r91-r95 4W-1L — r91 reviewed clean; r92
+tactical miss, not leak-family) · **v7 r91-r96 4W-2L — r91 reviewed clean; r92
 = the repro'd collapse (§14); r93 W vs Brokefish (grind: material flat 0/+1,
 opponent clock-collapsed, pawn-ending promos m67/m71, mate m74); r94 W vs tal
 (SF16: 6 bad all won-phase, zero pre-collapse leak rows); r95 W vs Subzero
-(mate m48, 0.0s precomputed finish; review queued). Rootorder
+(mate m48, 0.0s precomputed finish); r96 L vs Bongcloud (tactical: m15-18
+b5/Nc7+ sequence wins our a8 rook; classification pending SF16). Rootorder
 bout resolved: stay v7 — night2 7.0/18 vs v7 11.0/18 @ real clocks (§14)**. Leak-family losses with committed SF16
 reviews = r64/r68/r70/r74/r76/r83 — each carries 5-20 SF-visible bad moves
 vs 0-4 for reviewed wins/draws; r85/r87/r88/r89 await reviews (r90 =
@@ -714,9 +715,9 @@ Repro tool: `tools/probe_r92_collapse.py`.
 
 ---
 
-## 15. 2026-09-10 — ladder watch r94/r95: two more wins, no collapse-motif repeat
+## 15. 2026-09-10 — ladder watch r94-r96: two wins, then a tactical loss
 
-**§0 tally updated: r48-95 = 23W-10D-15L; v7 era now 4W-1L (r91-r95).**
+**§0 tally: r48-96 = 23W-10D-16L; v7 era 4W-2L (r91-r96).**
 
 **r94 WIN vs tal (0-1 as Black, mate m40, 33 moves; committed dbf8958).**
 Clean material conversion: white's 20.Rxe6 rook-for-bishop offer answered
@@ -733,6 +734,17 @@ Reviewer biggest-5 mixes sides again (Ba4/Bh6/Bb5/Qxg3 = tal's). Leak suite
 **r95 WIN vs Subzero (1-0 as White, mate m48, 48 moves; committed bf960ab).**
 QID start at m7 (black moved first; we moved second). Zero flags; avg
 1.9s/move, 93.4s used, 50.6s left, init 43.5s, game 202.6s. Last 7 moves
-precomputed at 0.0-0.1s into 55.Rh1# (black king cornered on h3). SF16
-review + suite refresh queued: the box is on the v8-dpfix L1 gate (quiet-box
-protocol), r95's review runs when the builder's battery clears.
+precomputed at 0.0-0.1s into 55.Rh1# (black king cornered on h3).
+
+**r96 LOSS vs Bongcloud (0-1 as Black, mated m59, 52 moves; committed
+1500aa5).** Sicilian Classical start at m7. The material swing: after
+15.Bxb5+ axb5 16.Nxb5 the knight hits c7+ (fork on Ke8 + Ra8); we chose
+16...f6, 17.Nc7+ Kf7 (played at 0.0s), 18.Nxa8 — a rook for essentially
+nothing, and the conversion ran cleanly against us: their a-pawn marched
+(44.a7, 46.a8=Q), Q+R mop-up finished 59.Ra6#. Clock never the story (avg
+2.0s/move; 43.9s left at mate). **NOT the r92 pattern on the face of it**
+(no queen-infiltration collapse from a dead-equal position; this is an
+early tactical fork miss) — classification pending SF16 on the critical
+phase. SF16 reviews for r95 + r96 both queued: the box runs the v8-dpfix
+gate now; reviews fire when the builder's battery clears (quiet-box
+protocol).
