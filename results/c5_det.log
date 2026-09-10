@@ -1,0 +1,11 @@
+[c5] determinism — fixed depth 8, 2 processes x 2 runs, fresh NUMBA_CACHE_DIR each
+date: 2026-09-10T17:37:45Z  git: 73a3bda
+fen: r3k2r/ppq1bppp/2p1p3/2P5/P2P4/2B1P3/4QPPP/R4RK1 b kq - 4 18
+--- run 1 (cache /tmp/c5_det1)
+proc: nodes=232561 best=47988 score=-40 depth=8
+proc: nodes=232561 best=47988 score=-40 depth=8
+run1 exit=0
+--- run 2 (cache /tmp/c5_det2)
+proc: nodes=232561 best=47988 score=-40 depth=8
+proc: nodes=232561 best=47988 score=-40 depth=8
+run2 exit=0

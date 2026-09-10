@@ -1,0 +1,28 @@
+== 1. our perft vs published reference values ==
+  startpos   d1=20 OK [0.00 Mnps]  d2=400 OK [8.85 Mnps]  d3=8902 OK [10.98 Mnps]  d4=197281 OK [8.53 Mnps]  d5=4865609 OK [7.43 Mnps]
+  kiwipete   d1=48 OK [1.77 Mnps]  d2=2039 OK [6.67 Mnps]  d3=97862 OK [6.53 Mnps]  d4=4085603 OK [6.75 Mnps]  d5=193690690 OK [9.71 Mnps]
+  pos3       d1=14 OK [0.83 Mnps]  d2=191 OK [3.10 Mnps]  d3=2812 OK [6.31 Mnps]  d4=43238 OK [6.72 Mnps]  d5=674624 OK [7.98 Mnps]
+  pos4       d1=6 OK [0.35 Mnps]  d2=264 OK [8.02 Mnps]  d3=9467 OK [13.02 Mnps]  d4=422333 OK [10.50 Mnps]
+  pos5       d1=44 OK [2.48 Mnps]  d2=1486 OK [10.41 Mnps]  d3=62379 OK [12.12 Mnps]  d4=2103487 OK [10.09 Mnps]
+  pos6       d1=46 OK [2.68 Mnps]  d2=2079 OK [11.48 Mnps]  d3=89890 OK [13.59 Mnps]  d4=3894594 OK [11.37 Mnps]
+== 2. our perft vs python-chess oracle (small depths) ==
+  startpos   depth 3: ours=8902 python-chess=8902 OK [0.1s]
+  kiwipete   depth 3: ours=97862 python-chess=97862 OK [1.0s]
+  pos3       depth 3: ours=2812 python-chess=2812 OK [0.0s]
+  pos4       depth 3: ours=9467 python-chess=9467 OK [0.1s]
+  pos5       depth 3: ours=62379 python-chess=62379 OK [0.6s]
+  pos6       depth 3: ours=89890 python-chess=89890 OK [0.8s]
+== 3. move-type breakdown vs python-chess (depth 2-3) ==
+  startpos   d3: ours=(8902, 34, 0, 0, 0, 12)
+              pc  =(8902, 34, 0, 0, 0, 12)  OK
+  kiwipete   d3: ours=(97862, 17461, 46, 3255, 0, 993)
+              pc  =(97862, 17461, 46, 3255, 0, 993)  OK
+  pos3       d3: ours=(2812, 224, 2, 0, 0, 267)
+              pc  =(2812, 224, 2, 0, 0, 267)  OK
+  pos4       d3: ours=(9467, 1108, 4, 6, 168, 38)
+              pc  =(9467, 1108, 4, 6, 168, 38)  OK
+  pos5       d2: ours=(1486, 228, 0, 1, 4, 117)
+              pc  =(1486, 228, 0, 1, 4, 117)  OK
+  pos6       d3: ours=(89890, 9677, 0, 0, 0, 1783)
+              pc  =(89890, 9677, 0, 0, 0, 1783)  OK
+== result: ALL PASS

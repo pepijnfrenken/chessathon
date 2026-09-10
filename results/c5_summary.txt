@@ -1,0 +1,35 @@
+q5-c5 — EP canonicalisation: battery + L1 gate
+==============================================
+tree    : repo HEAD + c3 + c4 + c5 (the candidate carries the committed
+          c3 (gated 0.479) and c4 (gated 0.521), so this gate reads the
+          full three-fix stack against v9k-shipped)
+control : /tmp/chessathon-v9k-base (= git archive v9k-shipped)
+date    : 2026-09-10 18:0xZ, one engine workload at a time.
+
+TARGETED PROBES
+  results/c5_ep_canonical_demo.txt (tools/probe_c5_ep_canonical.py)
+    8 checks / 3 families vs python-chess: 5 failures -> 0, incl. the
+    audit's exact key pair 9490302469568603911 vs 3009738484286385424,
+    the repetition cycle, and the no-over-correction cases.
+  tools/probe_ep_key.py (committed P7 regression probe)
+    4 EP cases PASS + 38-move control parity OK.
+
+BATTERY
+  perft ......... results/c5_perft.log      ALL PASS (mandatory for c5)
+  determinism ... results/c5_det.log        232561 / best 47988 / -40,
+                  4 proc lines, 2/2 clean exits, fresh NUMBA_CACHE_DIR each
+                  (identical to v9k — the probe position has no ep square
+                  and no halfmove pressure, so neither fix engages)
+  eg_check ...... results/c5_eg_check.log   8/8 @300ms  <-- first clean
+                  sweep of the round; v9k's own record was 7/8 with the KPK
+                  boundary cell drawn. KPK-w and KPK-b BOTH convert here.
+  shuffle ....... results/c5_shuffle.log    10/12, ZERO threefolds
+                  (both KPK cells; v9k's record was 10/12 the same way)
+
+HONESTY NOTE on eg 8/8: a single 8/8 sweep does NOT establish that c5
+improved KPK — the KPK cell is the documented variance boundary (see
+results/c3_kpk_boundary.log: 10 samples across candidate and control,
+flipping on both). It does establish that c5 does not BREAK it: the
+endgame suite is at least as healthy as v9k's.
+
+VERDICT: PASS pending the L1 number in results/gate_c5_vs_v9k.log.
