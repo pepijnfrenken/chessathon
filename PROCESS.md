@@ -10,8 +10,21 @@ keep the TL;DR fresh, append to the right section, never delete history.
 
 ---
 
-## 0. TL;DR — current state (2026-09-08)
+## 0. TL;DR — current state (2026-09-10; ladder standings corrected below)
 
+**CURRENT (supersedes the Sep 8-era text further down this section):**
+**v7 is live** — night3 build (null-sign fix + KBN zeroing fix + pawn-PST
+flip + root-best ordering), uploaded Sep 10 06:19Z, ACTIVE from 06:22Z,
+plays r91 onward. Full ship record + release identity: §13. v6 (null fix)
+was live Sep 9 20:42Z → r90; V5 before it (r70-89). **Authoritative ladder
+record (PGN headers × platform export, cross-checked 2026-09-10, 0
+mismatches; supersedes every earlier tally incl. the wrong "r87/r88
+losses" reading):** r48-90 = **19W-10D-14L** — v1/v2 era r48-60 3W-5D-5L ·
+v3/v4 r61-69 5W-2D-2L · **V5 r70-89 11W-3D-6L** · v6 r90 0-0-1 (single
+tactical miss, not leak-family). Leak-family losses with committed SF16
+reviews = r64/r68/r70/r74/r76/r83 — each carries 5-20 SF-visible bad moves
+vs 0-4 for reviewed wins/draws; r85/r87/r88/r89 await reviews (r90 =
+reviewed, single tactical miss, not leak-family).
 **Engine:** original numba-jitted alpha-beta (own board+movegen, perft-exact),
 hand-tapered eval, stateful anti-threefold (game-history repetition).
 `agent.zip` 30 KB — `agent.py` + `engine/` only. HEAD `49c4c0e` + process commits.
@@ -213,8 +226,11 @@ Every major decision, with the evidence that made it. (Full narratives:
 - **P3 — ladder record r51–60 missing** — RESOLVED 2026-09-09: full set
   r48–r76 fetched from the dashboard (PGN+log, `results/matches/`,
   metadata `results/dashboard/games.csv`); r51–60 gap closed.
-- **P4 — ladder standing: rank 336/387 (Sep 8, through r74) → #267/410,
-  rating 1461, 12W-7D-10L (Sep 9 dashboard, through r76).** Attribution:
+- **P4 — ladder standing: SUPERSEDED (2026-09-10).** Authoritative record
+  now in §0 (TL;DR): r48-90 = 19W-10D-14L; V5 era r70-89 = 11W-3D-6L.
+  The per-era numbers below are historical (as of Sep 8-9) and the "through
+  r74/r76" tallies they rest on are among the stale readings corrected in
+  §0. Historical text follows. Attribution:
   v1 = 1a pure-Python (rated 47/351 at launch), v2 = stateless 1b→Phase-3
   (r48-60 crater), v3 = stateful Phase-4 (r61+). V5 (r70+)
   record: W-L-W-W-L (r70 L KingsGuard, r71 W Magnus, r72 W Stocked Fish,
