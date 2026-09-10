@@ -1,0 +1,14 @@
+tm1 tail-gate test — extension on/off by per-move budget.
+v2 (85106bc): gate blocks extension when budget < 1.2s.
+At sub-1.2s budgets tm1 is behaviourally identical to shipped v9k (compare
+results/tm1_sweep_v9k.csv r100-m50 @800: shipped g4g5; tm1@800 here: g4g5).
+
+=== tail-gate test [/tmp/chessathon-tm1] ===
+m35@3000  (>1.2s: extension ON)  rep1: e5d3 score=7 depth=8 nodes=2996224 elapsed=6001ms EXTENDED
+m35@3000  (>1.2s: extension ON)  rep2: e5d3 score=7 depth=8 nodes=3014656 elapsed=6001ms EXTENDED
+m50@1549  (>1.2s: extension ON)  rep1: b6b7 score=-42 depth=13 nodes=1856512 elapsed=3100ms EXTENDED
+m50@1549  (>1.2s: extension ON)  rep2: b6b7 score=-42 depth=13 nodes=1896448 elapsed=3098ms EXTENDED
+m50@800   (<1.2s: extension OFF) rep1: g4g5 score=-18 depth=10 nodes=476160 elapsed=800ms no-ext
+m50@800   (<1.2s: extension OFF) rep2: g4g5 score=-18 depth=10 nodes=484352 elapsed=801ms no-ext
+m50@1100  (<1.2s: extension OFF) rep1: g4g5 score=-18 depth=10 nodes=674816 elapsed=1102ms no-ext
+m50@1100  (<1.2s: extension OFF) rep2: g4g5 score=-18 depth=10 nodes=604160 elapsed=1101ms no-ext

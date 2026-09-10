@@ -1142,3 +1142,16 @@ c3/c4/c5 bundle in the same tree (smoke run above).
 **Status: CANDIDATE, not uploaded.** Real-clock ladder-format bout vs
 v9k-shipped in progress (desktop, 2 x 16 games, real FENs, 120 s+0.5 s);
 results land as a follow-up commit. Upload decision = Pino's.
+
+**Update §17b (17:26Z, `85106bc`): flip-guard tail gate.** First bout read on
+the ungated guard (5 finished games incl. a 132-move marathon): the guard
+fires on ~5-9% of tm1's moves, ZERO flags, but tm1 ends long games at 3-9 s
+vs v9k's 25-38 s — an instant-loss tail margin the ladder does not want.
+Gate added: no extension when the per-move budget < 1.2 s (the
+clock-exhaustion zone, R <~ 12 s). Every razor site runs at 1.5-3 s budgets
+(floor-boosted to 3 s in game) so the fix is untouched there; at sub-1.2 s
+budgets tm1 is behaviourally identical to v9k (gate test:
+`results/tm1_gate_test.txt`; e.g. m50@800 both builds play g4g5). Final-config
+bout (tm1-v2 vs v9k, 2 x 16 games, seeds 21/22) relaunched on the desktop
+17:25Z; results = follow-up commit. Earlier partial-bout artifacts:
+`results-desk/bout_tm1_s21|s22` (desktop).
