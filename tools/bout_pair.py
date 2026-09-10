@@ -56,6 +56,9 @@ def game(a_root, b_root, fen, a_white, rng, path):
         if "engine_side" not in ready:
             raise RuntimeError(f"engine failed to start: {ready!r}")
     pg = chess.pgn.Game(); pg.headers["Event"] = f"q5fix1-L3-pair{IDX}"
+    if fen != chess.STARTING_FEN:
+        pg.headers["FEN"] = fen
+        pg.headers["SetUp"] = "1"
     pg.headers["White"] = "q5cand" if a_white else "v5"
     pg.headers["Black"] = "v5" if a_white else "q5cand"
     node = pg
