@@ -1445,3 +1445,37 @@ Log archived: `results/dashboard/submission-v9-11fa4ad658cc-smoke.log`.
 
 **v10 is the ACTIVE agent from r105 (21:00Z) onward.** r105 watcher armed
 (auto-fetch pgn+log on land). Draw-quality SF review (r102-r104) running.
+
+### 17h. 2026-09-10 — draw-quality SF review of r102-r104 (v9k's closing three)
+
+Local Stockfish review of the three closing draws (d10 whole-game sweeps +
+d16 spot checks on peak/trough, evals from OUR POV; raw:
+`results/reviews/r102-r104-draws-sf-raw.txt`; r104 deep confound checks:
+`results/reviews/r104-draw-deepcheck.txt`).
+
+**r102 vs Alpha Knights (White) — escape from a mild minus.** Black grew
+~+3 (peak around move 25); their conversion moves (Bd4, h5) handed +1.0/+1.7
+back and we stabilised ~-0.5; the repetition landed at ~-0.3. We were never
+better than +1.25 (0/61 positions >= +1.5).
+
+**r103 vs Hallucinated Gambits (Black) — never lost.** 0/101 positions
+<= -1.5; a brief +1.7 edge (d10; +1.0 at d16) around move 30 that drifted to
+0. Fair draw, no throw either way.
+
+**r104 vs TheWinners (White) — the big one: we were lost, THEY threw it.**
+- SF trough: **-5.8 at move 23** (d10/d16) — deep-checked:
+  **-6.3/-6.4/-6.6 at d16/d20/d24** (real, deepens with depth).
+- TheWinners' clock: **~118 s burned in the first 14 moves** (52 s left by
+  move 7), then **0.5-1.3 s/move from move 19 through move 33+** (min 0.544 s
+  at 28...Kf7). Ours: 82 s at move 23, ~60 s at move 36, 23 s left at end.
+- Their conversion in that low-clock phase bled it back: 23...b5 (+1.4),
+  24...Rxa2 (+1.9), 25...b4 (+1.3), 28...Kf7 (+1.9 d12; the pre-move
+  position is deep-verified **-3.8 at d24**) — then the trades
+  (Nf4/Kxf4/Rxb3) levelled it; endgame deep-check **~0 (d24 -8)** → threefold.
+  (Our only bad move of the phase, 24.Rc3 (-1.7), was handed straight back.)
+- Read: the razor-loss mechanism, observed from the other side of the table.
+  A deep-verified +3.8 with ~1 s/move plumbing converted to a draw.
+
+**Verdict across the three:** zero thrown wins by us; two escapes (one huge)
++ one even game. The r102-r104 draw streak is defensive success (plus one
+opponent clock blow-up) — not conversion failure. No v10 change indicated.

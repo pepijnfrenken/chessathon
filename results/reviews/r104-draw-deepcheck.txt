@@ -1,0 +1,29 @@
+r104 draw deep-check (local Stockfish, eval pov = White = En Passant Labs)
+FENs from the d12 transition pass (ply indices measured from the game start,
+6...O-O; r104 = White vs TheWinners, 146 plies, 1/2-1/2 threefold).
+
+ply33 "2r5/pp4kp/5ppb/2P3N1/2R1P2P/4K1P1/Pr6/7R w - - 0 23"   (the trough; before 23.Kf4)
+  d16: -630   d20: -640   d24: -661
+
+ply44 "2r3k1/p6p/4Nppb/2P5/2R1P1KP/1p4P1/r7/1R6 b - - 1 28"    (black to move; before 28...Kf7)
+  d16: -308   d20: -367   d24: -381
+
+ply52 "8/p1r2k1p/5pp1/2P5/R3PK1P/1R4P1/2r5/8 b - - 0 32"       (dead-level endgame)
+  d16: -23    d20: -7     d24: -8
+
+Conclusion: the "-5.8 lost" is real and deepens with depth (not a shallow
+artifact). Black still stood ~+3.8 (d24) at move 28 — and the game ended in
+a dead level endgame (deep-check ~0). The giveaway happened across moves
+23-31, precisely while black was playing at 0.5-1.3 s/move (their clock:
+120 s burned in the first 14 moves; 52 s left by move 7; ~1 s/move from
+move 19 through move 33+; min observed 0.544 s at 28...Kf7). Ours: 82 s at
+move 23, ~60 s at move 36, 23 s left at the end.
+
+--- key per-move swings (d12, our POV, +/-0.5 noise) ---
+  23...b5    -551 -> -409   (+142 for us)
+  24.Rc3     -409 -> -578   (-169, our only bad move of the phase)
+  24...Rxa2  -578 -> -392   (+186)
+  25...b4    -392 -> -260   (+132)
+  28...Kf7   -243 -> -58    (+185; pre-move position is the -381 @ d24 above)
+Then 29.Nf4..31.Kxf4..32.Rxb3 traded down to the level endgame (≈0.0) and
+both sides shuffled to the threefold.

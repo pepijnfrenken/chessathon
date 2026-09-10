@@ -1,0 +1,22 @@
+=== r102: En Passant Labs vs Alpha Knights | 1/2-1/2 | 60 plies | ours White
+    d10: peak +125cp at ply 11 (move 15); trough -252cp at ply 32; final -51
+    positions >=+150 for us: 0/61; <=-150: 7
+    our drops >120cp: 1 ['mv25:155']
+    traj(every2 moves): +25 +39 +100 +92 -60 -6 -87 -168 -252 -129 -115 -142 -57 -54 -51 -51
+    peak @ply11 re-check d16: +123cp
+    trough @ply32 re-check d16: -336cp
+=== r103: Hallucinated Gambits vs En Passant Labs | 1/2-1/2 | 100 plies | ours Black
+    d10: peak +171cp at ply 48 (move 30); trough -110cp at ply 25; final +0
+    positions >=+150 for us: 4/101; <=-150: 0
+    our drops >120cp: 0 []
+    traj(every2 moves): +14 -45 -43 -18 -13 +11 -35 -46 +3 -2 -2 +55 +171 +170 +109 +72 +34 +25 +39 +5 +0 +0 +0 +0 +0 +0
+    peak @ply48 re-check d16: +96cp
+    trough @ply25 re-check d16: -101cp
+=== r104: En Passant Labs vs TheWinners | 1/2-1/2 | 146 plies | ours White
+    d10: peak +22cp at ply 5 (move 9); trough -571cp at ply 33; final +0
+    positions >=+150 for us: 0/147; <=-150: 36
+    our drops >120cp: 2 ['mv11:150', 'mv10:144']
+    traj(every2 moves): -8 -74 -209 -415 -331 -333 -483 -463 -560 -507 -230 -257 -117 -5 +1 -4 +0 +0 -3 -1 +0 +0 -1 -4 +0 +0 +1 +0 +0 -3 -1 +0 -6 -3 +0 +0 +0
+    peak @ply5 re-check d16: +7cp
+    trough @ply33 re-check d16: -584cp
+DRAWS-SF-DONE

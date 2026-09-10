@@ -1,0 +1,7 @@
+=== gate_parallel tag=stack_par ===
+seeds [7, 11, 13] | games/gate 24 @ 500ms | wall 1894s
+  seed    7: 8W-6L-10D (0.542) rc=0 1820s
+  seed   11: 11W-8L-5D (0.562) rc=0 1639s
+  seed   13: 8W-11L-5D (0.438) rc=0 1894s
+POOLED: 27W-25L-20D over 72 games -> 0.514 (normal-approx 95% CI +-0.115)
+band: NEUTRAL (0.45-0.55)   [bands as calibrated solo; pooled N tightens them, it does not shift them]
