@@ -1,0 +1,425 @@
+{
+ "source": "aichessathon.com/dashboard rating graph",
+ "captured_utc": "2026-09-10T15:42Z",
+ "calibration": "y=18->1775, y=174->1025 (gridlines); x: r48@44px, 11.52px/round; anchors verified r95=1686 / r97=1588",
+ "stats": {
+  "rank": 209,
+  "teams": 441,
+  "top_pct": 47,
+  "rating": 1629,
+  "peak": 1686,
+  "record": "25-10-17",
+  "checkmates": 25,
+  "best_streak": 5
+ },
+ "series": [
+  {
+   "round": 48,
+   "rating": 1425.7,
+   "kind": "marker",
+   "result": "Loss",
+   "opponent": "SkyLab",
+   "colour": "White"
+  },
+  {
+   "round": 49,
+   "rating": 1325.8,
+   "kind": "marker",
+   "result": "Loss",
+   "opponent": "AlphaGambit",
+   "colour": "Black"
+  },
+  {
+   "round": 50,
+   "rating": 1224.7,
+   "kind": "marker",
+   "result": "Loss",
+   "opponent": "The Veritys",
+   "colour": "Black"
+  },
+  {
+   "round": 51,
+   "rating": 1162.1,
+   "kind": "marker",
+   "result": "Loss",
+   "opponent": "Buddy's Grill Gambit",
+   "colour": "White"
+  },
+  {
+   "round": 52,
+   "rating": 1146.9,
+   "kind": "marker",
+   "result": "Draw",
+   "opponent": "True Prince of Imperial",
+   "colour": "White"
+  },
+  {
+   "round": 53,
+   "rating": 1042.4,
+   "kind": "marker",
+   "result": "Loss",
+   "opponent": "Minimax Three",
+   "colour": "Black"
+  },
+  {
+   "round": 54,
+   "rating": 1053.5,
+   "kind": "marker",
+   "result": "Draw",
+   "opponent": "fm2",
+   "colour": "White"
+  },
+  {
+   "round": 55,
+   "rating": 1053.1,
+   "kind": "marker",
+   "result": "Draw",
+   "opponent": "Minimax Two",
+   "colour": "Black"
+  },
+  {
+   "round": 56,
+   "rating": 1111.5,
+   "kind": "marker",
+   "result": "Win",
+   "opponent": "The Kingsman",
+   "colour": "Black"
+  },
+  {
+   "round": 57,
+   "rating": 1168.3,
+   "kind": "marker",
+   "result": "Win",
+   "opponent": "Wildcard",
+   "colour": "Black"
+  },
+  {
+   "round": 58,
+   "rating": 1168.7,
+   "kind": "marker",
+   "result": "Draw",
+   "opponent": "kronos",
+   "colour": "White"
+  },
+  {
+   "round": 59,
+   "rating": 1167.7,
+   "kind": "marker",
+   "result": "Draw",
+   "opponent": "The Rook",
+   "colour": "White"
+  },
+  {
+   "round": 60,
+   "rating": 1207.9,
+   "kind": "marker",
+   "result": "Win",
+   "opponent": "Minimax Three",
+   "colour": "Black"
+  },
+  {
+   "round": 61,
+   "rating": 1207.3,
+   "kind": "marker",
+   "result": "Draw",
+   "opponent": "CrimsonBot",
+   "colour": "Black"
+  },
+  {
+   "round": 62,
+   "rating": 1270.1,
+   "kind": "marker",
+   "result": "Win",
+   "opponent": "Forking squad",
+   "colour": "White"
+  },
+  {
+   "round": 63,
+   "rating": 1273.7,
+   "kind": "marker",
+   "result": "Draw",
+   "opponent": "Ultimate32",
+   "colour": "White"
+  },
+  {
+   "round": 64,
+   "rating": 1222.8,
+   "kind": "marker",
+   "result": "Loss",
+   "opponent": "Snake",
+   "colour": "White"
+  },
+  {
+   "round": 65,
+   "rating": 1267.1,
+   "kind": "marker",
+   "result": "Win",
+   "opponent": "Magnus",
+   "colour": "White"
+  },
+  {
+   "round": 66,
+   "rating": 1297.1,
+   "kind": "marker",
+   "result": "Win",
+   "opponent": "Benko",
+   "colour": "Black"
+  },
+  {
+   "round": 67,
+   "rating": 1342.5,
+   "kind": "marker",
+   "result": "Win",
+   "opponent": "Chess",
+   "colour": "Black"
+  },
+  {
+   "round": 68,
+   "rating": 1309.9,
+   "kind": "marker",
+   "result": "Loss",
+   "opponent": "Rook and Roll",
+   "colour": "Black"
+  },
+  {
+   "round": 69,
+   "rating": 1341.6,
+   "kind": "marker",
+   "result": "Win",
+   "opponent": "Stockfish",
+   "colour": "White"
+  },
+  {
+   "round": 70,
+   "rating": 1274.1,
+   "kind": "marker",
+   "result": "Loss",
+   "opponent": "KingsGuard",
+   "colour": "Black"
+  },
+  {
+   "round": 71,
+   "rating": 1348.3,
+   "kind": "marker",
+   "result": "Win",
+   "opponent": "Magnus",
+   "colour": "White"
+  },
+  {
+   "round": 72,
+   "rating": 1402.5,
+   "kind": "marker",
+   "result": "Win",
+   "opponent": "Stocked Fish",
+   "colour": "Black"
+  },
+  {
+   "round": 73,
+   "rating": 1466.1,
+   "kind": "marker",
+   "result": "Win",
+   "opponent": "SkyLab",
+   "colour": "Black"
+  },
+  {
+   "round": 74,
+   "rating": 1412.0,
+   "kind": "marker",
+   "result": "Loss",
+   "opponent": "Rohan",
+   "colour": "White"
+  },
+  {
+   "round": 75,
+   "rating": 1461.4,
+   "kind": "marker",
+   "result": "Win",
+   "opponent": "Prophylaxis",
+   "colour": "White"
+  },
+  {
+   "round": 76,
+   "rating": 1424.1,
+   "kind": "marker",
+   "result": "Loss",
+   "opponent": "MCAI",
+   "colour": "White"
+  },
+  {
+   "round": 77,
+   "rating": 1459.1,
+   "kind": "marker",
+   "result": "Win",
+   "opponent": "Frisky",
+   "colour": "Black"
+  },
+  {
+   "round": 78,
+   "rating": 1480.5,
+   "kind": "marker",
+   "result": "Win",
+   "opponent": "Stockfish",
+   "colour": "Black"
+  },
+  {
+   "round": 79,
+   "rating": 1509.7,
+   "kind": "marker",
+   "result": "Win",
+   "opponent": "Stochastic Gambit",
+   "colour": "White"
+  },
+  {
+   "round": 80,
+   "rating": 1540.2,
+   "kind": "marker",
+   "result": "Win",
+   "opponent": "GMmmmm",
+   "colour": "Black"
+  },
+  {
+   "round": 81,
+   "rating": 1572.6,
+   "kind": "marker",
+   "result": "Win",
+   "opponent": "Magnus CarlSON \ud83d\ude2d",
+   "colour": "White"
+  },
+  {
+   "round": 82,
+   "rating": 1571.5,
+   "kind": "marker",
+   "result": "Draw",
+   "opponent": "Team7347",
+   "colour": "White"
+  },
+  {
+   "round": 83,
+   "rating": 1549.1,
+   "kind": "marker",
+   "result": "Loss",
+   "opponent": "404 Not Found",
+   "colour": "Black"
+  },
+  {
+   "round": 84,
+   "rating": 1544.1,
+   "kind": "marker",
+   "result": "Draw",
+   "opponent": "Ablation",
+   "colour": "White"
+  },
+  {
+   "round": 85,
+   "rating": 1525.1,
+   "kind": "marker",
+   "result": "Loss",
+   "opponent": "Knight",
+   "colour": "Black"
+  },
+  {
+   "round": 86,
+   "rating": 1529.5,
+   "kind": "marker",
+   "result": "Draw",
+   "opponent": "Zagreus 2.3.1",
+   "colour": "Black"
+  },
+  {
+   "round": 87,
+   "rating": 1547.0,
+   "kind": "marker",
+   "result": "Win",
+   "opponent": "Fork 72",
+   "colour": "White"
+  },
+  {
+   "round": 88,
+   "rating": 1561.0,
+   "kind": "marker",
+   "result": "Win",
+   "opponent": "Prompt and Circumstance",
+   "colour": "Black"
+  },
+  {
+   "round": 89,
+   "rating": 1543.8,
+   "kind": "marker",
+   "result": "Loss",
+   "opponent": "Team7347",
+   "colour": "White"
+  },
+  {
+   "round": 90,
+   "rating": 1479.1,
+   "kind": "marker",
+   "result": "Loss",
+   "opponent": "Chessbuster 9000",
+   "colour": "Black"
+  },
+  {
+   "round": 91,
+   "rating": 1581.1,
+   "kind": "marker",
+   "result": "Win",
+   "opponent": "Epoch & Mate",
+   "colour": "Black"
+  },
+  {
+   "round": 92,
+   "rating": 1490.5,
+   "kind": "marker",
+   "result": "Loss",
+   "opponent": "Team I Love Fortnite",
+   "colour": "White"
+  },
+  {
+   "round": 93,
+   "rating": 1566.7,
+   "kind": "marker",
+   "result": "Win",
+   "opponent": "Brokefish",
+   "colour": "White"
+  },
+  {
+   "round": 94,
+   "rating": 1635.1,
+   "kind": "marker",
+   "result": "Win",
+   "opponent": "tal",
+   "colour": "Black"
+  },
+  {
+   "round": 95,
+   "rating": 1686.5,
+   "kind": "marker",
+   "result": "Win",
+   "opponent": "Subzero",
+   "colour": "White"
+  },
+  {
+   "round": 96,
+   "rating": 1642.1,
+   "kind": "marker",
+   "result": "Loss",
+   "opponent": "Bongcloud",
+   "colour": "Black"
+  },
+  {
+   "round": 97,
+   "rating": 1588.4,
+   "kind": "marker",
+   "result": "Loss",
+   "opponent": "Tempo",
+   "colour": "White"
+  },
+  {
+   "round": 98,
+   "rating": 1628.5,
+   "kind": "end",
+   "result": "Win",
+   "opponent": "hyperfish",
+   "colour": "White"
+  }
+ ]
+}
