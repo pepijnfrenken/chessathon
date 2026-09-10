@@ -1,0 +1,40 @@
+q5-c3 — mate-vs-fifty-move rule inversion: battery + L1 gate
+============================================================
+tree    : repo HEAD + c3 patch (engine/search.py _draw_score)
+control : /tmp/chessathon-v9k-base  (= git archive v9k-shipped)
+date    : 2026-09-10 15:42-16:58Z, one engine workload at a time.
+
+TARGETED PROBE (results/c3_mate_fifty_demo.txt)
+  7 cases, semantics verified against python-chess first.
+  pre-fix 3 BAD -> post-fix 0 BAD.
+    mate on board @ hm100      0 -> -29999   (correct)
+    mate adj-queen @ hm100     0 -> -29999
+    mate-in-1 landing on hm100 0 ->  29998
+    stalemate @ hm100/99       unchanged 0 (no over-correction)
+    bare kings @ hm100         unchanged 0
+    mate on board @ hm99       unchanged -29999 (control)
+
+BATTERY
+  perft ......... results/c3_perft.log      ALL PASS
+  determinism ... results/c3_det.log        232561 / best 47988 / score -40,
+                  4 proc lines, 2/2 clean exits, fresh NUMBA_CACHE_DIR each
+                  (IDENTICAL to v9k's record: the c3 change only alters
+                  hm>=100 nodes, and this d8 position never reaches one)
+  eg_check ...... results/c3_eg_check.log   6/8 @300ms (both KPK DRAW)
+                  KPK classification: results/c3_kpk_boundary.log
+                    candidate @2000ms: KPK-w DRAW, KPK-b WIN (7/8)
+                    v9k-base  @2000ms: KPK-w DRAW, KPK-b DRAW (7/8)
+                    candidate KPK shuffle x3: D/D, D/D, W/D
+                    v9k-base  KPK shuffle x3: D/D, W/W, W/D
+                  => KPK is the documented 100cp<500cp-adjudication boundary
+                     cell; it flips on BOTH trees run-to-run (10 samples
+                     across the two trees, no build-attributable pattern).
+                     Not a c3 regression.
+  shuffle ....... results/c3_shuffle.log    11/12, ZERO threefolds (only KPK-b)
+
+L1 GATE (tools/gate_match_tree.py, 24 games @500ms, seed 7, vs v9k-shipped)
+  results/gate_c3_vs_v9k.log + .stream.log
+  score 10W-11L-3D = 0.479, zero flags -> band NEUTRAL (0.45-0.55)
+  Decisive 21 games, one-sided binomial p ~ 0.83: indistinguishable from 0.50.
+
+VERDICT: PASS (neutral). Correctness fix, no strength regression.

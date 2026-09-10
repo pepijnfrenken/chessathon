@@ -1,0 +1,49 @@
+=== C3 eg_check @2000ms (KPK-diff classification per brief)
+KQvK   strong-as-white ply= 15 result=1-0 WIN
+KQvK   strong-as-black ply= 13 result=0-1 WIN
+KRvK   strong-as-white ply= 21 result=1-0 WIN
+KRvK   strong-as-black ply= 19 result=0-1 WIN
+KPK    strong-as-white ply= 30 result=1/2-1/2 DRAW
+KPK    strong-as-black ply= 59 result=0-1 WIN
+KRPvK  strong-as-white ply= 21 result=1-0 WIN
+KRPvK  strong-as-black ply= 17 result=0-1 WIN
+exit=0
+
+=== C3 KPK shuffle x3
+--- run 1
+KPK        strong-as-white ply= 47 DRAW streak= 0 2x@[20, 42]
+KPK        strong-as-black ply= 30 DRAW streak= 0 no2x
+exit=1
+--- run 2
+KPK        strong-as-white ply= 30 DRAW streak= 0 no2x
+KPK        strong-as-black ply= 35 DRAW streak= 0 no2x
+exit=1
+--- run 3
+KPK        strong-as-white ply= 47 WIN  streak= 0 no2x
+KPK        strong-as-black ply= 40 DRAW streak= 0 no2x
+exit=1
+
+=== v9k-base KPK shuffle x3 (control)
+--- run 1
+KPK        strong-as-white ply= 37 DRAW streak= 0 no2x
+KPK        strong-as-black ply= 32 DRAW streak= 0 no2x
+exit=1
+--- run 2
+KPK        strong-as-white ply= 55 WIN  streak= 0 no2x
+KPK        strong-as-black ply= 43 WIN  streak= 0 no2x
+exit=0
+--- run 3
+KPK        strong-as-white ply= 39 WIN  streak= 0 no2x
+KPK        strong-as-black ply= 38 DRAW streak= 0 no2x
+exit=1
+
+=== v9k-base eg_check @2000ms (control)
+KQvK   strong-as-white ply= 15 result=1-0 WIN
+KQvK   strong-as-black ply= 17 result=0-1 WIN
+KRvK   strong-as-white ply= 19 result=1-0 WIN
+KRvK   strong-as-black ply= 19 result=0-1 WIN
+KPK    strong-as-white ply= 30 result=1/2-1/2 DRAW
+KPK    strong-as-black ply= 42 result=1/2-1/2 DRAW
+KRPvK  strong-as-white ply= 21 result=1-0 WIN
+KRPvK  strong-as-black ply= 21 result=0-1 WIN
+exit=0
