@@ -213,6 +213,52 @@ def attacked(st, sq: int, by_color: int) -> bool:
     return False
 
 
+@njit(inline="always")
+def ep_capturable(st, ep_sq: int, side: int) -> bool:
+    """Can `side` legally capture en passant on `ep_sq`?
+
+    THE single source of truth for "the ep square exists AND is
+    capturable", shared by `make_move_apply` (after a double push) and
+    `parse_fen` (when it canonicalises a FEN's ep field). An enemy pawn
+    merely STANDING beside the pushed pawn is not enough: the capture must
+    also be legal, i.e. it must not leave the capturing side's own king in
+    check. A pawn that is pinned against its king cannot make the capture,
+    and in that case the ep square must not exist at all — otherwise the
+    engine hashes a ZEP term the canonical position does not have and the
+    same board reached by play and by FEN gets two different keys
+    (audit-6 §C5 / codex5 F3: repetition identity + TT misses).
+
+    `side` is the side that would CAPTURE, i.e. the side to move once the
+    double push is complete. `ep_sq` is the square behind the pushed pawn.
+    """
+    sqr = st['squares'][0]
+    epawn = PAWN if side == WHITE else -PAWN            # the capturing pawn
+    victim = -epawn                                     # the pawn captured
+    # GEOMETRY: ep_sq is the empty square BEHIND the pawn that just double
+    # pushed; `victim_sq` is where that pawn now stands. A capturing pawn
+    # must sit beside the VICTIM (same rank as the pushed pawn, adjacent
+    # file) and capture onto ep_sq — it does not sit beside ep_sq.
+    victim_sq = ep_sq + 16 if side == BLACK else ep_sq - 16
+    if sqr[victim_sq] != victim:
+        return False            # no pawn to capture: the ep field is bogus
+    for cand in (victim_sq - 1, victim_sq + 1):
+        if (cand & 0x88) != 0 or sqr[cand] != epawn:
+            continue
+        sc = sqr[cand]
+        sv = sqr[victim_sq]
+        se = sqr[ep_sq]
+        sqr[cand] = EMPTY
+        sqr[victim_sq] = EMPTY
+        sqr[ep_sq] = epawn
+        illegal = attacked(st, st['kingsq'][0][side], 1 - side)
+        sqr[cand] = sc
+        sqr[victim_sq] = sv
+        sqr[ep_sq] = se
+        if not illegal:
+            return True
+    return False
+
+
 # ---------------------------------------------------------------------------
 # make / unmake
 # ---------------------------------------------------------------------------
@@ -304,18 +350,16 @@ def make_move_apply(st, move: int):
             key ^= ZCASTLE[castle]
     st['castle'][0] = castle
 
-    # ep square from a double push, only when an enemy pawn could capture.
-    # White pawn e2-e4 lands on rank 3 with ep square e3 (rank 2); the only
-    # black pawns able to capture sit beside the landing square (d4/f4) and
-    # attack diagonally through e3, so test to-1/to+1 for an enemy pawn.
+    # ep square from a double push, only when an enemy pawn can capture it
+    # LEGALLY (q5-c5). The old test was pseudo-legal — adjacency only — so a
+    # PINNED enemy pawn still created an ep square, and therefore a ZEP
+    # term in the key, that the canonical position does not have. The
+    # capturing side is the side to move after the push, `1 - side`.
     new_ep = -1
     if fl == F_DOUBLE:
-        cand1, cand2 = to - 1, to + 1
-        enemy_pawn = -PAWN if side == WHITE else PAWN
-        if (cand1 & 0x88) == 0 and sqr[cand1] == enemy_pawn:
-            new_ep = frm + 16 if side == WHITE else frm - 16
-        elif (cand2 & 0x88) == 0 and sqr[cand2] == enemy_pawn:
-            new_ep = frm + 16 if side == WHITE else frm - 16
+        cand = frm + 16 if side == WHITE else frm - 16
+        if ep_capturable(st, cand, 1 - side):
+            new_ep = cand
     if new_ep >= 0:
         key ^= ZEP[new_ep & 7]
     st['ep'][0] = new_ep
@@ -740,7 +784,25 @@ def parse_fen(fen: str) -> np.ndarray:
 
     st["halfmove"][0] = int(parts[4]) if len(parts) > 4 else 0
 
-    # king squares + zobrist key from scratch
+    # king squares first: the ep canonicalisation below needs them.
+    for sq in range(128):
+        if (sq & 0x88) != 0:
+            continue
+        p = sqr[sq]
+        if p != EMPTY and abs(p) == KING:
+            st["kingsq"][0][1 if p > 0 else 0] = sq
+
+    # q5-c5: canonicalise the FEN's ep field exactly as `make_move_apply`
+    # does — keep it only while a LEGAL en-passant capture exists. A FEN may
+    # declare an ep square whose capture is illegal (the capturing pawn is
+    # pinned), and python-chess drops such a square when it loads the FEN;
+    # keeping it would put a ZEP term in our key that the play-reached
+    # position does not have. Same rule, same helper, one source of truth.
+    if st["ep"][0] >= 0 and not ep_capturable(st, int(st["ep"][0]),
+                                              int(st["side"][0])):
+        st["ep"][0] = -1
+
+    # zobrist key from scratch (needs the canonicalised ep)
     key = np.uint64(0)
     for sq in range(128):
         if (sq & 0x88) != 0:
@@ -749,8 +811,6 @@ def parse_fen(fen: str) -> np.ndarray:
         if p == EMPTY:
             continue
         key ^= ZPIECE[sq, p + 5]
-        if abs(p) == KING:
-            st["kingsq"][0][1 if p > 0 else 0] = sq
     if st["side"][0] == 1:
         key ^= ZSIDE
     if c:

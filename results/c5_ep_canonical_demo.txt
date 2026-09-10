@@ -1,0 +1,53 @@
+q5-c5 — EP-square canonicalisation: demonstration
+=================================================
+tool: tools/probe_c5_ep_canonical.py (dev tool, NOT shipped)
+date: 2026-09-10
+
+PROBLEM (audit-6 §C5, root cause of codex5 F3)
+`parse_fen` and `make_move_apply` disagreed on when the ep square exists
+AND is capturable:
+  * make_move_apply set it after a double push whenever an enemy pawn
+    merely SAT beside the landing square (pseudo-legal, pin-blind);
+  * parse_fen kept whatever the FEN text declared, untested.
+python-chess — the legality oracle this project validates against — keeps an
+ep square only while has_legal_en_passant() holds, i.e. it is PIN-AWARE. So
+the same board reached by play and by FEN got two different zobrist keys,
+breaking repetition identity and causing a class of TT misses.
+
+FIX (one rule, one implementation)
+engine/board.py gains `ep_capturable(st, ep_sq, side)` — the single source of
+truth for "the ep square exists and the capture is legal". It verifies (a) a
+pawn of the capturing colour stands beside the just-pushed pawn, (b) removing
+both pawns and placing the capturer on the ep square does NOT leave the
+capturing side's king in check. Both callers now use it:
+  * make_move_apply: after a double push, `ep_capturable(st, cand, 1 - side)`
+    (the capturing side is the side to move once the push completes);
+  * parse_fen: a declared ep square is dropped when `ep_capturable` is false.
+King squares are now located BEFORE the canonicalisation, since the helper
+needs them.
+
+RESULTS  (control = /tmp/chessathon-v9k-base = v9k-shipped)
+  check                                                pre-fix  post-fix
+  F3: key after pinned e2e4 == canonical FEN          MISMATCH      OK
+       9490302469568603911 vs 3009738484286385424  (exactly the audit's pair)
+  F3: ep square after pinned e2e4                     MISMATCH      OK
+  F3 cycle: engine sees the repeat                    MISMATCH      OK
+       (python-chess is_repetition(2) = True)
+  free: ep square kept after UNpinned e2e4                  OK      OK
+  free: key == canonical FEN                                OK      OK
+  free: d4xe3 e.p. still generated                          OK      OK
+  raw FEN: declared illegal ep canonicalised away      MISMATCH      OK
+  raw FEN: key == python-chess canonical FEN           MISMATCH      OK
+                                          total   5 failures      0
+
+The pin-blind case is fixed and the legal-ep case is untouched — no
+over-correction: an unpinned double push still produces a capturable ep
+square, and the ep capture is still generated.
+
+IMPLEMENTATION NOTE (an error caught by the probe, not by reasoning)
+The helper's first draft tested candidate capturers on the squares beside
+the EP SQUARE rather than beside the pushed PAWN. The probe caught it
+immediately (the "free" case then reported the ep square kept as "-" and
+d4xe3 as not generated) and the geometry was corrected before the fix was
+judged. Recorded here because it is exactly the class of bug the oracle-
+first probe exists to catch.
