@@ -1,0 +1,5 @@
+=== modal ladder-format bout tag=smoke ===
+A=/tmp/chessathon-v8ref vs B=/tmp/chessathon-v7ref | real clock 120000+500ms | seed 11 | games 2 over 1 shards | wall 541s
+A score: 1W-1L-0D (0.500, normal-approx 95% CI +-0.693)
+avg move time 1804ms (max avg 1935ms)
+flags 0 | fatal shards 0 | errors 0
