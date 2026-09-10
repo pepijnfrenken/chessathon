@@ -1155,3 +1155,49 @@ budgets tm1 is behaviourally identical to v9k (gate test:
 bout (tm1-v2 vs v9k, 2 x 16 games, seeds 21/22) relaunched on the desktop
 17:25Z; results = follow-up commit. Earlier partial-bout artifacts:
 `results-desk/bout_tm1_s21|s22` (desktop).
+
+### 17c. 2026-09-10 — R101 (v9k): WIN by checkmate — v9k's first rated win
+
+Black vs Desai (Nimzo-Indian, round starts from move 8 FEN). Mate delivered
+`51...Qg1#`. Log: `results/matches/round-101-vs-desai.log` (fetched from the
+dashboard via the game UUID). Clock profile: 44 moves ours, 93.3 s used,
+avg 2.1 s, slowest 4.3 s (move 1), **left 48.7 s**; init 41.2 s (46% of the
+90 s budget); wall 202.2 s. Mid-game spends 2.6–3.0 s/move, tail moves
+1.6–1.8 s — this game never entered the razor band (clock never below ~47 s
+for us). Ladder record after r101: **26-10-18 over 54 rated games (r48+),
+rating 1648, peak 1686, rank #206/445**. Next: R102 19:00Z, White vs
+AlphaKnight Archon (1644); v9k active.
+
+### 17d. c345 bundle staged, NOT uploaded (`/tmp/night-candidates/chess-v9k-c345.zip`)
+
+Built from `3afe603` (v9k+c3+c4+c5) with the canonical `make_zip.sh`:
+36,769 bytes, **sha256 `7ab16f3247561d7f18399ce7d3376b9af398ff9bbd66ed5364feb7d0928dad75`**,
+unzip+cmp ALL-7-SAME, init 43.4 s import+JIT, first move legal (`e2e3` — the
+v9k zip plays the same move from the same position, so not a c345 change).
+Hold rationale: c3/c4/c5 are rare-position correctness fixes (mate-vs-fifty,
+TT halfmove context, EP canonicalisation) — expected ladder value per round
+≈ 0 (no rated game has been decided by those paths), so it rides along with
+the next real strength/robustness upload rather than spending an upload slot
+alone.
+
+### 17e. tm1 bout2 interim (~27 games): parity score, thin tails, zero flags — HOLD for tail work
+
+Real-clock ladder-format bout (desktop, tm1-v2 A vs v9k-shipped B, seeds
+21/22/23 × 16g, real FENs, 120 s+0.5 s). Interim: **s21 0.625 (8g),
+s22 0.150 (10g), s23 0.722 (9g) → pooled 0.481**. Zero flags/errors/illegals
+in any stream; the tool adjudicates 300-ply games. Between-instance spread
+(0.15–0.72) shows position-set variance dominates at n≈8-10 per instance —
+pooled only, no per-seed claims.
+
+Cost, measured: tm1 end-clocks **1.0–21 s vs v9k's 4–60 s** (guard fires
+0–10×/game on tm1, 0 on v9k by construction); in the longest games (247–300
+ply) tm1 minima reach **1.0–1.1 s**. The drain comes from the floor's
+R//10-capped 3 s spends compounding in long shuffles; the 17b tail gate
+only blocks *extensions* below 1.2 s budgets, so it does not stop the
+floor-driven drain. On a slower/contended venue box a >1 s stall in such a
+game = flag = instant loss.
+
+**Verdict: parity score + a 1-second tail is not shippable.** Keep v9k
+active. Next: tm1b = tail-safe variant (low-clock spend clamp / hard reserve,
+e.g. spend ≤ (R−reserve)/k once R < ~15 s), re-run unit/battery/sim, fresh
+bout, then bundle upload (c345 + tm1b in one zip).
