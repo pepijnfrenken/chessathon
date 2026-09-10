@@ -687,12 +687,18 @@ freeze if r94+ shows a second Qg5+-motif collapse loss. Artifacts:
 
 **r93 SF16 review + repro probe (10:00-10:20Z; battery ran after the bout
 cleared the box).** Our 66 moves: 42 best / 6 exc / 8 good / 3 inacc / 4
-mistake / 3 blunder — the 'win, not greatly' signature: m20-24 mistake
-cluster (Rc4 286, Rxc5 193, R1c2 262, Bg5 215 — each bleeding a winning
-position toward +0.9), then m49/m51 blunders Rb8+ (311) + Nb4 (567) slid
-+6.45 → +0.78, and m64 e6 gave back the forced mate (mate-clamp stratum,
-still +15.9; converted manually m71-74). 10 bad of 66 = FIRST reviewed win
-outside the 0-4 win band — won on Brokefish's clock collapse (3s by m33).
+mistake / 3 blunder — the 'win, not greatly' signature: m20 Rc4 (286) shed
++4.90→+2.04; after black's Rf7 blunder (439) and d3 (157) it peaked +7.25;
+m22-24 Rxc5 (193) + R1c2 (262) + Bg5 (215) carved that to +0.86. Late,
+m48-51 mutual gifts: Nc6+ (151) 386→235, black's Ke8 (326) 235→561, our
+Rb8+ (311) 561→250, black's Kf7+Rd5 (179+143) back to ~645, our Nb4 (567)
+645→78 (the raw rows behind the earlier '+6.45→+0.78' shorthand). m64 e6
+gave back the forced mate (clamp stratum; +284→+15.9, converted manually
+m71-74). Black's map was worse than ours: 4 blunders (Kg5 clamp, Rxd4 581,
+Rf7 439, Ke8 326) and 15 bad moves to our 10 — and the reviewer's biggest-5
+mixes sides again (Kg5/Rxd4/Rf7 = theirs; e6/Nb4 = ours). 10 bad of 66 =
+FIRST reviewed win outside the 0-4 win band — won on Brokefish's clock
+collapse (3s by m33).
 Probe at exact budgets (/tmp/r93_probe.py, r92 method): m49 reproduces on v7
 (b7b8) while night2 picks c6b8 — rootorder-class; m51 Nb4 reproduces on BOTH
 trees — shared behavior. Single obs per cell; bout verdict stands — watch
