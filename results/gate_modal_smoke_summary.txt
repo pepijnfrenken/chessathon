@@ -1,0 +1,6 @@
+=== modal gate tag=smoke ===
+trees A=/tmp/chessathon-v8ref vs B=/tmp/chessathon-v7ref | 300ms/move | seeds [7] | 2 games/seed
+shards 1 | wall 169s | errors 0
+  seed    7: 2W-0L-0D (1.000) n=2
+POOLED: 2W-0L-0D over 2 games -> 1.000 (normal-approx 95% CI +-0.000)
+band: POSITIVE (>=0.55)  [VPS-calibrated bands; Modal CPUs differ — cross-box offset not yet measured]

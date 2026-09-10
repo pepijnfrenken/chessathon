@@ -1,187 +1,211 @@
-"""Modal CPU fan-out for chessathon gate matches / SPRT games.
+"""Modal CPU fan-out for chessathon gate matches (dev tool, NOT shipped).
 
-Runs many independent engine-vs-engine games in parallel across Modal CPU
-containers. Each container runs one game (or a small batch) using the repo's
-own tools/engine_side.py protocol — the SAME code as local gates, just fanned
-out. Results stream back and are aggregated like gate_match.py does.
+WHY: the VPS box is 6 cores — a local pooled gate (3 seeds x 24 games) needs
+~30-35 min of wall and the whole box. Modal runs each shard in its own
+container: 72 games over ~18-36 containers finish in single-digit minutes,
+leaving the box free for builders/audits. This is the SAME code path as the
+local gate (repo tools/ sprt.play_game + common.OPENING_FENS + adjudication,
+engine_side_tree.py with a fixed per-move budget; both trees byte-identical
+to their git archives), just fanned out.
 
-This is a DEV tool. NOT shipped in agent.zip (ORIGINALITY.md: everything in
-the zip is ours, but dev tooling stays in tools/ — cloud execution doesn't
-change the engine code itself; the engine that plays is byte-identical to
-local).
+DISCIPLINE (Sep 9 rule, unchanged): Modal's CPUs differ from the VPS, so a
+500 ms budget searches a different depth -> score distributions shift. Use
+Modal for VARIANT SELECTION + extra sample size; the calibrated 0.45 band
+still needs a quiet-box VPS confirmation. Cross-box offset is measured by
+running the SAME schedule (seed set) locally and on Modal and comparing
+pooled scores — do that once per candidate, not per variant.
 
-Usage:
-  modal run tools/modal_runner.py --games 24 --side-a "hand:1111" --side-b "hand:0000" --move-ms 300 --seed 7
-  (env CHESSATHON_EVAL_CONFIG etc are passed per-side via engine_side envs)
+Semantics mirrored from tools/gate_match_tree.py:
+  - schedule: per seed, for each of games//2 pairs, for order in (0, 1):
+    fen = rng.choice(OPENING_FENS); order 0 -> tree A is White.
+  - scoring: draw = 1/2-1/2; win if (res == "1-0") == (order == 0).
+  - one long-lived engine process per side per shard; `reset` between games
+    (sprt.play_game does this); flags reported and fatal for the shard.
 
-Design notes:
-  - Modal CPU containers are cheap (~$0.000002/core-sec tier, free tier
-    included). 24 games x 2 sides x ~1 core each = a few minutes.
-  - Each worker imports engine_side (JIT warmup ~35s) then plays ONE game
-    against a peer worker over stdin/stdout... simpler: run BOTH sides in ONE
-    container (two subprocesses) per game — one game = one container = clean
-    isolation, no networking between containers needed.
-  - Game result (W/L/D + ply + flags) returned per container; aggregator sums.
+Usage (from the repo root):
+  CHESSATHON_TREE_A=/tmp/chessathon-v8ref CHESSATHON_TREE_B=/tmp/chessathon-v7ref \
+    modal run tools/modal_runner.py --games 24 --seeds 7,11,13 --move-ms 500 \
+      --tag v8_cal --per-shard 2
+
+  (# needs the modal CLI; the driver itself imports no chess — the schedule
+   is rebuilt inside each container from (seed, games, slice).)
+
+Outputs (written locally at the end):
+  results/gate_modal_<tag>_summary.txt   — same shape as gate_parallel
+  results/gate_modal_<tag>_games.json    — per-game records
 """
+
+import json
 import os
-import subprocess
+import random
 import sys
 import time
+from pathlib import Path
 
 import modal
 
+_LOCAL_ROOT = Path(__file__).resolve().parent.parent
+
+TREE_A = os.environ.get("CHESSATHON_TREE_A", "/tmp/chessathon-v8ref")
+TREE_B = os.environ.get("CHESSATHON_TREE_B", "/tmp/chessathon-v7ref")
+
 app = modal.App("chessathon-gate")
 
-# Image: python + numba/numpy (engine deps) + python-chess (tools use it)
+
+def _ignore(path: Path) -> bool:
+    parts = set(path.parts)
+    junk = {".git", "__pycache__", ".venv", "venv", "node_modules",
+            "docs", "results", "data", "tmp", "sessions", ".aiwg"}
+    return bool(parts & junk) or path.suffix in {".pyc", ".zip"}
+
+
 image = (
     modal.Image.debian_slim(python_version="3.11")
-    .pip_install("numpy", "numba", "python-chess")
+    .pip_install("numpy", "numba", "chess")
+    .add_local_dir(str(_LOCAL_ROOT), remote_path="/repo", ignore=_ignore,
+                   copy=True)
+    .add_local_dir(TREE_A, remote_path="/tree_a", ignore=_ignore, copy=True)
+    .add_local_dir(TREE_B, remote_path="/tree_b", ignore=_ignore, copy=True)
 )
 
-# Mount the repo read-only so containers see the exact engine code
-REPO = "/home/pino/projects/chessathon"
-repo_mount = modal.Mount.from_local_dir(REPO, remote_path="/repo")
 
-# Chessbench python (the venv with numba the local runs use) is NOT needed —
-# Modal's image has numba. But the tools import engine via sys.path; engine_side
-# needs cwd=/repo and PYTHONPATH=/repo.
-
-
-def _run_one_game(side_a: str, side_b: str, move_ms: int, seed: int, opening_idx: int,
-                  a_is_white: bool) -> dict:
-    """Play one game between side_a and side_b configs in THIS container.
-    a_is_white alternates colors per game for fairness."""
-    import sys
-
+def _run_shard(spec: dict) -> dict:
+    """Play games [lo, hi) of (seed, games) inside THIS container."""
     sys.path.insert(0, "/repo")
-    import os
+    sys.path.insert(0, "/repo/tools")
     import subprocess
 
     import chess
-    from tools import common  # noqa: F401  (openings + adjudication)
+    from common import OPENING_FENS, side_env
+    from sprt import play_game
 
-    def spawn_side(cfg: str):
-        env = dict(os.environ)
-        name, gate = cfg.split(":")
-        env["CHESSATHON_EVAL_CONFIG"] = name
-        env["CHESSATHON_EVAL_GATE"] = gate
-        env["CHESSATHON_MOVE_BUDGET_MS"] = str(move_ms)
+    seed, games = spec["seed"], spec["games"]
+    lo, hi = spec["lo"], spec["hi"]
+    move_ms = spec["move_ms"]
+    t0 = time.time()
+
+    # Rebuild the full schedule for this seed, keep our slice. Same rng
+    # consumption as gate_match_tree (one rng.choice per game, inside the
+    # order loop).
+    rng = random.Random(seed)
+    sched = []
+    for _g in range(games // 2):
+        for order in (0, 1):
+            sched.append((rng.choice(OPENING_FENS), order))
+    my = list(enumerate(sched))[lo:hi]
+
+    def spawn(root: str, cfg: str):
+        env = side_env(cfg, move_ms)
+        env["NUMBA_CACHE_DIR"] = "/tmp/nc_" + Path(root).name
+        env["NUMBA_NUM_THREADS"] = "1"
         return subprocess.Popen(
-            [sys.executable, "/repo/tools/engine_side.py"],
+            [sys.executable, "/repo/tools/engine_side_tree.py", root],
             stdin=subprocess.PIPE, stdout=subprocess.PIPE,
-            stderr=subprocess.PIPE, text=True, env=env, cwd="/repo",
-        )
+            stderr=subprocess.DEVNULL, text=True, cwd="/repo", env=env)
 
-    a, b = spawn_side(side_a), spawn_side(side_b)
+    pa = spawn("/tree_a", spec["spec_a"])
+    pb = spawn("/tree_b", spec["spec_b"])
+    out = []
     try:
-        ready_a = a.stdout.readline().strip()
-        ready_b = b.stdout.readline().strip()
-        if ready_a != "ready" or ready_b != "ready":
-            return {"error": f"warmup failed: {ready_a!r} {ready_b!r}"}
-
-        # opening FEN from common (mirrors local gate); fall back to startpos
-        fen = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"
-        try:
-            if hasattr(common, "OPENING_FENS") and opening_idx < len(common.OPENING_FENS):
-                fen = common.OPENING_FENS[opening_idx]
-        except Exception:
-            pass
-        board = chess.Board(fen)
-        # Normalize side assignment by color
-        white_proc = a if a_is_white else b
-        black_proc = b if a_is_white else a
-
-        ply = 0
-        flags = []
-        while not board.is_game_over() and ply < 300:
-            proc = white_proc if board.turn == chess.WHITE else black_proc
-            proc.stdin.write(board.fen() + "\n")
-            proc.stdin.flush()
-            uci = proc.stdout.readline().strip()
-            if uci == "0000":
-                break
-            try:
-                mv = chess.Move.from_uci(uci)
-                if mv not in board.legal_moves:
-                    flags.append(f"illegal:{uci}:{board.fen()}")
-                    break
-                board.push(mv)
-                ply += 1
-            except Exception as e:
-                flags.append(f"parse:{uci}:{e}")
-                break
-        # Result from side A's perspective
-        if board.is_checkmate():
-            mate_color = "W" if board.turn == chess.BLACK else "B"  # side that mated
-            a_won = (mate_color == "W") == a_is_white
-            res = "A" if a_won else "B"
-        elif board.is_stalemate() or board.is_insufficient_material() or ply >= 300:
-            res = "D"
-        elif board.can_claim_draw():
-            res = "D"
-        else:
-            res = "D"
-        return {"result": res, "ply": ply, "flags": flags}
+        for idx, (fen, order) in my:
+            sides = {
+                chess.WHITE: {"proc": pa, "name": "a"} if order == 0
+                else {"proc": pb, "name": "b"},
+                chess.BLACK: {"proc": pb, "name": "b"} if order == 0
+                else {"proc": pa, "name": "a"},
+            }
+            gd = play_game(fen, sides, rng, timeout_s=900)
+            out.append({"idx": idx, "seed": seed, "order": order,
+                        "fen": fen, "result": gd["result"],
+                        "flags": [list(f) for f in gd["flags"]],
+                        "ply": gd["ply"]})
     finally:
-        for p in (a, b):
+        for p in (pa, pb):
             try:
                 p.stdin.close()
-                p.kill()
             except Exception:
                 pass
+            p.kill()
+    return {"seed": seed, "lo": lo, "hi": hi, "games": out,
+            "elapsed": time.time() - t0}
 
 
-@app.function(image=image, mounts=[repo_mount], cpu=2, memory=2048, timeout=900)
-def play_one_game(args: dict) -> dict:
-    return _run_one_game(**args)
+@app.function(image=image, cpu=2.0, memory=2048, timeout=2400)
+def run_shard(spec: dict) -> dict:
+    try:
+        return _run_shard(spec)
+    except Exception as exc:  # noqa: BLE001
+        return {"seed": spec.get("seed"), "lo": spec.get("lo"),
+                "hi": spec.get("hi"), "games": [],
+                "error": f"{type(exc).__name__}: {exc}"}
 
 
 @app.local_entrypoint()
-def main(
-    games: int = 24,
-    side_a: str = "hand:1111",
-    side_b: str = "hand:0000",
-    move_ms: int = 500,
-    seed: int = 7,
-):
-    """Fan out `games` independent games across Modal CPU containers."""
-    args_list = [
-        {
-            "side_a": side_a, "side_b": side_b, "move_ms": move_ms,
-            "seed": seed, "opening_idx": i % 11,
-            "a_is_white": (i % 2 == 0),
-        }
-        for i in range(games)
-    ]
-    print(f"Fanning out {games} games: {side_a} vs {side_b} @ {move_ms}ms (colors alternate)", flush=True)
+def main(games: int = 24, seeds: str = "7,11,13", move_ms: int = 500,
+         per_shard: int = 2, tag: str = "modal",
+         spec_a: str = "hand:1111", spec_b: str = "hand:1111"):
+    seed_list = [int(s) for s in seeds.split(",") if s.strip()]
+    specs = []
+    for seed in seed_list:
+        for lo in range(0, games, per_shard):
+            specs.append({"seed": seed, "games": games, "lo": lo,
+                          "hi": min(lo + per_shard, games), "move_ms": move_ms,
+                          "spec_a": spec_a, "spec_b": spec_b})
+    print(f"# modal gate: {len(specs)} shards, {len(seed_list) * games} games "
+          f"total; trees A={TREE_A} B={TREE_B} @ {move_ms}ms", flush=True)
     t0 = time.time()
-    results = list(play_one_game.map(args_list))
-    dt = time.time() - t0
+    results = list(run_shard.map(specs))
+    wall = time.time() - t0
 
-    # Aggregate like gate_match.py — result is from side A's perspective ("A"/"B"/"D")
-    wins = losses = draws = 0
-    flags = []
-    plies = []
-    errs = 0
+    per_game = []
+    errs = []
     for r in results:
-        if "error" in r:
-            errs += 1
-            print(f"  ERR: {r['error']}", flush=True)
-            continue
-        plies.append(r["ply"])
-        flags.extend(r["flags"])
-        res = r["result"]
-        if res == "A":
-            wins += 1
-        elif res == "B":
-            losses += 1
-        elif res == "D":
-            draws += 1
+        if r.get("error"):
+            errs.append(r["error"])
+        per_game.extend(r["games"])
+    per_game.sort(key=lambda g: (g["seed"], g["idx"]))
 
-    score = (wins + draws / 2) / max(1, wins + losses + draws)
-    print(f"\n=== {side_a} vs {side_b}: {wins}W {losses}L {draws}D over {games} games (score {score:.3f}) ===", flush=True)
-    print(f"flags: {flags if flags else 'ZERO'}", flush=True)
-    print(f"errors: {errs}", flush=True)
-    if plies:
-        print(f"avg ply: {sum(plies)/len(plies):.1f} (max {max(plies)})", flush=True)
-    print(f"wall time: {dt:.1f}s for {games} games", flush=True)
+    def score_of(gs):
+        w = l = d = 0
+        for g in gs:
+            if g["result"] == "1/2-1/2":
+                d += 1
+            elif (g["result"] == "1-0") == (g["order"] == 0):
+                w += 1
+            else:
+                l += 1
+        n = w + l + d
+        return w, l, d, ((w + 0.5 * d) / n if n else 0.0)
+
+    tw, tl, td, pooled = score_of(per_game)
+    n = tw + tl + td
+    se = (pooled * (1 - pooled) / n) ** 0.5 if n else 0.0
+    lines = [f"=== modal gate tag={tag} ===",
+             f"trees A={TREE_A} vs B={TREE_B} | {move_ms}ms/move | "
+             f"seeds {seed_list} | {games} games/seed",
+             f"shards {len(specs)} | wall {wall:.0f}s | errors {len(errs)}"]
+    for s in seed_list:
+        gs = [g for g in per_game if g["seed"] == s]
+        w, l, d, sc = score_of(gs)
+        lines.append(f"  seed {s:4d}: {w}W-{l}L-{d}D ({sc:.3f}) n={w + l + d}")
+    lines.append(f"POOLED: {tw}W-{tl}L-{td}D over {n} games -> {pooled:.3f} "
+                 f"(normal-approx 95% CI +-{1.96 * se:.3f})")
+    band = ("POSITIVE (>=0.55)" if pooled >= 0.55 else
+            "NEUTRAL (0.45-0.55)" if pooled >= 0.45 else "NEGATIVE (<0.45)")
+    lines.append(f"band: {band}  [VPS-calibrated bands; Modal CPUs differ — "
+                 f"cross-box offset not yet measured]")
+    flags = [(g["seed"], g["idx"], g["flags"]) for g in per_game if g["flags"]]
+    if flags:
+        lines.append(f"!! FLAGS in {len(flags)} game(s): {flags[:5]}")
+    if errs:
+        lines.append(f"!! shard errors: {errs[:3]}")
+    for ln in lines:
+        print(ln, flush=True)
+
+    outdir = _LOCAL_ROOT / "results"
+    outdir.mkdir(parents=True, exist_ok=True)
+    (outdir / f"gate_modal_{tag}_summary.txt").write_text(
+        "\n".join(lines) + "\n")
+    (outdir / f"gate_modal_{tag}_games.json").write_text(
+        json.dumps(per_game, indent=1) + "\n")
+    print(f"wrote {outdir / f'gate_modal_{tag}_summary.txt'}", flush=True)
