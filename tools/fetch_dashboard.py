@@ -62,14 +62,21 @@ def main():
     for m in re.finditer(r"Rated (\d+)", html):
         rows.append([int(m.group(1)), m.end()])
     out_rows = []
+    seen_rounds = {}
     for i, (rnd, end) in enumerate(rows):
         slice_end = rows[i + 1][1] if i + 1 < len(rows) else len(html)
         seg = html[end:slice_end]
         pg = re.search(r"data:application/x-chess-pgn;charset=utf-8,([^\"]+)", seg)
         lg = re.search(r"/api/platform/logs/([0-9a-f-]{36})", seg)
-        out_rows.append({"round": rnd,
-                         "pgn_uri": pg.group(1) if pg else None,
-                         "log_id": lg.group(1) if lg else None})
+        entry = {"round": rnd,
+                 "pgn_uri": pg.group(1) if pg else None,
+                 "log_id": lg.group(1) if lg else None}
+        # the dashboard repeats every round (SSR + RSC props) — dedupe by
+        # round, preferring the segment that actually carries the PGN URI
+        prev = seen_rounds.get(rnd)
+        if prev is None or (prev["pgn_uri"] is None and entry["pgn_uri"] is not None):
+            seen_rounds[rnd] = entry
+    out_rows = [seen_rounds[r] for r in sorted(seen_rounds, reverse=True)]
 
     csv_raw = get("https://aichessathon.com/api/platform/logs/export").decode()
     meta = {}
