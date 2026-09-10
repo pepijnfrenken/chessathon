@@ -1,9 +1,22 @@
-"""engine_side for A/B against an OLD code tree (dev tool, NOT shipped).
+"""engine_side with a PER-MOVE budget protocol (dev tool, NOT shipped).
 
-Identical to tools/engine_side.py except the engine import root is a
-fixed path (first arg) instead of the repo root — used by gate_match to
-play the current tree against a previous commit (e.g. HEAD 05d0101) with
-the same configs. Usage: python tools/engine_side_tree.py /tmp/chessathon_head
+Same as tools/engine_side_tree.py (fixed import root from argv[1], works
+for old trees — stateless fallback included), except the search budget is
+set per move over stdin, so a driver can emulate the real competition
+clock (120 s + 0.5 s) instead of a fixed ms/move:
+
+    budget <ms>\\n   -> set the budget for the NEXT fen line (no reply)
+    <fen>\\n         -> <uci>\\n  (or 0000 / ERROR:<msg>)
+    reset\\n         -> new game: clears game-history window + TT (no reply)
+    quit\\n          -> exit
+
+Warmup (from the q5-fix1 bout copy): covers the REAL move shape — deep
+root iteration with non-empty game history — so the first clocked move
+does not pay late-JIT compile cost (real-clock flagging found this; the
+500 ms gates never did).
+
+Used by tools/bout_ladder.py. Usage:
+    python tools/engine_side_clk.py <engine-root>
 """
 
 import os
@@ -39,19 +52,13 @@ _SCRATCH = np.zeros((B.MAX_PLY, B.MAX_MOVES), dtype=np.int32)
 _SSCRATCH = np.zeros((B.MAX_PLY, B.MAX_MOVES), dtype=np.int32)
 _NODES = np.zeros(1, dtype=np.int64)
 
-# Phase 4: the old tree at e.g. /tmp/chessathon_head predates the
-# game-history search (search_root has no ghist params). Detect by
-# feature: if the loaded engine has GAME_HIST it is the stateful tree
-# (14-arg search_root + `reset` protocol + game-history window);
-# otherwise keep the legacy stateless path so the OLD side plays
-# exactly as HEAD shipped (a stateless engine being measured against
-# the stateful new one is the point of the gate).
+# Old trees (pre Phase-4) have no game-history search: detect by feature
+# and keep the legacy stateless call so the OLD side plays exactly as it
+# shipped (same policy as tools/engine_side_tree.py).
 _HAS_HIST = hasattr(S, "GAME_HIST")
 if _HAS_HIST:
     _REP = np.zeros(S.REP_SIZE, dtype=np.uint64)
     _GAME_KEYS = []
-else:
-    _REP = np.zeros(B.MAX_PLY + 8, dtype=np.uint64)
 
 
 def _ghist() -> tuple:
@@ -92,15 +99,27 @@ def _warmup() -> None:
     S.search(st, 2, -S.INF, S.INF, 1, _NODES, far, _TT_KEYS, _TT_VALS,
              _TT_MASK, _KILLERS, _HIST, _REP, _SCRATCH, _SSCRATCH)
     if _HAS_HIST:
+        ghist = np.zeros(S.GAME_HIST, dtype=np.uint64)
         S.search_root(st, _NODES, far, _TT_KEYS, _TT_VALS, _TT_MASK,
                       _KILLERS, _HIST, _REP, _SCRATCH, _SSCRATCH, 3,
-                      np.zeros(S.GAME_HIST, dtype=np.uint64), 0)
+                      ghist, 0)
+        # q5-fix1: one DEEP root iteration with non-empty history — the
+        # shape the first real-clock move actually has.
+        st2 = B.parse_fen(
+            "r3k2r/ppq1bppp/2p1p3/2P5/P2P4/2B1P3/4QPPP/R4RK1 b kq - 4 18")
+        S.search_root(st2, _NODES, far, _TT_KEYS, _TT_VALS, _TT_MASK,
+                      _KILLERS, _HIST, _REP, _SCRATCH, _SSCRATCH, 6,
+                      ghist, 1)
     else:
         S.search_root(st, _NODES, far, _TT_KEYS, _TT_VALS, _TT_MASK,
                       _KILLERS, _HIST, _REP, _SCRATCH, _SSCRATCH, 3)
 
 
+_PENDING_BUDGET_MS = None
+
+
 def _move(fen: str) -> str:
+    global _PENDING_BUDGET_MS
     pc_board = chess.Board(fen)
     if pc_board.is_game_over():
         return "0000"
@@ -109,7 +128,9 @@ def _move(fen: str) -> str:
         if not _GAME_KEYS or _GAME_KEYS[-1] != st['key'][0]:
             _GAME_KEYS.append(st['key'][0])
         ghist, gcnt = _ghist()
-    deadline = S._NOW() + int(_MOVE_BUDGET_MS * 1_000_000)
+    budget_ms = _PENDING_BUDGET_MS if _PENDING_BUDGET_MS else _MOVE_BUDGET_MS
+    _PENDING_BUDGET_MS = None
+    deadline = S._NOW() + int(budget_ms * 1_000_000)
     _NODES[0] = 0
     if _HAS_HIST:
         mv, score, depth = S.search_root(
@@ -133,19 +154,22 @@ def _move(fen: str) -> str:
 
 
 def main() -> int:
+    global _PENDING_BUDGET_MS
     _warmup()
-    print(f"[engine_side_tree] root={_ROOT} "
+    print(f"[engine_side_clk] root={_ROOT} "
           f"config={os.environ.get('CHESSATHON_EVAL_CONFIG', '?')} "
-          f"budget={_MOVE_BUDGET_MS}ms "
+          f"gate={os.environ.get('CHESSATHON_EVAL_GATE', '?')} "
+          f"default-budget={_MOVE_BUDGET_MS}ms "
           f"stateful={'yes' if _HAS_HIST else 'no'}", file=sys.stderr)
     sys.stderr.flush()
     for line in sys.stdin:
-        fen = line.strip()
-        if not fen or fen == "quit":
+        cmd = line.strip()
+        if not cmd or cmd == "quit":
             break
-        if fen == "reset":
-            # Phase 4: new game. Stale game keys / TT entries from the
-            # previous game must never be treated as repetitions.
+        if cmd.startswith("budget "):
+            _PENDING_BUDGET_MS = int(cmd.split()[1])
+            continue
+        if cmd == "reset":
             if _HAS_HIST:
                 _GAME_KEYS.clear()
                 TT.tt_clear(_TT_KEYS)
@@ -156,7 +180,7 @@ def main() -> int:
                 _HIST.fill(0)
             continue
         try:
-            resp = _move(fen)
+            resp = _move(cmd)
         except Exception as exc:  # never let the side die silently
             resp = f"ERROR:{exc!r}"
         sys.stdout.write(resp + "\n")
