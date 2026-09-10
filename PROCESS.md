@@ -913,7 +913,17 @@ carries much more value bundled with the king-PST flip, whose evidence
 parity) is stronger and whose mechanism is measured. The staged zip is
 frozen and byte-verified either way; the upload decision is Pino's.
 
-### 16b. 2026-09-10 — q5-v9k: king-PST orientation flip (audit-6 C1), gated; zip staged
+### 16b. 2026-09-10 — q5-v9k: king-PST orientation flip (audit-6 C1), gated; **UPLOADED + ACTIVE**
+
+**RELEASE (added after upload).** Uploaded by Pino 15:30:59Z as dashboard submission
+**"v8"** (dashboard numbers by submission count — our internal v9k). Release identity
+verified: dashboard sha `dd5a9652cc6f` == sha256(staged zip)[:12]
+(`dd5a9652cc6f6441857218181660338216acdeca448c7f6394aece6b0a826416`); unzip-cmp all 7
+shipped files byte-identical vs tree HEAD; both fixes present in unzipped source.
+Validation 15:30:59Z building → **15:33:43Z valid** (2m44s; warmup 37.5/37.6s < 60s
+rated budget; smoke 2 games, both checkmate). **Status: ACTIVE; v7 → Valid
+(superseded). Debut round: r100 (16:22Z).** Validation log:
+`results/dashboard/aichessathon-v8-dd5a9652cc6f.log`.
 
 **Defect (audit-6 §C1, verified there and re-verified here).** Every PST
 literal in `engine/eval.py` is authored **rank-8-first** (the classic
