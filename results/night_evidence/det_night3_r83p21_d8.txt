@@ -1,0 +1,27 @@
+# Recovered from fix1 night-session trace (OMP session 2026-09-09T18-33-00-740Z_01a08771-da44-7000-9622-a2aba5aa14a4)
+# job: night3 sanity (eval selfcheck + det_check r83-p21 d8)
+# command:
+# mv == ttmove with ttmove=0: a legal move is never 0, so iteration 1 (best_move=0) is unaffected. 
+# Compile + sanity: fixed-depth determinism + startpos bench identity vs n1 (should IDENTICAL nodes: ordering doesn't change tree shape at depth d when all moves searched full-window... actually PVS re-search order changes → node counts CAN differ even at fixed depth. Same-input-same-output per build is the contract.
+/tmp/chessbench/bin/python -c "
+import sys, os; sys.path.insert(0,'.')
+os.environ['NUMBA_CACHE_DIR']='/tmp/numba_cache_chessathon_chessathon'
+from engine import eval as E
+E._selfcheck(); print('selfcheck OK')" && /tmp/chessbench/bin/python tools/det_check.py "r3k2r/ppq1bppp/2p1p3/2P5/P2P4/2B1P3/4QPPP/R4RK1 b kq - 4 18" 8 2>&1 | tail -2
+
+# completed-job snapshot:
+## Completed (1)
+
+### bg_8 [bash] — completed
+Label: # mv == ttmove with ttmove=0: a legal move is never 0, so iteration 1 (best_move=0) is unaffected. 
+# Compile + sanit...
+Delivery: not auto-delivered; recovered by this snapshot.
+```
+eval selfcheck OK
+selfcheck OK
+proc: nodes=230245 best=47988 score=-50 depth=8
+proc: nodes=230245 best=47988 score=-50 depth=8
+
+
+Wall time: 97.77 seconds
+```

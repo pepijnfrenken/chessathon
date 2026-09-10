@@ -1,0 +1,36 @@
+# Recovered from fix1 night-session trace (OMP session 2026-09-09T18-33-00-740Z_01a08771-da44-7000-9622-a2aba5aa14a4)
+# pre-fix battery: insufficient-material zeroing bug (KBN-v-K scored 0)
+# command:
+cd /home/pino/projects/chessathon && /tmp/chessbench/bin/python - <<'EOF'
+# Item 1a: insufficient-material zeroing on pawnless KBN-v-K / KNNN-v-K
+import sys, os
+sys.path.insert(0,'.')
+os.environ['NUMBA_CACHE_DIR']='/tmp/numba_cache_chessathon_chessathon'
+from engine import board as B, eval as E
+cases = [
+ ("KBNvK w", "8/8/8/3BN2k/8/8/8/6K1 w - - 0 1"),       # bishop+knight vs bare king: FORCED WIN
+ ("KBNvK b", "8/8/8/3bn2K/8/8/8/6k1 b - - 0 1"),
+ ("KNNNvK w", "8/8/8/3NN2k/8/8/8/6K1 w - - 0 1"),      # 3 knights: generally drawn but not auto-zero-able
+ ("KNNvK w", "8/8/8/3NN2k/8/8/8/6K1 w - - 0 1"),       # KN vs K: draw -> 0 correct
+ ("KBBvK w", "8/8/8/3BB2k/8/8/8/6K1 w - - 0 1"),       # 2 bishops: forced win
+ ("KRvK w", "7R/8/8/8/8/8/8/6K1 w - - 0 1"),           # rook: forced win (must NOT be 0)
+ ("KQvK w", "7Q/8/8/8/8/8/8/6K1 w - - 0 1"),
+ ("KPvK w", "8/8/8/4P3/8/8/8/6K1 w - - 0 1"),
+]
+for name, fen in cases:
+    st = B.parse_fen(fen)
+    print(f"{name:8} eval(mover)={E.evaluate(st):>6}")
+EOF
+
+# output:
+KBNvK w  eval(mover)=     0
+KBNvK b  eval(mover)=     0
+KNNNvK w eval(mover)=     0
+KNNvK w  eval(mover)=     0
+KBBvK w  eval(mover)=   902
+KRvK w   eval(mover)=   535
+KQvK w   eval(mover)=   921
+KPvK w   eval(mover)=   122
+
+
+Wall time: 6.87 seconds

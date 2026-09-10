@@ -1,4 +1,18 @@
 round,colour,opponent,result,termination,init_s,moves,time_used_s,slowest_s,fastest_s,average_s,clock_left_s,machine,finished_at
+Rated 90,Black,Chessbuster 9000,Loss,Checkmate,34.4,59,109.3,4.1,0.0,1.9,40.2,w-460910,2026-09-09T21:25:20.71612+00:00
+Rated 89,White,Team7347,Loss,Checkmate,37.5,54,105.8,4.3,0.0,2.0,41.2,w-4b43cf,2026-09-09T20:26:52.749934+00:00
+Rated 88,Black,Prompt and Circumstance,Win,Checkmate,34.2,59,109.4,4.2,0.0,1.9,40.1,w-d5046c,2026-09-09T19:26:19.662355+00:00
+Rated 87,White,Fork 72,Win,Checkmate,34.1,105,151.3,4.1,0.0,1.4,21.2,w-8d3742,2026-09-09T18:28:18.177182+00:00
+Rated 86,Black,Zagreus 2.3.1,Draw,Threefold repetition,34.7,69,129.3,4.1,1.1,1.9,25.2,w-e59fd5,2026-09-09T17:26:50.765737+00:00
+Rated 85,Black,Knight,Loss,Checkmate,37.4,37,78.5,4.4,0.0,2.1,60.0,w-103c48,2026-09-09T16:26:03.235177+00:00
+Rated 84,White,Ablation,Draw,Threefold repetition,35.5,49,105.0,4.2,1.4,2.1,39.5,w-e04a3f,2026-09-09T15:25:08.005238+00:00
+Rated 83,Black,404 Not Found,Loss,Checkmate,36.7,72,128.0,4.2,0.0,1.8,28.0,w-28cd1a,2026-09-09T14:24:19.089404+00:00
+Rated 82,White,Team7347,Draw,Threefold repetition,37.2,37,86.8,4.2,1.7,2.3,51.7,w-4b43cf,2026-09-09T13:23:59.586311+00:00
+Rated 81,White,Magnus CarlSON 😭,Win,Checkmate,37.4,47,92.8,4.3,0.0,2.0,50.7,w-382a7a,2026-09-09T12:25:51.890216+00:00
+Rated 80,Black,GMmmmm,Win,Checkmate,37.7,25,60.7,4.3,0.0,2.4,71.8,w-382a7a,2026-09-09T11:25:33.854916+00:00
+Rated 79,White,Stochastic Gambit,Win,Checkmate,35.6,8,16.3,4.2,0.0,2.0,107.7,w-32eea9,2026-09-09T10:24:29.418419+00:00
+Rated 78,Black,Stockfish,Win,Checkmate,36.2,47,92.2,4.2,0.0,2.0,51.3,w-e04a3f,2026-09-09T09:27:17.022927+00:00
+Rated 77,Black,Frisky,Win,Checkmate,35.4,38,78.1,4.2,0.0,2.1,60.9,w-11cd5c,2026-09-09T08:29:41.444044+00:00
 Rated 76,White,MCAI,Loss,Checkmate,36.3,83,136.9,4.2,0.0,1.6,24.6,w-d8f704,2026-09-09T07:30:17.992227+00:00
 Rated 75,White,Prophylaxis,Win,Checkmate,35.3,55,108.1,4.2,0.0,2.0,39.4,w-02013e,2026-09-08T21:30:07.578342+00:00
 Rated 74,White,Rohan,Loss,Checkmate,35.5,63,115.5,4.2,0.0,1.8,36.0,w-e72a35,2026-09-08T20:27:36.926341+00:00

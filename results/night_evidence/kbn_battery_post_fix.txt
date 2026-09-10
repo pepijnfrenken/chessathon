@@ -1,0 +1,42 @@
+# Recovered from fix1 night-session trace (OMP session 2026-09-09T18-33-00-740Z_01a08771-da44-7000-9622-a2aba5aa14a4)
+# post-fix battery (complete): KBN/KBB nonzero, true-insufficient still 0
+# command:
+/tmp/chessbench/bin/python - <<'EOF'
+import sys, os
+sys.path.insert(0,'.')
+os.environ['NUMBA_CACHE_DIR']='/tmp/numba_cache_chessathon_chessathon'
+from engine import board as B, eval as E
+cases = [
+ ("KBNvK w", "8/8/8/3BN2k/8/8/8/6K1 w - - 0 1", "win>0"),
+ ("KBNvK b", "8/8/8/3bn2K/8/8/8/6k1 b - - 0 1", "win-mover>0"),
+ ("KNNNvK w", "8/8/8/3NN2k/8/8/8/6K1 w - - 0 1", "nonzero"),
+ ("KBBvK w", "8/8/8/3BB2k/8/8/8/6K1 w - - 0 1", "win>0"),
+ ("KBBvK b", "8/8/8/3bb2K/8/8/8/6k1 b - - 0 1", "win-mover>0"),
+ ("KBvK(total1)", "8/8/8/3b3k/8/8/8/6K1 w - - 0 1", 0),
+ ("KNvK(total1)", "8/8/8/3n3k/8/8/8/6K1 w - - 0 1", 0),
+ ("KvK", "8/8/8/8/4k3/8/8/6K1 w - - 0 1", 0),
+ ("KRvK w", "7R/8/8/8/8/8/8/6K1 w - - 0 1", "win>0"),
+ ("KPvK w", "8/8/8/4P3/8/8/8/6K1 w - - 0 1", ">0"),
+ ("KBPvK w", "8/8/8/1B3P2/8/8/8/6K1 w - - 0 1", ">0"),
+]
+for name, fen, want in cases:
+    st = B.parse_fen(fen)
+    v = E.evaluate(st)
+    print(f"{name:14} eval={v:>6}  want {want}")
+EOF
+
+# output:
+KBNvK w        eval=   875  want win>0
+KBNvK b        eval=   870  want win-mover>0
+KNNNvK w       eval=   864  want nonzero
+KBBvK w        eval=   902  want win>0
+KBBvK b        eval=   897  want win-mover>0
+KBvK(total1)   eval=     0  want 0
+KNvK(total1)   eval=     0  want 0
+KvK            eval=     0  want 0
+KRvK w         eval=   535  want win>0
+KPvK w         eval=   122  want >0
+KBPvK w        eval=   504  want >0
+
+
+Wall time: 5.65 seconds

@@ -1,0 +1,47 @@
+QUIET-BOX RE-RUN — the flagged KRvK-close shuffle case (audit-4 item 1)
+=======================================================================
+Date: 2026-09-10 06:31-06:41 UTC. Box otherwise idle (no gates, no eg_check,
+no other engine processes; verified before starting).
+Method: tools/shuffle_check.py --move-ms 2000 --only KRvK-close on each
+tree (single suite at a time). Trees:
+  candidate = /tmp/chessathon_n3base  (night3 = the build uploaded as v7)
+  control   = /tmp/chessathon_v5ctl   (V5 tree @3aaaf99)
+
+Context — the LOADED (parallel) runs from the Sep 9 night session:
+  candidate (shuffle_item2_2000, eg_check running concurrently):
+    KRvK-close-w  DRAW 150 plies, 3x@[139..144] THREEFOLD
+    KRvK-close-b  WIN 23 plies
+  control (shuffle_v5ctl_2000, run while other jobs active):
+    KRvK-close-w  WIN 59 plies
+    KRvK-close-b  WIN 47 plies (2x@30)
+
+QUIET-BOX RUNS
+--------------
+PASS 1 — candidate (night3):
+  KRvK-close strong-as-white ply= 39 WIN  streak= 0 2x@[34]
+  KRvK-close strong-as-black ply= 23 WIN  streak= 0 no2x
+
+PASS 1 — control (V5):
+  KRvK-close strong-as-white ply=150 DRAW streak= 0 2x@[89, 106, ..., 149] 3x@[129, 142, 143, 146, 147, 150] <== THREEFOLD
+  KRvK-close strong-as-black ply= 31 WIN  streak= 0 2x@[28]
+
+PASS 2 — candidate (night3), repeat:
+  KRvK-close strong-as-white ply=142 DRAW streak= 0 2x@[53, 59, 61, 62, 63, 64, 75, 76]  (no threefold — progress-less draw)
+  KRvK-close strong-as-black ply= 35 WIN  streak= 0 no2x
+
+VERDICT
+-------
+KRvK-close-w is a variance-prone boundary case for BOTH builds:
+  candidate samples (w): WIN(39) | DRAW(142, no 3x) | DRAW(150, 3x, loaded)
+  control samples (w):   DRAW(150, 3x) | WIN(59, loaded)
+Both builds convert it sometimes and fail it sometimes; the failures are not
+tied to one build and not tied to load (quiet runs failed for both; loaded
+runs succeeded for both). This is the documented KRvK mate-in-N horizon
+boundary band. NO evidence of a night3-specific regression on this case.
+The audit-4 objection remains correct on bookkeeping: the night record's
+"10/12 / V5 control 10/12" framing did not match the artifacts (both
+11/12, and the control's failed case was KPK-w, not KRvK-close). Record
+corrected in PROCESS.md §12/§13.
+
+Raw logs: /tmp/repro_krvkclose.log + /tmp/repro2_krvkclose.log (this file
+is their canonical concatenation).

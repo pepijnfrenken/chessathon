@@ -1,0 +1,12 @@
+KQvK       strong-as-white ply= 43 WIN  streak= 0 no2x
+KQvK       strong-as-black ply= 19 WIN  streak= 0 no2x
+KRvK       strong-as-white ply= 31 WIN  streak= 0 no2x
+KRvK       strong-as-black ply= 23 WIN  streak= 0 no2x
+KPK        strong-as-white ply= 34 DRAW streak= 0 no2x
+KPK        strong-as-black ply= 33 WIN  streak= 0 no2x
+KRPvK      strong-as-white ply= 19 WIN  streak= 0 no2x
+KRPvK      strong-as-black ply= 15 WIN  streak= 0 no2x
+KRvK-close strong-as-white ply= 59 WIN  streak= 0 no2x
+KRvK-close strong-as-black ply= 47 WIN  streak= 0 2x@[30]
+KQvK-mid   strong-as-white ply= 33 WIN  streak= 0 no2x
+KQvK-mid   strong-as-black ply= 13 WIN  streak= 0 no2x

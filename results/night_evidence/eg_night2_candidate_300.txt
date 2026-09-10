@@ -1,0 +1,8 @@
+KQvK   strong-as-white ply= 17 result=1-0 WIN
+KQvK   strong-as-black ply= 19 result=0-1 WIN
+KRvK   strong-as-white ply= 45 result=1-0 WIN
+KRvK   strong-as-black ply= 25 result=0-1 WIN
+KPK    strong-as-white ply= 37 result=1-0 WIN
+KPK    strong-as-black ply= 37 result=0-1 WIN
+KRPvK  strong-as-white ply= 19 result=1-0 WIN
+KRPvK  strong-as-black ply= 17 result=0-1 WIN

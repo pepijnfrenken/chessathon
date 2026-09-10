@@ -1,0 +1,20 @@
+# Recovered from fix1 night-session trace (OMP session 2026-09-09T18-33-00-740Z_01a08771-da44-7000-9622-a2aba5aa14a4)
+# job bg_1 (night2 item) — det_check, two fresh procs, r83-p21 position, depth 8
+# launch command (entry 1337):
+# eg 8/8. Shuffle: 10/12 WIN, KRvK-close-w threefold — compare to V5 control (10/12 with its own KRvK-close no-threefold) and the item-1-era runs. This KRvK-close is the DOCUMENTED flake band (KRvK mate-in-16 at horizon boundary; V5's own control had 2x@30 on the same case).
+# Determinism for item2:
+/tmp/chessbench/bin/python tools/det_check.py "r3k2r/ppq1bppp/2p1p3/2P5/P2P4/2B1P3/4QPPP/R4RK1 b kq - 4 18" 8 2>&1 | tail -2
+
+# completed-job snapshot:
+## Completed (1)
+
+### bg_1 [bash] — completed
+Label: # eg 8/8. Shuffle: 10/12 WIN, KRvK-close-w threefold — compare to V5 control (10/12 with its own KRvK-close no-threef...
+Delivery: not auto-delivered; recovered by this snapshot.
+```
+proc: nodes=493820 best=47988 score=-50 depth=8
+proc: nodes=493820 best=47988 score=-50 depth=8
+
+
+Wall time: 94.66 seconds
+```

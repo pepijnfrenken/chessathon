@@ -1,0 +1,12 @@
+KQvK       strong-as-white ply= 19 WIN  streak= 0 no2x
+KQvK       strong-as-black ply= 19 WIN  streak= 0 no2x
+KRvK       strong-as-white ply= 55 WIN  streak= 0 2x@[44]
+KRvK       strong-as-black ply= 19 WIN  streak= 0 no2x
+KPK        strong-as-white ply= 37 WIN  streak= 0 no2x
+KPK        strong-as-black ply= 27 WIN  streak= 0 no2x
+KRPvK      strong-as-white ply= 19 WIN  streak= 0 no2x
+KRPvK      strong-as-black ply= 27 WIN  streak= 0 2x@[20]
+KRvK-close strong-as-white ply=150 DRAW streak= 0 2x@[89, 90, 91, 99, 100, 101, 102, 103, 104, 123, 131, 132, 133, 134, 135, 136, 137, 138, 145, 146, 147, 148, 149, 150] 3x@[139, 140, 141, 142, 143, 144] <== THREEFOLD
+KRvK-close strong-as-black ply= 23 WIN  streak= 0 no2x
+KQvK-mid   strong-as-white ply= 13 WIN  streak= 0 no2x
+KQvK-mid   strong-as-black ply= 17 WIN  streak= 0 no2x
