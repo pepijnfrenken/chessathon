@@ -1551,3 +1551,34 @@ Today's round cadence: hourly at :00Z through ~21:00Z (22:00 UK).
 (for us) mid-middlegame -> fought back to equality (~ply 72-76) -> long
 level phase (+1..+33) -> broke through (+256 -> +504) -> mate. Conversion
 worked: from +256 the game finished without a single big error.
+
+### 17k. 2026-09-11 08:05Z — OFFICIAL SCHEDULE INTEL (from aichessathon.com/docs) + freeze plan
+
+**Endgame timeline (all times London = UTC+1):**
+- **Uploads close TODAY 11:00 London (10:00Z). "Your last valid build then
+  freezes."** → the frozen build = our v10 (sha 11fa4ad658cc, active since
+  10 Sep 20:35Z). No further upload planned: no gated change exists since
+  tm1b, and any new change cannot pass the ship gates (perft + 24g A/B +
+  batteries) inside the remaining window. DECISION: v10 is the final build.
+- **Team changes also lock 11:00 London** (create/join/leave all stop).
+- **Final qualification = a 13-round Swiss over locked builds, TODAY
+  afternoon (11 Sep).** "The ladder only seeds the final Swiss" / "Only the
+  locked-build final Swiss counts for qualification, by points." Tie-breaks:
+  points → Buchholz → head-to-head → earlier final submission.
+- **Swiss entry: "a team enters the final Swiss if at least one member is a
+  UK university student"; only a team's UK-uni students can take a London
+  seat; seats fill in seed order (room = 50), invites 11 Sep evening,
+  confirmed by reply.** (Flagged to Pino — team-change window closes with
+  uploads.)
+- Ladder rated rounds continue hourly until 22:00 London; they still seed
+  the Swiss, so remaining rounds matter for seeding.
+- Live final: 12 Sep, Encode Club London.
+
+**Standing at 08:00Z:** rank **#213 of 461 (top 46%)**, rating 1628
+(peak 1686 at R95), record 27W-13D-19L, checkmates 27, badges incl.
+"Engine slayer" (beat a Stockfish anchor). r106 = v10's first rated win,
+clean (zero >=150cp drops, 12.8s end-clock).
+
+**Capture:** rolling watcher armed (rounds 107+, hourly) — auto-fetches
+pgn+log per round; day summary at ~21:30Z. Adapt if the Swiss appears in
+a different dashboard format.
