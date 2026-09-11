@@ -1,0 +1,135 @@
+AI CHESSATHON MATCH LOG
+=======================
+
+MATCH
+  Round          Rated 106
+  Team           En Passant Labs
+  Colour         White
+  Opponent       Claude's Gambit
+  Opening        Slav Defence
+  Start FEN      r2qkb1r/pp1n1ppp/2p1pn2/5b2/P1NP4/2N1P3/1P3PPP/R1BQKB1R b KQkq - 0 8
+  You moved      Second
+  Machine        w-d2ecdd
+  Finished       2026-09-11 07:29:16 UTC
+  Match ID       16676d0b-d43d-4a82-9a39-982e78c4788a
+
+INIT
+  Ready in       37.9 s
+  Budget         90.0 s
+  Used           42 percent
+
+CLOCK
+  Base           120.0 s plus 0.5 s per move
+  Moves          88
+  Time used      151.2 s
+  Slowest        6.0 s on move 11
+  Fastest        0.0 s on move 85
+  Average        1.7 s
+  Left at end    12.8 s
+
+RESULT
+  Won by checkmate
+  Game lasted 297.6 s
+
+MOVES
+    #  move          time     clock left
+    1  Qb3           4.3 s      116.2 s
+    2  Bd2           3.1 s      113.6 s
+    3  Nxd5          3.0 s      111.1 s
+    4  Kxd2          3.0 s      108.6 s
+    5  Qxb7          3.0 s      106.1 s
+    6  Nd6+          3.0 s      103.6 s
+    7  Nxb7          3.0 s      101.1 s
+    8  b3            3.0 s       98.6 s
+    9  Na5           3.0 s       96.1 s
+   10  Ke1           3.0 s       93.6 s
+   11  Bb5           6.0 s       88.1 s
+   12  Be2           6.0 s       82.6 s
+   13  Rf1           6.0 s       77.1 s
+   14  g4            3.0 s       74.6 s
+   15  Bd1           3.0 s       72.1 s
+   16  h4            3.0 s       69.6 s
+   17  Rg1           3.0 s       67.1 s
+   18  b4            6.0 s       61.6 s
+   19  b5            3.0 s       59.1 s
+   20  Nc6+          3.0 s       56.6 s
+   21  Bf3           3.0 s       54.1 s
+   22  Rg2           3.0 s       51.6 s
+   23  axb5          3.0 s       49.0 s
+   24  Kf1           3.0 s       46.5 s
+   25  Rxb2          3.0 s       44.0 s
+   26  Ra8+          3.0 s       41.5 s
+   27  Ne5+          3.0 s       39.0 s
+   28  Rd8+          3.0 s       36.5 s
+   29  Rg8           3.0 s       34.0 s
+   30  Rg7           3.0 s       31.5 s
+   31  Rxh7          3.0 s       29.0 s
+   32  Ke2           2.9 s       26.6 s
+   33  Rh6           2.7 s       24.5 s
+   34  dxe5          2.4 s       22.5 s
+   35  Kd3           2.2 s       20.8 s
+   36  Kd2           2.0 s       19.4 s
+   37  h5            1.8 s       18.1 s
+   38  g5            1.6 s       16.9 s
+   39  Bd1           3.0 s       14.4 s
+   40  hxg6          1.2 s       13.8 s
+   41  Rh4           1.1 s       13.2 s
+   42  Rxd4          1.0 s       12.6 s
+   43  Bb3           1.0 s       12.2 s
+   44  Re4           0.9 s       11.8 s
+   45  Kd3           0.8 s       11.4 s
+   46  Re2           0.8 s       11.1 s
+   47  Ke4           0.8 s       10.9 s
+   48  Rf2+          0.7 s       10.6 s
+   49  Bd5           0.7 s       10.4 s
+   50  Rb2           0.7 s       10.2 s
+   51  Rxb3          0.7 s       10.1 s
+   52  Kd3           0.6 s        9.9 s
+   53  Be4           0.6 s        9.8 s
+   54  Ke3           0.6 s        9.7 s
+   55  Rb1           0.6 s        9.6 s
+   56  Rg1           0.6 s        9.5 s
+   57  Rg5           0.6 s        9.5 s
+   58  Bd5           0.6 s        9.4 s
+   59  Rg2           0.6 s        9.4 s
+   60  Ke4           0.5 s        9.3 s
+   61  Rc2           0.5 s        9.3 s
+   62  Rc7+          0.5 s        9.2 s
+   63  Be6           0.5 s        9.2 s
+   64  Kd5           0.5 s        9.2 s
+   65  Kd6           0.5 s        9.2 s
+   66  Bd5           0.5 s        9.1 s
+   67  Rf7+          0.5 s        9.1 s
+   68  Rf6           0.5 s        9.1 s
+   69  Bxe4          0.5 s        9.1 s
+   70  Bd5           0.5 s        9.1 s
+   71  Be6           0.5 s        9.1 s
+   72  Rf4           0.5 s        9.1 s
+   73  Bd7+          0.5 s        9.0 s
+   74  Rc4           0.5 s        9.0 s
+   75  Be6           0.5 s        9.0 s
+   76  Kxe6          0.5 s        9.0 s
+   77  Rc1           0.5 s        9.0 s
+   78  Rxg1          0.5 s        9.0 s
+   79  Rc1+          0.5 s        9.0 s
+   80  Kd5           0.5 s        9.0 s
+   81  Kc5           0.3 s        9.3 s
+   82  Rd1           0.0 s        9.8 s
+   83  Rd7+          0.0 s       10.3 s
+   84  Rf7           0.0 s       10.8 s
+   85  Kd6           0.0 s       11.3 s
+   86  Kc6           0.0 s       11.8 s
+   87  Kb6           0.0 s       12.3 s
+   88  Rf8#          0.0 s       12.8 s
+
+OUTPUT
+  334 bytes on stderr
+
+  [chessathon] numba warmup 37.0s (init budget ok)
+  [chessathon] slow move: 6001ms (budget 3000ms), depth 10
+  [chessathon] slow move: 6002ms (budget 3000ms), depth 11
+  [chessathon] slow move: 6001ms (budget 3000ms), depth 10
+  [chessathon] slow move: 6001ms (budget 3000ms), depth 11
+  [chessathon] slow move: 2981ms (budget 1490ms), depth 13
+
+Email hello@aichessathon.com with this file if anything here is unclear.

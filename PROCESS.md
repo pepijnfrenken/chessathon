@@ -1521,3 +1521,26 @@ second run (same script, separate launch): e3h3/Qxh3 at 1.0/1.35/2/3/5s,
 scores +184/+184/+184/+176/+162, depths 10/10/10/11/12 — moves and scores
 byte-identical across runs, only node counts differ. Also committed the
 r105 corpus (pgn/log/dashboard) and analysis scripts under tools/r105/.
+
+### 17j. 2026-09-11 — r106 WIN (v10's first); standing #213 / 1628; v10 locks in as the final build
+
+**r106: WIN vs Claude's Gambit (1-0, checkmate, as White, Slav Defence).**
+88 moves, 151.2s used, slowest 6.0s (extension, move 11), avg 1.7s,
+**12.8s left at end** — the tail cap held again (clock grew 9.0 -> 12.8 in
+the final 10 moves, 0.0s spends). Extensions at moves 11/12/13/18 (6.0s,
+flip-guard pattern), then normal 3s-floor play; clean whole game.
+
+**Standing after r106 (team page, 07:55Z):** rating **1628**, rank **#213**
+(up from #243), record **27W-19L-13D / 59 rated rounds (0.568)**.
+Today's round cadence: hourly at :00Z through ~21:00Z (22:00 UK).
+
+**Lock-in decision (uploads close 11:00 UK = 10:00Z):**
+- The v10 bundle (sha 11fa4ad658cc, active since 10 Sep 20:35Z) is the
+  final build. NO further upload: no code changed after tm1b (repo HEAD ==
+  bundle tree), and the ship policy requires passed gates for any change —
+  not achievable in the remaining window. v10 = c3+c4+c5+tm1+tm1b, the
+  168-test-game stack (0.514/72 gate + 0.469/48 bout + unit batteries;
+  zero flags), plus r105 (game-conversion loss, mechanism clean) and
+  r106 (clean win) live. Everything else is post-mortem analysis only.
+- Remaining rated rounds today play on v10 as locked. The 13-round Swiss
+  over locked builds decides London seats — no action needed from us.
