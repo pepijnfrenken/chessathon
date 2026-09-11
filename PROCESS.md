@@ -1544,3 +1544,10 @@ Today's round cadence: hourly at :00Z through ~21:00Z (22:00 UK).
   r106 (clean win) live. Everything else is post-mortem analysis only.
 - Remaining rated rounds today play on v10 as locked. The 13-round Swiss
   over locked builds decides London seats — no action needed from us.
+
+**17j-addendum (08:05Z):** SF review of r106 (results/reviews/r106-trajectory.txt):
+176 plies, ours White, final mate (+10000). **Our drops <= -150cp: ZERO**
+(clean game — contrast r105). Trajectory: +22 early -> dipped to -616
+(for us) mid-middlegame -> fought back to equality (~ply 72-76) -> long
+level phase (+1..+33) -> broke through (+256 -> +504) -> mate. Conversion
+worked: from +256 the game finished without a single big error.
