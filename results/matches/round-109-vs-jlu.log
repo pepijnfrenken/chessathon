@@ -1,0 +1,82 @@
+AI CHESSATHON MATCH LOG
+=======================
+
+MATCH
+  Round          Rated 109
+  Team           En Passant Labs
+  Colour         Black
+  Opponent       jlu
+  Opening        Grunfeld Defence
+  Start FEN      rnbqk2r/pp2ppbp/6p1/2p5/3PP3/2P1BN2/P4PPP/R2QKB1R b KQkq - 1 8
+  You moved      First
+  Machine        w-8dbe0f
+  Finished       2026-09-11 10:19:06 UTC
+  Match ID       4c79b184-a7db-4261-962b-b1aca074ce9c
+
+INIT
+  Ready in       40.0 s
+  Budget         90.0 s
+  Used           44 percent
+
+CLOCK
+  Base           120.0 s plus 0.5 s per move
+  Moves          37
+  Time used      106.5 s
+  Slowest        6.0 s on move 21
+  Fastest        0.0 s on move 34
+  Average        2.9 s
+  Left at end    32.0 s
+
+RESULT
+  Lost by checkmate
+  Game lasted 207.9 s
+
+MOVES
+    #  move          time     clock left
+    1  Qa5           4.3 s      116.2 s
+    2  O-O           3.1 s      113.6 s
+    3  Nc6           3.0 s      111.0 s
+    4  cxd4          3.0 s      108.5 s
+    5  Qd8           6.0 s      103.0 s
+    6  Ne5           3.0 s      100.5 s
+    7  Bxe5          3.0 s       98.0 s
+    8  Qd6           3.0 s       95.5 s
+    9  f5            3.0 s       93.0 s
+   10  Rf7           3.0 s       90.5 s
+   11  Bb2           3.0 s       88.0 s
+   12  Qb6+          3.0 s       85.5 s
+   13  Bxc1          3.0 s       83.0 s
+   14  e6            3.0 s       80.5 s
+   15  Bd7           3.0 s       78.0 s
+   16  Bc6           3.0 s       75.5 s
+   17  Bd5           3.0 s       73.0 s
+   18  Bxa2          3.0 s       70.5 s
+   19  Qd8           3.0 s       68.0 s
+   20  Qe8           3.0 s       65.5 s
+   21  Rb8           6.0 s       60.0 s
+   22  Bb3           3.0 s       57.5 s
+   23  b6            3.0 s       55.0 s
+   24  Ba4           3.0 s       52.5 s
+   25  Bc6           3.0 s       50.0 s
+   26  Bd5           3.0 s       47.5 s
+   27  b5            6.0 s       42.0 s
+   28  b4            3.0 s       39.5 s
+   29  exd5          3.0 s       37.0 s
+   30  Rb5           3.0 s       34.5 s
+   31  Rxd5          3.0 s       32.0 s
+   32  g5            3.0 s       29.5 s
+   33  Rf6           0.0 s       30.0 s
+   34  Qxe6          0.0 s       30.5 s
+   35  Kf7           0.0 s       31.0 s
+   36  Kg6           0.0 s       31.5 s
+   37  Kh5           0.0 s       32.0 s
+
+OUTPUT
+  220 bytes on stderr
+
+  [chessathon] numba warmup 39.0s (init budget ok)
+  [chessathon] slow move: 6002ms (budget 3000ms), depth 10
+  [chessathon] slow move: 6002ms (budget 3000ms), depth 11
+  [chessathon] slow move: 6001ms (budget 3000ms), depth 10
+
+Email hello@aichessathon.com with this file if anything here is unclear.

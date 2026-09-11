@@ -1,4 +1,8 @@
 round,colour,opponent,result,termination,init_s,moves,time_used_s,slowest_s,fastest_s,average_s,clock_left_s,machine,finished_at
+Rated 109,Black,jlu,Loss,Checkmate,40.0,37,106.5,6.0,0.0,2.9,32.0,w-8dbe0f,2026-09-11T10:19:06.232405+00:00
+Rated 108,White,Shallow Blue 2.0,Win,Checkmate,40.5,67,141.8,7.6,0.0,2.1,11.7,w-4a9770,2026-09-11T09:37:33.836807+00:00
+Rated 107,Black,Istanbul's finest,Win,Checkmate,41.3,50,131.2,6.0,0.0,2.6,13.8,w-8afbf6,2026-09-11T09:08:21.52376+00:00
+Rated 106,White,Claude's Gambit,Win,Checkmate,37.9,88,151.2,6.0,0.0,1.7,12.8,w-d2ecdd,2026-09-11T07:29:16.04435+00:00
 Rated 105,Black,Zero Elo,Loss,Checkmate,40.9,80,148.7,6.0,0.0,1.9,11.3,w-aed3b9,2026-09-10T21:23:57.303958+00:00
 Rated 104,White,TheWinners,Draw,Threefold repetition,38.1,73,133.5,4.3,1.0,1.8,23.0,w-b1bbdd,2026-09-10T20:25:19.029836+00:00
 Rated 103,Black,Hallucinated Gambits,Draw,Threefold repetition,38.7,50,105.0,4.3,0.0,2.1,40.0,w-aed3b9,2026-09-10T19:23:24.721025+00:00
