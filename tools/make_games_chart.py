@@ -24,13 +24,16 @@ games = DATA["games"]
 
 COL = {"Win": "#16a34a", "Draw": "#94a3b8", "Loss": "#dc2626"}
 
-ERAS = ["v1 / v2", "v3 / v4", "v5", "v6 / v7"]
+ERAS = ["v1 / v2", "v3 / v4", "v5", "v6 / v7", "v9k", "v10"]
 ERA_RANGE = {"v1 / v2": (47.5, 60.5), "v3 / v4": (60.5, 69.5),
-             "v5": (69.5, 89.5), "v6 / v7": (89.5, 99.5)}
+             "v5": (69.5, 89.5), "v6 / v7": (89.5, 99.5),
+             "v9k": (99.5, 104.5), "v10": (104.5, 109.5)}
 ERA_COL = {"v1 / v2": "#64748b", "v3 / v4": "#3b82f6",
-           "v5": "#15803d", "v6 / v7": "#9333ea"}
+           "v5": "#15803d", "v6 / v7": "#9333ea",
+           "v9k": "#b45309", "v10": "#be123c"}
 ERA_BG = {"v1 / v2": "#eef2f7", "v3 / v4": "#e8f0fe",
-          "v5": "#e9f7ef", "v6 / v7": "#f3e8fd"}
+          "v5": "#e9f7ef", "v6 / v7": "#f3e8fd",
+          "v9k": "#fef3c7", "v10": "#ffe4e6"}
 
 
 def era_of(r):
@@ -40,7 +43,11 @@ def era_of(r):
         return "v3 / v4"
     if r <= 89:
         return "v5"
-    return "v6 / v7"
+    if r <= 99:
+        return "v6 / v7"
+    if r <= 104:
+        return "v9k"
+    return "v10"
 
 
 fig = plt.figure(figsize=(12.5, 9.0), dpi=200)
@@ -50,7 +57,7 @@ axA = fig.add_subplot(gs[0])
 axB = fig.add_subplot(gs[1])
 
 # ---------------- Panel A: game length by round ----------------
-axA.set_xlim(47.5, 99.5)
+axA.set_xlim(47.5, 109.5)
 axA.set_ylim(4, 134)
 
 for er in ERAS:
@@ -147,12 +154,12 @@ axB.set_title("Outcome mix by length and engine generation — cell text = wins�
 fig.suptitle("En Passant Labs at the AI Chessathon — how games ended, round by round",
              x=0.075, ha="left", fontsize=14.5, weight="bold", color="#0f172a", y=0.972)
 fig.text(0.075, 0.933,
-         "52 rated games · Sep 7–10 2026 · green = win, grey = draw, red = loss · shaded bands = engine generation",
+         "62 rated games · Sep 7–11 2026 · green = win, grey = draw, red = loss · shaded bands = engine generation",
          fontsize=9.8, color="#64748b")
 
 fig.text(0.012, 0.012,
-         "Length = the full-move number at which the game finished (games start from a fixed 4–9-move opening prefix, competition format). All 25 wins were checkmates; draws were threefold repetition or insufficient material.\n"
-         "Generations: v1/v2 r48–60 · v3/v4 r61–69 · v5 r70–89 · v6/v7 r90–99 (v9k live from r100, beyond this chart). Move counts cross-checked 52/52 against the platform export. Chart: tools/make_games_chart.py.",
+         "Length = the full-move number at which the game finished (games start from a fixed 4–9-move opening prefix, competition format). All 29 wins were checkmates; draws were threefold repetition or insufficient material.\n"
+         "Generations: v1/v2 r48–60 · v3/v4 r61–69 · v5 r70–89 · v6/v7 r90–99 · v9k r100–104 · v10 r105–109. Move counts cross-checked 62/62 against the platform export. Chart: tools/make_games_chart.py.",
          fontsize=7.6, color="#64748b", ha="left", va="bottom")
 
 out = ROOT / "docs/assets"

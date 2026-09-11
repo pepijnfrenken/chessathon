@@ -10,10 +10,18 @@ keep the TL;DR fresh, append to the right section, never delete history.
 
 ---
 
-## 0. TL;DR — current state (2026-09-10; ladder standings corrected below)
+## 0. TL;DR — current state (FINAL WRAP 2026-09-11; older standings kept below)
 
-**CURRENT (supersedes the Sep 8-era text further down this section):**
-**v7 is live** — night3 build (null-sign fix + KBN zeroing fix + pawn-PST
+**CURRENT (2026-09-11, FINAL): the event is over for us.** Uploads locked
+11:00 London; frozen build = **v10** (sha `11fa4ad658cc`, active since
+10 Sep 20:35Z); ladder-only team (no UK member → not in the final Swiss).
+**Final rated record: 62 rounds (r48–109) · 29W-13D-20L · rating 1715, peak
+1764 (r108) · rank #186 of 465 (top 40%) · 29 checkmates.** All 62 games +
+logs captured in `results/matches/`; charts rebuilt from tooltip-exact ratings
+(the earlier pixel-parsed series was off-by-one from r74 — fixed, see §19).
+Refresh any later rounds with `tools/refresh_ladder.sh`. Wrap details: §19.
+
+**SUPERSEDED (Sep 10): v7 live** — night3 build (null-sign fix + KBN zeroing fix + pawn-PST
 flip + root-best ordering), uploaded Sep 10 06:19Z, ACTIVE from 06:22Z.
 **Debut r91: WIN vs Epoch & Mate (0-1 as Black, mate m63, 112 plies, zero
 flags)** — grind-then-finish: +1 pawn from the Nxd4/Bxb5 trade, queen trade
@@ -1599,3 +1607,42 @@ a different dashboard format.
 - Live now: "Swiss pending — uploads close 11:00" (done). Frozen build = 11fa4ad658cc (dashboard lists as v9; internally our 'v10').
 - **Eligibility: "The final Swiss is for teams with a UK university student on them" — verified before invites.** Roster: Pepijn (TU/e) + Radoslava. VERIFY w/ Pino. Email hello@aichessathon.com if the flag looks wrong.
 - Ladder rounds con't hourly until 22:00 London; only seeds Swiss pairings.
+
+---
+
+## 19. 2026-09-11 ~11:45Z — FINAL WRAP: all 62 rated games captured, charts rebuilt (tooltip-exact), repo finalized
+
+**Event closed for us.** Uploads locked 11:00 London (10:00Z); the frozen build
+is **v10** (sha `11fa4ad658cc`, active since 10 Sep 20:35Z) — ladder-only team
+(no UK member → not in the final Swiss, which runs this afternoon over locked
+builds). No further engine changes; this is the wrap.
+
+**Final ladder record (site captures, 11:16–11:22Z):** 62 rated rounds r48–109 ·
+**29W-13D-20L** · rating **1715**, peak **1764** (r108) · **#186 of 465**
+(top 40%) · best streak 5 · **29 checkmates** (all 29 wins) · draws = 12
+threefold + 1 insufficient material. Bot page: "CookieMonster" / En Passant
+Labs.
+
+**Capture closure.** `results/matches/` now holds the complete record: 62 PGNs
++ 62 venue logs (the r103 log closed the last gap; the r107/108/109 corpus was
+committed today). `results/dashboard/games.csv` refreshed (62 rows); dashboard
+and leaderboard snapshots archived
+(`results/dashboard/dashboard-20260911-1121Z.html`,
+`results/dashboard/leaderboard-20260911-1122Z.html`).
+
+**Data fix (worth recording).** The previous `ladder-rating.json` was
+pixel-parsed from the dashboard SVG and was **misaligned by one round from r74
+onward** (json rN held round N+1's rating — it contradicted its own stated
+anchors r95/r97). The SVG carries exact per-round ratings in its tooltips, so
+the new `tools/parse_ladder_rating.py` reads those directly (no pixel
+estimates) and cross-checks record/rating/peak against the match record.
+Anchors confirmed: r95 = 1686 (early peak), r106 = 1628, r108 = 1764 (final
+peak), r109 = 1715 (closing).
+
+**Charts.** Both public charts rebuilt through r109 with the v9k (r100–104) and
+v10 (r105–109) era bands: `docs/assets/ladder-rating.{png,svg}` +
+`ladder-games.{png,svg}` (and their JSON sources). README updated to the final
+numbers (29W-13D-20L, #186/465, peak 1764). `tools/refresh_ladder.sh` adds a
+one-command refresh (fetch → games → rating → charts) for any rounds that still
+land — the ladder nominally runs hourly until 22:00 London; as of this capture
+the newest round is r109 (finished 10:19Z).

@@ -4,15 +4,18 @@ A from-scratch chess engine built in five days by one human operator and a
 team of autonomous AI agents — with every experiment, audit and dead end
 kept on the record.
 
-![Ladder rating over 51 rated rounds](docs/assets/ladder-rating.png)
+![Ladder rating over 62 rated rounds](docs/assets/ladder-rating.png)
 
 ## Result
 
-- **25W · 10D · 17L** over 52 rated ladder games (Sep 7–10, 2026)
-- Peak rating **1686** · **#209 of 441** teams (top 47%) at the Sep 10 standings
-- **All 25 wins by checkmate**
+- **29W · 13D · 20L** over 62 rated ladder games (Sep 7–11, 2026)
+- Final rating **1715**, peak **1764** (r108) · **#186 of 465** teams (top 40%)
+  at the closing standings
+- **All 29 wins by checkmate**
 - Event constraints: 1 CPU core, 2 GB RAM, no GPU, no network, 120 s + 0.5 s
   clock, ≤ 50 MB submission. Python + numba/numpy + python-chess only.
+
+![Game length and outcome mix, round by round — all 62 rated games](docs/assets/ladder-games.png)
 
 ## What this is
 

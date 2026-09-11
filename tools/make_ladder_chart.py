@@ -4,10 +4,12 @@
 Usage:  python3 tools/make_ladder_chart.py
 Output: docs/assets/ladder-rating.png (+ .svg)
 
-The data file is produced by parsing the event dashboard's rating graph
-(gridline-calibrated SVG; anchors verified against our own records:
-r95 = 1686 peak, r97 = 1588). This script is part of the public record:
-it shows exactly how the chart in the README was made.
+The data file is produced by tools/parse_ladder_rating.py from the event
+dashboard's rating graph. Ratings are read from the chart's own per-round
+tooltips (exact, not pixel-estimated) and cross-checked against our match
+record — anchors: r95 = 1686 (early peak), r108 = 1764 (final peak).
+This script is part of the public record: it shows exactly how the chart in
+the README was made.
 """
 import json
 import pathlib
@@ -44,6 +46,8 @@ eras = [
     (60.5, 69.5, "#e8f0fe", "v3 / v4", "#3b82f6"),
     (69.5, 89.5, "#e9f7ef", "v5", "#15803d"),
     (89.5, 99.5, "#f3e8fd", "v6 / v7", "#9333ea"),
+    (99.5, 104.5, "#fef3c7", "v9k", "#b45309"),
+    (104.5, 109.5, "#ffe4e6", "v10", "#be123c"),
 ]
 for x0, x1, color, label, tcol in eras:
     ax.axvspan(x0, x1, color=color, alpha=0.6, lw=0, zorder=0)
@@ -82,7 +86,7 @@ ax.tick_params(colors="#475569", labelsize=9)
 
 ax.set_title("En Passant Labs at the AI Chessathon — ladder rating by round",
              fontsize=14.5, weight="bold", color="#0f172a", loc="left", pad=14)
-ax.text(0, 1.015, f"{len(rounds)} rated rounds  ·  Sep 7–10 2026  ·  hourly engine-vs-engine ladder",
+ax.text(0, 1.015, f"{len(rounds)} rated rounds  ·  Sep 7–11 2026  ·  hourly engine-vs-engine ladder",
         transform=ax.transAxes, fontsize=9.5, color="#64748b")
 
 handles = [Line2D([], [], color="#1d4ed8", lw=2, label="rating")]
@@ -106,8 +110,8 @@ fig.text(0.985, 0.985, "\n".join(box), ha="right", va="top", fontsize=9.2,
          color="#0f172a", linespacing=1.45)
 
 fig.text(0.012, 0.012,
-         "Engine generations: v1/v2 minimal + stateful  ·  v3/v4  ·  v5 key-correctness (EP/rights fixes)  ·  v6 null-sign fix (r90)  ·  v7 night3 (r91+)  ·  v9k king-PST fix live from r100.\n"
-         "Data: aichessathon.com event dashboard (rating graph parsed; anchors cross-checked against the match record). Chart: tools/make_ladder_chart.py.",
+         "Engine generations: v1/v2 minimal + stateful  ·  v3/v4  ·  v5 key-correctness (EP/rights fixes)  ·  v6 null-sign fix (r90)  ·  v7 night3 (r91+)  ·  v9k king-PST fix (r100+)  ·  v10 final bundle (r105+).\n"
+         "Data: aichessathon.com dashboard — per-round ratings read from the chart's own tooltips (exact), cross-checked against the match record (tools/parse_ladder_rating.py). Chart: tools/make_ladder_chart.py.",
          fontsize=7.6, color="#64748b", ha="left", va="bottom")
 
 fig.subplots_adjust(left=0.075, right=0.985, top=0.855, bottom=0.14)
