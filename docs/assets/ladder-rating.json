@@ -1,7 +1,7 @@
 {
  "source": "aichessathon.com/dashboard rating graph (tooltip-exact per-round ratings)",
- "source_file": "dashboard-20260911-1121Z.html",
- "captured_utc": "2026-09-11T11:30Z",
+ "source_file": "dashboard-20260911-2251Z.html",
+ "captured_utc": "2026-09-11T22:51Z",
  "calibration": "tooltip-exact (R<n> labels in the rating SVG); no pixel estimation",
  "stats": {
   "rank": 186,
