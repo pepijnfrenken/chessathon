@@ -308,6 +308,20 @@ breakages. Every item below cost real hours:
   an *elided* cloudflared token fragment from `ps aux` output
   (`eyJhIj...aSJ9` — literal ellipsis, not recoverable). No keys, tokens,
   or credentials are present.
+- **Correction + amendment, Sep 11 (post-freeze release scan):** the
+  "elided / not recoverable" reading above was wrong. The 11:36Z trace holds
+  a **complete** cloudflared tunnel token — a 184-char base64url blob that
+  decodes structurally to `{a: 32, t: 36, s: 48}` (account / tunnel / secret);
+  the `eyJhIj...aSJ9` form was a tool-display truncation artifact, cosmetic
+  only. The 22:57Z trace holds a 39-char truncated fragment (not usable).
+  A full rescan — every tracked file (809), every blob of every commit
+  (998 blobs / 213 commits), all 39 traces decompressed, plus a PII pass —
+  found exactly these two traces and nothing else: no keys, cookies, bearer
+  headers, or third-party personal data. Both files' token material was
+  redacted to `[REDACTED-CLOUDFLARED-TOKEN]` on Sep 11. ⚠️ Pre-redaction
+  copies remain in git history and in the session originals — **rotate the
+  cloudflared tunnel token before this repo goes public**; rotation is the
+  only fix that covers every copy.
 - Evidence logs: `results/*.log` (gates, eg_check, shuffle, SPRT, repros),
   referenced by commit messages — kept in-repo so every claim in the git
   history is checkable at the same revision.

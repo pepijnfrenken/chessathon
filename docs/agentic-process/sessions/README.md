@@ -72,6 +72,12 @@ contain an *elided* cloudflared token fragment captured from `ps aux` output
 (`eyJhIj...aSJ9` — literal ellipsis, not recoverable); one false positive as
 before (public Mixpanel meta-tag in scraped page content).
 
+**Correction, Sep 11:** the 11:36Z trace actually contained the *complete*
+tunnel token (184-char blob — fully recoverable; the ellipsis was tool-UI
+truncation, not file content). Both traces' token material was redacted
+Sep 11 to `[REDACTED-CLOUDFLARED-TOKEN]`; see AGENTIC-PROCESS.md §5 for the
+full rescan and the pre-public rotation requirement.
+
 **Notes:** briefs are reused across attempts of the same mission (audit-2
 sound/strength/prod, audit-2b, codex-1) — one brief file covers all its
 attempts. Several runs died on provider empty-output/mid-run wedges
