@@ -1582,3 +1582,20 @@ clean (zero >=150cp drops, 12.8s end-clock).
 **Capture:** rolling watcher armed (rounds 107+, hourly) — auto-fetches
 pgn+log per round; day summary at ~21:30Z. Adapt if the Swiss appears in
 a different dashboard format.
+
+### 17l. 2026-09-11 ~10:45Z — r107 W, r108 W, r109 L; rank #162/465 @ 1764; Swiss intel; capture fixed
+
+**Results since r106:**
+- **r107 WIN** vs Istanbul's finest — Black, Italian Game, 50 moves, checkmate, 13.8s left. SF: 3 drops (worst 317→-306 ply 28) but recovered and ground it out (+1051 by ply 88). Shaky but won.
+- **r108 WIN** vs Shallow Blue 2.0 — White, Semi-Slav, 67 moves, checkmate, 11.7s left. SF: **0 drops ≥150cp** — cleanest game on record (+40 → +900 → mate).
+- **r109 LOSS** vs jlu (LSE) — Black, Grunfeld, 37 moves, checkmate, 32s left. SF: equal until ply 52 (+0.58 max), then COLLAPSE 0→-532 (ply 54) → -965 → mated ply 62. Same late/endgame-collapse signature as r105. Build frozen, not actionable for the event — writeup lead.
+
+**Standing:** rating 1628 (R106) → 1696 (R107) → **1764 (R108)**; leaderboard **#162 of 465, top 35%, +7 places**, 61 games, 29-13-19 (W-D-L; team page shows 29-13-20 incl. r109). Best streak 5. Checkmates 29.
+
+**Capture bug ROOT CAUSE + fix:** post-r107 dashboard RSC payload puts the game uuid BEFORE the "Rated N" label; old fetcher searched i-300..i (too small). Fixed to i-4000..i+4000 nearest-match. Tested on 107/108/109 — all recover. Watcher now `/tmp/rounds_swiss.sh`: rounds 110+ + finalset (Swiss) stage watcher, until 23:30Z.
+
+**Tournament intel (docs + leaderboard stages):**
+- Swiss = 13 rounds over locked builds, decides **50 London seats**; opens "once the field is frozen" (all submissions validated); bracket drawn once Swiss ends; London final 12 Sep at Encode Club.
+- Live now: "Swiss pending — uploads close 11:00" (done). Frozen build = 11fa4ad658cc (dashboard lists as v9; internally our 'v10').
+- **Eligibility: "The final Swiss is for teams with a UK university student on them" — verified before invites.** Roster: Pepijn (TU/e) + Radoslava. VERIFY w/ Pino. Email hello@aichessathon.com if the flag looks wrong.
+- Ladder rounds con't hourly until 22:00 London; only seeds Swiss pairings.
