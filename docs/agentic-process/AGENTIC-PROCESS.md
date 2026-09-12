@@ -320,9 +320,14 @@ breakages. Every item below cost real hours:
   headers, or third-party personal data. Both files' token material was
   redacted to `[REDACTED-CLOUDFLARED-TOKEN]` on Sep 11. **Resolved, 2026-09-12
   (pre-public):** the token material was rewritten out of git history with
-  `git-filter-repo` — in-place replacement across every blob, so the
-  pre-redaction blobs no longer exist in any commit — and the tunnel itself
-  is unused and being retired at the source. Note: the rewrite reassigns
+  `git-filter-repo` (in-place replacement across every blob, so the
+  pre-redaction blobs no longer exist in any *reachable* commit). One caveat
+  learned in the exit check: a history rewrite does NOT remove objects from
+  GitHub — force-pushed commits and blobs stay fetchable by exact SHA until
+  garbage collection — which is why the credential itself was destroyed as
+  the conclusive fix: the tunnel was deleted in the Cloudflare dashboard, so
+  any retained copy of the token is inert (verified: a fresh connector with
+  the old token can no longer register). Also note: the rewrite reassigns
   commit hashes, so short SHAs cited in this document and in BUILD.md refer
   to the pre-rewrite history and no longer resolve; file content is
   otherwise unchanged (HEAD tree hash identical before/after).

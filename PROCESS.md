@@ -1653,13 +1653,17 @@ the newest round is r109 (finished 10:19Z).
 
 Pino's go for publication. Final pre-public pass:
 
-- **Tunnel-token purge via history rewrite.** The cloudflared tunnel (unused)
-  is retired, and its token material — previously only redacted in-tree, with
-  pre-redaction blobs left in history (see AGENTIC-PROCESS §5) — was rewritten
-  out of ALL history with `git-filter-repo` (in-place replacement across every
-  blob). Tree content otherwise byte-identical: HEAD tree hash unchanged
-  before/after the rewrite. **Short SHAs cited throughout this log and
-  BUILD.md refer to the pre-rewrite history and no longer resolve.**
+- **Tunnel-token purge + decommission.** The token material — previously only
+  redacted in-tree, with pre-redaction blobs left in history (see
+  AGENTIC-PROCESS §5) — was rewritten out of ALL history with `git-filter-repo`
+  (in-place replacement across every blob). Tree content otherwise
+  byte-identical: HEAD tree hash unchanged before/after the rewrite. Caveat:
+  GitHub retains force-pushed objects by exact SHA until GC, so the conclusive
+  fix is at the credential — the tunnel was **deleted in the Cloudflare
+  dashboard** (all tokens void) and the local connector service disabled;
+  verified dead with a fresh connector test (no registration possible).
+  **Short SHAs cited throughout this log and BUILD.md refer to the pre-rewrite
+  history and no longer resolve.**
 - Release scanner re-run post-rewrite: 0 findings.
 - **License set: MIT** (LICENSE + README).
 - Repo flipped public as `pepijnfrenken/chessathon`.
