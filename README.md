@@ -103,7 +103,7 @@ The git history — including the fixes above — is the originality proof.
 
 ## License
 
-TBD.
+MIT — see [LICENSE](LICENSE).
 
 ---
 

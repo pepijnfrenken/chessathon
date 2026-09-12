@@ -318,10 +318,14 @@ breakages. Every item below cost real hours:
   (998 blobs / 213 commits), all 39 traces decompressed, plus a PII pass —
   found exactly these two traces and nothing else: no keys, cookies, bearer
   headers, or third-party personal data. Both files' token material was
-  redacted to `[REDACTED-CLOUDFLARED-TOKEN]` on Sep 11. ⚠️ Pre-redaction
-  copies remain in git history and in the session originals — **rotate the
-  cloudflared tunnel token before this repo goes public**; rotation is the
-  only fix that covers every copy.
+  redacted to `[REDACTED-CLOUDFLARED-TOKEN]` on Sep 11. **Resolved, 2026-09-12
+  (pre-public):** the token material was rewritten out of git history with
+  `git-filter-repo` — in-place replacement across every blob, so the
+  pre-redaction blobs no longer exist in any commit — and the tunnel itself
+  is unused and being retired at the source. Note: the rewrite reassigns
+  commit hashes, so short SHAs cited in this document and in BUILD.md refer
+  to the pre-rewrite history and no longer resolve; file content is
+  otherwise unchanged (HEAD tree hash identical before/after).
 - Evidence logs: `results/*.log` (gates, eg_check, shuffle, SPRT, repros),
   referenced by commit messages — kept in-repo so every claim in the git
   history is checkable at the same revision.

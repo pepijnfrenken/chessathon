@@ -1646,3 +1646,20 @@ numbers (29W-13D-20L, #186/465, peak 1764). `tools/refresh_ladder.sh` adds a
 one-command refresh (fetch → games → rating → charts) for any rounds that still
 land — the ladder nominally runs hourly until 22:00 London; as of this capture
 the newest round is r109 (finished 10:19Z).
+
+---
+
+## 20. 2026-09-12 — pre-public pass: token purge (history rewrite), MIT license, public flip
+
+Pino's go for publication. Final pre-public pass:
+
+- **Tunnel-token purge via history rewrite.** The cloudflared tunnel (unused)
+  is retired, and its token material — previously only redacted in-tree, with
+  pre-redaction blobs left in history (see AGENTIC-PROCESS §5) — was rewritten
+  out of ALL history with `git-filter-repo` (in-place replacement across every
+  blob). Tree content otherwise byte-identical: HEAD tree hash unchanged
+  before/after the rewrite. **Short SHAs cited throughout this log and
+  BUILD.md refer to the pre-rewrite history and no longer resolve.**
+- Release scanner re-run post-rewrite: 0 findings.
+- **License set: MIT** (LICENSE + README).
+- Repo flipped public as `pepijnfrenken/chessathon`.
