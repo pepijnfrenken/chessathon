@@ -67,11 +67,12 @@ for res in ("Win", "Draw", "Loss"):
         ax.scatter(xs, ys, s=34, c=COL[res], edgecolors="white", linewidths=0.7,
                    zorder=4, label={"Win": "win", "Draw": "draw", "Loss": "loss"}[res])
 
-# annotations — short, non-crossing
+# annotations — short, non-crossing (peak label right-aligned: it sits at
+# the right edge, so left-alignment would run past the canvas)
 ax.text(rounds[0] + 0.4, ratings[0] + 22, f"started {int(ratings[0])}",
         fontsize=9, color="#64748b", ha="left", va="bottom")
 ax.text(rounds[peak_i] + 1.3, max(ratings) + 16, f"peak {int(max(ratings))}",
-        fontsize=9.5, color="#334155", ha="left", va="bottom")
+        fontsize=9.5, color="#334155", ha="right", va="bottom")
 
 # axes cosmetics
 ax.set_xlabel("rated round", fontsize=10, color="#334155")

@@ -60,8 +60,8 @@ The build ran as an agentic pipeline with a hard verification stack:
 ### What the audits caught (all fixed, all gated)
 
 - A **wrong-sign null-move cutoff** — one missing negation on one score
-  path; fixing it scored **0.708** in its gate — the best gate result in
-  the repo — and shipped as the v6 build the next morning.
+  path; fixing it scored **0.708** in its gate — one of the strongest
+  gate results of the build — and shipped as the v6 build the next morning.
 - An **inverted king piece-square table** — the engine punished its own
   castled king and rewarded the enemy's, across all 64 squares.
 - A **doubled-pawn file-index bug** — all twelve loop iterations sampled
@@ -91,6 +91,7 @@ Not everything worked, and the record says so:
 | `PROCESS.md` | master log: decisions, ladder results, post-mortems |
 | `BUILD.md` | design log / originality record |
 | `tools/` | gates, harnesses, probes, chart generator |
+| `data/` | self-play + validation positions, tuned parameters (provenance in `BUILD.md`) |
 
 ## The rules we played by
 
